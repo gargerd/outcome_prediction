@@ -162,7 +162,7 @@ data_inclusion_types=['baseline_last_day','baseline_vars','all_days'][:]
 period_end_days=['baseline',31,62,93,125,160,'all']
 autoenc_merged_bool_list=[False,True]
 
-
+'''
 for data_param_key in dataset_name_:
     
     embed_dict[data_param_key]={}
@@ -200,8 +200,75 @@ for data_param_key in dataset_name_:
                         embed_dict[data_param_key][llm_model_name_with_tag][period_end_day][data_inclusion_type][autoencoder_merged]=df_pt
         #            embed_dict[data_param_key][llm_model_name_with_tag]['pca_mean_vect']=df_npy
 
+'''
+import warnings
+import time
+from tqdm import tqdm
 
+embed_dict = {}
 
+llm_model_names = ['BioMistral/BioMistral-7B', "epfl-llm/meditron-70b", "epfl-llm/meditron-7b",
+                   "google/long-t5-local-base", 'google/long-t5-tglobal-large',
+                   'text-embedding-3-small']
+fine_tuned_tags = ['base', 'fine_tuned']
+data_inclusion_types = ['baseline_last_day', 'baseline_vars', 'all_days']
+period_end_days = ['baseline', 31, 62, 93, 125, 160, 'all']
+autoenc_merged_bool_list = [False, True]
+
+# Prepare all combinations to wrap in tqdm
+combinations = []
+for data_param_key in dataset_name_:
+    outcome_label = data_param_key.split('vars_')[-1].upper()
+    
+    for llm_model_name in llm_model_names[:1]:
+        
+        for fine_tuned_tag in fine_tuned_tags[:1]:
+            
+            if 'text-embedding' in llm_model_name:
+                llm_model_name_with_tag = llm_model_name
+            else:
+                llm_model_name_with_tag = '_'.join([llm_model_name.split('/')[-1], fine_tuned_tag])
+                
+            for period_end_day in period_end_day_:
+                
+                for data_inclusion_type in data_inclusion_type_:
+                    
+                    for autoencoder_merged in autoenc_merged_bool_list[:1]:
+                        combinations.append((
+                            data_param_key, llm_model_name, fine_tuned_tag,
+                            llm_model_name_with_tag, period_end_day,
+                            data_inclusion_type, autoencoder_merged
+                        ))
+
+# Iterate with progress bar
+for combo in tqdm(combinations, desc="Loading embeddings", unit="set"):
+    data_param_key, llm_model_name, fine_tuned_tag, llm_model_name_with_tag, period_end_day, data_inclusion_type, autoencoder_merged = combo
+    
+    embed_dict.setdefault(data_param_key, {})
+    embed_dict[data_param_key].setdefault(llm_model_name_with_tag, {})
+    embed_dict[data_param_key][llm_model_name_with_tag].setdefault(period_end_day, {})
+    embed_dict[data_param_key][llm_model_name_with_tag][period_end_day].setdefault(data_inclusion_type, {})
+
+    print(f"\n→ Loading: {data_param_key} | {llm_model_name_with_tag} | {period_end_day} | {data_inclusion_type} | autoenc={autoencoder_merged}")
+
+    try:
+        start = time.time()
+        df_pt = load_input_embeddings_of_model(
+            data_param_key, llm_model_name, fine_tuned_tag,
+            period_end_day, llm_model_name_with_tag,data_inclusion_type, autoencoder_merged
+        )
+        elapsed = time.time() - start
+        print(f"Loaded in {elapsed:.2f} seconds.")
+    except FileNotFoundError:
+        warnings.warn(f"Embeddings missing for: {data_param_key} / {llm_model_name_with_tag}. Skipping.")
+        continue
+
+    embed_dict[data_param_key][llm_model_name_with_tag][period_end_day][data_inclusion_type][autoencoder_merged] = df_pt
+    #print('Inf present:',any(df_pt==np.inf))
+    #print('-Inf present:',any(df_pt==-np.inf))
+    assert not np.isinf(df_pt.values).any(), "There are still Inf values!"
+    assert not np.isnan(df_pt.values).any(), "There are still NaN values!"
+    
 
 ####=================================================
 ## Define training parameters

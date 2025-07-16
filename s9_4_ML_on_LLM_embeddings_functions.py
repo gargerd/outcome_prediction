@@ -130,6 +130,7 @@ def print_elapsed_time(start,stop):
 
 ##=========================================
 ##  LOAD INPUT EMBEDDINGS CREATED BY AN LLM MODEL AS A DATAFRAME
+'''
 def load_input_emebddings_of_model(data_param_key,llm_model_name,fine_tuned_tag,period_end_day,data_inclusion_type,autoencoder_merged):
 
     if autoencoder_merged==True:
@@ -203,6 +204,81 @@ def load_input_emebddings_of_model(data_param_key,llm_model_name,fine_tuned_tag,
         #df_npy.fillna(df_npy.mean(), inplace=True)
     
         return df_pt #,df_npy
+'''
+def load_input_embeddings_of_model(data_param_key, llm_model_name, fine_tuned_tag, period_end_day, llm_model_name_with_tag,data_inclusion_type, autoencoder_merged, max_workers=8):
+    
+    import os
+    import numpy as np
+    import pandas as pd
+    import torch
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+    
+    base = "../data"
+    dataset_name = parameters_for_analysis[data_param_key]['fn']
+
+    parts = [dataset_name, llm_model_name, fine_tuned_tag, str(period_end_day), 'days', data_inclusion_type]
+    if autoencoder_merged:
+        parts.append('autoencoder_merged')
+    model_dir = os.path.join(base, '_'.join(parts))
+
+    # Load full matrix directly if autoencoder was used
+    if autoencoder_merged:
+        df_pt = pd.read_csv(f"{model_dir}/latent_embeddings.csv.gz", index_col=0, low_memory=False)
+        return df_pt
+
+    text_embedding_mode = 'text-embedding' in llm_model_name
+    #llm_model_name_with_tag = llm_model_name if text_embedding_mode else '_'.join([llm_model_name.split('/')[-1], fine_tuned_tag])
+
+    def load_embedding(entry):
+        fname = entry.name
+        if 'TB-1018' in fname:
+            return None
+
+        path = os.path.join(model_dir, fname)
+
+        try:
+            if text_embedding_mode:
+                embed = np.load(path)
+            else:
+                embed = torch.load(path).detach().cpu().numpy()
+
+            # 🔐 Replace inf before appending
+            embed = np.where(np.isinf(embed), np.nan, embed)
+
+            pat_id = fname.replace('_', '/').replace('.pt', '').replace('.npy', '')
+            return (pat_id, embed)
+        except Exception as e:
+            print(f"Error loading {fname}: {e}")
+            return None
+
+    # Use ThreadPoolExecutor for I/O parallelism
+    embeddings = []
+    pat_ids = []
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = [
+            executor.submit(load_embedding, entry)
+            for entry in os.scandir(model_dir)
+            if entry.is_file() and (entry.name.endswith('.npy') or entry.name.endswith('.pt'))
+        ]
+
+        for future in as_completed(futures):
+            result = future.result()
+            if result is not None:
+                pid, emb = result
+                pat_ids.append(pid)
+                embeddings.append(emb)
+
+    # Stack into DataFrame
+    df_pt = pd.DataFrame(data=np.vstack(embeddings), index=pat_ids)
+
+    df_pt = df_pt.astype(float)
+
+    # Clean Inf/NaN
+    df_pt = df_pt.replace([np.inf, -np.inf], np.nan)
+    df_pt = df_pt.fillna(df_pt.mean(numeric_only=True))
+
+    return df_pt
+
 
 
 ###=========================================
@@ -882,11 +958,11 @@ def extract_best_model_params(param_search_results,metric_func,num_of_top_models
                 for param_name in best_model_params.keys():
 
                     #print(best_model_params[param_name],type(best_model_params[param_name]),'is float',is_float(best_model_params[param_name]))
-                    if is_float(best_model_params[param_name])==True and np.float(best_model_params[param_name])>1:
+                    if is_float(best_model_params[param_name])==True and float(best_model_params[param_name])>1:
                         best_model_params[param_name]=int(best_model_params[param_name])
                     
-                    if is_float(best_model_params[param_name])==True and np.float(best_model_params[param_name])<=1:
-                        best_model_params[param_name]=np.float(best_model_params[param_name])
+                    if is_float(best_model_params[param_name])==True and float(best_model_params[param_name])<=1:
+                        best_model_params[param_name]=float(best_model_params[param_name])
 
                 best_cv_rep_results[cv_rep_num][n]=best_model_params
         

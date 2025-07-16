@@ -882,11 +882,11 @@ def extract_best_model_params(param_search_results,metric_func,num_of_top_models
                 for param_name in best_model_params.keys():
 
                     #print(best_model_params[param_name],type(best_model_params[param_name]),'is float',is_float(best_model_params[param_name]))
-                    if is_float(best_model_params[param_name])==True and np.float(best_model_params[param_name])>1:
+                    if is_float(best_model_params[param_name])==True and float(best_model_params[param_name])>1:
                         best_model_params[param_name]=int(best_model_params[param_name])
                     
-                    if is_float(best_model_params[param_name])==True and np.float(best_model_params[param_name])<=1:
-                        best_model_params[param_name]=np.float(best_model_params[param_name])
+                    if is_float(best_model_params[param_name])==True and float(best_model_params[param_name])<=1:
+                        best_model_params[param_name]=float(best_model_params[param_name])
 
                 best_cv_rep_results[cv_rep_num][n]=best_model_params
         

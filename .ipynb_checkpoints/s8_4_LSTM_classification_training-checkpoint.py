@@ -244,7 +244,7 @@ warnings.filterwarnings("ignore")
 pats_with_relapse_df=extract_21_22_relapse_pats()
 
 
-mport warnings
+import warnings
 warnings.filterwarnings("ignore")
 
 
@@ -268,11 +268,11 @@ if cross_validation==True:
 
 start=time.time()
 
-for model_complex in model_complexities[2:3]:
+for model_complex in model_complexity_:
     print('++++++++++++++++++')
     print('Model type:',model_complex)
     
-    for data_param_key in [*parameters_for_analysis][:1]:
+    for data_param_key in dataset_name_:
 
         outcome_label=data_param_key.split('vars_')[-1].upper()
         
@@ -349,14 +349,18 @@ for model_complex in model_complexities[2:3]:
 
 
         
-        for period_end_day in period_end_days[-1:]:
+        for period_end_day in period_end_day_:
 
             print('============= Period_end_day:',period_end_day,'===============\n')     
 
             period_num = period_end_days.index(period_end_day)
         
             ## SUBSET TO PATIENTS WHO WERE TAKING DRUGS DURING THE PERIOD
-            pat_ids_ = subset_pats_with_therapy_in_period(period_num,period_end_days)
+            #pat_ids_ = subset_pats_with_therapy_in_period(period_num,period_end_days)
+            pat_ids_ =  subset_pats_with_therapy_in_period(period_num,period_end_days,
+                                                           period_end_day,data_param_key,
+                                                           last_init_ther_days,
+                                                          pats_with_relapse_df)
 
             data=data.loc[data['USUBJID'].isin(pat_ids_)]
             target_df_=target_df.loc[pat_ids_]
@@ -385,6 +389,7 @@ for model_complex in model_complexities[2:3]:
 
             ## Extract dict containing best parameter combinations per external CV-split
             best_param_combinations = extract_best_param_comb(param_search_result_dict)
+
             
             ## Update previously created dicts with ML results
             train_data_results,test_data_results=train_models(data,target_df_,pat_ids_,period_end_day,cat_vars_not_to_hot_encode,
@@ -394,7 +399,11 @@ for model_complex in model_complexities[2:3]:
                                                               data_param_key,cross_entropy_weights_dict,
                                                               model_complex,k_folds,
                                                               best_param_combinations,
-                                                              verbose=False,
+                                                              start,
+                                                              categorical_map_dict,
+                                                              num_of_cv_repeats,
+                                                              columns_to_drop,
+                                                              verbose=False,                                                              
                                                               cross_validation=cross_validation,
                                                               get_feature_importances=False)
 

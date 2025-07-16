@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH --array=1-42%16
+#SBATCH --array=45%1
 #SBATCH --job-name=s_9_4_ML_LLM_training
 #SBATCH -o slurm_training_logs/s_9_4_ML_LLM_training_%A_%a.log
 #SBATCH -e slurm_training_logs/s_9_4_ML_LLM_training_%A_%a.log
 #SBATCH --cpus-per-task=4
-#SBATCH --mem-per-cpu=96G
-#SBATCH --partition=sapphire #bigmem
+#SBATCH --mem-per-cpu=24G
+#SBATCH --partition=sapphire
 ##SBATCH --qos=cpu_normal
 ##SBATCH --gres=gpu:2
 #SBATCH --time=2-00:00:00

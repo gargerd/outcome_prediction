@@ -1,14 +1,14 @@
 #!/bin/bash
-#SBATCH --array=1-14%14
+#SBATCH --array=1-2%2
 #SBATCH --job-name=s_8_4_lstm_param_search
-#SBATCH -o slurm_lstm_param_search_logs/s_8_4_lstm_param_search_%A_%a.log
-#SBATCH -e slurm_lstm_param_search_logs/s_8_4_lstm_param_search_%A_%a.log
+#SBATCH -o slurm_lstm_train_logs/s_8_4_lstm_param_search_%A_%a.log
+#SBATCH -e slurm_lstm_train_logs/s_8_4_lstm_param_search_%A_%a.log
 #SBATCH --cpus-per-task=4
 #SBATCH --mem-per-cpu=96G
 #SBATCH --partition=sapphire #bigmem
 ##SBATCH --qos=cpu_normal
 ##SBATCH --gres=gpu:2
-#SBATCH --time=7-00:00:00
+#SBATCH --time=24:00:00
 #SBATCH --nice=10000
 
 set -euo pipefail
@@ -43,7 +43,7 @@ echo ${period_end_day}
 
 
 
-python s8_4_LSTM_classification_param_search.py \
+python s8_4_LSTM_classification_training.py \
                     --dataset_name $dataset_name\
                     --model_complexity $model_complexity \
                     --period_end_day $period_end_day 

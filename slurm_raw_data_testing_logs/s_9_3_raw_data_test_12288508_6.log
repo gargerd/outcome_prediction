@@ -1,0 +1,74 @@
+Loading anaconda
+Activate conda env
+125,160,31,62,93,all,baseline
+LogisticRegression,XGBoost
+/data/gpfs/projects/punim2121/C-Path/outcome_prediction/outcome_prediction/s9_3_baseline_ML_models_functions.py:1229: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  de_['RELAPSE']=de_['RELAPSE'].astype(float)
+['LogisticRegression', 'XGBoost'] [125, 160, 31, 62, 93, 'all', 'baseline']
+===========
+ tb21_22_2984_pats_22_vars_result_at_end_of_treatment_mb_only 
+
+2908
+LogisticRegression
+++ 
+ tb21_22_2984_pats_22_vars_result_at_end_of_treatment_mb_only - last_therapy_day - Model LogisticRegression - Period: 125 days 
++++++++++++++++++
+No pats in cv-repeat_num 10 - ARM - 2EHRZ/4HR
+No pats in cv-repeat_num 12 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 17 - ARM - 2EHRZ/4HR
+No pats in cv-repeat_num 22 - ARM - Gatifloxacin (4 month)
+XGBoost
+++ 
+ tb21_22_2984_pats_22_vars_result_at_end_of_treatment_mb_only - last_therapy_day - Model XGBoost - Period: 125 days 
++++++++++++++++++
+No pats in cv-repeat_num 10 - ARM - 2EHRZ/4HR
+No pats in cv-repeat_num 12 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 17 - ARM - 2EHRZ/4HR
+No pats in cv-repeat_num 22 - ARM - Gatifloxacin (4 month)
+2165
+LogisticRegression
+++ 
+ tb21_22_2984_pats_22_vars_result_at_end_of_treatment_mb_only - last_therapy_day - Model LogisticRegression - Period: 160 days 
++++++++++++++++++
+No pats in cv-repeat_num 0 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 1 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 2 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 3 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 4 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 5 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 6 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 7 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 8 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 9 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 10 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 11 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 12 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 13 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 14 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 15 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 16 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 17 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 18 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 19 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 20 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 21 - ARM - 2EHRZ/4HR
+No pats in cv-repeat_num 21 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 22 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 23 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 24 - ARM - Gatifloxacin (4 month)
+XGBoost
+++ 
+ tb21_22_2984_pats_22_vars_result_at_end_of_treatment_mb_only - last_therapy_day - Model XGBoost - Period: 160 days 
++++++++++++++++++
+No pats in cv-repeat_num 0 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 1 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 2 - ARM - Gatifloxacin (4 month)
+No pats in cv-repeat_num 3 - ARM - Gatifloxacin (4 month)
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim2121/C-Path/outcome_prediction/outcome_prediction/s9_3_baseline_ML_models_testing.py", line 497, in <module>
+    test_probabilities = model.predict_proba(X_test_study)[:, 1]
+IndexError: index 1 is out of bounds for axis 1 with size 0

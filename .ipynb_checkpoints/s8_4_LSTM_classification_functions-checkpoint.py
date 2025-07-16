@@ -970,6 +970,8 @@ def train_LSTM_model(X_slid_wind,train_ids,y,num_of_classes,
         running_loss=0 
 
         for n,(inputs, targets,seq_lens) in enumerate(train_loader,0):
+            if inputs.size(0) == 1:
+                continue  # Skip batch size of 1 to avoid BatchNorm error
 
             #print('inputs.shape',inputs.shape,'targets.shape',targets.shape,'seq_lens',seq_lens)
             #print('inputs',inputs)
