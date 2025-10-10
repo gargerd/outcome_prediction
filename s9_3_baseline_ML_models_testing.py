@@ -62,6 +62,15 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'}, 
 
+                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_with_adherence':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+            
+                        'tb21_22_2984_pats_22_vars_relapse_with_adherence':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'}, 
+  
+
                          'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_mb_only':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RESULT_AT_END_OF_TREATMENT'},
@@ -76,6 +85,22 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
 
                          'tb21_22_2984_pats_22_vars_relapse_without_mb':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'},
+
+                         'tb21_1405_pats_40_vars_result_at_end_of_treatment':{
+                            'fn':'tb21_1405_pats_40_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+                         
+                         'tb21_1405_pats_40_vars_relapse':{
+                            'fn':'tb21_1405_pats_40_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'},
+
+                         'tb22_1499_pats_31_vars_result_at_end_of_treatment':{
+                             'fn':'tb22_1499_pats_31_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+                         
+                         'tb22_1499_pats_31_vars_relapse':{
+                             'fn':'tb22_1499_pats_31_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'},
 
 
@@ -123,26 +148,10 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                           'tb21_22_2798_pats_24_vars_relapse':{
                             'fn':'tb21_22_2798_pats_24_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'}, 
-
-
-                         'tb21_1405_pats_40_vars_result_at_end_of_treatment':{
-                            'fn':'tb21_1405_pats_40_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
-                         
-                         'tb21_1405_pats_40_vars_relapse':{
-                            'fn':'tb21_1405_pats_40_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE'},
-
-                         'tb22_1499_pats_31_vars_result_at_end_of_treatment':{
-                             'fn':'tb22_1499_pats_31_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
-                         
-                         'tb22_1499_pats_31_vars_relapse':{
-                             'fn':'tb22_1499_pats_31_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE'},
-
                          
                          }
+
+
 
 ###=========================================================================================
 # 1 . Define training parameters
@@ -324,25 +333,36 @@ for data_param_key in dataset_name_:
             period_num = period_end_days.index(period_end_day)
     
             ## SUBSET TO PATIENTS WHO WERE TAKING DRUGS DURING THE PERIOD
+            #  ==> keep only patients who took TB drugs in period (not only placebo)
+            #  ==> for EOT outcome prediction: 
+            #      patients in 4-month arms considered in Baseline-Month 3
+            #.     patients in 6-month arms considered in Baseline-Month 5
             #pat_ids_ = subset_pats_with_therapy_in_period(period_num,period_end_days)
             pat_ids_ = subset_pats_with_therapy_in_period(period_num,period_end_days,last_init_ther_days,
-                                                           pats_with_relapse_df,period_end_day,data_param_key)
+                                       pats_with_relapse_df,period_end_day,X,outcome_label,data_param_key)
             print(len(pat_ids_))
-            
-            
     
+            if len(pat_ids_)==0:
+                print(f'No patients considered for {data_param_key} - period:{period_end_day}')
+                continue
+            
+        
     
             df_=target_df.reset_index()#
             df_['STUDYID']=df_['USUBJID'].str.split('/',expand=True)[0].values
             #print(pd.crosstab(df_.loc[df_['USUBJID'].isin(pat_ids_),'STUDYID'],df_.loc[df_['USUBJID'].isin(pat_ids_),outcome_label]))
             
-            #print(f'Period: {period_end_day} days')
-            
+            ## Drop patients, whose therapy ended before the period_end_day & keep clinical data up until last day of period
             if isinstance(period_end_day,int):
-    
-                X_subset=X[(X['USUBJID'].isin(pat_ids_)) & \
-                           ~(X['STUDYID'].isin(['TB-1018']))&\
-                           (X['DAY']<=period_end_day)].copy()
+                
+                ## Select last visit in period cutoff based on threshold before cutoff & after cutoff
+                X_subset = select_visits_with_dual_thresholds(
+                                                    df=X[X['USUBJID'].isin(pat_ids_)],
+                                                    time_col='DAY',
+                                                    patient_col='USUBJID',
+                                                    cutoff_day=period_end_day,
+                                                    before_threshold=20,
+                                                    after_threshold=10)
     
             if period_end_day=='baseline': 
     
@@ -395,7 +415,8 @@ for data_param_key in dataset_name_:
 
 
                 print(f'++ \n {data_param_key} - {training_data_type} - Model {model_name} - Period: {period_end_day} days \n+++++++++++++++++')
-                for cv_repeat_num in range(len([*cv_results])):
+                #for cv_repeat_num in range(len([*cv_results])):
+                for cv_repeat_num in tqdm(range(len([*cv_results]))):
 
                     ## Based on the saved random state used at training, re-create the train-test data split
                     rand_state=cv_results[f'cv_rep_{cv_repeat_num}']['rand_state']
@@ -485,7 +506,7 @@ for data_param_key in dataset_name_:
                     
                         study_ids=X_subset[split_coln].unique()
                         #study_ids=['2EMRZ/2MR']
-                        if len(study_ids)>1:
+                        if len(study_ids)>0:
                             
                             for study_id in study_ids:
                                 X_test_study_idx=X_subset.loc[(X_subset[split_coln]==study_id)&(X_subset['USUBJID'].isin(X_test_pat_ids)),'USUBJID'].tolist()
@@ -513,7 +534,7 @@ for data_param_key in dataset_name_:
             cv_res_df['inclusion_period']=period_end_day
             cv_res_df_list.append(cv_res_df)
 
-            if len(study_ids)>1:
+            if len(study_ids)>0:
                 cv_res_per_study_df=pd.DataFrame.from_dict({'model_name':model_name_per_study_list,
                                                   'Num_of_CV_repeat':cv_num_per_study_list,
                                                   'ROC_AUC_score':scores_per_study_list,
@@ -537,14 +558,14 @@ for data_param_key in dataset_name_:
         
               
         ## IF THERE ARE AUC-ROC VALUES PER STUDY AVAILABLE, PLOT HEM IN A SEPERATE BOXPLOT
-        if len(scores_per_study_list)>0 and plot_split_by_studies==True:
+        #if len(scores_per_study_list)>0 and plot_split_by_studies==True:
     
-            cv_res_per_study_df=pd.concat(cv_res_df_per_study_list,axis=0)
-            
-            ## SAVE TEST DATFRAME FOR LATER COMPARISON
-            #fn=f'../data/{data_param_key}_{model_name}_{period_end_day}_days_{training_data_type}_test_ROC_AUC_across_time_per_study.csv' 
-            fn=f'../data/test_roc_auc_values/baseline/{data_param_key}_days_{training_data_type}_test_ROC_AUC_across_time_per_study..csv'
-            cv_res_per_study_df.to_csv(fn)
+        cv_res_per_study_df=pd.concat(cv_res_df_per_study_list,axis=0)
+        
+        ## SAVE TEST DATFRAME FOR LATER COMPARISON
+        #fn=f'../data/{data_param_key}_{model_name}_{period_end_day}_days_{training_data_type}_test_ROC_AUC_across_time_per_study.csv' 
+        fn=f'../data/test_roc_auc_values/baseline/{data_param_key}_days_{training_data_type}_test_ROC_AUC_across_time_per_study..csv'
+        cv_res_per_study_df.to_csv(fn)
 
         
 loop_time=time.time()

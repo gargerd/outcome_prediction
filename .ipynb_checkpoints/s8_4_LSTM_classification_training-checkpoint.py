@@ -274,6 +274,10 @@ for model_complex in model_complexity_:
     
     for data_param_key in dataset_name_:
 
+        ## Load preprocessed-imputed data, and modify the variables (add or drop) depending on the prediction setup, which is contained at the 
+        #. end of the "data_param_key" variable
+        X,race_colnames = load_and_modify_preprocessed_data(data_param_key)
+
         outcome_label=data_param_key.split('vars_')[-1].upper()
         
         ## Select the number of training days for the training method 'training_on_first_x_days'
@@ -356,11 +360,18 @@ for model_complex in model_complexity_:
             period_num = period_end_days.index(period_end_day)
         
             ## SUBSET TO PATIENTS WHO WERE TAKING DRUGS DURING THE PERIOD
+            #  ==> keep only patients who took TB drugs in period (not only placebo)
+            #  ==> for EOT outcome prediction: 
+            #      patients in 4-month arms considered in Baseline-Month 3
+            #.     patients in 6-month arms considered in Baseline-Month 5
             #pat_ids_ = subset_pats_with_therapy_in_period(period_num,period_end_days)
-            pat_ids_ =  subset_pats_with_therapy_in_period(period_num,period_end_days,
-                                                           period_end_day,data_param_key,
-                                                           last_init_ther_days,
-                                                          pats_with_relapse_df)
+            pat_ids_ = subset_pats_with_therapy_in_period(period_num,period_end_days,last_init_ther_days,
+                                                           pats_with_relapse_df,period_end_day,X,outcome_label,data_param_key)
+            print(len(pat_ids_))
+    
+            if len(pat_ids_)==0:
+                print(f'No patients considered for {data_param_key} - period:{period_end_day}')
+                continue
 
             data=data.loc[data['USUBJID'].isin(pat_ids_)]
             target_df_=target_df.loc[pat_ids_]

@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --array=1-28%16
+#SBATCH --array=1-28%20
 #SBATCH --job-name=s_9_3_raw_data_param_search
 #SBATCH -o slurm_raw_data_param_search_logs/s_9_3_raw_data_param_search_%A_%a.log
 #SBATCH -e slurm_raw_data_param_search_logs/s_9_3_raw_data_param_search_%A_%a.log

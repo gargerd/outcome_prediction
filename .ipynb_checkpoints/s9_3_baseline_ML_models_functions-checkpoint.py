@@ -25,6 +25,15 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'}, 
 
+                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_with_adherence':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+            
+                        'tb21_22_2984_pats_22_vars_relapse_with_adherence':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'}, 
+  
+
                          'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_mb_only':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RESULT_AT_END_OF_TREATMENT'},
@@ -39,6 +48,22 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
 
                          'tb21_22_2984_pats_22_vars_relapse_without_mb':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'},
+
+                         'tb21_1405_pats_40_vars_result_at_end_of_treatment':{
+                            'fn':'tb21_1405_pats_40_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+                         
+                         'tb21_1405_pats_40_vars_relapse':{
+                            'fn':'tb21_1405_pats_40_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'},
+
+                         'tb22_1499_pats_31_vars_result_at_end_of_treatment':{
+                             'fn':'tb22_1499_pats_31_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+                         
+                         'tb22_1499_pats_31_vars_relapse':{
+                             'fn':'tb22_1499_pats_31_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'},
 
 
@@ -86,26 +111,9 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                           'tb21_22_2798_pats_24_vars_relapse':{
                             'fn':'tb21_22_2798_pats_24_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'}, 
-
-
-                         'tb21_1405_pats_40_vars_result_at_end_of_treatment':{
-                            'fn':'tb21_1405_pats_40_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
-                         
-                         'tb21_1405_pats_40_vars_relapse':{
-                            'fn':'tb21_1405_pats_40_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE'},
-
-                         'tb22_1499_pats_31_vars_result_at_end_of_treatment':{
-                             'fn':'tb22_1499_pats_31_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
-                         
-                         'tb22_1499_pats_31_vars_relapse':{
-                             'fn':'tb22_1499_pats_31_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE'},
-
                          
                          }
+
 
 from sklearn.model_selection import train_test_split
 import warnings
@@ -153,7 +161,8 @@ train_params={'num_cv_repeats':25,
 last_initial_therapy_day_df=pd.read_csv('../data/out_last_initial_therapy_day_list_1018_20_21_22_30.csv.gz',index_col=0)
 last_initial_therapy_day_df=last_initial_therapy_day_df.set_index('USUBJID')
 
-
+#fn='../data/'+parameters_for_analysis[data_param_key]['fn']+'_preproc_data_with_imp.csv.gz'
+#X=pd.read_csv(fn,index_col=0)
 
 
 
@@ -262,15 +271,20 @@ def backward_fill_and_extract_vars_at_baseline(X_subset,columns_to_drop):
     
     #print('pats_with_miss_vars',pats_with_miss_vars)
     
-    X_subset_=X_subset.copy()
+    #X_subset_=X_subset.copy()
+    X_subset_=X_subset[X_subset['DAY']<=31].copy()
 
     #print('before backfill func',X_subset_.loc[X_subset_['USUBJID']=='TB-1022/53003',['DAY']+final_cols_].sort_values('DAY'))
 
 
     ## Loop over patients who have missing data in their early visits, and backward fill missing data
-    for pat in pats_with_miss_vars[:]:
+    #for pat in pats_with_miss_vars[:]:
+    for pat,pat_df in X_subset_.groupby('USUBJID'):
+
+        if pat not in pats_with_miss_vars:
+            continue
         #print(pat)
-        pat_df=X_subset[X_subset['USUBJID']==pat]
+        #pat_df=X_subset[X_subset['USUBJID']==pat]
             
     
         ## Get columns which have NaNs in the final columns containing input variables
@@ -1311,21 +1325,27 @@ def extract_21_22_relapse_pats():
 
     return pats_relapse_df#,relapse_during_obs_period,relapse_after_obs_period,pats_with_sparse_relapse_data,max_days
 
-##========================================= 
 def extract_last_init_therapy_day_from_drug_regimen(pat_ids):
 
     ## Load drug regimen data, containing the daily taken doses
     dr_reg=pd.read_csv('../data/out_temporal_pat_regimens_1018_20_21_22_30.csv.gz',index_col=0)
     dr_reg=dr_reg[dr_reg['USUBJID'].isin(pat_ids)]
-
+    
+    ## Drop placebo columns ==> extract last day when TB therapy was applied 
+    ## REMOXTB: End-of-therapy outcome was determined like this (REMOXTB manual: 11.3 Other secondary ednpoints, page 157/253)
+    ## OFLOTUB: no placebos applied 
+    dr_reg=dr_reg.loc[:,~dr_reg.columns.str.contains('placebo')].copy()
+    
     ## Extract colnames containing the drug names
     drug_cols=[c.split('_cumulative_dose')[0] for c in dr_reg.columns if '_cumulative_dose' in c]
-
+    
     ## IF drug was not taken anymore, the daily dose is set to 0. Drop all drug columns which have only zeroes (meaning patient didn't take them),
     #. replace 0s with NaNs, and drop all rows, which only have NaNs in the drug column 
     #. ==> The last day where drug was applied is the last day of initial therapy
     last_init_therapy_days=dr_reg.loc[:,['DAY','USUBJID']+drug_cols].groupby('USUBJID').apply(lambda x:x.replace(0,np.nan).dropna(subset=drug_cols,how='all',axis=0)['DAY'].max())
-
+    
+    ## Drop days without drug application from dr_reg for later use
+    dr_reg_appl_days=dr_reg.loc[:,['DAY','USUBJID']+drug_cols].groupby('USUBJID',as_index=False).apply(lambda x:x.replace(0,np.nan).dropna(subset=drug_cols,how='all',axis=0))
     
     ### PATIENTS WITH TREATMENT GAPS: DRUG REGIMEN DATA ALSO CONTAINS RETREATMENTS FOLLOWING THE INITIAL TREATMENT IN THE DATAFRAME ==> EXTRACT LAST DAY OF INIT. THERAPY
     ## Extract patients, who had treatment gaps 
@@ -1335,10 +1355,10 @@ def extract_last_init_therapy_day_from_drug_regimen(pat_ids):
     #.           For these patients, consider the very last day as last day of treatment, not the last day of the originally scheduled continuation period
     day_diffs=dr_reg.loc[:,['DAY','USUBJID']].groupby('USUBJID').apply(lambda x:x['DAY'].diff().max()).sort_values(ascending=False)
     pats_with_treatment_gaps=day_diffs[day_diffs>1].index.tolist()
-
-
+    
+    
     if len(pats_with_treatment_gaps)>0:
-
+    
         ## For patients with treatment gaps, extract the first day after the treatment gap
         #print(dr_reg.loc[dr_reg['USUBJID'].isin(pats_with_treatment_gaps),['DAY','USUBJID']].groupby('USUBJID',as_index=True).apply(lambda x:\
         #                                                                                                               x.loc[x['DAY'].diff()>1,'DAY']))
@@ -1347,7 +1367,7 @@ def extract_last_init_therapy_day_from_drug_regimen(pat_ids):
         retreat_start_day = retreat_start_day.reset_index().drop(columns=['level_1']).set_index('USUBJID')
     
         ## Using the retreat_start_day, extract the last day of the initial therapy for patients with therapy gaps
-        last_init_day_of_pats_with_retreatment=dr_reg.loc[dr_reg['USUBJID'].isin(pats_with_treatment_gaps), ['DAY', 'USUBJID']].groupby('USUBJID', as_index=True).apply(
+        last_init_day_of_pats_with_retreatment=dr_reg_appl_days.loc[dr_reg_appl_days['USUBJID'].isin(pats_with_treatment_gaps), ['DAY', 'USUBJID']].groupby('USUBJID', as_index=True).apply(
                                                             lambda x: x.loc[x['DAY'] < retreat_start_day.loc[x['USUBJID'].unique()[0]].values[0], 'DAY'].max()
                                                             ).sort_values(ascending=False)
     
@@ -1359,7 +1379,7 @@ def extract_last_init_therapy_day_from_drug_regimen(pat_ids):
 
 ##========================================= 
 def subset_pats_with_therapy_in_period(period_num,period_end_days,last_init_ther_days,
-                                       pats_with_relapse_df,period_end_day,data_param_key):
+                                       pats_with_relapse_df,period_end_day,X,outcome_label,data_param_key):
     
     ## SUBSET TO PATIENTS WHO WERE TAKING DRUGS DURING THE PERIOD
     #if parameters_for_analysis[data_param_key]['result_cat']!='RELAPSE': 
@@ -1397,6 +1417,44 @@ def subset_pats_with_therapy_in_period(period_num,period_end_days,last_init_ther
         ## CONSIDER ONLY PATIENTS WHO RECEIVED THERAPY SINCE THE LAST PERIOD
         pat_ids_=list(set(pat_ids_)&set(pat_ids__))
 
+
+    print('pat_ids_ before arm check',len(pat_ids_))
+    
+    ### FINAL CHECK 
+    ## FOR EOT OUTCOME PREDICTION: 
+    #.  => ONLY CONSIDER BASELINE - PENULTIMATE MONTHE, AS OUTCOME LABELS WERE DETERMINED AT LAST MONTH (4 OR 6), 
+    #.     THEREFORE PREDICTION DOESN'T MAKE SENSE THERE
+    ## FOR RELAPSE PREDICTION: 
+    #. => IF PERIOD IS 4 MONTHS OR LESS, KEEP ALL PATIENTS
+    #. => IF PERIOD IS OVER 4 MONTHS KEEP ONLY PATIENTS IN ARMS WITH 6 MONTHS OF TB DRUG APPLICATION    
+
+    month_4_arms=['Gatifloxacin (4 month)','2MHRZ/2MHR', '2EMRZ/2MR']
+    month_6_arms=['Control (6 month)','2EHRZ/4HR']
+
+    if outcome_label=='RESULT_AT_END_OF_TREATMENT':
+        month4_periods=['baseline',31,62,93,125][:-1]
+        month6_periods=[125,160,'all'][:-1]
+
+    if outcome_label=='RELAPSE':
+        month4_periods=['baseline',31,62,93,125]
+        month6_periods=[160,'all']
+        
+    
+    if period_end_day in month4_periods:
+        arms_to_consider= month_6_arms + month_4_arms
+        arm_pats=X.loc[X['ARM'].isin(arms_to_consider),'USUBJID'].unique().tolist()
+        pat_ids_=list(set(pat_ids_)&set(arm_pats))
+        
+    if period_end_day in month6_periods:
+        arms_to_consider= month_6_arms
+        arm_pats=X.loc[X['ARM'].isin(arms_to_consider),'USUBJID'].unique().tolist()
+        #print(pat_ids_)
+        pat_ids_=list(set(pat_ids_)&set(arm_pats))
+
+    ## Return empty list no patients should be considered (EOT outcome prediction, 6 months)
+    if period_end_day not in month6_periods and period_end_day not in month4_periods:
+        pat_ids_=[]
+    
     return pat_ids_
 
 ####======================================================================
@@ -1530,6 +1588,29 @@ def replace_drug_cumul_columns_with_weight_norm_cumul_columns(X):
     return X_
 
 
+####======================================================================
+def replace_cumul_day_of_appl_with_adherence(X):
+    
+    scheduled_doses={'2EHRZ/4HR':182, # 8+9+9 weeks , 7 days /week
+                    '2MHRZ/2MHR':119,# 8+9 weeks , 7 days /week
+                    '2EMRZ/2MR':119,# 8+9 weeks , 7 days /week
+                    'Gatifloxacin (4 month)':102, # 4 months (==8+9 weeks) , 6 days /week
+                    'Control (6 month)':156  # 6 months (26== weeks) , 6 days /week
+                    } 
+    
+    
+    l=[]
+    for arm,arm_df in X.groupby('ARM'):
+        arm_df['dr_reg_study_drugs_cumul'] = arm_df['dr_reg_study_drugs_cumul']/scheduled_doses[arm]
+        l.append(arm_df)
+    
+    
+    X_=pd.concat(l,axis=0)
+    X_=X_.sort_values(['USUBJID','DAY'])
+
+    return X_
+
+
 ###======================================================================
 ## Load preprocessed-imputed data, and modify the variables (add or drop) depending on the prediction setup, which is contained at the 
 #. end of the "data_param_key" variable
@@ -1587,6 +1668,10 @@ def load_and_modify_preprocessed_data(data_param_key):
     ## Drop drug regimen variables, except for drug adherence (dr_cumul_dose)
     if 'without_dr_reg' in data_param_key:
         X = X.loc[:,~X.columns.str.endswith('cumulative_dose')]
+
+    ## Divide cumulative days of application with the number of days scheduled ==> approximate drug adherence with a 0-1 number
+    if 'with_adherence' in data_param_key:
+        X = replace_cumul_day_of_appl_with_adherence(X)
     
 
     '''
@@ -1601,3 +1686,72 @@ def load_and_modify_preprocessed_data(data_param_key):
     '''
 
     return X,race_colnames
+
+#####=======================================
+def select_visits_with_dual_thresholds(
+    df, time_col, patient_col, cutoff_day, before_threshold, after_threshold,verbose=True):
+    """
+    Filters visits for each patient based on a time cutoff with thresholds before and after.
+    This way we can adjust for patients, who visited the clinic a couple of days later than scheduled
+
+    Logic:
+    - If the visit is before the cutoff and lies within the before-threshold, keep all visits up to that visit:
+    - If there are no post-cutoff visits, take all visits up to the last prior visit, doesn't matter if it lies within the before-threshold or not. 
+    - If there are post-cutoff visits, but the last visit before cutoff lies outside of the before-threshold, take all visits up to the post-cutoff visit, 
+        if the post-cutoff visit lies within the after threshold.
+    
+    Parameters:
+        df (pd.DataFrame): Input data with multiple visits per patient.
+        time_col (str): Column name containing visit times (numeric).
+        patient_col (str): Column name identifying patients.
+        cutoff_day (int or float): Time cutoff.
+        before_threshold (int or float): Max days before cutoff to accept a visit.
+        after_threshold (int or float): Max days after cutoff to accept a visit.
+    
+    Returns:
+        filtered_df (pd.DataFrame): Filtered visits for each patient.
+    """
+    selected_visits = []
+    excluded_patients = []
+
+    for patient_id, group in df.groupby(patient_col):
+        group_sorted = group.sort_values(time_col)
+        group_sorted = group_sorted.copy()
+        group_sorted["diff"] = group_sorted[time_col] - cutoff_day
+
+        before = group_sorted[(group_sorted["diff"] <= 0)]
+        after = group_sorted[(group_sorted["diff"] > 0)]
+
+        # Case 1: visit before cutoff within threshold
+        valid_before = before[before["diff"] >= -before_threshold]
+        if not valid_before.empty:
+            last_before_day = valid_before[time_col].max()
+            keep = group_sorted[group_sorted[time_col] <= last_before_day]
+            selected_visits.append(keep)
+            continue
+
+        # Case 2: no valid_before, but valid after
+        valid_after = after[after["diff"] <= after_threshold]
+        if not valid_after.empty:
+            first_after_day = valid_after[time_col].min()
+            keep = group_sorted[group_sorted[time_col] <= first_after_day]
+            selected_visits.append(keep)
+            continue
+
+        # Case 3: no valid_before and no valid_after, but some visits before
+        if not before.empty:
+            last_before_day = before[time_col].max()
+            keep = group_sorted[group_sorted[time_col] <= last_before_day]
+            selected_visits.append(keep)
+        else:
+            excluded_patients.append(patient_id)
+
+    filtered_df = pd.concat(selected_visits, axis=0).drop(columns='diff')
+
+    if verbose:
+        total_patients = df[patient_col].nunique()
+        num_excluded_patients=len(excluded_patients)
+        print(f"Excluded {num_excluded_patients} out of {total_patients} patients "
+              f"({num_excluded_patients / total_patients:.1%})\n")
+    
+    return filtered_df

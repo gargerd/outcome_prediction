@@ -49,6 +49,15 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'}, 
 
+                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_with_adherence':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+            
+                        'tb21_22_2984_pats_22_vars_relapse_with_adherence':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'}, 
+  
+
                          'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_mb_only':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RESULT_AT_END_OF_TREATMENT'},
@@ -63,6 +72,22 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
 
                          'tb21_22_2984_pats_22_vars_relapse_without_mb':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'},
+
+                         'tb21_1405_pats_40_vars_result_at_end_of_treatment':{
+                            'fn':'tb21_1405_pats_40_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+                         
+                         'tb21_1405_pats_40_vars_relapse':{
+                            'fn':'tb21_1405_pats_40_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'},
+
+                         'tb22_1499_pats_31_vars_result_at_end_of_treatment':{
+                             'fn':'tb22_1499_pats_31_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+                         
+                         'tb22_1499_pats_31_vars_relapse':{
+                             'fn':'tb22_1499_pats_31_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'},
 
 
@@ -110,26 +135,10 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                           'tb21_22_2798_pats_24_vars_relapse':{
                             'fn':'tb21_22_2798_pats_24_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'}, 
-
-
-                         'tb21_1405_pats_40_vars_result_at_end_of_treatment':{
-                            'fn':'tb21_1405_pats_40_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
-                         
-                         'tb21_1405_pats_40_vars_relapse':{
-                            'fn':'tb21_1405_pats_40_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE'},
-
-                         'tb22_1499_pats_31_vars_result_at_end_of_treatment':{
-                             'fn':'tb22_1499_pats_31_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
-                         
-                         'tb22_1499_pats_31_vars_relapse':{
-                             'fn':'tb22_1499_pats_31_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE'},
-
                          
                          }
+
+
 
 ###=========================================================================================
 # 1 . Define training parameters
@@ -285,10 +294,18 @@ for data_param_key in dataset_name_:
         period_num = period_end_days.index(period_end_day)
 
         ## SUBSET TO PATIENTS WHO WERE TAKING DRUGS DURING THE PERIOD
+        #  ==> keep only patients who took TB drugs in period (not only placebo)
+        #  ==> for EOT outcome prediction: 
+        #      patients in 4-month arms considered in Baseline-Month 3
+        #.     patients in 6-month arms considered in Baseline-Month 5
         #pat_ids_ = subset_pats_with_therapy_in_period(period_num,period_end_days)
         pat_ids_ = subset_pats_with_therapy_in_period(period_num,period_end_days,last_init_ther_days,
-                                                       pats_with_relapse_df,period_end_day,data_param_key)
+                                       pats_with_relapse_df,period_end_day,X,outcome_label,data_param_key)
         print(len(pat_ids_))
+
+        if len(pat_ids_)==0:
+            print(f'No patients considered for {data_param_key} - period:{period_end_day}')
+            continue
         
     
 
@@ -298,10 +315,15 @@ for data_param_key in dataset_name_:
         
         ## Drop patients, whose therapy ended before the period_end_day & keep clinical data up until last day of period
         if isinstance(period_end_day,int):
-
-            X_subset=X[(X['USUBJID'].isin(pat_ids_)) & \
-                       ~(X['STUDYID'].isin(['TB-1018']))&\
-                       (X['DAY']<=period_end_day)].copy()
+            
+            ## Select last visit in period cutoff based on threshold before cutoff & after cutoff
+            X_subset = select_visits_with_dual_thresholds(
+                                                df=X[X['USUBJID'].isin(pat_ids_)],
+                                                time_col='DAY',
+                                                patient_col='USUBJID',
+                                                cutoff_day=period_end_day,
+                                                before_threshold=20,
+                                                after_threshold=10)
 
         if period_end_day=='baseline': 
 

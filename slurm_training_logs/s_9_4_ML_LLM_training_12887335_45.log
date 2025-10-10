@@ -1,126 +1,0 @@
-Loading anaconda
-Activate conda env
-all_days
-baseline
-XGBoost
-data_inclusion_type_ ['all_days'] model_names_ ['XGBoost'] period_end_day_ ['baseline']
-Loading embeddings:   0%|          | 0/1 [00:00<?, ?set/s]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.63s/set]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.63s/set]
-
-→ Loading: tb21_22_2984_pats_22_vars_relapse | BioMistral-7B_base | baseline | all_days | autoenc=False
-Loaded in 2.56 seconds.
-tb21_22_2984_pats_22_vars_relapse
-Training on baseline days of data
-Loading embeddings of tb21_22_2984_pats_22_vars_relapse data / BioMistral-7B_base /baseline /all_days /autoenc False model
-set(idx)&set(de_.index) {'TB-1021/2003995', 'TB-1022/42083', 'TB-1022/43330'}
-+++++++
-Running training with full model: 4096 vars
-+++++++
-Processing:   0%|          | 0/1 [00:00<?, ?model/s]
-=====================
-XGBoost
-
-Processing:   0%|          | 0/25 [00:00<?, ?cv_repeat/s][ANum of CV-repeat:1
-Num of CV-repeat:1 - Model:XGBoost - Data inclusion type:all_days - Period:baseline 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [11:46<00:00, 706.09s/model][A[A100%|██████████| 1/1 [11:46<00:00, 706.09s/model]
-
-Processing:   4%|▍         | 1/25 [11:46<4:42:30, 706.26s/cv_repeat][ACV test_score: [0.6006368965766808, 0.6013353115727003, 0.648664343786295, 0.6359610917537746, 0.5855110336817654]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:2
-Num of CV-repeat:2 - Model:XGBoost - Data inclusion type:all_days - Period:baseline 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [11:12<00:00, 672.54s/model][A[A100%|██████████| 1/1 [11:12<00:00, 672.54s/model]
-
-Processing:   8%|▊         | 2/25 [22:59<4:23:14, 686.71s/cv_repeat][ACV test_score: [0.6773539842223347, 0.6758902077151335, 0.6893916913946587, 0.638946587537092, 0.5494337979094077]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:3
-Num of CV-repeat:3 - Model:XGBoost - Data inclusion type:all_days - Period:baseline 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [12:17<00:00, 737.70s/model][A[A100%|██████████| 1/1 [12:17<00:00, 737.71s/model]
-
-Processing:  12%|█▏        | 3/25 [35:17<4:20:21, 710.08s/cv_repeat][ACV test_score: [0.6201780415430267, 0.5543026706231454, 0.6222415795586528, 0.6727642276422765, 0.6254355400696864]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:4
-Num of CV-repeat:4 - Model:XGBoost - Data inclusion type:all_days - Period:baseline 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [12:14<00:00, 734.85s/model][A[A100%|██████████| 1/1 [12:14<00:00, 734.85s/model]
-
-Processing:  16%|█▌        | 4/25 [47:32<4:11:58, 719.93s/cv_repeat][ACV test_score: [0.6731454005934718, 0.5371661721068249, 0.6762611275964392, 0.671602787456446, 0.6742886178861788]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:5
-Num of CV-repeat:5 - Model:XGBoost - Data inclusion type:all_days - Period:baseline 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [04:49<00:00, 289.29s/model][A[A100%|██████████| 1/1 [04:49<00:00, 289.29s/model]
-
-Processing:  20%|██        | 5/25 [52:21<3:08:14, 564.70s/cv_repeat][ACV test_score: [0.6442477876106195, 0.629424778761062, 0.5236686390532544, 0.6443209698369172, 0.6096893491124261]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:6
-Num of CV-repeat:6 - Model:XGBoost - Data inclusion type:all_days - Period:baseline 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [12:17<00:00, 737.03s/model][A[A100%|██████████| 1/1 [12:17<00:00, 737.03s/model]
-
-Processing:  24%|██▍       | 6/25 [1:04:38<3:17:24, 623.39s/cv_repeat][ACV test_score: [0.622106824925816, 0.5969584569732937, 0.6547619047619048, 0.6226771196283392, 0.5890679442508711]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:7
-Num of CV-repeat:7 - Model:XGBoost - Data inclusion type:all_days - Period:baseline 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [15:16<00:00, 916.22s/model][A[A100%|██████████| 1/1 [15:16<00:00, 916.22s/model]
-
-Processing:  28%|██▊       | 7/25 [1:19:55<3:35:45, 719.18s/cv_repeat][ACV test_score: [0.6826409495548962, 0.6969367015098723, 0.6306620209059233, 0.6754500580720093, 0.5889136904761904]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:8
-Num of CV-repeat:8 - Model:XGBoost - Data inclusion type:all_days - Period:baseline 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [11:49<00:00, 709.46s/model][A[A100%|██████████| 1/1 [11:49<00:00, 709.46s/model]
-
-Processing:  32%|███▏      | 8/25 [1:31:45<3:22:54, 716.15s/cv_repeat][ACV test_score: [0.6539634146341463, 0.5985046457607434, 0.6165795586527294, 0.6177827380952381, 0.5773065476190475]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:9
-Num of CV-repeat:9 - Model:XGBoost - Data inclusion type:all_days - Period:baseline 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [16:34<00:00, 994.47s/model][A[A100%|██████████| 1/1 [16:34<00:00, 994.47s/model]
-
-Processing:  36%|███▌      | 9/25 [1:48:19<3:34:11, 803.24s/cv_repeat][ACV test_score: [0.6238872403560831, 0.651706231454006, 0.595746225319396, 0.668336236933798, 0.6110863095238096]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:10
-Num of CV-repeat:10 - Model:XGBoost - Data inclusion type:all_days - Period:baseline 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [17:14<00:00, 1034.68s/model][A[A100%|██████████| 1/1 [17:14<00:00, 1034.68s/model]
-
-Processing:  40%|████      | 10/25 [2:05:34<3:38:41, 874.75s/cv_repeat][ACV test_score: [0.6096837229499892, 0.7187685459940653, 0.6142433234421365, 0.6806379821958457, 0.5606126596980255]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:11
-Num of CV-repeat:11 - Model:XGBoost - Data inclusion type:all_days - Period:baseline 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[Aslurmstepd: error: *** JOB 12889978 ON spartan-bm149 CANCELLED AT 2025-07-16T02:16:05 ***

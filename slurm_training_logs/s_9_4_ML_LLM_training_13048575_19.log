@@ -1,0 +1,26 @@
+Loading anaconda
+Activate conda env
+baseline_last_day
+all
+XGBoost
+data_inclusion_type_ ['baseline_last_day'] model_names_ ['XGBoost'] period_end_day_ ['all']
+Loading embeddings:   0%|          | 0/1 [00:00<?, ?set/s]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.92s/set]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.92s/set]
+
+→ Loading: tb21_22_2984_pats_22_vars_result_at_end_of_treatment | BioMistral-7B_base | all | baseline_last_day | autoenc=False
+Loaded in 2.85 seconds.
+tb21_22_2984_pats_22_vars_result_at_end_of_treatment
+Training on all days of data
+Loading embeddings of tb21_22_2984_pats_22_vars_result_at_end_of_treatment data / BioMistral-7B_base /all /baseline_last_day /autoenc False model
++++++++
+Running training with full model: 4096 vars
++++++++
+Processing:   0%|          | 0/1 [00:00<?, ?model/s]
+=====================
+XGBoost
+
+Processing:   0%|          | 0/25 [00:00<?, ?cv_repeat/s][AProcessing:   0%|          | 0/25 [00:00<?, ?cv_repeat/s]
+Processing:   0%|          | 0/1 [00:00<?, ?model/s]
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim2121/C-Path/outcome_prediction/outcome_prediction/s9_4_ML_on_LLM_embeddings_training.py", line 493, in <module>
+    X_train_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num]['X_train_ids']
+KeyError: 'all'

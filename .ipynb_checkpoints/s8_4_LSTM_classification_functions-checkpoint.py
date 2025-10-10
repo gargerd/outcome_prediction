@@ -1463,6 +1463,17 @@ def extract_best_param_comb(result_dict):
 ####======================================================
 # 3. Functions for data preprocessing
 
+
+###========================
+def return_race_dict():
+    data=load_merged_data_of_lab_vars()
+    race_df=data.drop_duplicates(subset=['USUBJID'])[['USUBJID','STUDYID','RACE']]
+    race_df.loc[race_df['STUDYID']=='TB-1022','RACE']='BLACK'
+    race_dict=race_df.set_index('USUBJID')['RACE'].to_dict()
+
+    return race_dict
+
+
 ##=========================================
 ## 
 def backward_fill_and_extract_vars_at_baseline(X_subset,columns_to_drop):
@@ -1959,6 +1970,7 @@ def load_and_modify_preprocessed_data(data_param_key):
 
     
     if 'RACE' not in X.columns:
+        race_dict = return_race_dict()
         X['RACE']=X['USUBJID'].map(race_dict)
         X = pd.concat([X.drop(columns=['RACE']),pd.get_dummies(X['RACE'],dtype=int,prefix='RACE')],axis=1)
         race_colnames=X.columns[X.columns.str.contains('RACE_')].tolist()
@@ -2015,14 +2027,6 @@ def load_merged_data_of_lab_vars():
 
     return merged_df
 
-###========================
-def return_race_dict():
-    data=load_merged_data_of_lab_vars()
-    race_df=data.drop_duplicates(subset=['USUBJID'])[['USUBJID','STUDYID','RACE']]
-    race_df.loc[race_df['STUDYID']=='TB-1022','RACE']='BLACK'
-    race_dict=race_df.set_index('USUBJID')['RACE'].to_dict()
-
-    return race_dict
 
 
 ##========================================= 
@@ -2070,7 +2074,8 @@ def extract_last_init_therapy_day_from_drug_regimen(pat_ids):
 
 
 ##========================================= 
-def subset_pats_with_therapy_in_period(period_num,period_end_days,period_end_day,data_param_key,last_init_ther_days,pats_with_relapse_df):
+def subset_pats_with_therapy_in_period(period_num,period_end_days,last_init_ther_days,
+                                       pats_with_relapse_df,period_end_day,X,outcome_label,data_param_key):
     
     ## SUBSET TO PATIENTS WHO WERE TAKING DRUGS DURING THE PERIOD
     #if parameters_for_analysis[data_param_key]['result_cat']!='RELAPSE': 
@@ -2108,4 +2113,111 @@ def subset_pats_with_therapy_in_period(period_num,period_end_days,period_end_day
         ## CONSIDER ONLY PATIENTS WHO RECEIVED THERAPY SINCE THE LAST PERIOD
         pat_ids_=list(set(pat_ids_)&set(pat_ids__))
 
+
+
+    ### FINAL CHECK 
+    ## FOR EOT OUTCOME PREDICTION: 
+    #.  => ONLY CONSIDER BASELINE - PENULTIMATE MONTHE, AS OUTCOME LABELS WERE DETERMINED AT LAST MONTH (4 OR 6), 
+    #.     THEREFORE PREDICTION DOESN'T MAKE SENSE THERE
+    ## FOR RELAPSE PREDICTION: 
+    #. => IF PERIOD IS 4 MONTHS OR LESS, KEEP ALL PATIENTS
+    #. => IF PERIOD IS OVER 4 MONTHS KEEP ONLY PATIENTS IN ARMS WITH 6 MONTHS OF TB DRUG APPLICATION    
+
+    month_4_arms=['Gatifloxacin (4 month)','2MHRZ/2MHR', '2EMRZ/2MR']
+    month_6_arms=['Control (6 month)','2EHRZ/4HR']
+
+    if outcome_label=='RESULT_AT_END_OF_TREATMENT':
+        month4_periods=['baseline',31,62,93,125][:-1]
+        month6_periods=[125,160,'all'][:-1]
+
+    if outcome_label=='RELAPSE':
+        month4_periods=['baseline',31,62,93,125]
+        month6_periods=[160,'all']
+        
+    
+    if period_end_day in month4_periods:
+        arms_to_consider= month_6_arms + month_4_arms
+        arm_pats=X.loc[X['ARM'].isin(arms_to_consider),'USUBJID'].unique().tolist()
+        pat_ids_=list(set(pat_ids_)&set(arm_pats))
+        
+    if period_end_day in month6_periods:
+        arms_to_consider= month_6_arms
+        arm_pats=X.loc[X['ARM'].isin(arms_to_consider),'USUBJID'].unique().tolist()
+        #print(pat_ids_)
+        pat_ids_=list(set(pat_ids_)&set(arm_pats))
+
+    ## Return empty list no patients should be considered (EOT outcome prediction, 6 months)
+    if period_end_day not in month6_periods and period_end_day not in month4_periods:
+        pat_ids_=[]
+    
     return pat_ids_
+
+#####=======================================
+def select_visits_with_dual_thresholds(
+    df, time_col, patient_col, cutoff_day, before_threshold, after_threshold,verbose=True):
+    """
+    Filters visits for each patient based on a time cutoff with thresholds before and after.
+    This way we can adjust for patients, who visited the clinic a couple of days later than scheduled
+
+    Logic:
+    - If the visit is before the cutoff and lies within the before-threshold, keep all visits up to that visit:
+    - If there are no post-cutoff visits, take all visits up to the last prior visit, doesn't matter if it lies within the before-threshold or not. 
+    - If there are post-cutoff visits, but the last visit before cutoff lies outside of the before-threshold, take all visits up to the post-cutoff visit, 
+        if the post-cutoff visit lies within the after threshold.
+    
+    Parameters:
+        df (pd.DataFrame): Input data with multiple visits per patient.
+        time_col (str): Column name containing visit times (numeric).
+        patient_col (str): Column name identifying patients.
+        cutoff_day (int or float): Time cutoff.
+        before_threshold (int or float): Max days before cutoff to accept a visit.
+        after_threshold (int or float): Max days after cutoff to accept a visit.
+    
+    Returns:
+        filtered_df (pd.DataFrame): Filtered visits for each patient.
+    """
+    selected_visits = []
+    excluded_patients = []
+
+    for patient_id, group in df.groupby(patient_col):
+        group_sorted = group.sort_values(time_col)
+        group_sorted = group_sorted.copy()
+        group_sorted["diff"] = group_sorted[time_col] - cutoff_day
+
+        before = group_sorted[(group_sorted["diff"] <= 0)]
+        after = group_sorted[(group_sorted["diff"] > 0)]
+
+        # Case 1: visit before cutoff within threshold
+        valid_before = before[before["diff"] >= -before_threshold]
+        if not valid_before.empty:
+            last_before_day = valid_before[time_col].max()
+            keep = group_sorted[group_sorted[time_col] <= last_before_day]
+            selected_visits.append(keep)
+            continue
+
+        # Case 2: no valid_before, but valid after
+        valid_after = after[after["diff"] <= after_threshold]
+        if not valid_after.empty:
+            first_after_day = valid_after[time_col].min()
+            keep = group_sorted[group_sorted[time_col] <= first_after_day]
+            selected_visits.append(keep)
+            continue
+
+        # Case 3: no valid_before and no valid_after, but some visits before
+        if not before.empty:
+            last_before_day = before[time_col].max()
+            keep = group_sorted[group_sorted[time_col] <= last_before_day]
+            selected_visits.append(keep)
+        else:
+            excluded_patients.append(patient_id)
+
+    filtered_df = pd.concat(selected_visits, axis=0).drop(columns='diff')
+
+    if verbose:
+        total_patients = df[patient_col].nunique()
+        num_excluded_patients=len(excluded_patients)
+        print(f"Excluded {num_excluded_patients} out of {total_patients} patients "
+              f"({num_excluded_patients / total_patients:.1%})\n")
+    
+    return filtered_df
+

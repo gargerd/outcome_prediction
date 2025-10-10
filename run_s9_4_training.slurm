@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --array=45%1
+#SBATCH --array=1-84%20
 #SBATCH --job-name=s_9_4_ML_LLM_training
 #SBATCH -o slurm_training_logs/s_9_4_ML_LLM_training_%A_%a.log
 #SBATCH -e slurm_training_logs/s_9_4_ML_LLM_training_%A_%a.log

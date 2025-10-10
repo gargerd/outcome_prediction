@@ -1,14 +1,14 @@
 #!/bin/bash
-#SBATCH --array=1-2%2
+#SBATCH --array=1-14%14
 #SBATCH --job-name=s_8_4_lstm_param_search
 #SBATCH -o slurm_lstm_train_logs/s_8_4_lstm_param_search_%A_%a.log
 #SBATCH -e slurm_lstm_train_logs/s_8_4_lstm_param_search_%A_%a.log
 #SBATCH --cpus-per-task=4
-#SBATCH --mem-per-cpu=96G
+#SBATCH --mem-per-cpu=32G
 #SBATCH --partition=sapphire #bigmem
 ##SBATCH --qos=cpu_normal
 ##SBATCH --gres=gpu:2
-#SBATCH --time=24:00:00
+#SBATCH --time=48:00:00
 #SBATCH --nice=10000
 
 set -euo pipefail

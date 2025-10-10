@@ -49,6 +49,15 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'}, 
 
+                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_with_adherence':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+            
+                        'tb21_22_2984_pats_22_vars_relapse_with_adherence':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'}, 
+  
+
                          'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_mb_only':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RESULT_AT_END_OF_TREATMENT'},
@@ -63,6 +72,22 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
 
                          'tb21_22_2984_pats_22_vars_relapse_without_mb':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'},
+
+                         'tb21_1405_pats_40_vars_result_at_end_of_treatment':{
+                            'fn':'tb21_1405_pats_40_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+                         
+                         'tb21_1405_pats_40_vars_relapse':{
+                            'fn':'tb21_1405_pats_40_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'},
+
+                         'tb22_1499_pats_31_vars_result_at_end_of_treatment':{
+                             'fn':'tb22_1499_pats_31_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+                         
+                         'tb22_1499_pats_31_vars_relapse':{
+                             'fn':'tb22_1499_pats_31_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'},
 
 
@@ -110,26 +135,11 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                           'tb21_22_2798_pats_24_vars_relapse':{
                             'fn':'tb21_22_2798_pats_24_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'}, 
-
-
-                         'tb21_1405_pats_40_vars_result_at_end_of_treatment':{
-                            'fn':'tb21_1405_pats_40_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
-                         
-                         'tb21_1405_pats_40_vars_relapse':{
-                            'fn':'tb21_1405_pats_40_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE'},
-
-                         'tb22_1499_pats_31_vars_result_at_end_of_treatment':{
-                             'fn':'tb22_1499_pats_31_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
-                         
-                         'tb22_1499_pats_31_vars_relapse':{
-                             'fn':'tb22_1499_pats_31_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE'},
-
                          
                          }
+
+
+
 
 ###=========================================================================================
 # 1 . Define training parameters
@@ -278,22 +288,37 @@ for data_param_key in dataset_name_:
         period_num = period_end_days.index(period_end_day)
         
         ## SUBSET TO PATIENTS WHO WERE TAKING DRUGS DURING THE PERIOD
+        #  ==> keep only patients who took TB drugs in period (not only placebo)
+        #  ==> for EOT outcome prediction: 
+        #      patients in 4-month arms considered in Baseline-Month 3
+        #.     patients in 6-month arms considered in Baseline-Month 5
         #pat_ids_ = subset_pats_with_therapy_in_period(period_num,period_end_days)
         pat_ids_ = subset_pats_with_therapy_in_period(period_num,period_end_days,last_init_ther_days,
-                                                       pats_with_relapse_df,period_end_day,data_param_key)
+                                       pats_with_relapse_df,period_end_day,X,outcome_label,data_param_key)
+        
+        print('pat_ids_:',len(pat_ids_))
 
+        if len(pat_ids_)==0:
+            print(f'No patients considered for {data_param_key} - period:{period_end_day}')
+            continue
+        
+    
 
         df_=target_df.reset_index()#
         df_['STUDYID']=df_['USUBJID'].str.split('/',expand=True)[0].values
-        print(pd.crosstab(df_.loc[df_['USUBJID'].isin(pat_ids_),'STUDYID'],df_.loc[df_['USUBJID'].isin(pat_ids_),outcome_label]))
+        #print(pd.crosstab(df_.loc[df_['USUBJID'].isin(pat_ids_),'STUDYID'],df_.loc[df_['USUBJID'].isin(pat_ids_),outcome_label]))
         
-        print(f'++++++++++++++++++ \n Period: {period_end_day} days \n +++++++++++++++++')
         ## Drop patients, whose therapy ended before the period_end_day & keep clinical data up until last day of period
         if isinstance(period_end_day,int):
-
-            X_subset=X[(X['USUBJID'].isin(pat_ids_)) & \
-                       ~(X['STUDYID'].isin(['TB-1018']))&\
-                       (X['DAY']<=period_end_day)].copy()
+            
+            ## Select last visit in period cutoff based on threshold before cutoff & after cutoff
+            X_subset = select_visits_with_dual_thresholds(
+                                                df=X[X['USUBJID'].isin(pat_ids_)],
+                                                time_col='DAY',
+                                                patient_col='USUBJID',
+                                                cutoff_day=period_end_day,
+                                                before_threshold=20,
+                                                after_threshold=10)
 
         if period_end_day=='baseline': 
 
@@ -338,20 +363,25 @@ for data_param_key in dataset_name_:
 
             for training_data_type in training_data_type_:
 
-                ## LOAD RESULTS OF PARAMETER SEARCH AND EXTRACT THE PARAMETERS OF THE BEST MODEL
-                fn=f'../data/{data_param_key}_{model_name}_{period_end_day}_days_{training_data_type}_param_search_results.pickle'
-                fn=f'../data/{data_param_key}_{model_name}_{period_end_day}_days_{training_data_type}_param_search_results.pickle'
-                with open(fn, 'rb') as handle:
-                    param_search_results=pickle.load(handle)
-                
-                
                 ## Take the mean of the best parameteres selected for each CV-split as best parameters for the final model
                 metric_func=np.mean
                 num_of_top_models_per_cv=1
+
+                if model_name=='XGBoost':
+                    ## LOAD RESULTS OF PARAMETER SEARCH AND EXTRACT THE PARAMETERS OF THE BEST MODEL
+                    fn=f'../data/{data_param_key}_{model_name}_{period_end_day}_days_{training_data_type}_param_search_results.pickle'
+                    fn=f'../data/{data_param_key}_{model_name}_{period_end_day}_days_{training_data_type}_param_search_results.pickle'
+                    with open(fn, 'rb') as handle:
+                        param_search_results=pickle.load(handle)
+
+                    best_model_params_across_cvs=extract_best_model_params(param_search_results,metric_func,num_of_top_models_per_cv,
+                                                                       average_models_across_splits=False)
+                
+                
+       
                 if model_name=='LogisticRegression':
                     num_of_top_models_per_cv = min(1,len(param_search_dict[model_name]['l1_ratio']))
-                best_model_params_across_cvs=extract_best_model_params(param_search_results,metric_func,num_of_top_models_per_cv,
-                                                                       average_models_across_splits=False)
+
 
                 for cv_repeat_num in range(train_params['num_cv_repeats']):
                     rand_state=train_params['random_state'] + cv_repeat_num
@@ -409,7 +439,7 @@ for data_param_key in dataset_name_:
                     #df_=y_train.reset_index()#
                     #print(pd.crosstab(df_['STUDYID'],df_[outcome_label]))    
                     
-                    print(f'Running training with {training_data_type} model: {X_train.shape[1]} vars')
+                    print(f'{data_param_key} - period:{period_end_day} - {training_data_type} model: {model_name} - {X_train.shape[1]} vars')
                     print(f"Num of CV-repeat:{cv_repeat_num+1}")
                     training_results['cv_results'][f'cv_rep_{cv_repeat_num}']={}
 
@@ -422,7 +452,7 @@ for data_param_key in dataset_name_:
                     
                     #print(best_model_params)
                     
-                    top_model_params_in_cv = best_model_params_across_cvs[f'cv_rep_{cv_repeat_num}']
+                    #top_model_params_in_cv = best_model_params_across_cvs[f'cv_rep_{cv_repeat_num}']
                     
                     ## RUN CV & TRAIN FINAL MODEL WITH MODEL PARAMETERS SELECTED IN PREVIOUS STEP
 
@@ -438,7 +468,8 @@ for data_param_key in dataset_name_:
                             best_model_params={'l1_ratio':1.0}
                         
                         if model_name!='LogisticRegression':
-                            best_model_params=top_model_params_in_cv[n]
+                            #best_model_params=top_model_params_in_cv[n]
+                            best_model_params = best_model_params_across_cvs[f'cv_rep_{cv_repeat_num}'][n]
                             
                         #print(best_model_params)
                         model,cv_roc_auc_scores,label_weights_dict = calc_roc_auc_score_of_model(model_name,
