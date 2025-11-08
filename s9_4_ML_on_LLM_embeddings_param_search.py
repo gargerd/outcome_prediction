@@ -76,6 +76,20 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'graph_metric':None,
                             'num_of_common_vars':22,
                             'training_days':120}, 
+
+                        'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
+                            #'fn':'tb21_22_2984_pats_22_vars_relapse_without_dr_reg',#_wo_dr_reg',
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
+                            'result_cat':'RELAPSE'},
+
+                           'tb21_22_2984_pats_22_vars_raw_pred_prob_norm_loss':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'raw_pred_prob_norm'},
+                         
+                        'tb21_22_2984_pats_22_vars_llm_pred_prob_norm_loss':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'llm_pred_prob_norm'},
                          
                          
                          'tb21_22_2840_pats_23_vars_result_at_end_of_treatment':{
@@ -167,45 +181,6 @@ period_end_days=['baseline',31,62,93,125,160,'all']
 autoenc_merged_bool_list=[False,True]
 
 
-'''
-for data_param_key in dataset_name_:
-    
-    embed_dict[data_param_key]={}
-    outcome_label=data_param_key.split('vars_')[-1].upper()
-    
-    for llm_model_name in llm_model_names[:1]:
-
-        for fine_tuned_tag in fine_tuned_tags[:1]:
-            
-            if 'text-embedding' in llm_model_name:
-                llm_model_name_with_tag=llm_model_name
-            else:
-                llm_model_name_with_tag='_'.join([llm_model_name.split('/')[-1],fine_tuned_tag])
-            
-            embed_dict[data_param_key][llm_model_name_with_tag]={}
-            
-            for period_end_day in period_end_day_:
-                
-                embed_dict[data_param_key][llm_model_name_with_tag][period_end_day]={}
-                
-                for data_inclusion_type in data_inclusion_type_:
-
-                    embed_dict[data_param_key][llm_model_name_with_tag][period_end_day][data_inclusion_type]={}
-                    
-                    for autoencoder_merged in autoenc_merged_bool_list[:1]:
-
-                        ## Load embeddings created by LLM model
-                        print(f'Loading embeddings of {data_param_key} data / {llm_model_name_with_tag} /{period_end_day} /{data_inclusion_type} / autoencoder {autoencoder_merged} model')
-                        #try:
-                        df_pt=load_input_emebddings_of_model(data_param_key,llm_model_name,fine_tuned_tag,period_end_day,data_inclusion_type,autoencoder_merged)
-                        #except FileNotFoundError:
-                        #    warnings.warn(f'Embeddings of {data_param_key} data / {llm_model_name_with_tag} model not found! Check if they have been created. Skipping to next item.')
-                        #    continue
-                        print('Loaded embeddings with shape',df_pt.shape)
-                        embed_dict[data_param_key][llm_model_name_with_tag][period_end_day][data_inclusion_type][autoencoder_merged]=df_pt
-        #            embed_dict[data_param_key][llm_model_name_with_tag]['pca_mean_vect']=df_npy
-
-'''
 import warnings
 import time
 from tqdm import tqdm
@@ -223,7 +198,7 @@ autoenc_merged_bool_list = [False, True]
 # Prepare all combinations to wrap in tqdm
 combinations = []
 for data_param_key in dataset_name_:
-    outcome_label = data_param_key.split('vars_')[-1].upper()
+    outcome_label = parameters_for_analysis[data_param_key]['result_cat']
     
     for llm_model_name in llm_model_names[:1]:
         
@@ -356,8 +331,10 @@ param_search_dict={'RandomForest':{'n_estimators':[300,500,700],
                              #'n_jobs':[len(cpu_cores_)]
                             },
                    
-                  'LogisticRegression':{'l1_ratio':[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9],
-                                       'n_jobs':[4]},
+                  'LogisticRegression':{#'l1_ratio':[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9],
+                                       'n_jobs':[4],
+                                       'l1_ratio':[1,0.5,0.1],
+                                        'C': [0.001, 0.01, 0.1, 1, 10]},
                    
                   'SVC':{'C':[1e-3,1e-2,1e-1,1e0,1e1,1e2],
                         'kernel':['rbf','poly']},
@@ -376,7 +353,10 @@ start=time.time()
 for data_param_key in dataset_name_:
 
     ## LOAD FINAL PATIENT IDS FOR ANALYSIS, SAVED DURING PREPROCESSING OF THE BASELINE MODELS IN NOTEBOOK S9_3
-    fn=f"../data/{data_param_key}_final_pat_ids_for_analysis.pickle"
+    if 'pat_ids_fn' in parameters_for_analysis[data_param_key].keys():
+        fn=f"../data/{parameters_for_analysis[data_param_key]['pat_ids_fn']}_final_pat_ids_for_analysis.pickle"
+    else:  
+        fn=f'../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
     with open(fn, 'rb') as handle:
         final_pat_ids_for_analysis=pickle.load(handle)
 
@@ -385,7 +365,7 @@ for data_param_key in dataset_name_:
     #fn='../data/'+data_param_key+'_all_data_concat.csv.gz'
     #X=pd.read_csv(fn,index_col=0,low_memory=False)
     
-    outcome_label=data_param_key.split('vars_')[-1].upper()
+    outcome_label = parameters_for_analysis[data_param_key]['result_cat']
         
     for llm_model_name in llm_model_names[:1]:
         
@@ -424,34 +404,9 @@ for data_param_key in dataset_name_:
 
               
                         
-                        ## If not RELAPSE shpuld be predicted, subset the patients according to the availbility of the outcome results
-                        if parameters_for_analysis[data_param_key]['result_cat']!='RELAPSE':
-                            
-                            ## Extract patients who have their last therapy day before therapy_day_thr ==> these patient probably dropped out
-                            last_day_per_pat_df=X.sort_values(by=['DAY']).groupby('USUBJID').apply(lambda x: x.loc[x.index[-1],:])
-                            pat_ids=last_day_per_pat_df[last_day_per_pat_df['DAY']>therapy_day_thr]['USUBJID'].tolist()
-                            #pat_ids=X['USUBJID'].unique().tolist()
-                            
-                            ## Subset outcome dataframe to patient considered
-                            target_df=outcome_df.loc[:,outcome_label]
-                            y=target_df.replace(label2id)
-    
-
-                            y=y.reset_index()
-                            y['STUDYID']=y['USUBJID'].str.split('/',expand=True)[0].values
-                            y=y.set_index(['USUBJID','STUDYID'])
-                            #y=y.rename(columns={'index':'USUBJID'})
-                            
-                        if parameters_for_analysis[data_param_key]['result_cat']=='RELAPSE':
-                            outcome_label='RELAPSE'
-                            pats_with_relapse_df=extract_21_22_relapse_pats(X)
-                            pat_ids=pats_with_relapse_df.index.tolist()
-                            target_df=pats_with_relapse_df[[outcome_label]]
-                            y=pats_with_relapse_df[[outcome_label]]
-
-                            y=y.reset_index()
-                            y['STUDYID']=y['USUBJID'].str.split('/',expand=True)[0].values
-                            y=y.set_index(['USUBJID','STUDYID'])
+                        ## Return dataframe with the outcome label
+                        pat_ids,y,target_df,outcome_label = return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
+                                                                                      outcome_df,outcome_label,model_names)
 
                                                  
                         

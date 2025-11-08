@@ -1,14 +1,14 @@
 #!/bin/bash
-#SBATCH --array=1-28%28
+#SBATCH --array=1-21%21
 #SBATCH --job-name=s_9_4_ML_LLM_param_search
-#SBATCH -o slurm_param_search_logs/s_9_4_ML_LLM_param_search_%A_%a.log
-#SBATCH -e slurm_param_search_logs/s_9_4_ML_LLM_param_search_%A_%a.log
+#SBATCH -o slurm_llm_param_search_logs/s_9_4_ML_LLM_param_search_%A_%a.log
+#SBATCH -e slurm_llm_param_search_logs/s_9_4_ML_LLM_param_search_%A_%a.log
 #SBATCH --cpus-per-task=4
-#SBATCH --mem-per-cpu=96G
+#SBATCH --mem-per-cpu=24G
 #SBATCH --partition=sapphire #bigmem
 ##SBATCH --qos=cpu_normal
 ##SBATCH --gres=gpu:2
-#SBATCH --time=7-00:00:00
+#SBATCH --time=1-00:00:00
 #SBATCH --nice=10000
 
 set -euo pipefail

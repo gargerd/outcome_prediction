@@ -95,6 +95,14 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'},
 
+                         'tb21_22_2984_pats_22_vars_raw_pred_prob_norm_loss':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'raw_pred_prob_norm'},
+                         
+                        'tb21_22_2984_pats_22_vars_llm_pred_prob_norm_loss':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'llm_pred_prob_norm'},
+
                          
 
                          'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_weight_norm':{
@@ -251,6 +259,11 @@ for data_param_key in dataset_name_:
     X,race_colnames = load_and_modify_preprocessed_data(data_param_key)
 
 
+    ## Return dataframe with the outcome label
+    pat_ids,y,target_df,outcome_label = return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
+                                                                  outcome_df,outcome_label,model_names)
+        
+    '''
     ## If not RELAPSE shpuld be predicted, subset the patients according to the availbility of the outcome results
     if parameters_for_analysis[data_param_key]['result_cat']!='RELAPSE':
         
@@ -276,6 +289,7 @@ for data_param_key in dataset_name_:
         pat_ids=pats_with_relapse_df.index.tolist()
         target_df=pats_with_relapse_df[[outcome_label]]
         y=pats_with_relapse_df[[outcome_label]]
+    ''' 
         
        
     df_=target_df.reset_index()#

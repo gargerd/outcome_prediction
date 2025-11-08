@@ -41,6 +41,20 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'graph_metric':None,
                             'num_of_common_vars':22,
                             'training_days':120}, 
+
+                        'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
+                            #'fn':'tb21_22_2984_pats_22_vars_relapse_without_dr_reg',#_wo_dr_reg',
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
+                            'result_cat':'RELAPSE'},
+
+                           'tb21_22_2984_pats_22_vars_raw_pred_prob_norm_loss':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'raw_pred_prob_norm'},
+                         
+                        'tb21_22_2984_pats_22_vars_llm_pred_prob_norm_loss':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'llm_pred_prob_norm'},
                          
                          
                          'tb21_22_2840_pats_23_vars_result_at_end_of_treatment':{
@@ -130,6 +144,7 @@ def print_elapsed_time(start,stop):
 
 ##=========================================
 ##  LOAD INPUT EMBEDDINGS CREATED BY AN LLM MODEL AS A DATAFRAME
+'''
 def load_input_emebddings_of_model(data_param_key,llm_model_name,fine_tuned_tag,period_end_day,data_inclusion_type,autoencoder_merged):
 
     if autoencoder_merged==True:
@@ -203,6 +218,81 @@ def load_input_emebddings_of_model(data_param_key,llm_model_name,fine_tuned_tag,
         #df_npy.fillna(df_npy.mean(), inplace=True)
     
         return df_pt #,df_npy
+'''
+def load_input_embeddings_of_model(data_param_key, llm_model_name, fine_tuned_tag, period_end_day, llm_model_name_with_tag,data_inclusion_type, autoencoder_merged, max_workers=8):
+    
+    import os
+    import numpy as np
+    import pandas as pd
+    import torch
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+    
+    base = "../data"
+    dataset_name = parameters_for_analysis[data_param_key]['fn']
+
+    parts = [dataset_name, llm_model_name, fine_tuned_tag, str(period_end_day), 'days', data_inclusion_type]
+    if autoencoder_merged:
+        parts.append('autoencoder_merged')
+    model_dir = os.path.join(base, '_'.join(parts))
+
+    # Load full matrix directly if autoencoder was used
+    if autoencoder_merged:
+        df_pt = pd.read_csv(f"{model_dir}/latent_embeddings.csv.gz", index_col=0, low_memory=False)
+        return df_pt
+
+    text_embedding_mode = 'text-embedding' in llm_model_name
+    #llm_model_name_with_tag = llm_model_name if text_embedding_mode else '_'.join([llm_model_name.split('/')[-1], fine_tuned_tag])
+
+    def load_embedding(entry):
+        fname = entry.name
+        if 'TB-1018' in fname:
+            return None
+
+        path = os.path.join(model_dir, fname)
+
+        try:
+            if text_embedding_mode:
+                embed = np.load(path)
+            else:
+                embed = torch.load(path).detach().cpu().numpy()
+
+            # 🔐 Replace inf before appending
+            embed = np.where(np.isinf(embed), np.nan, embed)
+
+            pat_id = fname.replace('_', '/').replace('.pt', '').replace('.npy', '')
+            return (pat_id, embed)
+        except Exception as e:
+            print(f"Error loading {fname}: {e}")
+            return None
+
+    # Use ThreadPoolExecutor for I/O parallelism
+    embeddings = []
+    pat_ids = []
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = [
+            executor.submit(load_embedding, entry)
+            for entry in os.scandir(model_dir)
+            if entry.is_file() and (entry.name.endswith('.npy') or entry.name.endswith('.pt'))
+        ]
+
+        for future in as_completed(futures):
+            result = future.result()
+            if result is not None:
+                pid, emb = result
+                pat_ids.append(pid)
+                embeddings.append(emb)
+
+    # Stack into DataFrame
+    df_pt = pd.DataFrame(data=np.vstack(embeddings), index=pat_ids)
+
+    df_pt = df_pt.astype(float)
+
+    # Clean Inf/NaN
+    df_pt = df_pt.replace([np.inf, -np.inf], np.nan)
+    df_pt = df_pt.fillna(df_pt.mean(numeric_only=True))
+
+    return df_pt
+
 
 
 ###=========================================
@@ -1086,7 +1176,7 @@ def select_temporal_cols_with_suff_pat_data(temp_data_name,X_subset,temp_col_thr
 ### 2. COLLECT PATIENTS, WHO HAVE FAVOURABLE OUTCOME AT END OF TREATMENT, BUT HAVE AT LEAST ONE UNFAVOURABLE OUTCOME AT ANY OF THE FOLLOW-UP TIMEPOINTS 
     #. ==>TB-1021: 12 & 18 MONTHS, TB-1022: 18 & 24 MONTHS
 
-def extract_21_22_relapse_pats(X_subset):
+def extract_21_22_relapse_pats():
 
     ### ====== LOAD ALL PATIENTS DATA =======
     fn='../data/tb21_22_2984_pats_22_vars_result_at_end_of_treatment_preproc_data_with_imp.csv.gz'
@@ -1297,7 +1387,7 @@ def extract_last_init_therapy_day_from_drug_regimen(pat_ids):
 def subset_pats_with_therapy_in_period(period_num,period_end_days):#,last_init_ther_days,pats_with_relapse_df):
     
      ## SUBSET TO PATIENTS WHO WERE TAKING DRUGS DURING THE PERIOD
-    if parameters_for_analysis[data_param_key]['result_cat']!='RELAPSE': 
+    if parameters_for_analysis[data_param_key]['result_cat']!='RESULT_AT_END_OF_TREATMENT': 
         
         ## Drop patients whose last therapy day was before the previous period_end_day 
         #  i.e. period_end_day=125, keep patients having last therapy day later than 93 +5 days (some leeway)
@@ -1314,7 +1404,7 @@ def subset_pats_with_therapy_in_period(period_num,period_end_days):#,last_init_t
     
     ## SUBSET TO PATIENTS WHO WERE HAD THEIR RELAPSE AFTER THE END OF PERIOD & PATIENTS WITHOUT RELAPSE 
     ## (RELAPSE DAY IS NAN + 2 PATIENTS WITH RELAPSE IN FOLLOW-UP PERIOD, BUT UNKNOWN EXACT RELAPSE DAY)
-    if parameters_for_analysis[data_param_key]['result_cat']=='RELAPSE': 
+    if parameters_for_analysis[data_param_key]['result_cat']=='RELAPSE' or 'pred_prob' in parameters_for_analysis[data_param_key]['result_cat']: 
         
         if isinstance(period_end_day,int):#!='all':
             pat_ids_ = pats_with_relapse_df[(pats_with_relapse_df['RELAPSE_DAY']>period_end_day)\
@@ -1329,3 +1419,116 @@ def subset_pats_with_therapy_in_period(period_num,period_end_days):#,last_init_t
                                              |(pats_with_relapse_df['RELAPSE_DAY'].isna())]['RELAPSE_DAY'].index.tolist()
 
     return pat_ids_
+
+
+
+#####================
+def return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
+                                  outcome_df,outcome_label,model_names):
+
+    import copy
+    
+    ## If not RELAPSE shpuld be predicted, subset the patients according to the availbility of the outcome results
+    if parameters_for_analysis[data_param_key]['result_cat']=='RESULT_AT_END_OF_TREATMENT':
+        
+        ## Extract patients who have their last therapy day before therapy_day_thr ==> these patient probably dropped out
+        last_day_per_pat_df=X.sort_values(by=['DAY']).groupby('USUBJID').apply(lambda x: x.loc[x.index[-1],:])
+        pat_ids=last_day_per_pat_df[last_day_per_pat_df['DAY']>therapy_day_thr]['USUBJID'].tolist()
+        #pat_ids=X['USUBJID'].unique().tolist()
+        
+        ## Subset outcome dataframe to patient considered
+        target_df=outcome_df.loc[:,outcome_label]
+        y=target_df.replace(label2id)
+    
+        y=y.reset_index()
+        y['STUDYID']=y['USUBJID'].str.split('/',expand=True)[0].values
+        y=y.set_index(['USUBJID','STUDYID'])
+        #y=y.rename(columns={'index':'USUBJID'})
+        outcome_label_=copy.deepcopy(outcome_label)
+        
+    if parameters_for_analysis[data_param_key]['result_cat']=='RELAPSE':
+        #outcome_label='RELAPSE'
+        pats_with_relapse_df=extract_21_22_relapse_pats()
+    
+        ## IF PEDICTION IS A REGRESSION TASK
+        #outcome_label='RELAPSE_DAY'
+        pats_with_relapse_df = pats_with_relapse_df[[outcome_label]].dropna()
+                                  
+        pat_ids=pats_with_relapse_df.index.tolist()
+        target_df=pats_with_relapse_df[[outcome_label]]
+        y=pats_with_relapse_df[[outcome_label]]
+       
+    
+        y=y.reset_index()
+        y['STUDYID']=y['USUBJID'].str.split('/',expand=True)[0].values
+        y=y.set_index(['USUBJID','STUDYID'])
+        outcome_label_=copy.deepcopy(outcome_label)
+
+
+    if 'pred_prob' in parameters_for_analysis[data_param_key]['result_cat']:
+
+        ## Create list to collect dataframes of different pred loss clusters
+        clust_df_list=[]
+        
+        for model_name in model_names[1:]:
+
+            ## DEFINE LABELS OF PRED. LOSS CLUSTERS CREATED IN S9_4_ML_on_LLM_embeddings.ipnyb!!!
+            pred_loss_clust_labels={'raw_pred_prob_norm':{1.0:'hard_to_predict',2.0:'easy_to_predict'},                            
+                                    'llm_pred_prob_norm':{1.0:'hard_to_predict',2.0:'easy_to_predict'},
+                                    'raw_pred_prob':{2.0:'hard_to_predict',1.0:'easy_to_predict'},
+                                    'llm_pred_prob':{1.0:'hard_to_predict',2.0:'easy_to_predict'}}
+            
+            ## Map the binary labels to 0 and 1
+            label_2id_={'hard_to_predict':1,'easy_to_predict':0}
+        
+                        
+            for pred_prob_coln in ['raw_pred_prob_norm','raw_pred_prob',
+                                   'llm_pred_prob_norm','llm_pred_prob',
+                                   'diff_pred_prob_norm','diff_pred_prob'][:-2]:
+
+
+                ## Load pred loss cluster
+                if 'raw' in pred_prob_coln or 'diff' in pred_prob_coln:
+                    data_dir_=f'../data/model_interpretation/baseline/pred_prob_clusters'
+                    
+                    training_data_type='last_therapy_day'
+
+                    fn=os.path.join(data_dir_,
+                                f'tb21_22_2984_pats_22_vars_relapse_days_{training_data_type}_{model_name}_{pred_prob_coln}_pred_prob_clusters.csv')
+        
+                if 'llm' in pred_prob_coln:
+                    fn=f"../data/model_interpretation/LLM/pred_prob_clusters/tb21_22_2984_pats_22_vars_relapse_BioMistral-7B_base_LogisticRegression_full_all_days_autoenc_False_{pred_prob_coln}_pred_prob_clusters.csv"               
+        
+                try:
+                    clust_df=pd.read_csv(fn,index_col=0)
+                except FileNotFoundError:
+                    print(f'{fn} does not exist. Skipping to next model')
+                    continue
+
+                
+                ## Map pred loss lcusters to binary (0:easy to predict; 1: hard to predict)
+                clust_df_=clust_df.loc[clust_df['period']=='baseline',:]  
+                clust_df_[f'{pred_prob_coln}_cluster_binary'] = clust_df_[f'{pred_prob_coln}_cluster'].map(pred_loss_clust_labels[pred_prob_coln]).map(label_2id_)
+                clust_df_=clust_df_.sort_index()
+                #clust_df_list.append(clust_df_[[f'{pred_prob_coln}_cluster_binary']])
+                #print(clust_df_.columns)
+                clust_df_list.append(clust_df_[[f'{pred_prob_coln}_cluster_binary',f'{pred_prob_coln}_loss']])
+
+        ## Add all pred_prb_loss clusters to one dataframe
+        clust_df_concat = pd.concat(clust_df_list,axis=1)
+
+        ## Select final prediction label
+        outcome_label_ = f'{outcome_label}_cluster_binary'
+        
+        clust_df_concat=clust_df_concat[~clust_df_concat[outcome_label_].isna()]
+        
+        target_df=clust_df_concat[[outcome_label_]]
+        y=clust_df_concat[[outcome_label_]]
+        pat_ids=clust_df_concat.index.tolist()
+
+        y=y.reset_index()
+        y['STUDYID']=y['USUBJID'].str.split('/',expand=True)[0].values
+        y=y.set_index(['USUBJID','STUDYID'])
+        
+        
+    return pat_ids,y,target_df,outcome_label_

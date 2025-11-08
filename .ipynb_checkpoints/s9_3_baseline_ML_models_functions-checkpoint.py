@@ -71,6 +71,14 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'},
 
+                         'tb21_22_2984_pats_22_vars_raw_pred_prob_norm_loss':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'raw_pred_prob_norm'},
+                         
+                        'tb21_22_2984_pats_22_vars_llm_pred_prob_norm_loss':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'llm_pred_prob_norm'},
+
                          
 
                          'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_weight_norm':{
@@ -1399,7 +1407,7 @@ def subset_pats_with_therapy_in_period(period_num,period_end_days,last_init_ther
     
     ## SUBSET TO PATIENTS WHO WERE HAD THEIR RELAPSE AFTER THE END OF PERIOD & PATIENTS WITHOUT RELAPSE 
     ## (RELAPSE DAY IS NAN + 2 PATIENTS WITH RELAPSE IN FOLLOW-UP PERIOD, BUT UNKNOWN EXACT RELAPSE DAY)
-    if parameters_for_analysis[data_param_key]['result_cat']=='RELAPSE': 
+    if parameters_for_analysis[data_param_key]['result_cat']=='RELAPSE' or 'pred_prob' in outcome_label:
         
         if isinstance(period_end_day,int):#!='all':
             pat_ids__ = pats_with_relapse_df[(pats_with_relapse_df['RELAPSE_DAY']>period_end_day)\
@@ -1435,7 +1443,7 @@ def subset_pats_with_therapy_in_period(period_num,period_end_days,last_init_ther
         month4_periods=['baseline',31,62,93,125][:-1]
         month6_periods=[125,160,'all'][:-1]
 
-    if outcome_label=='RELAPSE':
+    if outcome_label=='RELAPSE' or 'pred_prob' in outcome_label:
         month4_periods=['baseline',31,62,93,125]
         month6_periods=[160,'all']
         
@@ -1755,3 +1763,107 @@ def select_visits_with_dual_thresholds(
               f"({num_excluded_patients / total_patients:.1%})\n")
     
     return filtered_df
+
+
+
+
+#####================
+def return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
+                                  outcome_df,outcome_label,model_names):
+    import copy
+    
+    ## If not RELAPSE shpuld be predicted, subset the patients according to the availbility of the outcome results
+    if parameters_for_analysis[data_param_key]['result_cat']=='RESULT_AT_END_OF_TREATMENT':
+        
+        ## Extract patients who have their last therapy day before therapy_day_thr ==> these patient probably dropped out
+        last_day_per_pat_df=X.sort_values(by=['DAY']).groupby('USUBJID').apply(lambda x: x.loc[x.index[-1],:])
+        pat_ids=last_day_per_pat_df[last_day_per_pat_df['DAY']>therapy_day_thr]['USUBJID'].tolist()
+        #pat_ids=X['USUBJID'].unique().tolist()
+        
+        ## Subset outcome dataframe to patient considered
+        target_df=outcome_df.loc[pat_ids,outcome_label]
+        y=target_df.loc[pat_ids].replace(label2id)
+        outcome_label_=copy.deepcopy(outcome_label)
+        
+    if parameters_for_analysis[data_param_key]['result_cat']=='RELAPSE':
+        #outcome_label='RELAPSE'
+        pats_with_relapse_df=extract_21_22_relapse_pats()
+
+        pats_with_relapse_df = pats_with_relapse_df.loc[list(set(X['USUBJID'].unique())&set(pats_with_relapse_df.index))]
+
+        ## Create new prediction labels (or even multilabels) in the "RELAPSE" column based on the relapse day intervals defined in "bins" 
+        if 'bins' in parameters_for_analysis[data_param_key].keys():
+            pats_with_relapse_df = cut_relapse_days_to_interval_categories(pats_with_relapse_df,data_param_key)
+        
+        pat_ids=pats_with_relapse_df.index.tolist()
+        target_df=pats_with_relapse_df[[outcome_label]]
+        y=pats_with_relapse_df[[outcome_label]] 
+        outcome_label_=copy.deepcopy(outcome_label)
+
+
+    if 'pred_prob' in parameters_for_analysis[data_param_key]['result_cat']:
+        
+
+        ## Create list to collect dataframes of different pred loss clusters
+        clust_df_list=[]
+        
+        for model_name in model_names[1:]:
+            print(model_name)
+
+            ## DEFINE LABELS OF PRED. LOSS CLUSTERS CREATED IN S9_4_ML_on_LLM_embeddings.ipnyb!!!
+            pred_loss_clust_labels={'raw_pred_prob_norm':{1.0:'hard_to_predict',2.0:'easy_to_predict'},                            
+                                    'llm_pred_prob_norm':{1.0:'hard_to_predict',2.0:'easy_to_predict'},
+                                    'raw_pred_prob':{2.0:'hard_to_predict',1.0:'easy_to_predict'},
+                                    'llm_pred_prob':{1.0:'hard_to_predict',2.0:'easy_to_predict'}}
+            
+            ## Map the binary labels to 0 and 1
+            label_2id_={'hard_to_predict':1,'easy_to_predict':0}
+        
+                
+            for pred_prob_coln in ['raw_pred_prob_norm','raw_pred_prob',
+                                   'llm_pred_prob_norm','llm_pred_prob',
+                                   'diff_pred_prob_norm','diff_pred_prob'][:-2]:
+                #print(pred_prob_coln)
+                
+                ## Load pred loss cluster
+                if 'raw' in pred_prob_coln or 'diff' in pred_prob_coln:
+                    data_dir_=f'../data/model_interpretation/baseline/pred_prob_clusters'
+                    
+                    training_data_type_='last_therapy_day'
+
+                    fn=os.path.join(data_dir_,
+                                f'tb21_22_2984_pats_22_vars_relapse_days_{training_data_type_}_{model_name}_{pred_prob_coln}_pred_prob_clusters.csv')
+        
+                if 'llm' in pred_prob_coln:
+                    fn=f"../data/model_interpretation/LLM/pred_prob_clusters/tb21_22_2984_pats_22_vars_relapse_BioMistral-7B_base_LogisticRegression_full_all_days_autoenc_False_{pred_prob_coln}_pred_prob_clusters.csv"               
+        
+                try:
+                    clust_df=pd.read_csv(fn,index_col=0)
+                    
+                except FileNotFoundError:
+                    print(f'{fn} does not exist. Skipping to next model')
+                    continue
+
+                
+                ## Map pred loss lcusters to binary (0:easy to predict; 1: hard to predict)
+                clust_df_=clust_df.loc[clust_df['period']=='baseline',:]  
+                clust_df_[f'{pred_prob_coln}_cluster_binary'] = clust_df_[f'{pred_prob_coln}_cluster'].map(pred_loss_clust_labels[pred_prob_coln]).map(label_2id_)
+                clust_df_=clust_df_.sort_index()
+                #clust_df_list.append(clust_df_[[f'{pred_prob_coln}_cluster_binary']])
+                #print(clust_df_.columns)
+                clust_df_list.append(clust_df_[[f'{pred_prob_coln}_cluster_binary',f'{pred_prob_coln}_loss'][:1]])
+
+        ## Add all pred_prb_loss clusters to one dataframe
+        clust_df_concat = pd.concat(clust_df_list,axis=1)
+
+        ## Select final prediction label
+        outcome_label_ = f'{outcome_label}_cluster_binary'
+        
+        clust_df_concat=clust_df_concat[~clust_df_concat[outcome_label_].isna()]
+        
+        target_df=clust_df_concat[[outcome_label_]]
+        y=clust_df_concat[[outcome_label_]]
+        pat_ids=clust_df_concat.index.tolist()
+        
+        
+    return pat_ids,y,target_df,outcome_label_#,clust_df_concat

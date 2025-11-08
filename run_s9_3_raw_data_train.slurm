@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --array=1-56%20
+#SBATCH --array=1-28%28
 #SBATCH --job-name=s_9_3_raw_data_train
 #SBATCH -o slurm_raw_data_train_logs/s_9_3_raw_data_train_%A_%a.log
 #SBATCH -e slurm_raw_data_train_logs/s_9_3_raw_data_train_%A_%a.log
@@ -8,7 +8,7 @@
 #SBATCH --partition=sapphire #bigmem
 ##SBATCH --qos=cpu_normal
 ##SBATCH --gres=gpu:2
-#SBATCH --time=7-00:00:00
+#SBATCH --time=0-06:00:00
 #SBATCH --nice=10000
 
 set -euo pipefail

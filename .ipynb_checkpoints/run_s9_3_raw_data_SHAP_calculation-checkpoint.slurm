@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --array=1-56%20
+#SBATCH --array=1-28%28
 #SBATCH --job-name=s_9_3_raw_data_SHAP
 #SBATCH -o slurm_raw_data_SHAP_logs/s_9_3_raw_data_SHAP_%A_%a.log
 #SBATCH -e slurm_raw_data_SHAP_logs/s_9_3_raw_data_SHAP_%A_%a.log

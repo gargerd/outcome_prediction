@@ -72,6 +72,20 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'graph_metric':None,
                             'num_of_common_vars':22,
                             'training_days':120}, 
+
+                         'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
+                            'fn':'tb21_22_2984_pats_22_vars_relapse_without_dr_reg',#_wo_dr_reg',
+                            'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
+                            'result_cat':'RELAPSE'},
+
+                           'tb21_22_2984_pats_22_vars_raw_pred_prob_norm_loss':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'raw_pred_prob_norm'},
+                         
+                        'tb21_22_2984_pats_22_vars_llm_pred_prob_norm_loss':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'llm_pred_prob_norm'},
                          
                          
                          'tb21_22_2840_pats_23_vars_result_at_end_of_treatment':{
@@ -132,6 +146,42 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'training_days':120},
                          
                          }
+
+
+param_search_dict={'RandomForest':{'n_estimators':[300,500,700],
+                                   'max_features':['sqrt'],
+                                   'max_depth':[3,5,7,9]},
+                   
+                  'GradientBoost':{'n_estimators':[300,500,700],
+                                   'max_features':['sqrt'],
+                                   'learning_rate':[0.1,0.3,0.5,0.8]},
+                  
+                  'XGBoost':{'n_estimators':[300,500,700],
+                             'max_depth':[3,5,7,9],
+                             'eta':[0.1,0.3,0.5,0.8],
+                             #'subsample':[1.0,0.9,0.8,0.7]
+                             #'tree_method':['hist'],
+                             #"device": ["cuda"]
+                             #'n_jobs':[4]
+                            },
+                   
+                   'LogisticRegression':{#'l1_ratio':[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9],
+                                       'n_jobs':[4],
+                                       'l1_ratio':[1,0.5,0.1],
+                                        'C': [0.001, 0.01, 0.1, 1, 10]},
+                   
+                  'SVC':{'C':[1e-3,1e-2,1e-1,1e0,1e1,1e2],
+                        'kernel':['rbf','poly']},
+                   
+                  'KNN':{'n_neighbors':[2,5,10,25,50,100]},
+                   
+                  'Dense':{'learning_rate':[1e-2],#1e-3],
+                          'batch_size':[32],
+                          'num_epochs':[200],},
+                  }  
+
+
+
 ## Define string descriptions to add as a prefix for each ds_type, for LLM to know what the variables describe
 ds_type_descriptions={'dm':'Demographic descriptors',
                     'mb':'Microbiological test results',
@@ -218,7 +268,8 @@ autoenc_merged_bool_list = [False, True]
 # Prepare all combinations to wrap in tqdm
 combinations = []
 for data_param_key in dataset_name_:
-    outcome_label = data_param_key.split('vars_')[-1].upper()
+    #outcome_label = data_param_key.split('vars_')[-1].upper()
+    outcome_label = parameters_for_analysis[data_param_key]['result_cat']
     
     for llm_model_name in llm_model_names[:1]:
         
@@ -343,7 +394,10 @@ start=time.time()
 for data_param_key in dataset_name_:
 
     ## LOAD FINAL PATIENT IDS FOR ANALYSIS, SAVED DURING PREPROCESSING OF THE BASELINE MODELS IN NOTEBOOK S9_3
-    fn=f'../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
+    if 'pat_ids_fn' in parameters_for_analysis[data_param_key].keys():
+        fn=f"../data/{parameters_for_analysis[data_param_key]['pat_ids_fn']}_final_pat_ids_for_analysis.pickle"
+    else:  
+        fn=f'../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
     with open(fn, 'rb') as handle:
         final_pat_ids_for_analysis=pickle.load(handle)
     
@@ -351,7 +405,8 @@ for data_param_key in dataset_name_:
     #fn='../data/'+data_param_key+'_all_data_concat.csv.gz'
     #X=pd.read_csv(fn,index_col=0,low_memory=False)
     
-    outcome_label=data_param_key.split('vars_')[-1].upper()
+    #outcome_label=data_param_key.split('vars_')[-1].upper()
+    outcome_label = parameters_for_analysis[data_param_key]['result_cat']
         
     for llm_model_name in llm_model_names[:1]:
         
@@ -385,42 +440,16 @@ for data_param_key in dataset_name_:
                             continue
         
                         #print(data_param_key)
-                        fn='../data/'+parameters_for_analysis[data_param_key]['fn']+'_all_data_concat.csv.gz'
+                        if 'X_fn' in parameters_for_analysis[data_param_key].keys():
+                            fn='../data/'+parameters_for_analysis[data_param_key]['X_fn']+'_all_data_concat.csv.gz'
+                        else:
+                            fn='../data/'+parameters_for_analysis[data_param_key]['fn']+'_all_data_concat.csv.gz'
                         X=pd.read_csv(fn,index_col=0,low_memory=False)
 
-              
-                        
-                        ### If not RELAPSE shpuld be predicted, subset the patients according to the availbility of the outcome results
-                        if parameters_for_analysis[data_param_key]['result_cat']!='RELAPSE':
-                            
-                            ## Extract patients who have their last therapy day before therapy_day_thr ==> these patient probably dropped out
-                            last_day_per_pat_df=X.sort_values(by=['DAY']).groupby('USUBJID').apply(lambda x: x.loc[x.index[-1],:])
-                            pat_ids=last_day_per_pat_df[last_day_per_pat_df['DAY']>therapy_day_thr]['USUBJID'].tolist()
-                            #pat_ids=X['USUBJID'].unique().tolist()
-                            
-                            ## Subset outcome dataframe to patient considered
-                            target_df=outcome_df.loc[:,outcome_label]
-                            y=target_df.replace(label2id)
-    
-
-                            y=y.reset_index()
-                            y['STUDYID']=y['USUBJID'].str.split('/',expand=True)[0].values
-                            y=y.set_index(['USUBJID','STUDYID'])
-                            #y=y.rename(columns={'index':'USUBJID'})
-                            
-                        if parameters_for_analysis[data_param_key]['result_cat']=='RELAPSE':
-                            outcome_label='RELAPSE'
-                            pats_with_relapse_df=extract_21_22_relapse_pats(X)
-                            pat_ids=pats_with_relapse_df.index.tolist()
-                            target_df=pats_with_relapse_df[[outcome_label]]
-                            y=pats_with_relapse_df[[outcome_label]]
-
-                            y=y.reset_index()
-                            y['STUDYID']=y['USUBJID'].str.split('/',expand=True)[0].values
-                            y=y.set_index(['USUBJID','STUDYID'])
-
-                                                 
-                        
+                        ## Return dataframe with the outcome label
+                        pat_ids,y,target_df,outcome_label = return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
+                                                                                      outcome_df,outcome_label,model_names)
+                       
                         ## Drop patients who have their last therapy day before therapy_day_thr ==> these patient probably dropped out
                         #last_day_per_pat_df=X.sort_values(by=['DAY']).groupby('USUBJID').apply(lambda x: x.loc[x.index[-1],:])
                         #pat_ids=last_day_per_pat_df[last_day_per_pat_df['DAY']>therapy_day_thr]['USUBJID'].tolist()
@@ -468,17 +497,22 @@ for data_param_key in dataset_name_:
                                 training_results['train_params']=train_params
                                 training_results['cv_results']={}
 
-                                ## LOAD RESULTS OF PARAMETER SEARCH AND EXTRACT THE PARAMETERS OF THE BEST MODEL
-                                fn=f'../data/{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_vars_param_search_results.pickle'
-                                with open(fn, 'rb') as handle:
-                                    param_search_results=pickle.load(handle)
-        
                                 ## Take the mean of the best parameteres selected for each CV-split as best parameters for the final model
                                 metric_func=np.mean
                                 #num_of_top_models_per_cv=5
-                                num_of_top_models_per_cv=1                                        
-                                best_model_params_across_cvs=extract_best_model_params(param_search_results,
-                                                                                       metric_func,num_of_top_models_per_cv,average_models_across_splits=False)
+                                num_of_top_models_per_cv=1
+
+                                if model_name=='XGBoost':
+
+                                    ## LOAD RESULTS OF PARAMETER SEARCH AND EXTRACT THE PARAMETERS OF THE BEST MODEL
+                                    fn=f'../data/{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_vars_param_search_results.pickle'
+                                    with open(fn, 'rb') as handle:
+                                        param_search_results=pickle.load(handle)
+                                    
+                                    best_model_params_across_cvs=extract_best_model_params(param_search_results,metric_func,num_of_top_models_per_cv,average_models_across_splits=False)
+
+                                if model_name=='LogisticRegression':
+                                    num_of_top_models_per_cv = min(1,len(param_search_dict[model_name]['l1_ratio']))
                                 
                                 for cv_repeat_num in tqdm(range(train_params['num_cv_repeats']),desc="Processing", unit="cv_repeat"):
                                     rand_state=train_params['random_state'] + cv_repeat_num
@@ -514,7 +548,7 @@ for data_param_key in dataset_name_:
                                     training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['rand_state']=rand_state
 
                                     ## LOOP OVER THE PARAMETERS WITH THE TOP N ROC-AUC VALUES DURING PARAMETER SEARCH AND TRAIN MODELS ON WHOLE TRAINING DATA
-                                    top_model_params_in_cv = best_model_params_across_cvs[f'cv_rep_{cv_repeat_num}']
+                                    #top_model_params_in_cv = best_model_params_across_cvs[f'cv_rep_{cv_repeat_num}']
 
                                     training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['model']={}
                                     
@@ -529,7 +563,7 @@ for data_param_key in dataset_name_:
                                             best_model_params={'l1_ratio':1.0}
                                         
                                         if model_name!='LogisticRegression':
-                                            best_model_params=top_model_params_in_cv[n]
+                                            best_model_params=best_model_params_across_cvs[f'cv_rep_{cv_repeat_num}'][n]
                                         
                                         model,cv_roc_auc_scores,label_weights_dict = calc_roc_auc_score_of_model(model_name,
                                                                                                                  X_train,

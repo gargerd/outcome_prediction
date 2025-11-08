@@ -1,14 +1,14 @@
 #!/bin/bash
-#SBATCH --array=1-84%20
+#SBATCH --array=1-21%21
 #SBATCH --job-name=s_9_4_ML_LLM_training
-#SBATCH -o slurm_training_logs/s_9_4_ML_LLM_training_%A_%a.log
-#SBATCH -e slurm_training_logs/s_9_4_ML_LLM_training_%A_%a.log
+#SBATCH -o slurm_llm_training_logs/s_9_4_ML_LLM_training_%A_%a.log
+#SBATCH -e slurm_llm_training_logs/s_9_4_ML_LLM_training_%A_%a.log
 #SBATCH --cpus-per-task=4
 #SBATCH --mem-per-cpu=24G
 #SBATCH --partition=sapphire
 ##SBATCH --qos=cpu_normal
 ##SBATCH --gres=gpu:2
-#SBATCH --time=2-00:00:00
+#SBATCH --time=1-00:00:00
 #SBATCH --nice=10000
 
 set -euo pipefail

@@ -49,6 +49,10 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'}, 
 
+                         'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'},
+
                          'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_with_adherence':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RESULT_AT_END_OF_TREATMENT'},
@@ -91,52 +95,15 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'result_cat':'RELAPSE'},
 
 
-                          'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
+                         'tb21_22_2984_pats_22_vars_raw_pred_prob_norm_loss':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE'},
-
+                            'result_cat':'raw_pred_prob_norm'},
                          
-
-                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_weight_norm':{
+                        'tb21_22_2984_pats_22_vars_llm_pred_prob_norm_loss':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
-            
-                        'tb21_22_2984_pats_22_vars_relapse_weight_norm':{
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE'}, 
-                        
-
-                         'tb21_22_2984_pats_22_vars_relapse_1_year':{
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE',
-                             'bins':[0,365][:],
-                             'labels':[1]}, 
-
-                         'tb21_22_2984_pats_22_vars_relapse_half_years':{
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE',
-                             'bins':[0,182,365,np.inf],
-                             'labels':[1,2,3]}, 
+                            'result_cat':'llm_pred_prob_norm'},
                          
-                         
-                         'tb21_22_2840_pats_23_vars_result_at_end_of_treatment':{
-                            'fn':'tb21_22_2840_pats_23_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
-
-                         'tb21_22_2840_pats_23_vars_relapse':{
-                            'fn':'tb21_22_2840_pats_23_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE'},
-        
-
-                         'tb21_22_2798_pats_24_vars_result_at_end_of_treatment':{
-                            'fn':'tb21_22_2798_pats_24_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},   
-
-                          'tb21_22_2798_pats_24_vars_relapse':{
-                            'fn':'tb21_22_2798_pats_24_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE'}, 
-                         
-                         }
+                        }
 
 
 
@@ -224,7 +191,9 @@ param_search_dict={'RandomForest':{'n_estimators':[300,500,700],
                             },
                    
                   'LogisticRegression':{#'l1_ratio':[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1],
-                                       'l1_ratio':[1]
+                                        #'l1_ratio':[1]
+                                        'l1_ratio':[1,0.5,0.1],
+                                         'C': [0.0001, 0.001, 0.01, 0.1, 1, 10],
                                           },
                    
                   'SVC':{'C':[1e-3,1e-2,1e-1,1e0,1e1,1e2],
@@ -249,8 +218,12 @@ for data_param_key in dataset_name_:
     ## Load preprocessed-imputed data, and modify the variables (add or drop) depending on the prediction setup, which is contained at the 
     #. end of the "data_param_key" variable
     X,race_colnames = load_and_modify_preprocessed_data(data_param_key)
-        
 
+    ## Return dataframe with the outcome label
+    pat_ids,y,target_df,outcome_label = return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
+                                                                  outcome_df,outcome_label,model_names)
+        
+    '''
     ## If not RELAPSE shpuld be predicted, subset the patients according to the availbility of the outcome results
     if parameters_for_analysis[data_param_key]['result_cat']!='RELAPSE':
         
@@ -276,7 +249,7 @@ for data_param_key in dataset_name_:
         pat_ids=pats_with_relapse_df.index.tolist()
         target_df=pats_with_relapse_df[[outcome_label]]
         y=pats_with_relapse_df[[outcome_label]]
-        
+    '''   
        
     df_=target_df.reset_index()#
     df_['STUDYID']=df_['USUBJID'].str.split('/',expand=True)[0].values
