@@ -62,6 +62,35 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'}, 
 
+                        'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_dr_reg_per_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+            
+                        'tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
+                            'result_cat':'RELAPSE'}, 
+
+                         
+                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_with_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+            
+                        'tb21_22_2984_pats_22_vars_relapse_with_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
+                            'result_cat':'RELAPSE'}, 
+
+                         'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'},
+                         
+                        'tb21_22_2263_pats_24_vars_relapse':{
+                            'fn':'tb21_22_2263_pats_24_vars_relapse',
+                            'result_cat':'RELAPSE'},
+
                          'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_with_adherence':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RESULT_AT_END_OF_TREATMENT'},
@@ -104,10 +133,6 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'result_cat':'RELAPSE'},
 
 
-                          'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE'},
-
                          'tb21_22_2984_pats_22_vars_raw_pred_prob_norm_loss':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'raw_pred_prob_norm'},
@@ -115,49 +140,8 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                         'tb21_22_2984_pats_22_vars_llm_pred_prob_norm_loss':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'llm_pred_prob_norm'},
-
                          
-
-                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_weight_norm':{
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
-            
-                        'tb21_22_2984_pats_22_vars_relapse_weight_norm':{
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE'}, 
-                        
-
-                         'tb21_22_2984_pats_22_vars_relapse_1_year':{
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE',
-                             'bins':[0,365][:],
-                             'labels':[1]}, 
-
-                         'tb21_22_2984_pats_22_vars_relapse_half_years':{
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE',
-                             'bins':[0,182,365,np.inf],
-                             'labels':[1,2,3]}, 
-                         
-                         
-                         'tb21_22_2840_pats_23_vars_result_at_end_of_treatment':{
-                            'fn':'tb21_22_2840_pats_23_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
-
-                         'tb21_22_2840_pats_23_vars_relapse':{
-                            'fn':'tb21_22_2840_pats_23_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE'},
-        
-
-                         'tb21_22_2798_pats_24_vars_result_at_end_of_treatment':{
-                            'fn':'tb21_22_2798_pats_24_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},   
-
-                          'tb21_22_2798_pats_24_vars_relapse':{
-                            'fn':'tb21_22_2798_pats_24_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE'}, 
-                         
-                         }
+                        }
 
 
 
@@ -287,6 +271,14 @@ for data_param_key in dataset_name_:
     
     #outcome_label=data_param_key.split('vars_')[-1].upper()
     outcome_label = parameters_for_analysis[data_param_key]['result_cat']
+
+     ## LOAD FINAL PATIENT IDS FOR ANALYSIS, SAVED DURING PREPROCESSING OF THE BASELINE MODELS IN NOTEBOOK S9_3
+    if 'pat_ids_fn' in parameters_for_analysis[data_param_key].keys():
+        fn=f"../data/{parameters_for_analysis[data_param_key]['pat_ids_fn']}_final_pat_ids_for_analysis.pickle"
+    else:  
+        fn=f'../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
+    with open(fn, 'rb') as handle:
+        final_pat_ids_for_analysis=pickle.load(handle)
         
 
     ## Load preprocessed-imputed data, and modify the variables (add or drop) depending on the prediction setup, which is contained at the 
@@ -298,33 +290,7 @@ for data_param_key in dataset_name_:
     pat_ids,y,target_df,outcome_label = return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
                                                                   outcome_df,outcome_label,model_names)
         
-    '''
-    ## If not RELAPSE shpuld be predicted, subset the patients according to the availbility of the outcome results
-    if parameters_for_analysis[data_param_key]['result_cat']!='RELAPSE':
-        
-        ## Extract patients who have their last therapy day before therapy_day_thr ==> these patient probably dropped out
-        last_day_per_pat_df=X.sort_values(by=['DAY']).groupby('USUBJID').apply(lambda x: x.loc[x.index[-1],:])
-        pat_ids=last_day_per_pat_df[last_day_per_pat_df['DAY']>therapy_day_thr]['USUBJID'].tolist()
-        #pat_ids=X['USUBJID'].unique().tolist()
-        
-        ## Subset outcome dataframe to patient considered
-        target_df=outcome_df.loc[pat_ids,outcome_label]
-        y=target_df.loc[pat_ids].replace(label2id)
-        
-    if parameters_for_analysis[data_param_key]['result_cat']=='RELAPSE':
-        outcome_label='RELAPSE'
-        pats_with_relapse_df=extract_21_22_relapse_pats()
 
-        pats_with_relapse_df = pats_with_relapse_df.loc[list(set(X['USUBJID'].unique())&set(pats_with_relapse_df.index))]
-
-        ## Create new prediction labels (or even multilabels) in the "RELAPSE" column based on the relapse day intervals defined in "bins" 
-        if 'bins' in parameters_for_analysis[data_param_key].keys():
-            pats_with_relapse_df = cut_relapse_days_to_interval_categories(pats_with_relapse_df,data_param_key)
-        
-        pat_ids=pats_with_relapse_df.index.tolist()
-        target_df=pats_with_relapse_df[[outcome_label]]
-        y=pats_with_relapse_df[[outcome_label]]
-    ''' 
        
 
     ## Subset initial therapy last day dataframe to all patient considered in analysis
@@ -463,6 +429,7 @@ for data_param_key in dataset_name_:
                     ## If baseline, don't drop these rows, as they are being used to impute some variables at baseline
                     if period_end_day=='baseline':
                         X_subset_=X_subset.copy()
+                        X_subset_ = X_subset_.loc[:,~X_subset_.columns.str.startswith('ARM_')]
 
                     #print(pd.crosstab(df_.loc[df_['USUBJID'].isin(X_subset_['USUBJID'].unique()),'STUDYID'],df_.loc[df_['USUBJID'].isin(X_subset_['USUBJID'].unique()),outcome_label]))
 
@@ -474,7 +441,9 @@ for data_param_key in dataset_name_:
                                                                                                      rand_state,training_data_type,
                                                                                                      columns_to_drop_,
                                                                                                      period_end_day,
-                                                                                                     outcome_label)
+                                                                                                     outcome_label,
+                                                                                                     cv_repeat_num=cv_repeat_num,
+                                                                                                     final_pat_ids_for_analysis=final_pat_ids_for_analysis)
                     
                     
                     

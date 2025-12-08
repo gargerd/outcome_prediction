@@ -33,6 +33,8 @@ parser.add_argument("--model", help="One of the 2 models: ['XGBoost','LogisticRe
 parser.add_argument("--period_end_day", help="One of the 6 periods: [31,62,93,125,160,'all']")
 parser.add_argument("--overwrite_existing_params", help="If set to True, overwrites the existing dictionaries with the parameter search results")
 parser.add_argument("--cpu_cores", help="List of integers, setting which CPU cores to be used. i.e. for the first 4 CPU cores: 0-3")
+parser.add_argument("--pool_method",help="Pooling methods: ['mean_pooling','attention_pooling']")
+
 
 
 args = parser.parse_args()
@@ -41,6 +43,7 @@ data_inclusion_type_ = [args.data_inclusion_type]
 model_names_ = [args.model]
 period_end_day_=[args.period_end_day if args.period_end_day in ['baseline','all'] else int(args.period_end_day)]
 overwrite_existing_params=args.overwrite_existing_params
+pool_methods_=[args.pool_method]
 #print(overwrite_existing_params)
 
 
@@ -77,9 +80,9 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'num_of_common_vars':22,
                             'training_days':120}, 
 
-                        'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
-                            #'fn':'tb21_22_2984_pats_22_vars_relapse_without_dr_reg',#_wo_dr_reg',
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                       'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
+                            'fn':'tb21_22_2984_pats_22_vars_relapse_without_dr_reg',#_wo_dr_reg',
+                            'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
                             'result_cat':'RELAPSE'},
 
@@ -214,36 +217,44 @@ for data_param_key in dataset_name_:
                 for data_inclusion_type in data_inclusion_type_:
                     
                     for autoencoder_merged in autoenc_merged_bool_list[:1]:
-                        combinations.append((
-                            data_param_key, llm_model_name, fine_tuned_tag,
-                            llm_model_name_with_tag, period_end_day,
-                            data_inclusion_type, autoencoder_merged
-                        ))
+
+                         for pool_method in pool_methods_:
+                            
+                             combinations.append((
+                                data_param_key, llm_model_name, fine_tuned_tag,
+                                llm_model_name_with_tag, period_end_day,
+                                data_inclusion_type, autoencoder_merged,
+                                pool_method))
+                  
 
 # Iterate with progress bar
 for combo in tqdm(combinations, desc="Loading embeddings", unit="set"):
-    data_param_key, llm_model_name, fine_tuned_tag, llm_model_name_with_tag, period_end_day, data_inclusion_type, autoencoder_merged = combo
+    data_param_key, llm_model_name, fine_tuned_tag, \
+                    llm_model_name_with_tag, period_end_day, \
+                        data_inclusion_type, autoencoder_merged, pool_method = combo
     
     embed_dict.setdefault(data_param_key, {})
     embed_dict[data_param_key].setdefault(llm_model_name_with_tag, {})
     embed_dict[data_param_key][llm_model_name_with_tag].setdefault(period_end_day, {})
     embed_dict[data_param_key][llm_model_name_with_tag][period_end_day].setdefault(data_inclusion_type, {})
+    embed_dict[data_param_key][llm_model_name_with_tag][period_end_day][data_inclusion_type].setdefault(autoencoder_merged, {})
 
-    print(f"\n→ Loading: {data_param_key} | {llm_model_name_with_tag} | {period_end_day} | {data_inclusion_type} | autoenc={autoencoder_merged}")
+    print(f"\n→ Loading: {data_param_key} | {llm_model_name_with_tag} | {period_end_day} | {data_inclusion_type} | autoenc={autoencoder_merged} | {pool_method} ")
 
     try:
         start = time.time()
         df_pt = load_input_embeddings_of_model(
             data_param_key, llm_model_name, fine_tuned_tag,
-            period_end_day, llm_model_name_with_tag,data_inclusion_type, autoencoder_merged
-        )
+            period_end_day, llm_model_name_with_tag,data_inclusion_type,pool_method,
+            autoencoder_merged)
+        
         elapsed = time.time() - start
         print(f"Loaded in {elapsed:.2f} seconds.")
     except FileNotFoundError:
         warnings.warn(f"Embeddings missing for: {data_param_key} / {llm_model_name_with_tag}. Skipping.")
         continue
 
-    embed_dict[data_param_key][llm_model_name_with_tag][period_end_day][data_inclusion_type][autoencoder_merged] = df_pt
+    embed_dict[data_param_key][llm_model_name_with_tag][period_end_day][data_inclusion_type][autoencoder_merged][pool_method] = df_pt
     #print('Inf present:',any(df_pt==np.inf))
     #print('-Inf present:',any(df_pt==-np.inf))
     assert not np.isinf(df_pt.values).any(), "There are still Inf values!"
@@ -322,19 +333,21 @@ param_search_dict={'RandomForest':{'n_estimators':[300,500,700],
                                    'max_features':['sqrt'],
                                    'learning_rate':[0.1,0.3,0.5,0.8]},
                   
-                  'XGBoost':{'n_estimators':[300,500,700],
-                             'max_depth':[3,5,7,9],
-                             'eta':[0.1,0.3,0.5,0.8],
+                  'XGBoost':{'n_estimators':[300,500],
+                             'max_depth':[5,7,9],
+                             'eta':[0.1,0.4,0.5,0.8],
                              #'subsample':[1.0,0.9,0.8,0.7]
                              #'tree_method':['hist'],
                              #"device": ["cuda"]
                              #'n_jobs':[len(cpu_cores_)]
                             },
-                   
-                  'LogisticRegression':{#'l1_ratio':[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9],
+
+                   'LogisticRegression':{#'l1_ratio':[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1],
+                                        #'l1_ratio':[1]
                                        'n_jobs':[4],
-                                       'l1_ratio':[1,0.5,0.1],
-                                        'C': [0.001, 0.01, 0.1, 1, 10]},
+                                        'l1_ratio':[1],
+                                         'C': [0.001, 0.01, 0.1, 1, 10],
+                                          },
                    
                   'SVC':{'C':[1e-3,1e-2,1e-1,1e0,1e1,1e2],
                         'kernel':['rbf','poly']},
@@ -387,143 +400,150 @@ for data_param_key in dataset_name_:
 
                     for autoencoder_merged in autoenc_merged_bool_list[:1]:
 
-                        ## Load embeddings created by LLM model
-                        print(f'Loading embeddings of {data_param_key} data / {llm_model_name_with_tag} /{period_end_day} /{data_inclusion_type} /autoenc {autoencoder_merged} model')
+                        for pool_method in pool_methods_:
+
+                            ## Load embeddings created by LLM model
+                            print(f'Loading embeddings of {data_param_key} data / {llm_model_name_with_tag} /{period_end_day} /{data_inclusion_type} /autoenc {autoencoder_merged} / {pool_method} model')
+        
+                            ## Load embeddings created by LLM model
+                            #print(f'Loading embeddings of {llm_model_name_with_tag} model')
+                            try:
+                                df=embed_dict[data_param_key][llm_model_name_with_tag][period_end_day][data_inclusion_type][autoencoder_merged][pool_method]
+                            except KeyError:
+                                warnings.warn(f"Embeddings of {parameters_for_analysis[data_param_key]['fn']} data / {llm_model_name_with_tag} model/ {period_end_day} days/ {data_inclusion_type}/ autoenc {autoencoder_merged} /{pool_method} not found! Check if they have been created. Skipping to next item.")
+                                continue
+            
+                            if 'X_fn' in parameters_for_analysis[data_param_key].keys():
+                                fn='../data/'+parameters_for_analysis[data_param_key]['X_fn']+'_all_data_concat.csv.gz'
+                            else:
+                                fn='../data/'+parameters_for_analysis[data_param_key]['fn']+'_all_data_concat.csv.gz'
+                            X=pd.read_csv(fn,index_col=0,low_memory=False)
     
-                        ## Load embeddings created by LLM model
-                        #print(f'Loading embeddings of {llm_model_name_with_tag} model')
-                        try:
-                            df=embed_dict[data_param_key][llm_model_name_with_tag][period_end_day][data_inclusion_type][autoencoder_merged]
-                        except KeyError:
-                            warnings.warn(f"Embeddings of {parameters_for_analysis[data_param_key]['fn']} data / {llm_model_name_with_tag} model/ {period_end_day} days/ {data_inclusion_type}/ autoenc {autoencoder_merged}not found! Check if they have been created. Skipping to next item.")
-                            continue
-        
-                        #print(data_param_key)
-                        fn='../data/'+parameters_for_analysis[data_param_key]['fn']+'_all_data_concat.csv.gz'
-                        X=pd.read_csv(fn,index_col=0,low_memory=False)
-
-              
-                        
-                        ## Return dataframe with the outcome label
-                        pat_ids,y,target_df,outcome_label = return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
-                                                                                      outcome_df,outcome_label,model_names)
-
-                                                 
-                        
-                        ## Drop patients who have their last therapy day before therapy_day_thr ==> these patient probably dropped out
-                        #last_day_per_pat_df=X.sort_values(by=['DAY']).groupby('USUBJID').apply(lambda x: x.loc[x.index[-1],:])
-                        #pat_ids=last_day_per_pat_df[last_day_per_pat_df['DAY']>therapy_day_thr]['USUBJID'].tolist()
-
-                        ## Subset initial therapy last day dataframe to all patient considered in analysis
-                        #init_ther_df=last_initial_therapy_day_df.loc[pat_ids,:]
-                        last_init_ther_days = extract_last_init_therapy_day_from_drug_regimen(pat_ids)
-
-                        ## SUBSET TO PATIENTS WHO WERE TAKING DRUGS DURING THE PERIOD
-                        #pat_ids_ = subset_pats_with_therapy_in_period(period_num,period_end_days,data_param_key,last_init_ther_days)
-                        #pat_ids_= final_pat_ids_for_analysis[period_end_day]['X_train_ids'] + final_pat_ids_for_analysis[period_end_day]['X_test_ids']
-                        
-                        #df=df.loc[list(set(df.index) & set(pat_ids_)),:]
-                        #df=df.loc[(pat_ids_),:]
-        
-        
-                        ## Standardise data + calculate PCA 
-                        #scaled_data,df_pca=return_std_data_and_pca(df,train_params['pca_comp'])
-                        #df_pca=(scaled_data.loc[:,sign_diff_cols['Column'][:20]])
-                        df_pca = return_pca(df,train_params['pca_comp'])
-                        X_dict={'full':df,'pca':df_pca}
-        
-        
-                        df_=y.reset_index()#
-                        df_['STUDYID']=df_['USUBJID'].str.split('/',expand=True)[0].values
-                        #print(pd.crosstab(df_.loc[df_['USUBJID'].isin(pat_ids_),'STUDYID'],df_.loc[df_['USUBJID'].isin(pat_ids_),outcome_label]))
-                        
-                        for training_data_type in training_data_types[:1]:
-        
-        
-                            ## Define X and y dataframes for training
-                            X=X_dict[training_data_type].copy()
-                            #y=y.loc[y.index.get_level_values('USUBJID').isin(pat_ids_)]
-                            #y=y.loc[pat_ids_]
-                                                                         
-                            print(f'+++++++\nRunning training with {training_data_type} model: {X.shape[1]} vars\n+++++++')
-        
-                            #for model_name in model_names[:]:
-                            for n, model_name in enumerate(tqdm(model_names_, unit="model")):
-                                print('\n=====================')
-                                print(model_name)
-
-
-                                fn=f'../data/{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_vars_param_search_results.pickle'
-                                if os.path.exists(fn):
-                                    print('Parameters search results exist! load')
-                                    with open(fn, 'rb') as handle:
-                                        training_results = pickle.load(handle)
-                                
-                                if not os.path.exists(fn):    
-                                    training_results={}
-                                    training_results['train_params']=train_params
-                                    training_results['param_search_results']={}
-        
-        
-                                for cv_repeat_num in range(train_params['num_cv_repeats']):
-
-                                    if overwrite_existing_params!='True':
-                                        
-                                        ## Check if parameter search was already performed for given CV-split If yes, skip to next one!
-                                        if f'cv_rep_{cv_repeat_num}' in training_results['param_search_results'].keys():
-                                            print(f'Params for CV-split {cv_repeat_num+1} exist! Skipping to next CV-split\n')
-                                            continue
+                  
+                            
+                            ## Return dataframe with the outcome label
+                            pat_ids,y,target_df,outcome_label = return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
+                                                                                          outcome_df,outcome_label,model_names)
+    
+                                                     
+                            
+                            ## Drop patients who have their last therapy day before therapy_day_thr ==> these patient probably dropped out
+                            #last_day_per_pat_df=X.sort_values(by=['DAY']).groupby('USUBJID').apply(lambda x: x.loc[x.index[-1],:])
+                            #pat_ids=last_day_per_pat_df[last_day_per_pat_df['DAY']>therapy_day_thr]['USUBJID'].tolist()
+    
+                            ## Subset initial therapy last day dataframe to all patient considered in analysis
+                            #init_ther_df=last_initial_therapy_day_df.loc[pat_ids,:]
+                            last_init_ther_days = extract_last_init_therapy_day_from_drug_regimen(pat_ids)
+    
+                            ## SUBSET TO PATIENTS WHO WERE TAKING DRUGS DURING THE PERIOD
+                            #pat_ids_ = subset_pats_with_therapy_in_period(period_num,period_end_days,data_param_key,last_init_ther_days)
+                            #pat_ids_= final_pat_ids_for_analysis[period_end_day]['X_train_ids'] + final_pat_ids_for_analysis[period_end_day]['X_test_ids']
+                            
+                            #df=df.loc[list(set(df.index) & set(pat_ids_)),:]
+                            #df=df.loc[(pat_ids_),:]
+            
+            
+                            ## Standardise data + calculate PCA 
+                            #scaled_data,df_pca=return_std_data_and_pca(df,train_params['pca_comp'])
+                            #df_pca=(scaled_data.loc[:,sign_diff_cols['Column'][:20]])
+                            df_pca = return_pca(df,train_params['pca_comp'])
+                            X_dict={'full':df,'pca':df_pca}
+            
+            
+                            df_=y.reset_index()#
+                            df_['STUDYID']=df_['USUBJID'].str.split('/',expand=True)[0].values
+                            #print(pd.crosstab(df_.loc[df_['USUBJID'].isin(pat_ids_),'STUDYID'],df_.loc[df_['USUBJID'].isin(pat_ids_),outcome_label]))
+                            
+                            for training_data_type in training_data_types[:1]:
+            
+            
+                                ## Define X and y dataframes for training
+                                X=X_dict[training_data_type].copy()
+                                #y=y.loc[y.index.get_level_values('USUBJID').isin(pat_ids_)]
+                                #y=y.loc[pat_ids_]
+                                                                             
+                                print(f'+++++++\nRunning training with {training_data_type} model: {X.shape[1]} vars\n+++++++')
+            
+                                #for model_name in model_names[:]:
+                                for n, model_name in enumerate(tqdm(model_names_, unit="model")):
+                                    print('\n=====================')
+                                    print(model_name)
+    
+    
+                                    fn=f'../data/{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_vars_param_search_results.pickle'
+                                    if os.path.exists(fn):
+                                        print('Parameters search results exist! load')
+                                        with open(fn, 'rb') as handle:
+                                            training_results = pickle.load(handle)
+                                    
+                                    if not os.path.exists(fn):    
+                                        training_results={}
+                                        training_results['train_params']=train_params
+                                        training_results['param_search_results']={}
+            
+            
+                                    for cv_repeat_num in range(train_params['num_cv_repeats']):
+    
+                                        if overwrite_existing_params!='True':
                                             
-                                    
-                                    rand_state=train_params['random_state'] + cv_repeat_num
-                                    '''
-                                    ## STRATIFY ON OUTCOME LABEL & STUDYID 
-                                    ##. ==> WITHIN STUDY ROC-AUC CLAUCLATION IS POSSIBLE, AS THERE ALWAYS WILL BE AT LEAST ONE UNFAVOUR. LABEL FROM BOTH STUDIES IN THE TEST SET
-                                    y_for_strat=y[outcome_label].astype(str) + "_" + y.index.get_level_values('STUDYID')#.astype(str)
-                                    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=train_params['test_size_ratio'], 
-                                                                                        stratify=y_for_strat,random_state=rand_state)
-
-                                    '''
-                                    X_train_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num]['X_train_ids']
-                                    X_test_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num]['X_test_ids']
-                                    
-                                    X_train=X.loc[list(set(X.index)&set(X_train_ids)),:]
-                                    X_test=X.loc[list(set(X.index)&set(X_test_ids)),:]
-
-                                    y_train=y.loc[list(set(X.index)&set(X_train_ids)),:]
-                                    y_test=y.loc[list(set(X.index)&set(X_test_ids)),:]
-
-
-                                    #if model_name=='LogisticRegression':
-                                    X_train, X_test = scale_by_training_data(X_train, X_test)
-        
-                                    print(f"Num of CV-repeat:{cv_repeat_num+1} - Model:{model_name} - Data inclusion type:{data_inclusion_type} - Period:{period_end_day} ")
-                                    training_results['param_search_results'][f'cv_rep_{cv_repeat_num}']={}
-                                    
-                                    
-                                    train_param_comb=f'{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}'
-                                    param_search_results = run_parameter_search(model_name,
-                                                                        X_train,
-                                                                        y_train,
-                                                                        train_params['k_folds'],
-                                                                        train_params['random_state'],
-                                                                        outcome_label,
-                                                                        param_search_dict,
-                                                                        train_params['weight_by_label_freq'],
-                                                                        train_params,
-                                                                        dense_network_params,
-                                                                        train_param_comb)
-                            
-                            
-        
-                                    training_results['param_search_results'][f'cv_rep_{cv_repeat_num}']=param_search_results
-                            
-                              
-        
-                                ## Save training results
-                                fn=f'../data/{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_vars_param_search_results.pickle'
-                                with open(fn, 'wb') as handle:
-                                    pickle.dump(training_results, handle)
+                                            ## Check if parameter search was already performed for given CV-split If yes, skip to next one!
+                                            if f'cv_rep_{cv_repeat_num}' in training_results['param_search_results'].keys():
+                                                print(f'Params for CV-split {cv_repeat_num+1} exist! Skipping to next CV-split\n')
+                                                continue
+                                                
+                                        
+                                        rand_state=train_params['random_state'] + cv_repeat_num
+                                        '''
+                                        ## STRATIFY ON OUTCOME LABEL & STUDYID 
+                                        ##. ==> WITHIN STUDY ROC-AUC CLAUCLATION IS POSSIBLE, AS THERE ALWAYS WILL BE AT LEAST ONE UNFAVOUR. LABEL FROM BOTH STUDIES IN THE TEST SET
+                                        y_for_strat=y[outcome_label].astype(str) + "_" + y.index.get_level_values('STUDYID')#.astype(str)
+                                        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=train_params['test_size_ratio'], 
+                                                                                            stratify=y_for_strat,random_state=rand_state)
+    
+                                        '''
+                                        X_train_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num]['X_train_ids']
+                                        X_test_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num]['X_test_ids']
+                                        
+                                        X_train=X.loc[list(set(X.index)&set(X_train_ids)),:]
+                                        X_test=X.loc[list(set(X.index)&set(X_test_ids)),:]
+    
+                                        y_train=y.loc[list(set(X.index)&set(X_train_ids)),:]
+                                        y_test=y.loc[list(set(X.index)&set(X_test_ids)),:]
+    
+    
+                                        #if model_name=='LogisticRegression':
+                                        X_train, X_test = scale_by_training_data(X_train, X_test)
+            
+                                        print(f"Num of CV-repeat:{cv_repeat_num+1} - Model:{model_name} - Data inclusion type:{data_inclusion_type} - Period:{period_end_day} ")
+                                        training_results['param_search_results'][f'cv_rep_{cv_repeat_num}']={}
+                                        
+                                        calibrate_model=False
+                                        
+                                        train_param_comb=f'{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}'
+                                        
+                                        param_search_results = run_parameter_search(model_name,
+                                                                            X_train,
+                                                                            y_train,
+                                                                            train_params['k_folds'],
+                                                                            train_params['random_state'],
+                                                                            outcome_label,
+                                                                            param_search_dict,
+                                                                            train_params['weight_by_label_freq'],
+                                                                            train_params,
+                                                                            dense_network_params,
+                                                                            train_param_comb,
+                                                                            calibrate_model)
+                                
+                                
+            
+                                        training_results['param_search_results'][f'cv_rep_{cv_repeat_num}']=param_search_results
+                                
+                                  
+            
+                                    ## Save training results
+                                    fn=f'../data/{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_vars_param_search_results.pickle'
+                                    with open(fn, 'wb') as handle:
+                                        pickle.dump(training_results, handle)
         
 loop_time=time.time()
 print('Training duration:')

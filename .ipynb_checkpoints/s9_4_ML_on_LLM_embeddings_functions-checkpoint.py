@@ -126,6 +126,29 @@ ds_type_descriptions={'dm':'Demographic descriptors',
 outcome_df=pd.read_csv('../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
 outcome_df=outcome_df.set_index('USUBJID',drop=True)
 
+therapy_day_thr=80
+
+## Set up prediction labels
+id2label={0: "FAVOURABLE", 1: "UNFAVOURABLE"}
+label2id={"FAVOURABLE": 0, "UNFAVOURABLE": 1}
+
+### EXTRACT METADATA OF PATIENTS AND ADD THEM AS COLORING VARIABLES TO THE UMAP PLOT
+## Define columns to use for UMAP colouring
+col_columns=['STUDYID','AGE','SEX','RACE','ARM']
+
+## Drop patients who have their last data at an earlier timepin than threshold
+therapy_day_thr=80
+
+llm_model_names=['BioMistral/BioMistral-7B',"epfl-llm/meditron-70b","epfl-llm/meditron-7b",
+                 "google/long-t5-local-base",'google/long-t5-tglobal-large',
+                'text-embedding-3-small']
+
+fine_tuned_tags=['base','fine_tuned']
+training_data_types=['full','pca']
+pca_dims=50
+model_names=['XGBoost','LogisticRegression',]
+period_end_days=['baseline',31,62,93,125,160,'all']
+
 
 
 ##=========================================
@@ -219,7 +242,10 @@ def load_input_emebddings_of_model(data_param_key,llm_model_name,fine_tuned_tag,
     
         return df_pt #,df_npy
 '''
-def load_input_embeddings_of_model(data_param_key, llm_model_name, fine_tuned_tag, period_end_day, llm_model_name_with_tag,data_inclusion_type, autoencoder_merged, max_workers=8):
+###=========================================
+def load_input_embeddings_of_model(data_param_key, llm_model_name, fine_tuned_tag, period_end_day, 
+                                   llm_model_name_with_tag,data_inclusion_type, pool_method,
+                                   autoencoder_merged, max_workers=8):
     
     import os
     import numpy as np
@@ -230,7 +256,7 @@ def load_input_embeddings_of_model(data_param_key, llm_model_name, fine_tuned_ta
     base = "../data"
     dataset_name = parameters_for_analysis[data_param_key]['fn']
 
-    parts = [dataset_name, llm_model_name, fine_tuned_tag, str(period_end_day), 'days', data_inclusion_type]
+    parts = [dataset_name, llm_model_name, fine_tuned_tag, str(period_end_day), 'days', data_inclusion_type,pool_method]
     if autoencoder_merged:
         parts.append('autoencoder_merged')
     model_dir = os.path.join(base, '_'.join(parts))
@@ -254,9 +280,9 @@ def load_input_embeddings_of_model(data_param_key, llm_model_name, fine_tuned_ta
             if text_embedding_mode:
                 embed = np.load(path)
             else:
-                embed = torch.load(path).detach().cpu().numpy()
+                embed = torch.load(path,map_location=torch.device('cpu')).detach().cpu().numpy()
 
-            # 🔐 Replace inf before appending
+            # Replace inf before appending
             embed = np.where(np.isinf(embed), np.nan, embed)
 
             pat_id = fname.replace('_', '/').replace('.pt', '').replace('.npy', '')
@@ -470,6 +496,157 @@ def test_dense_model(model,X_test,y_test_data_with_index):
     return predicted_output_list
 
 
+
+
+####======================================
+from dataclasses import dataclass
+import numpy as np
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from sklearn.covariance import LedoitWolf
+from sklearn.neighbors import NearestNeighbors
+
+# --------- Helpers
+
+def _safe_2d(X):
+    X = np.asarray(X)
+    if X.ndim == 1:
+        X = X.reshape(-1, 1)
+    return X
+
+def _sigmoid_like(x, scale=1.0):
+    # monotone decreasing conf from distances; stable and bounded
+    x = np.asarray(x, dtype=float)
+    return 1.0 / (1.0 + (x / (scale + 1e-8)))
+
+# --------- Mahalanobis with optional PCA
+
+@dataclass
+class OODMahalanobis:
+    use_pca: bool = False               
+    pca_var: float = 0.95               # keep components explaining this variance
+    lambda_scale: float = 1.0           # controls steepness of exp/score mapping
+    standardize: bool = False            # standardize before PCA/cov
+    _scaler: StandardScaler = None
+    _pca: PCA = None
+    _mu: np.ndarray = None
+    _prec: np.ndarray = None            # precision matrix (cov^-1)
+    _dist_scale: float = None           # robust scaling of distances for score mapping
+
+    def fit(self, X_train):
+        X = _safe_2d(X_train)
+        # Standardize
+        if self.standardize:
+            self._scaler = StandardScaler()
+            X = self._scaler.fit_transform(X)
+        # PCA (optional, helps with embeddings / collinearity)
+        if self.use_pca:
+            self._pca = PCA(n_components=self.pca_var, svd_solver="full", random_state=0)
+            X = self._pca.fit_transform(X)
+        # Shrinkage covariance (stable in high-D)
+        lw = LedoitWolf().fit(X)
+        cov = lw.covariance_
+        # Mean & precision
+        self._mu = X.mean(axis=0)
+        # Precision via pseudo-inverse for safety
+        self._prec = np.linalg.pinv(cov)
+        # Calibrate a robust distance scale (median of distances)
+        d = self._mahal_dist(X)
+        self._dist_scale = np.median(d) + 1e-8
+        return self
+
+    def _transform_X(self, X):
+        X = _safe_2d(X)
+        if self.standardize and self._scaler is not None:
+            X = self._scaler.transform(X)
+        if self.use_pca and self._pca is not None:
+            X = self._pca.transform(X)
+        return X
+
+    def _mahal_dist(self, X_trans):
+        diff = X_trans - self._mu
+        # d^2 = (x-mu)^T * prec * (x-mu)
+        d2 = np.einsum("...i,ij,...j->...", diff, self._prec, diff, optimize=True)
+        return np.sqrt(np.clip(d2, 0, None))
+
+    def distances(self, X):
+        X_t = self._transform_X(X)
+        return self._mahal_dist(X_t)
+
+    def confidence(self, X):
+        # Higher distance -> lower confidence; map distances to (0,1]
+        d = self.distances(X)
+        # Two good options; uncomment your preference
+
+        # Option A: exponential falloff
+        # return np.exp(-self.lambda_scale * d / (self._dist_scale + 1e-8))
+
+        # Option B: logistic-like (robust to tails)
+        return _sigmoid_like(d, scale=self._dist_scale / max(self.lambda_scale, 1e-8))
+
+# --------- kNN density
+
+@dataclass
+class OODKNN:
+    k: int = 20
+    leaf_size: int = 30
+    metric: str = "euclidean"
+    standardize: bool = True
+    use_pca: bool = False
+    pca_var: float = 0.95
+    _scaler: StandardScaler = None
+    _pca: PCA = None
+    _nn: NearestNeighbors = None
+    _dist_scale: float = None
+
+    def fit(self, X_train):
+        X = _safe_2d(X_train)
+        if self.standardize:
+            self._scaler = StandardScaler()
+            X = self._scaler.fit_transform(X)
+        if self.use_pca:
+            self._pca = PCA(n_components=self.pca_var, svd_solver="full", random_state=0)
+            X = self._pca.fit_transform(X)
+        self._nn = NearestNeighbors(n_neighbors=min(self.k, len(X)), leaf_size=self.leaf_size,
+                                    metric=self.metric, n_jobs=-1)
+        self._nn.fit(X)
+        # Calibrate distance scale by average kNN distance on training
+        d = self.avg_knn_distance(X)
+        self._dist_scale = np.median(d) + 1e-8
+        return self
+
+    def _transform_X(self, X):
+        X = _safe_2d(X)
+        if self.standardize and self._scaler is not None:
+            X = self._scaler.transform(X)
+        if self.use_pca and self._pca is not None:
+            X = self._pca.transform(X)
+        return X
+
+    def avg_knn_distance(self, X_trans):
+        # returns average distance to k nearest neighbors for each sample
+        # kneighbors returns distances to k neighbors per row (including self if fitted on same set)
+        dists, _ = self._nn.kneighbors(X_trans, n_neighbors=min(self.k, self._nn.n_neighbors))
+        # If self is included (distance 0), average still behaves sensibly
+        return dists.mean(axis=1)
+
+    def density(self, X):
+        X_t = self._transform_X(X)
+        avg_d = self.avg_knn_distance(X_t)
+        # density proxy (higher is denser)
+        dens = 1.0 / (avg_d + 1e-8)
+        return dens
+
+    def confidence(self, X):
+        # Convert density to [0,1] confidence, robust scaling by training median distance
+        X_t = self._transform_X(X)
+        avg_d = self.avg_knn_distance(X_t)
+        # map distance to confidence (lower distance -> higher confidence)
+        return _sigmoid_like(avg_d, scale=self._dist_scale)
+
+
+
 ###=========================================
 ### FUNCTION FOR TRAINING THE ML MODELS & CALCULATING CV ROC-AUC SCORES
 def init_model(model_name,X_train,y_train_data,
@@ -679,9 +856,128 @@ def scale_by_training_data(X_train, X_test):
     X_test.loc[:,:]=std_scaler.transform(X_test)
     return (X_train, X_test)
 
+
+
+
+######====================================
+## 1. Calibrate model with best hyperparams + extract calibrated prediction probs
+## 2. Calculate confidence statistice from calirbated prediction probs.
+
+def calibrate_model_and_extract_confidence_metrics(model,
+                                                   X_train,
+                                                   X_test,
+                                                   y_train,
+                                                   outcome_label,
+                                                   label_weights_dict,
+                                                   cv_roc_auc_scores=None,
+                                                   cv_splitter=None):
+    import copy
+
+    ## Calculate calibrated probabilities of trained best model
+    from sklearn.calibration import CalibratedClassifierCV
+
+    if cv_splitter is None and cv_roc_auc_scores is not None:
+        ## Extract train and validation ids to perform calibration on the same train-test sets as the hyperparam search
+        cv_splits=zip(cv_roc_auc_scores['inner_train_val_splits']['train_ids'],
+                      cv_roc_auc_scores['inner_train_val_splits']['test_ids'])
+    
+    if cv_splitter is None and cv_roc_auc_scores is None:
+        raise('Please provide either a CV-splitter object for the internal CV or cv_roc_auc_scores dictionary of the trained model!')
+        
+    if cv_splitter is not None:
+        
+        ## STRATIFY ON OUTCOME LABEL & STUDYID 
+        ##. ==> WITHIN STUDY ROC-AUC CLAUCLATION IS POSSIBLE, AS THERE ALWAYS WILL BE AT LEAST ONE UNFAVOUR. LABEL FROM BOTH STUDIES IN THE TEST SET
+        df_=y_train.reset_index().drop_duplicates(subset='USUBJID')#.set_index('USUBJID',drop=True)
+        df_['STUDYID']=df_['USUBJID'].str.split('/',expand=True)[0].values
+        df_=df_.set_index('USUBJID')
+        y_for_strat=df_[outcome_label].astype(str) + "_" + df_['STUDYID']#.astype(str)
+    
+        pat_ids=df_.index
+        n_of_classes=len(y_train[outcome_label].unique())
+        cv_splits=cv_splitter.split(pat_ids, y_for_strat.loc[pat_ids])
+
+    
+        
+    sample_weights=y_train[outcome_label].map(label_weights_dict).values
+
+    ## Fit calibrated model
+    calibrated_model = CalibratedClassifierCV(estimator=model,
+                                               cv=cv_splits,
+                                               #n_jobs=-1,                                        
+                                               method="isotonic")
+    calibrated_model.fit(X_train.values, 
+                         y_train.values,
+                         sample_weight=sample_weights)
+
+    ## Extract calibrated pred probs
+    probs_calibrated = calibrated_model.predict_proba(X_test)[:, 1]
+    probs_uncalibrated = model.predict_proba(X_test)[:, 1]
+
+    
+    """
+    Compute per-model confidence statistics from probabilities.
+    """
+    eps = 1e-12
+    p_cal = np.clip(probs_calibrated, eps, 1 - eps)
+    p_uncal = np.clip(probs_uncalibrated, eps, 1 - eps)
+    margin = np.abs(p_cal - 0.5)
+    entropy = -(p_cal * np.log(p_cal) + (1 - p_cal) * np.log(1 - p_cal))
+    conf_entropy = 1 - entropy / np.log(2)
+    conf_metrics = pd.DataFrame({
+        'prob_calibrated': p_cal,
+        'prob_uncalibrated':p_uncal,
+        'margin': margin,
+        'entropy_conf': conf_entropy
+    })
+    if probs_uncalibrated is not None:
+        conf_metrics['delta_calib'] = p_cal - p_uncal
+    else:
+        conf_metrics['delta_calib'] = 0.0
+
+    conf_metrics.index=X_test.index
+
+    ## Add out-of-distribution confidence variables (Mahalanobis and KNN confidence)
+    #ood_conf_df=cv_roc_auc_scores['ood_conf']
+    #conf_metrics.loc[ood_conf_df.index,ood_conf_df.columns.tolist()] = ood_conf_df.values
+    
+    return conf_metrics#,calibrated_model
+
+
+
 ##=========================================
-def run_cv(X,y,k_folds,model_name,weight_by_label_freq,random_state,outcome_label,model_params,
-           train_params,dense_network_params,train_param_comb):
+def return_ood_metrics(X_train,X_test,use_pca):
+     
+    # CAlculate Mahalanobis confidence value: Sigmoid(Mahal. distance to mean of training distribution)
+    ood_mahal = OODMahalanobis(use_pca=use_pca, standardize=False).fit(X_train)
+    mahal_conf_val = ood_mahal.confidence(X_test)  # shape (n_val,)
+
+    # Calculate KNN confidence value: Sigmoid((1/average distance) to its k nearest neighbours in the training data)
+    ood_kbb = OODKNN(use_pca=use_pca, standardize=False).fit(X_train)
+    knn_conf_val = ood_kbb.confidence(X_test)  # shape (n_val,)
+
+    ## Aggregate the OOD confidence values into one dataframe
+    ood_df=pd.DataFrame({'knn_conf_val':knn_conf_val,
+                              'mahal_conf_val':mahal_conf_val},
+                               index=X_test.index)
+
+    return ood_df
+
+
+##=========================================
+def run_cv(X,
+           y,
+           k_folds,
+           model_name,
+           weight_by_label_freq,
+           random_state,
+           outcome_label,
+           model_params,
+           train_params,
+           dense_network_params,
+           train_param_comb,
+           calibrate_model=False):
+
     
     from sklearn.model_selection import StratifiedKFold
     from sklearn.metrics import roc_auc_score,r2_score
@@ -707,8 +1003,11 @@ def run_cv(X,y,k_folds,model_name,weight_by_label_freq,random_state,outcome_labe
     # Initialize lists to store the evaluation scores
     train_roc_auc_scores_all,test_roc_auc_scores_all=[],[]
     train_roc_auc_scores_per_study,test_roc_auc_scores_per_study=[],[]
+    train_ids_,test_ids_,conf_metrics_list=[],[],[]
     
     cv_roc_auc_scores={}
+
+    cv_roc_auc_scores['inner_train_val_splits']={}
 
 
     ## STRATIFY ON OUTCOME LABEL & STUDYID 
@@ -725,6 +1024,9 @@ def run_cv(X,y,k_folds,model_name,weight_by_label_freq,random_state,outcome_labe
         
         train_pat_ids=pat_ids[train_index]
         test_pat_ids=pat_ids[test_index]
+
+        train_ids_.append(train_index)
+        test_ids_.append(train_index)
         
         #print('train test index set',set(train_pat_ids)&set(test_pat_ids))
         
@@ -736,6 +1038,7 @@ def run_cv(X,y,k_folds,model_name,weight_by_label_freq,random_state,outcome_labe
         #X_train_fold, X_test_fold = scale_by_training_data(X.loc[train_mask,:], X.loc[test_mask,:])
         X_train_fold, X_test_fold =X.loc[train_mask,:], X.loc[test_mask,:]
         y_train_fold,y_test_fold=y.loc[train_mask,:],y.loc[test_mask,:]
+
 
         
         ## Init model
@@ -759,6 +1062,8 @@ def run_cv(X,y,k_folds,model_name,weight_by_label_freq,random_state,outcome_labe
                                         plot_loss_function=True,verbose=True)
         #stop=time.time()
         #print_elapsed_time(start,stop)
+
+        y_train_fold_=y_train_fold.copy()
         
         if 'Dense' in model_name:
             model.eval()  # Set the model to evaluation mode
@@ -766,13 +1071,13 @@ def run_cv(X,y,k_folds,model_name,weight_by_label_freq,random_state,outcome_labe
                 #inputs = torch.tensor(test_data, dtype=torch.float32)  # Your test data
 
                 ## CLASSIFIER
-                #train_probabilities = test_dense_model(model,X_train_fold,y_train_fold)[:,1]
+                train_probabilities = test_dense_model(model,X_train_fold,y_train_fold)[:,1]
                 #print('train_probabilities',test_dense_model(model,X_train_fold,y_train_fold))
-                #test_probabilities = test_dense_model(model,X_test_fold,y_test_fold)[:,1]
+                test_probabilities = test_dense_model(model,X_test_fold,y_test_fold)[:,1]
 
                 ## REGRESSION
-                train_probabilities = test_dense_model(model,X_train_fold,y_train_fold)
-                test_probabilities = test_dense_model(model,X_test_fold,y_test_fold)
+                #train_probabilities = test_dense_model(model,X_train_fold,y_train_fold)
+                #test_probabilities = test_dense_model(model,X_test_fold,y_test_fold)
 
                 fig,ax=plt.subplots(1,1,figsize=(10,5))
                 #print(y_train_fold.values.flatten())
@@ -823,8 +1128,37 @@ def run_cv(X,y,k_folds,model_name,weight_by_label_freq,random_state,outcome_labe
         # Append the scores to the lists
         train_roc_auc_scores_all.append(train_roc_auc)
         test_roc_auc_scores_all.append(test_roc_auc)
+
+
+        if calibrate_model==True:
+
+            use_pca=True
+            conf_metrics = calibrate_model_and_extract_confidence_metrics(
+                                                               model=model,
+                                                               X_train=X_train_fold,
+                                                               X_test=X_test_fold,
+                                                               y_train=y_train_fold_,
+                                                               outcome_label=outcome_label,
+                                                               label_weights_dict=label_weights_dict,
+                                                               cv_roc_auc_scores=None,
+                                                               cv_splitter=skf)
+   
+            
+            ood_df = return_ood_metrics(X_train_fold,X_test_fold,use_pca)
+        
+            #ood_conf_df=cv_roc_auc_scores['ood_conf']
+            conf_metrics.loc[ood_df.index,ood_df.columns.tolist()] = ood_df.values
+            conf_metrics_list.append(conf_metrics)
         
 
+    ## Add train-test IDs
+    cv_roc_auc_scores['inner_train_val_splits']['train_ids']=train_ids_
+    cv_roc_auc_scores['inner_train_val_splits']['test_ids']=test_ids_
+
+    if calibrate_model==True:
+        ## Concatenate and add Confidence metrics + Mahalanobis and KNN confidence dataframes of the 5 validation sets
+        cv_roc_auc_scores['inner_CV_conf_metrics'] = pd.concat(conf_metrics_list).loc[X.index,:]
+    
     ## Add ROC-AUC values calculated across all studies to the result dictionary
     cv_roc_auc_scores['train_score']=train_roc_auc_scores_all
     cv_roc_auc_scores['test_score']=test_roc_auc_scores_all
@@ -846,17 +1180,21 @@ def run_cv(X,y,k_folds,model_name,weight_by_label_freq,random_state,outcome_labe
 
 
 
-
 ##=========================================
 ## RUN CV OF GIVEN MODEL & TRAIN FINAL MODEL AFTERWARDS
-def run_parameter_search(model_name,X_train,y_train_data,
-                                k_folds,random_state,
-                                outcome_label,
-                                param_search_dict,
-                                weight_by_label_freq,
-                                train_params,
-                                dense_network_params,
-                                train_param_comb):
+def run_parameter_search(model_name,
+                         X_train,
+                         y_train_data,
+                         k_folds,
+                        random_state,
+                        outcome_label,
+                        param_search_dict,
+                        weight_by_label_freq,
+                        train_params,
+                        dense_network_params,
+                        train_param_comb,
+                        calibrate_model):
+    
     from tqdm.auto import tqdm
     
     param_search_results={}
@@ -875,13 +1213,18 @@ def run_parameter_search(model_name,X_train,y_train_data,
         #print(f'Running CV of {model_name} model with parameters:{param_set_string}')
               
         ## CALCULATE CV-SCORES
-        cv_roc_auc_scores=run_cv(X_train,y_train_data,k_folds,
-                                 model_name,weight_by_label_freq,
-                                 random_state,outcome_label,
+        cv_roc_auc_scores=run_cv(X_train,
+                                 y_train_data,
+                                 k_folds,
+                                 model_name,
+                                 weight_by_label_freq,
+                                 random_state,
+                                 outcome_label,
                                  model_params,
                                  train_params,
                                  dense_network_params,
-                                 train_param_comb)
+                                 train_param_comb,
+                                calibrate_model)
         
         ## SAVE RESULT OF CV WITH GIVEN PARAMETER SET
         param_search_results[param_set_string]=cv_roc_auc_scores
@@ -995,7 +1338,8 @@ def calc_roc_auc_score_of_model(model_name,
                                 weight_by_label_freq,
                                 train_params,
                                 dense_network_params,
-                                train_param_comb):
+                                train_param_comb,
+                               calibrate_model):
         
     ### RUN CV & TRAIN MODEL AFTERWARDS
     if model_name in ['XGBoost','GradientBoost']:
@@ -1011,7 +1355,8 @@ def calc_roc_auc_score_of_model(model_name,
                                  model_params,
                                  train_params,
                                  dense_network_params,
-                                 train_param_comb)
+                                 train_param_comb,
+                                calibrate_model)
         
         ## INITIALIZE MODEL & TRAIN 
         model,label_weights,label_weights_dict=init_model(model_name,
@@ -1041,7 +1386,8 @@ def calc_roc_auc_score_of_model(model_name,
                                  model_params,
                                  train_params,
                                  dense_network_params,
-                                 train_param_comb)
+                                 train_param_comb,
+                                calibrate_model)
         
         ## INITIALIZE MODEL & TRAIN 
         model,label_weights,label_weights_dict=init_model(model_name,
@@ -1532,3 +1878,61 @@ def return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
         
         
     return pat_ids,y,target_df,outcome_label_
+
+
+######====================================
+## 1. Calibrate model with best hyperparams + extract calibrated prediction probs
+## 2. Calculate confidence statistice from calirbated prediction probs.
+
+def extract_confidence_and_ood_metrics(model,cv_roc_auc_scores,X_train,y_train,outcome_label,label_weights_dict):
+
+    ## Calculate calibrated probabilities of trained best model
+    from sklearn.calibration import CalibratedClassifierCV
+
+    ## Extract train and validation ids to perform calibration on the same train-test sets as the hyperparam search
+    cv_splits=zip(cv_roc_auc_scores['inner_train_val_splits']['train_ids'],
+                  cv_roc_auc_scores['inner_train_val_splits']['test_ids'])
+    
+    sample_weights=y_train[outcome_label].map(label_weights_dict).values
+
+    ## Fit calibrated model
+    calibrated_model = CalibratedClassifierCV(estimator=model,
+                                       cv=cv_splits,
+                                       #n_jobs=-1,                                        
+                                       method="isotonic")
+    calibrated_model.fit(X_train.values, 
+                           y_train.values,
+                          sample_weight=sample_weights)
+
+    ## Extract calibrated pred probs
+    probs_calibrated = calibrated_model.predict_proba(X_train)[:, 1]
+    probs_uncalibrated = model.predict_proba(X_train)[:, 1]
+
+    
+    """
+    Compute per-model confidence statistics from probabilities.
+    """
+    eps = 1e-12
+    p_cal = np.clip(probs_calibrated, eps, 1 - eps)
+    p_uncal = np.clip(probs_uncalibrated, eps, 1 - eps)
+    margin = np.abs(p_cal - 0.5)
+    entropy = -(p_cal * np.log(p_cal) + (1 - p_cal) * np.log(1 - p_cal))
+    conf_entropy = 1 - entropy / np.log(2)
+    conf_metrics = pd.DataFrame({
+        'prob_calibrated': p_cal,
+        'prob_uncalibrated':p_uncal,
+        'margin': margin,
+        'entropy_conf': conf_entropy
+    })
+    if probs_uncalibrated is not None:
+        conf_metrics['delta_calib'] = p_cal - p_uncal
+    else:
+        conf_metrics['delta_calib'] = 0.0
+
+    conf_metrics.index=X_train.index
+
+    ## Add out-of-distribution confidence variables (Mahalanobis and KNN confidence)
+    ood_conf_df=cv_roc_auc_scores['ood_conf']
+    conf_metrics.loc[ood_conf_df.index,ood_conf_df.columns.tolist()] = ood_conf_df.values
+    
+    return conf_metrics,calibrated_model

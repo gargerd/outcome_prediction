@@ -1,677 +1,0 @@
-Loading anaconda
-Activate conda env
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment
-last_therapy_day
-31
-LogisticRegression
-/data/gpfs/projects/punim2121/C-Path/outcome_prediction/outcome_prediction/s9_3_baseline_ML_models_functions.py:1251: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  de_['RELAPSE']=de_['RELAPSE'].astype(float)
-===========
- tb21_22_2984_pats_22_vars_result_at_end_of_treatment 
-
-pat_ids_ before arm check 2927
-2927
-Excluded 0 out of 2927 patients (0.0%)
-
-  0%|          | 0/1 [00:00<?, ?model/s]
-=====================
-LogisticRegression
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment - Model: LogisticRegression - Period: 31 days  - data for training: last_therapy_day - CV:1
-+++++++++++++++++
-RESULT_AT_END_OF_TREATMENT  FAVOURABLE  UNFAVOURABLE
-STUDYID                                             
-TB-1021                           1382            46
-TB-1022                           1392            54
-pat_ids_ 2927 final_pat_ids_for_anal 2874
-Running training with last_therapy_day model: 43 vars
-Num of CV-repeat:1
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:   6%|▌         | 1/18 [00:01<00:23,  1.39s/parameter_set][A
-Processing:  17%|█▋        | 3/18 [00:01<00:06,  2.29parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:02<00:08,  1.68parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:05<00:18,  1.43s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:08<00:23,  1.96s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:08<00:10,  1.06s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:09<00:07,  1.18parameter_set/s][A
-Processing:  56%|█████▌    | 10/18 [00:10<00:07,  1.00parameter_set/s][A
-Processing:  61%|██████    | 11/18 [00:13<00:11,  1.60s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:16<00:12,  2.05s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:17<00:04,  1.18s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:17<00:02,  1.04parameter_set/s][A
-Processing:  89%|████████▉ | 16/18 [00:18<00:02,  1.07s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:21<00:01,  1.56s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:24<00:00,  2.01s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:24<00:00,  1.38s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment - Model: LogisticRegression - Period: 31 days  - data for training: last_therapy_day - CV:2
-+++++++++++++++++
-RESULT_AT_END_OF_TREATMENT  FAVOURABLE  UNFAVOURABLE
-STUDYID                                             
-TB-1021                           1382            46
-TB-1022                           1392            54
-pat_ids_ 2927 final_pat_ids_for_anal 2874
-Running training with last_therapy_day model: 43 vars
-Num of CV-repeat:2
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 13.24parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:03<00:13,  1.05parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:06<00:20,  1.57s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:09<00:24,  2.03s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:09<00:11,  1.13s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:10<00:09,  1.07s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:11<00:08,  1.12s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:14<00:11,  1.59s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:17<00:12,  2.03s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:17<00:04,  1.18s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:18<00:02,  1.04parameter_set/s][A
-Processing:  89%|████████▉ | 16/18 [00:19<00:02,  1.03s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:22<00:01,  1.49s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:25<00:00,  1.96s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:25<00:00,  1.41s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment - Model: LogisticRegression - Period: 31 days  - data for training: last_therapy_day - CV:3
-+++++++++++++++++
-RESULT_AT_END_OF_TREATMENT  FAVOURABLE  UNFAVOURABLE
-STUDYID                                             
-TB-1021                           1382            46
-TB-1022                           1392            54
-pat_ids_ 2927 final_pat_ids_for_anal 2874
-Running training with last_therapy_day model: 43 vars
-Num of CV-repeat:3
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 13.57parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:03<00:12,  1.09parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:06<00:19,  1.52s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:09<00:23,  1.97s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:09<00:11,  1.10s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:09<00:07,  1.15parameter_set/s][A
-Processing:  56%|█████▌    | 10/18 [00:10<00:06,  1.16parameter_set/s][A
-Processing:  61%|██████    | 11/18 [00:13<00:09,  1.38s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:16<00:11,  1.86s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:16<00:04,  1.09s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:16<00:02,  1.12parameter_set/s][A
-Processing:  89%|████████▉ | 16/18 [00:17<00:01,  1.18parameter_set/s][A
-Processing:  94%|█████████▍| 17/18 [00:20<00:01,  1.35s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:23<00:00,  1.84s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:23<00:00,  1.29s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment - Model: LogisticRegression - Period: 31 days  - data for training: last_therapy_day - CV:4
-+++++++++++++++++
-RESULT_AT_END_OF_TREATMENT  FAVOURABLE  UNFAVOURABLE
-STUDYID                                             
-TB-1021                           1382            46
-TB-1022                           1392            54
-pat_ids_ 2927 final_pat_ids_for_anal 2874
-Running training with last_therapy_day model: 43 vars
-Num of CV-repeat:4
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 13.34parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:03<00:13,  1.06parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:06<00:20,  1.55s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:09<00:24,  2.02s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:09<00:11,  1.13s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:10<00:10,  1.20s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:12<00:09,  1.21s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:14<00:10,  1.56s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:17<00:11,  1.99s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:18<00:04,  1.16s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:18<00:02,  1.06parameter_set/s][A
-Processing:  89%|████████▉ | 16/18 [00:19<00:02,  1.02s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:21<00:01,  1.40s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:25<00:00,  1.87s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:25<00:00,  1.39s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment - Model: LogisticRegression - Period: 31 days  - data for training: last_therapy_day - CV:5
-+++++++++++++++++
-RESULT_AT_END_OF_TREATMENT  FAVOURABLE  UNFAVOURABLE
-STUDYID                                             
-TB-1021                           1382            46
-TB-1022                           1392            54
-pat_ids_ 2927 final_pat_ids_for_anal 2874
-Running training with last_therapy_day model: 43 vars
-Num of CV-repeat:5
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 13.63parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:03<00:15,  1.09s/parameter_set][A
-Processing:  28%|██▊       | 5/18 [00:06<00:22,  1.70s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:10<00:26,  2.17s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:10<00:12,  1.21s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:11<00:10,  1.14s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:12<00:09,  1.18s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:15<00:11,  1.67s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:18<00:12,  2.09s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:19<00:04,  1.22s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:19<00:03,  1.16s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:21<00:02,  1.17s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:23<00:01,  1.60s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:27<00:00,  2.04s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:27<00:00,  1.51s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment - Model: LogisticRegression - Period: 31 days  - data for training: last_therapy_day - CV:6
-+++++++++++++++++
-RESULT_AT_END_OF_TREATMENT  FAVOURABLE  UNFAVOURABLE
-STUDYID                                             
-TB-1021                           1382            46
-TB-1022                           1392            54
-pat_ids_ 2927 final_pat_ids_for_anal 2874
-Running training with last_therapy_day model: 43 vars
-Num of CV-repeat:6
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 11.84parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:03<00:15,  1.09s/parameter_set][A
-Processing:  28%|██▊       | 5/18 [00:06<00:22,  1.70s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:10<00:26,  2.17s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:10<00:12,  1.21s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:11<00:11,  1.29s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:13<00:10,  1.32s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:16<00:12,  1.83s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:19<00:13,  2.21s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:19<00:05,  1.28s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:20<00:03,  1.05s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:21<00:02,  1.12s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:24<00:01,  1.65s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:27<00:00,  2.09s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:27<00:00,  1.55s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment - Model: LogisticRegression - Period: 31 days  - data for training: last_therapy_day - CV:7
-+++++++++++++++++
-RESULT_AT_END_OF_TREATMENT  FAVOURABLE  UNFAVOURABLE
-STUDYID                                             
-TB-1021                           1382            46
-TB-1022                           1392            54
-pat_ids_ 2927 final_pat_ids_for_anal 2874
-Running training with last_therapy_day model: 43 vars
-Num of CV-repeat:7
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 11.27parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:03<00:13,  1.02parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:06<00:20,  1.56s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:09<00:24,  2.06s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:09<00:11,  1.15s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:10<00:09,  1.08s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:11<00:08,  1.06s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:14<00:10,  1.47s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:17<00:11,  1.93s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:17<00:04,  1.13s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:17<00:02,  1.08parameter_set/s][A
-Processing:  89%|████████▉ | 16/18 [00:18<00:01,  1.11parameter_set/s][A
-Processing:  94%|█████████▍| 17/18 [00:21<00:01,  1.33s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:24<00:00,  1.83s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:24<00:00,  1.35s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment - Model: LogisticRegression - Period: 31 days  - data for training: last_therapy_day - CV:8
-+++++++++++++++++
-RESULT_AT_END_OF_TREATMENT  FAVOURABLE  UNFAVOURABLE
-STUDYID                                             
-TB-1021                           1382            46
-TB-1022                           1392            54
-pat_ids_ 2927 final_pat_ids_for_anal 2874
-Running training with last_therapy_day model: 43 vars
-Num of CV-repeat:8
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 13.33parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:00<00:03,  4.44parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:03<00:13,  1.05s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:06<00:19,  1.65s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:07<00:09,  1.07parameter_set/s][A
-Processing:  50%|█████     | 9/18 [00:07<00:06,  1.34parameter_set/s][A
-Processing:  56%|█████▌    | 10/18 [00:08<00:06,  1.32parameter_set/s][A
-Processing:  61%|██████    | 11/18 [00:10<00:08,  1.26s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:13<00:10,  1.77s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:13<00:04,  1.03s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:14<00:02,  1.19parameter_set/s][A
-Processing:  89%|████████▉ | 16/18 [00:14<00:01,  1.30parameter_set/s][A
-Processing:  94%|█████████▍| 17/18 [00:16<00:01,  1.14s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:20<00:00,  1.68s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:20<00:00,  1.11s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment - Model: LogisticRegression - Period: 31 days  - data for training: last_therapy_day - CV:9
-+++++++++++++++++
-RESULT_AT_END_OF_TREATMENT  FAVOURABLE  UNFAVOURABLE
-STUDYID                                             
-TB-1021                           1382            46
-TB-1022                           1392            54
-pat_ids_ 2927 final_pat_ids_for_anal 2874
-Running training with last_therapy_day model: 43 vars
-Num of CV-repeat:9
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 12.92parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:03<00:13,  1.08parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:06<00:20,  1.54s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:09<00:24,  2.01s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:09<00:11,  1.13s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:09<00:08,  1.10parameter_set/s][A
-Processing:  56%|█████▌    | 10/18 [00:10<00:07,  1.09parameter_set/s][A
-Processing:  61%|██████    | 11/18 [00:13<00:10,  1.47s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:16<00:11,  1.93s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:16<00:04,  1.12s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:17<00:02,  1.10parameter_set/s][A
-Processing:  89%|████████▉ | 16/18 [00:17<00:01,  1.16parameter_set/s][A
-Processing:  94%|█████████▍| 17/18 [00:20<00:01,  1.37s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:23<00:00,  1.84s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:23<00:00,  1.32s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment - Model: LogisticRegression - Period: 31 days  - data for training: last_therapy_day - CV:10
-+++++++++++++++++
-RESULT_AT_END_OF_TREATMENT  FAVOURABLE  UNFAVOURABLE
-STUDYID                                             
-TB-1021                           1382            46
-TB-1022                           1392            54
-pat_ids_ 2927 final_pat_ids_for_anal 2874
-Running training with last_therapy_day model: 43 vars
-Num of CV-repeat:10
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 13.74parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:01<00:05,  2.56parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:04<00:15,  1.18s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:07<00:21,  1.75s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:07<00:09,  1.01parameter_set/s][A
-Processing:  50%|█████     | 9/18 [00:07<00:07,  1.24parameter_set/s][A
-Processing:  56%|█████▌    | 10/18 [00:09<00:07,  1.13parameter_set/s][A
-Processing:  61%|██████    | 11/18 [00:12<00:10,  1.48s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:15<00:11,  1.93s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:15<00:04,  1.12s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:15<00:02,  1.09parameter_set/s][A
-Processing:  89%|████████▉ | 16/18 [00:16<00:01,  1.05parameter_set/s][A
-Processing:  94%|█████████▍| 17/18 [00:19<00:01,  1.54s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:23<00:00,  1.98s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:23<00:00,  1.28s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment - Model: LogisticRegression - Period: 31 days  - data for training: last_therapy_day - CV:11
-+++++++++++++++++
-RESULT_AT_END_OF_TREATMENT  FAVOURABLE  UNFAVOURABLE
-STUDYID                                             
-TB-1021                           1382            46
-TB-1022                           1392            54
-pat_ids_ 2927 final_pat_ids_for_anal 2874
-Running training with last_therapy_day model: 43 vars
-Num of CV-repeat:11
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 13.44parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:03<00:12,  1.10parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:06<00:20,  1.54s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:09<00:23,  2.00s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:09<00:11,  1.12s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:09<00:07,  1.13parameter_set/s][A
-Processing:  56%|█████▌    | 10/18 [00:10<00:07,  1.13parameter_set/s][A
-Processing:  61%|██████    | 11/18 [00:13<00:09,  1.38s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:16<00:11,  1.89s/parameter_set][A
-Processing:  72%|███████▏  | 13/18 [00:16<00:06,  1.40s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:16<00:04,  1.04s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:16<00:02,  1.23parameter_set/s][A
-Processing:  89%|████████▉ | 16/18 [00:17<00:01,  1.24parameter_set/s][A
-Processing:  94%|█████████▍| 17/18 [00:20<00:01,  1.32s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:23<00:00,  1.85s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:23<00:00,  1.30s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment - Model: LogisticRegression - Period: 31 days  - data for training: last_therapy_day - CV:12
-+++++++++++++++++
-RESULT_AT_END_OF_TREATMENT  FAVOURABLE  UNFAVOURABLE
-STUDYID                                             
-TB-1021                           1382            46
-TB-1022                           1392            54
-pat_ids_ 2927 final_pat_ids_for_anal 2874
-Running training with last_therapy_day model: 43 vars
-Num of CV-repeat:12
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 13.34parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:03<00:12,  1.14parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:06<00:19,  1.51s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:09<00:23,  1.98s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:09<00:11,  1.10s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:09<00:08,  1.11parameter_set/s][A
-Processing:  56%|█████▌    | 10/18 [00:10<00:07,  1.10parameter_set/s][A
-Processing:  61%|██████    | 11/18 [00:13<00:09,  1.42s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:16<00:11,  1.88s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:16<00:04,  1.10s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:16<00:02,  1.10parameter_set/s][A
-Processing:  89%|████████▉ | 16/18 [00:17<00:01,  1.11parameter_set/s][A
-Processing:  94%|█████████▍| 17/18 [00:20<00:01,  1.41s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:23<00:00,  1.90s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:23<00:00,  1.32s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment - Model: LogisticRegression - Period: 31 days  - data for training: last_therapy_day - CV:13
-+++++++++++++++++
-RESULT_AT_END_OF_TREATMENT  FAVOURABLE  UNFAVOURABLE
-STUDYID                                             
-TB-1021                           1382            46
-TB-1022                           1392            54
-pat_ids_ 2927 final_pat_ids_for_anal 2874
-Running training with last_therapy_day model: 43 vars
-Num of CV-repeat:13
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 13.48parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:03<00:15,  1.13s/parameter_set][A
-Processing:  28%|██▊       | 5/18 [00:07<00:23,  1.80s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:10<00:27,  2.28s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:10<00:12,  1.27s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:11<00:10,  1.19s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:12<00:09,  1.14s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:16<00:11,  1.70s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:19<00:13,  2.18s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:19<00:05,  1.28s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:20<00:03,  1.05s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:21<00:02,  1.03s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:24<00:01,  1.60s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:27<00:00,  2.10s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:27<00:00,  1.53s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment - Model: LogisticRegression - Period: 31 days  - data for training: last_therapy_day - CV:14
-+++++++++++++++++
-RESULT_AT_END_OF_TREATMENT  FAVOURABLE  UNFAVOURABLE
-STUDYID                                             
-TB-1021                           1382            46
-TB-1022                           1392            54
-pat_ids_ 2927 final_pat_ids_for_anal 2874
-Running training with last_therapy_day model: 43 vars
-Num of CV-repeat:14
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 12.66parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:02<00:12,  1.16parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:06<00:20,  1.60s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:09<00:25,  2.13s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:09<00:11,  1.19s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:10<00:08,  1.04parameter_set/s][A
-Processing:  56%|█████▌    | 10/18 [00:11<00:07,  1.01parameter_set/s][A
-Processing:  61%|██████    | 11/18 [00:14<00:10,  1.55s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:17<00:12,  2.07s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:17<00:04,  1.21s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:18<00:02,  1.01parameter_set/s][A
-Processing:  89%|████████▉ | 16/18 [00:19<00:01,  1.03parameter_set/s][A
-Processing:  94%|█████████▍| 17/18 [00:22<00:01,  1.48s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:25<00:00,  2.04s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:25<00:00,  1.42s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment - Model: LogisticRegression - Period: 31 days  - data for training: last_therapy_day - CV:15
-+++++++++++++++++
-RESULT_AT_END_OF_TREATMENT  FAVOURABLE  UNFAVOURABLE
-STUDYID                                             
-TB-1021                           1382            46
-TB-1022                           1392            54
-pat_ids_ 2927 final_pat_ids_for_anal 2874
-Running training with last_therapy_day model: 43 vars
-Num of CV-repeat:15
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 11.89parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:04<00:18,  1.30s/parameter_set][A
-Processing:  28%|██▊       | 5/18 [00:08<00:26,  2.07s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:12<00:31,  2.61s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:12<00:14,  1.45s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:13<00:12,  1.35s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:15<00:11,  1.40s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:18<00:14,  2.02s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:22<00:15,  2.55s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:22<00:05,  1.47s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:23<00:04,  1.39s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:25<00:02,  1.46s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:29<00:01,  2.00s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:33<00:00,  2.53s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:33<00:00,  1.84s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment - Model: LogisticRegression - Period: 31 days  - data for training: last_therapy_day - CV:16
-+++++++++++++++++
-RESULT_AT_END_OF_TREATMENT  FAVOURABLE  UNFAVOURABLE
-STUDYID                                             
-TB-1021                           1382            46
-TB-1022                           1392            54
-pat_ids_ 2927 final_pat_ids_for_anal 2874
-Running training with last_therapy_day model: 43 vars
-Num of CV-repeat:16
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 12.10parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:05<00:21,  1.56s/parameter_set][A
-Processing:  28%|██▊       | 5/18 [00:09<00:29,  2.25s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:13<00:33,  2.76s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:13<00:15,  1.53s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:14<00:12,  1.40s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:16<00:12,  1.55s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:20<00:15,  2.16s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:24<00:15,  2.66s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:24<00:06,  1.54s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:24<00:03,  1.23s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:26<00:02,  1.29s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:29<00:01,  1.86s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:33<00:00,  2.44s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:33<00:00,  1.86s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment - Model: LogisticRegression - Period: 31 days  - data for training: last_therapy_day - CV:17
-+++++++++++++++++
-RESULT_AT_END_OF_TREATMENT  FAVOURABLE  UNFAVOURABLE
-STUDYID                                             
-TB-1021                           1382            46
-TB-1022                           1392            54
-pat_ids_ 2927 final_pat_ids_for_anal 2874
-Running training with last_therapy_day model: 43 vars
-Num of CV-repeat:17
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 11.74parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:03<00:12,  1.14parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:06<00:22,  1.76s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:10<00:28,  2.39s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:10<00:13,  1.34s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:11<00:09,  1.07s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:12<00:08,  1.06s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:15<00:12,  1.76s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:19<00:14,  2.37s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:20<00:05,  1.38s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:20<00:03,  1.12s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:21<00:02,  1.13s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:25<00:01,  1.82s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:29<00:00,  2.44s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:29<00:00,  1.63s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment - Model: LogisticRegression - Period: 31 days  - data for training: last_therapy_day - CV:18
-+++++++++++++++++
-RESULT_AT_END_OF_TREATMENT  FAVOURABLE  UNFAVOURABLE
-STUDYID                                             
-TB-1021                           1382            46
-TB-1022                           1392            54
-pat_ids_ 2927 final_pat_ids_for_anal 2874
-Running training with last_therapy_day model: 43 vars
-Num of CV-repeat:18
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 11.91parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:00<00:03,  3.87parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:04<00:17,  1.36s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:08<00:25,  2.16s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:09<00:12,  1.21s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:09<00:08,  1.03parameter_set/s][A
-Processing:  56%|█████▌    | 10/18 [00:10<00:07,  1.05parameter_set/s][A
-Processing:  61%|██████    | 11/18 [00:14<00:12,  1.75s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:18<00:14,  2.40s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:18<00:05,  1.38s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:18<00:03,  1.12s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:20<00:02,  1.20s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:23<00:01,  1.88s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:27<00:00,  2.47s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:27<00:00,  1.55s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment - Model: LogisticRegression - Period: 31 days  - data for training: last_therapy_day - CV:19
-+++++++++++++++++
-RESULT_AT_END_OF_TREATMENT  FAVOURABLE  UNFAVOURABLE
-STUDYID                                             
-TB-1021                           1382            46
-TB-1022                           1392            54
-pat_ids_ 2927 final_pat_ids_for_anal 2874
-Running training with last_therapy_day model: 43 vars
-Num of CV-repeat:19
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 11.56parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:04<00:18,  1.34s/parameter_set][A
-Processing:  28%|██▊       | 5/18 [00:07<00:23,  1.81s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:11<00:29,  2.48s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:11<00:13,  1.38s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:12<00:11,  1.30s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:14<00:11,  1.42s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:18<00:13,  1.99s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:22<00:15,  2.56s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:22<00:05,  1.48s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:22<00:03,  1.21s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:24<00:02,  1.31s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:27<00:01,  1.84s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:31<00:00,  2.45s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:31<00:00,  1.76s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment - Model: LogisticRegression - Period: 31 days  - data for training: last_therapy_day - CV:20
-+++++++++++++++++
-RESULT_AT_END_OF_TREATMENT  FAVOURABLE  UNFAVOURABLE
-STUDYID                                             
-TB-1021                           1382            46
-TB-1022                           1392            54
-pat_ids_ 2927 final_pat_ids_for_anal 2874
-Running training with last_therapy_day model: 43 vars
-Num of CV-repeat:20
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 11.03parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:03<00:15,  1.14s/parameter_set][A
-Processing:  28%|██▊       | 5/18 [00:07<00:24,  1.88s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:11<00:29,  2.48s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:11<00:13,  1.38s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:11<00:09,  1.08s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:12<00:08,  1.07s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:15<00:10,  1.57s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:19<00:13,  2.23s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:19<00:05,  1.30s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:20<00:03,  1.05s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:20<00:01,  1.04parameter_set/s][A
-Processing:  94%|█████████▍| 17/18 [00:23<00:01,  1.37s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:27<00:00,  2.10s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:27<00:00,  1.52s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment - Model: LogisticRegression - Period: 31 days  - data for training: last_therapy_day - CV:21
-+++++++++++++++++
-RESULT_AT_END_OF_TREATMENT  FAVOURABLE  UNFAVOURABLE
-STUDYID                                             
-TB-1021                           1382            46
-TB-1022                           1392            54
-pat_ids_ 2927 final_pat_ids_for_anal 2874
-Running training with last_therapy_day model: 43 vars
-Num of CV-repeat:21
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 12.20parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:04<00:18,  1.35s/parameter_set][A
-Processing:  28%|██▊       | 5/18 [00:08<00:27,  2.09s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:12<00:31,  2.63s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:12<00:14,  1.46s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:14<00:13,  1.53s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:15<00:12,  1.54s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:19<00:14,  2.07s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:23<00:15,  2.59s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:23<00:06,  1.51s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:24<00:03,  1.25s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:25<00:02,  1.32s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:28<00:01,  1.83s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:32<00:00,  2.42s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:32<00:00,  1.82s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment - Model: LogisticRegression - Period: 31 days  - data for training: last_therapy_day - CV:22
-+++++++++++++++++
-RESULT_AT_END_OF_TREATMENT  FAVOURABLE  UNFAVOURABLE
-STUDYID                                             
-TB-1021                           1382            46
-TB-1022                           1392            54
-pat_ids_ 2927 final_pat_ids_for_anal 2874
-Running training with last_therapy_day model: 43 vars
-Num of CV-repeat:22
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 11.37parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:00<00:03,  4.50parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:04<00:15,  1.22s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:08<00:23,  1.99s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:08<00:11,  1.12s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:08<00:08,  1.10parameter_set/s][A
-Processing:  56%|█████▌    | 10/18 [00:09<00:07,  1.14parameter_set/s][A
-Processing:  61%|██████    | 11/18 [00:12<00:10,  1.52s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:16<00:13,  2.20s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:16<00:05,  1.28s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:17<00:03,  1.05s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:17<00:01,  1.04parameter_set/s][A
-Processing:  94%|█████████▍| 17/18 [00:20<00:01,  1.42s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:24<00:00,  2.13s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:24<00:00,  1.37s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment - Model: LogisticRegression - Period: 31 days  - data for training: last_therapy_day - CV:23
-+++++++++++++++++
-RESULT_AT_END_OF_TREATMENT  FAVOURABLE  UNFAVOURABLE
-STUDYID                                             
-TB-1021                           1382            46
-TB-1022                           1392            54
-pat_ids_ 2927 final_pat_ids_for_anal 2874
-Running training with last_therapy_day model: 43 vars
-Num of CV-repeat:23
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 12.61parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:03<00:15,  1.12s/parameter_set][A
-Processing:  28%|██▊       | 5/18 [00:07<00:24,  1.90s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:11<00:30,  2.51s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:11<00:13,  1.40s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:11<00:10,  1.11s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:13<00:09,  1.24s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:17<00:12,  1.85s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:21<00:14,  2.46s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:21<00:05,  1.43s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:21<00:03,  1.15s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:23<00:02,  1.23s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:26<00:01,  1.80s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:30<00:00,  2.38s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:30<00:00,  1.69s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment - Model: LogisticRegression - Period: 31 days  - data for training: last_therapy_day - CV:24
-+++++++++++++++++
-RESULT_AT_END_OF_TREATMENT  FAVOURABLE  UNFAVOURABLE
-STUDYID                                             
-TB-1021                           1382            46
-TB-1022                           1392            54
-pat_ids_ 2927 final_pat_ids_for_anal 2874
-Running training with last_therapy_day model: 43 vars
-Num of CV-repeat:24
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 12.79parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:00<00:03,  3.78parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:04<00:17,  1.33s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:08<00:25,  2.09s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:08<00:11,  1.17s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:09<00:08,  1.07parameter_set/s][A
-Processing:  56%|█████▌    | 10/18 [00:10<00:07,  1.01parameter_set/s][A
-Processing:  61%|██████    | 11/18 [00:14<00:12,  1.77s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:18<00:14,  2.38s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:18<00:05,  1.37s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:18<00:03,  1.12s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:19<00:02,  1.11s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:23<00:01,  1.81s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:27<00:00,  2.41s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:27<00:00,  1.52s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment - Model: LogisticRegression - Period: 31 days  - data for training: last_therapy_day - CV:25
-+++++++++++++++++
-RESULT_AT_END_OF_TREATMENT  FAVOURABLE  UNFAVOURABLE
-STUDYID                                             
-TB-1021                           1382            46
-TB-1022                           1392            54
-pat_ids_ 2927 final_pat_ids_for_anal 2874
-Running training with last_therapy_day model: 43 vars
-Num of CV-repeat:25
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 12.39parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:04<00:18,  1.31s/parameter_set][A
-Processing:  28%|██▊       | 5/18 [00:08<00:26,  2.06s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:12<00:31,  2.60s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:12<00:14,  1.45s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:13<00:12,  1.34s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:15<00:11,  1.43s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:18<00:14,  2.10s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:23<00:15,  2.66s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:23<00:06,  1.54s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:23<00:03,  1.25s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:25<00:02,  1.36s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:29<00:01,  1.99s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:32<00:00,  2.52s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:32<00:00,  1.83s/parameter_set]
-100%|██████████| 1/1 [11:47<00:00, 707.74s/model]100%|██████████| 1/1 [11:47<00:00, 707.74s/model]
-Training duration:
-Elapsed time:0 hours:12 minutes

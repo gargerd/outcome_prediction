@@ -49,6 +49,35 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'}, 
 
+                        'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_dr_reg_per_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+            
+                        'tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
+                            'result_cat':'RELAPSE'}, 
+
+                         
+                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_with_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+            
+                        'tb21_22_2984_pats_22_vars_relapse_with_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
+                            'result_cat':'RELAPSE'}, 
+
+                         'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'},
+                         
+                        'tb21_22_2263_pats_24_vars_relapse':{
+                            'fn':'tb21_22_2263_pats_24_vars_relapse',
+                            'result_cat':'RELAPSE'},
+
                          'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_with_adherence':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RESULT_AT_END_OF_TREATMENT'},
@@ -91,10 +120,6 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'result_cat':'RELAPSE'},
 
 
-                          'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE'},
-
                          'tb21_22_2984_pats_22_vars_raw_pred_prob_norm_loss':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'raw_pred_prob_norm'},
@@ -102,50 +127,8 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                         'tb21_22_2984_pats_22_vars_llm_pred_prob_norm_loss':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'llm_pred_prob_norm'},
-
                          
-
-                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_weight_norm':{
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
-            
-                        'tb21_22_2984_pats_22_vars_relapse_weight_norm':{
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE'}, 
-                        
-
-                         'tb21_22_2984_pats_22_vars_relapse_1_year':{
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE',
-                             'bins':[0,365][:],
-                             'labels':[1]}, 
-
-                         'tb21_22_2984_pats_22_vars_relapse_half_years':{
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE',
-                             'bins':[0,182,365,np.inf],
-                             'labels':[1,2,3]}, 
-                         
-                         
-                         'tb21_22_2840_pats_23_vars_result_at_end_of_treatment':{
-                            'fn':'tb21_22_2840_pats_23_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
-
-                         'tb21_22_2840_pats_23_vars_relapse':{
-                            'fn':'tb21_22_2840_pats_23_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE'},
-        
-
-                         'tb21_22_2798_pats_24_vars_result_at_end_of_treatment':{
-                            'fn':'tb21_22_2798_pats_24_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},   
-
-                          'tb21_22_2798_pats_24_vars_relapse':{
-                            'fn':'tb21_22_2798_pats_24_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE'}, 
-                         
-                         }
-
+                        }
 
 
 
@@ -221,8 +204,10 @@ param_search_dict={'RandomForest':{'n_estimators':[300,500,700],
                               #'n_jobs':[1]
                             },
                    
-                  'LogisticRegression':{#'l1_ratio':[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1],
-                                       'l1_ratio':[1]
+                    'LogisticRegression':{#'l1_ratio':[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1],
+                                        #'l1_ratio':[1]
+                                        'l1_ratio':[1],
+                                         'C': [0.0001, 0.001, 0.01, 0.1, 1, 10],
                                           },
                    
                   'SVC':{'C':[1e-3,1e-2,1e-1,1e0,1e1,1e2],
@@ -248,6 +233,14 @@ for data_param_key in dataset_name_:
     
     #outcome_label=data_param_key.split('vars_')[-1].upper()
     outcome_label = parameters_for_analysis[data_param_key]['result_cat']
+
+     ## LOAD FINAL PATIENT IDS FOR ANALYSIS, SAVED DURING PREPROCESSING OF THE BASELINE MODELS IN NOTEBOOK S9_3
+    if 'pat_ids_fn' in parameters_for_analysis[data_param_key].keys():
+        fn=f"../data/{parameters_for_analysis[data_param_key]['pat_ids_fn']}_final_pat_ids_for_analysis.pickle"
+    else:  
+        fn=f'../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
+    with open(fn, 'rb') as handle:
+        final_pat_ids_for_analysis=pickle.load(handle)
         
 
     ## Load preprocessed-imputed data, and modify the variables (add or drop) depending on the prediction setup, which is contained at the 
@@ -258,34 +251,6 @@ for data_param_key in dataset_name_:
     ## Return dataframe with the outcome label
     pat_ids,y,target_df,outcome_label = return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
                                                                   outcome_df,outcome_label,model_names)
-        
-    '''
-    ## If not RELAPSE shpuld be predicted, subset the patients according to the availbility of the outcome results
-    if parameters_for_analysis[data_param_key]['result_cat']!='RELAPSE':
-        
-        ## Extract patients who have their last therapy day before therapy_day_thr ==> these patient probably dropped out
-        last_day_per_pat_df=X.sort_values(by=['DAY']).groupby('USUBJID').apply(lambda x: x.loc[x.index[-1],:])
-        pat_ids=last_day_per_pat_df[last_day_per_pat_df['DAY']>therapy_day_thr]['USUBJID'].tolist()
-        #pat_ids=X['USUBJID'].unique().tolist()
-        
-        ## Subset outcome dataframe to patient considered
-        target_df=outcome_df.loc[pat_ids,outcome_label]
-        y=target_df.loc[pat_ids].replace(label2id)
-        
-    if parameters_for_analysis[data_param_key]['result_cat']=='RELAPSE':
-        outcome_label='RELAPSE'
-        pats_with_relapse_df=extract_21_22_relapse_pats()
-
-        pats_with_relapse_df = pats_with_relapse_df.loc[list(set(X['USUBJID'].unique())&set(pats_with_relapse_df.index))]
-
-        ## Create new prediction labels (or even multilabels) in the "RELAPSE" column based on the relapse day intervals defined in "bins" 
-        if 'bins' in parameters_for_analysis[data_param_key].keys():
-            pats_with_relapse_df = cut_relapse_days_to_interval_categories(pats_with_relapse_df,data_param_key)
-        
-        pat_ids=pats_with_relapse_df.index.tolist()
-        target_df=pats_with_relapse_df[[outcome_label]]
-        y=pats_with_relapse_df[[outcome_label]]
-    ''' 
         
        
     df_=target_df.reset_index()#
@@ -381,20 +346,20 @@ for data_param_key in dataset_name_:
                 metric_func=np.mean
                 num_of_top_models_per_cv=1
 
-                if model_name=='XGBoost':
-                    ## LOAD RESULTS OF PARAMETER SEARCH AND EXTRACT THE PARAMETERS OF THE BEST MODEL
-                    fn=f'../data/{data_param_key}_{model_name}_{period_end_day}_days_{training_data_type}_param_search_results.pickle'
-                    fn=f'../data/{data_param_key}_{model_name}_{period_end_day}_days_{training_data_type}_param_search_results.pickle'
-                    with open(fn, 'rb') as handle:
-                        param_search_results=pickle.load(handle)
+                #if model_name=='XGBoost':
+                ## LOAD RESULTS OF PARAMETER SEARCH AND EXTRACT THE PARAMETERS OF THE BEST MODEL
+                #fn=f'../data/{data_param_key}_{model_name}_{period_end_day}_days_{training_data_type}_param_search_results.pickle'
+                fn=f'../data/{data_param_key}_{model_name}_{period_end_day}_days_{training_data_type}_param_search_results.pickle'
+                with open(fn, 'rb') as handle:
+                    param_search_results=pickle.load(handle)
 
-                    best_model_params_across_cvs=extract_best_model_params(param_search_results,metric_func,num_of_top_models_per_cv,
-                                                                       average_models_across_splits=False)
+                best_model_params_across_cvs=extract_best_model_params(param_search_results,metric_func,num_of_top_models_per_cv,
+                                                                   average_models_across_splits=False)
                 
                 
        
-                if model_name=='LogisticRegression':
-                    num_of_top_models_per_cv = min(1,len(param_search_dict[model_name]['l1_ratio']))
+                #if model_name=='LogisticRegression':
+                #    num_of_top_models_per_cv = min(1,len(param_search_dict[model_name]['l1_ratio']))
 
 
                 for cv_repeat_num in range(train_params['num_cv_repeats']):
@@ -429,6 +394,7 @@ for data_param_key in dataset_name_:
                     ## If baseline, don't drop these rows, as they are being used to impute some variables at baseline
                     if period_end_day=='baseline':
                         X_subset_=X_subset.copy()
+                        X_subset_ = X_subset_.loc[:,~X_subset_.columns.str.startswith('ARM_')]
 
                     #print(pd.crosstab(df_.loc[df_['USUBJID'].isin(X_subset_['USUBJID'].unique()),'STUDYID'],df_.loc[df_['USUBJID'].isin(X_subset_['USUBJID'].unique()),outcome_label]))
 
@@ -441,7 +407,9 @@ for data_param_key in dataset_name_:
                                                                                                      rand_state,training_data_type,
                                                                                                      columns_to_drop_,
                                                                                                      period_end_day,
-                                                                                                    outcome_label)
+                                                                                                     outcome_label,
+                                                                                                     cv_repeat_num=cv_repeat_num, 
+                                                                                                     final_pat_ids_for_analysis=final_pat_ids_for_analysis)
                     X_train, X_test=scale_by_training_data(X_train, X_test)
                     
                     final_pat_ids_for_anal=X_train.index.unique().tolist() + X_test.index.unique().tolist()
@@ -472,20 +440,27 @@ for data_param_key in dataset_name_:
 
                     #for n in range(num_of_top_models_per_cv):
                     training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['model']={}
+                    #training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['calibrated_model']={}
+                    training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['test_conf_metrics']={}
+                    training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['inner_CV_conf_metrics']={}
+                    
                     for n in tqdm(range(num_of_top_models_per_cv),desc="Processing", unit="model"):
      
                        
 
                         #print(f'training best model no. {n+1}')   
                         ## If LR, set l1_ratio to 1 to run L1-penalisation , if XGBoost, extract best performing parameter configuration
-                        if model_name=='LogisticRegression':
-                            best_model_params={'l1_ratio':1.0}
+                        #if model_name=='LogisticRegression':
+                        #    best_model_params={'l1_ratio':1.0}
                         
-                        if model_name!='LogisticRegression':
-                            #best_model_params=top_model_params_in_cv[n]
-                            best_model_params = best_model_params_across_cvs[f'cv_rep_{cv_repeat_num}'][n]
+                        #if model_name!='LogisticRegression':
+                        #    best_model_params=top_model_params_in_cv[n]
+                        best_model_params = best_model_params_across_cvs[f'cv_rep_{cv_repeat_num}'][n]
                             
                         #print(best_model_params)
+
+                        calibrate_model=True
+                        
                         model,cv_roc_auc_scores,label_weights_dict = calc_roc_auc_score_of_model(model_name,
                                                                                                  X_train,
                                                                                                  y_train,
@@ -494,7 +469,26 @@ for data_param_key in dataset_name_:
                                                                                                  outcome_label,
                                                                                                  best_model_params,
                                                                                                  train_params['weight_by_label_freq'],
-                                                                                                 train_params)
+                                                                                                 train_params,
+                                                                                                 calibrate_model)
+
+                        ## Calculate calibrated prediction probs + confidence metrics of prediction probabilities
+                        test_conf_metrics = calibrate_model_and_extract_confidence_metrics(model=model,
+                                                                                           X_train=X_train,
+                                                                                           X_test=X_test,
+                                                                                           y_train=y_train,
+                                                                                           outcome_label=outcome_label,
+                                                                                           label_weights_dict=label_weights_dict,
+                                                                                           cv_roc_auc_scores=cv_roc_auc_scores,
+                                                                                           cv_splitter=None)
+                        
+                        ## Calculate out-of-distribution confidecne metrics based on Mahalobis distance and to train dataset's averga
+                        #. and averagge Eucldiean distance of KNN-neighbours 
+                        ood_df = return_ood_metrics(X_train,X_test)
+        
+                        #ood_conf_df=cv_roc_auc_scores['ood_conf']
+                        test_conf_metrics.loc[ood_df.index,ood_df.columns.tolist()] = ood_df.values
+
                         
                         ## Save the best model's ROC-AUC scores as CV validation ROC-AUC
                         #. + Savel 'label_weights_dict' ==> it depends on the train-test split, so label_weights_dict is the same for all
@@ -505,6 +499,8 @@ for data_param_key in dataset_name_:
                             
                         
                         training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['model'][n]=model
+                        training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['test_conf_metrics'][n]=test_conf_metrics
+                        training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['inner_CV_conf_metrics'][n]=cv_roc_auc_scores['inner_CV_conf_metrics']
 
 
                 ## Save training results

@@ -25,6 +25,35 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'}, 
 
+                        'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_dr_reg_per_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+            
+                        'tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
+                            'result_cat':'RELAPSE'}, 
+
+                         
+                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_with_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+            
+                        'tb21_22_2984_pats_22_vars_relapse_with_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
+                            'result_cat':'RELAPSE'}, 
+
+                         'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'},
+                         
+                        'tb21_22_2263_pats_24_vars_relapse':{
+                            'fn':'tb21_22_2263_pats_24_vars_relapse',
+                            'result_cat':'RELAPSE'},
+
                          'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_with_adherence':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RESULT_AT_END_OF_TREATMENT'},
@@ -67,10 +96,6 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'result_cat':'RELAPSE'},
 
 
-                          'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE'},
-
                          'tb21_22_2984_pats_22_vars_raw_pred_prob_norm_loss':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'raw_pred_prob_norm'},
@@ -78,49 +103,8 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                         'tb21_22_2984_pats_22_vars_llm_pred_prob_norm_loss':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'llm_pred_prob_norm'},
-
                          
-
-                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_weight_norm':{
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
-            
-                        'tb21_22_2984_pats_22_vars_relapse_weight_norm':{
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE'}, 
-                        
-
-                         'tb21_22_2984_pats_22_vars_relapse_1_year':{
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE',
-                             'bins':[0,365][:],
-                             'labels':[1]}, 
-
-                         'tb21_22_2984_pats_22_vars_relapse_half_years':{
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE',
-                             'bins':[0,182,365,np.inf],
-                             'labels':[1,2,3]}, 
-                         
-                         
-                         'tb21_22_2840_pats_23_vars_result_at_end_of_treatment':{
-                            'fn':'tb21_22_2840_pats_23_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
-
-                         'tb21_22_2840_pats_23_vars_relapse':{
-                            'fn':'tb21_22_2840_pats_23_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE'},
-        
-
-                         'tb21_22_2798_pats_24_vars_result_at_end_of_treatment':{
-                            'fn':'tb21_22_2798_pats_24_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},   
-
-                          'tb21_22_2798_pats_24_vars_relapse':{
-                            'fn':'tb21_22_2798_pats_24_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE'}, 
-                         
-                         }
+                        }
 
 
 from sklearn.model_selection import train_test_split
@@ -323,18 +307,29 @@ def backward_fill_and_extract_vars_at_baseline(X_subset,columns_to_drop):
 #  - Standardise non-binary numerical columns with a standard scaler trained on the training dataset
 #  - If training_data_type=='last_therapy_day', just keep the information from the last therapy day
                                                                                      
-def create_std_training_testing_data(X,y,pat_ids_,test_size_ratio,rand_state,training_data_type,columns_to_drop,period_end_day,outcome_label):
+def create_std_training_testing_data(X,y,pat_ids_,test_size_ratio,rand_state,
+                                     training_data_type,columns_to_drop,period_end_day,outcome_label,
+                                     cv_repeat_num=None,final_pat_ids_for_analysis=None):
 
 
-    
     ## STRATIFY ON OUTCOME LABEL & STUDYID 
-    ##. ==> WITHIN STUDY ROC-AUC CALCULATION IS POSSIBLE, AS THERE ALWAYS WILL BE AT LEAST ONE UNFAVOUR. LABEL FROM BOTH STUDIES IN THE TEST SET
-    pat_ids_=X['USUBJID'].unique().tolist()
-    df_=y.loc[pat_ids_].reset_index()#
-    df_['STUDYID']=df_['USUBJID'].str.split('/',expand=True)[0].values
-    y_for_strat=df_[outcome_label].astype(str) + "_" + df_['STUDYID']#.astype(str)
+    ## IF STRATIFIED PATIENT IDS WERE ALREADY CALCULATED, LOAD THEM 
+    if final_pat_ids_for_analysis is not None and cv_repeat_num is not None:
+
+        X_train_pat_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num]['X_train_ids']
+        X_test_pat_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num]['X_test_ids']
     
-    X_train_pat_ids, X_test_pat_ids, _, _ = train_test_split(pat_ids_, y_for_strat, test_size=test_size_ratio, stratify=y_for_strat,random_state=rand_state)
+    ## IF STRATIFIED PATIENT IDS WERE NOT CALCULATED YET, PERFORM TRAIN-TEST SPLITTING
+    else:   
+        ##. ==> WITHIN STUDY ROC-AUC CALCULATION IS POSSIBLE, AS THERE ALWAYS WILL BE AT LEAST ONE UNFAVOUR. LABEL FROM BOTH STUDIES IN THE TEST SET
+        pat_ids_=X['USUBJID'].unique().tolist()
+        df_=y.loc[pat_ids_].reset_index()#
+        df_['STUDYID']=df_['USUBJID'].str.split('/',expand=True)[0].values
+        y_for_strat=df_[outcome_label].astype(str) + "_" + df_['STUDYID']#.astype(str)
+        
+        X_train_pat_ids, X_test_pat_ids, _, _ = train_test_split(pat_ids_, y_for_strat, test_size=test_size_ratio, stratify=y_for_strat,random_state=rand_state)
+
+    
 
     #print('original num of patients',len(pat_ids_))
     #print('train-test split: train:',len(X_train_pat_ids),'test:',len(X_test_pat_ids))
@@ -489,6 +484,156 @@ def create_std_training_testing_data(X,y,pat_ids_,test_size_ratio,rand_state,tra
 
     
     return X_train,X_test,y_train_,y_test_,X_train_pat_ids,X_test_pat_ids
+
+
+
+####======================================
+from dataclasses import dataclass
+import numpy as np
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from sklearn.covariance import LedoitWolf
+from sklearn.neighbors import NearestNeighbors
+
+# --------- Helpers
+
+def _safe_2d(X):
+    X = np.asarray(X)
+    if X.ndim == 1:
+        X = X.reshape(-1, 1)
+    return X
+
+def _sigmoid_like(x, scale=1.0):
+    # monotone decreasing conf from distances; stable and bounded
+    x = np.asarray(x, dtype=float)
+    return 1.0 / (1.0 + (x / (scale + 1e-8)))
+
+# --------- Mahalanobis with optional PCA
+
+@dataclass
+class OODMahalanobis:
+    use_pca: bool = False               
+    pca_var: float = 0.95               # keep components explaining this variance
+    lambda_scale: float = 1.0           # controls steepness of exp/score mapping
+    standardize: bool = False            # standardize before PCA/cov
+    _scaler: StandardScaler = None
+    _pca: PCA = None
+    _mu: np.ndarray = None
+    _prec: np.ndarray = None            # precision matrix (cov^-1)
+    _dist_scale: float = None           # robust scaling of distances for score mapping
+
+    def fit(self, X_train):
+        X = _safe_2d(X_train)
+        # Standardize
+        if self.standardize:
+            self._scaler = StandardScaler()
+            X = self._scaler.fit_transform(X)
+        # PCA (optional, helps with embeddings / collinearity)
+        if self.use_pca:
+            self._pca = PCA(n_components=self.pca_var, svd_solver="full", random_state=0)
+            X = self._pca.fit_transform(X)
+        # Shrinkage covariance (stable in high-D)
+        lw = LedoitWolf().fit(X)
+        cov = lw.covariance_
+        # Mean & precision
+        self._mu = X.mean(axis=0)
+        # Precision via pseudo-inverse for safety
+        self._prec = np.linalg.pinv(cov)
+        # Calibrate a robust distance scale (median of distances)
+        d = self._mahal_dist(X)
+        self._dist_scale = np.median(d) + 1e-8
+        return self
+
+    def _transform_X(self, X):
+        X = _safe_2d(X)
+        if self.standardize and self._scaler is not None:
+            X = self._scaler.transform(X)
+        if self.use_pca and self._pca is not None:
+            X = self._pca.transform(X)
+        return X
+
+    def _mahal_dist(self, X_trans):
+        diff = X_trans - self._mu
+        # d^2 = (x-mu)^T * prec * (x-mu)
+        d2 = np.einsum("...i,ij,...j->...", diff, self._prec, diff, optimize=True)
+        return np.sqrt(np.clip(d2, 0, None))
+
+    def distances(self, X):
+        X_t = self._transform_X(X)
+        return self._mahal_dist(X_t)
+
+    def confidence(self, X):
+        # Higher distance -> lower confidence; map distances to (0,1]
+        d = self.distances(X)
+        # Two good options; uncomment your preference
+
+        # Option A: exponential falloff
+        # return np.exp(-self.lambda_scale * d / (self._dist_scale + 1e-8))
+
+        # Option B: logistic-like (robust to tails)
+        return _sigmoid_like(d, scale=self._dist_scale / max(self.lambda_scale, 1e-8))
+
+# --------- kNN density
+
+@dataclass
+class OODKNN:
+    k: int = 20
+    leaf_size: int = 30
+    metric: str = "euclidean"
+    standardize: bool = True
+    use_pca: bool = False
+    pca_var: float = 0.95
+    _scaler: StandardScaler = None
+    _pca: PCA = None
+    _nn: NearestNeighbors = None
+    _dist_scale: float = None
+
+    def fit(self, X_train):
+        X = _safe_2d(X_train)
+        if self.standardize:
+            self._scaler = StandardScaler()
+            X = self._scaler.fit_transform(X)
+        if self.use_pca:
+            self._pca = PCA(n_components=self.pca_var, svd_solver="full", random_state=0)
+            X = self._pca.fit_transform(X)
+        self._nn = NearestNeighbors(n_neighbors=min(self.k, len(X)), leaf_size=self.leaf_size,
+                                    metric=self.metric, n_jobs=-1)
+        self._nn.fit(X)
+        # Calibrate distance scale by average kNN distance on training
+        d = self.avg_knn_distance(X)
+        self._dist_scale = np.median(d) + 1e-8
+        return self
+
+    def _transform_X(self, X):
+        X = _safe_2d(X)
+        if self.standardize and self._scaler is not None:
+            X = self._scaler.transform(X)
+        if self.use_pca and self._pca is not None:
+            X = self._pca.transform(X)
+        return X
+
+    def avg_knn_distance(self, X_trans):
+        # returns average distance to k nearest neighbors for each sample
+        # kneighbors returns distances to k neighbors per row (including self if fitted on same set)
+        dists, _ = self._nn.kneighbors(X_trans, n_neighbors=min(self.k, self._nn.n_neighbors))
+        # If self is included (distance 0), average still behaves sensibly
+        return dists.mean(axis=1)
+
+    def density(self, X):
+        X_t = self._transform_X(X)
+        avg_d = self.avg_knn_distance(X_t)
+        # density proxy (higher is denser)
+        dens = 1.0 / (avg_d + 1e-8)
+        return dens
+
+    def confidence(self, X):
+        # Convert density to [0,1] confidence, robust scaling by training median distance
+        X_t = self._transform_X(X)
+        avg_d = self.avg_knn_distance(X_t)
+        # map distance to confidence (lower distance -> higher confidence)
+        return _sigmoid_like(avg_d, scale=self._dist_scale)
+
         
 
  
@@ -693,8 +838,115 @@ def compute_roc_auc(x, outcome_label):
 
 
 
+######====================================
+## 1. Calibrate model with best hyperparams + extract calibrated prediction probs
+## 2. Calculate confidence statistice from calirbated prediction probs.
+
+def calibrate_model_and_extract_confidence_metrics(model,
+                                                   X_train,
+                                                   X_test,
+                                                   y_train,
+                                                   outcome_label,
+                                                   label_weights_dict,
+                                                   cv_roc_auc_scores=None,
+                                                   cv_splitter=None):
+    import copy
+
+    ## Calculate calibrated probabilities of trained best model
+    from sklearn.calibration import CalibratedClassifierCV
+
+    if cv_splitter is None and cv_roc_auc_scores is not None:
+        ## Extract train and validation ids to perform calibration on the same train-test sets as the hyperparam search
+        cv_splits=zip(cv_roc_auc_scores['inner_train_val_splits']['train_ids'],
+                      cv_roc_auc_scores['inner_train_val_splits']['test_ids'])
+    
+    if cv_splitter is None and cv_roc_auc_scores is None:
+        raise('Please provide either a CV-splitter object for the internal CV or cv_roc_auc_scores dictionary of the trained model!')
+        
+    if cv_splitter is not None:
+        
+        ## STRATIFY ON OUTCOME LABEL & STUDYID 
+        ##. ==> WITHIN STUDY ROC-AUC CLAUCLATION IS POSSIBLE, AS THERE ALWAYS WILL BE AT LEAST ONE UNFAVOUR. LABEL FROM BOTH STUDIES IN THE TEST SET
+        df_=y_train.reset_index().drop_duplicates(subset='USUBJID')#.set_index('USUBJID',drop=True)
+        df_['STUDYID']=df_['USUBJID'].str.split('/',expand=True)[0].values
+        df_=df_.set_index('USUBJID')
+        y_for_strat=df_[outcome_label].astype(str) + "_" + df_['STUDYID']#.astype(str)
+    
+        pat_ids=df_.index
+        n_of_classes=len(y_train[outcome_label].unique())
+        cv_splits=cv_splitter.split(pat_ids, y_for_strat.loc[pat_ids])
+
+    
+        
+    sample_weights=y_train[outcome_label].map(label_weights_dict).values
+
+    ## Fit calibrated model
+    calibrated_model = CalibratedClassifierCV(estimator=model,
+                                               cv=cv_splits,
+                                               #n_jobs=-1,                                        
+                                               method="isotonic")
+    calibrated_model.fit(X_train.values, 
+                         y_train.values,
+                         sample_weight=sample_weights)
+
+    ## Extract calibrated pred probs
+    probs_calibrated = calibrated_model.predict_proba(X_test)[:, 1]
+    probs_uncalibrated = model.predict_proba(X_test)[:, 1]
+
+    
+    """
+    Compute per-model confidence statistics from probabilities.
+    """
+    eps = 1e-12
+    p_cal = np.clip(probs_calibrated, eps, 1 - eps)
+    p_uncal = np.clip(probs_uncalibrated, eps, 1 - eps)
+    margin = np.abs(p_cal - 0.5)
+    entropy = -(p_cal * np.log(p_cal) + (1 - p_cal) * np.log(1 - p_cal))
+    conf_entropy = 1 - entropy / np.log(2)
+    conf_metrics = pd.DataFrame({
+        'prob_calibrated': p_cal,
+        'prob_uncalibrated':p_uncal,
+        'margin': margin,
+        'entropy_conf': conf_entropy
+    })
+    if probs_uncalibrated is not None:
+        conf_metrics['delta_calib'] = p_cal - p_uncal
+    else:
+        conf_metrics['delta_calib'] = 0.0
+
+    conf_metrics.index=X_test.index
+
+    ## Add out-of-distribution confidence variables (Mahalanobis and KNN confidence)
+    #ood_conf_df=cv_roc_auc_scores['ood_conf']
+    #conf_metrics.loc[ood_conf_df.index,ood_conf_df.columns.tolist()] = ood_conf_df.values
+    
+    return conf_metrics#,calibrated_model
+
+
+
 ##=========================================
-def run_cv(X,y,k_folds,model_name,weight_by_label_freq,random_state,outcome_label,model_params,train_params):
+def return_ood_metrics(X_train,X_test):
+     
+    # CAlculate Mahalanobis confidence value: Sigmoid(Mahal. distance to mean of training distribution)
+    ood_mahal = OODMahalanobis(use_pca=False, standardize=False).fit(X_train)
+    mahal_conf_val = ood_mahal.confidence(X_test)  # shape (n_val,)
+
+    # Calculate KNN confidence value: Sigmoid((1/average distance) to its k nearest neighbours in the training data)
+    ood_kbb = OODKNN(use_pca=False, standardize=False).fit(X_train)
+    knn_conf_val = ood_kbb.confidence(X_test)  # shape (n_val,)
+
+    ## Aggregate the OOD confidence values into one dataframe
+    ood_df=pd.DataFrame({'knn_conf_val':knn_conf_val,
+                              'mahal_conf_val':mahal_conf_val},
+                               index=X_test.index)
+
+    return ood_df
+
+
+
+##=========================================
+def run_cv(X,y,k_folds,model_name,weight_by_label_freq,random_state,outcome_label,model_params,train_params,
+          calibrate_model=False):
     
     from sklearn.model_selection import StratifiedKFold
     from sklearn.metrics import roc_auc_score
@@ -713,6 +965,7 @@ def run_cv(X,y,k_folds,model_name,weight_by_label_freq,random_state,outcome_labe
     # Initialize lists to store the evaluation scores
     train_roc_auc_scores_all,test_roc_auc_scores_all=[],[]
     train_roc_auc_scores_per_study,test_roc_auc_scores_per_study=[],[]
+    train_ids_,test_ids_,conf_metrics_list=[],[],[]
     
     cv_roc_auc_scores={}
 
@@ -726,12 +979,17 @@ def run_cv(X,y,k_folds,model_name,weight_by_label_freq,random_state,outcome_labe
     pat_ids=df_.index
     n_of_classes=len(y[outcome_label].unique())
 
+    cv_roc_auc_scores['inner_train_val_splits']={}
+    
     # Loop through each fold
     #for train_index, test_index in skf.split(pat_ids, y_unique.loc[pat_ids,outcome_label]):
     for train_index, test_index in skf.split(pat_ids, y_for_strat.loc[pat_ids]):
         
         train_pat_ids=pat_ids[train_index]
         test_pat_ids=pat_ids[test_index]
+
+        train_ids_.append(train_index)
+        test_ids_.append(train_index)
         
         #print('train test index set',set(train_pat_ids)&set(test_pat_ids))
         
@@ -745,8 +1003,9 @@ def run_cv(X,y,k_folds,model_name,weight_by_label_freq,random_state,outcome_labe
         y_train_fold,y_test_fold=y.loc[train_mask,:],y.loc[test_mask,:]
 
         
+        
         ## Init model
-        model,label_weights,_=init_model(model_name,X_train_fold,y_train_fold,
+        model,label_weights,label_weights_dict=init_model(model_name,X_train_fold,y_train_fold,
                                          k_folds,random_state,outcome_label,
                                          model_params,
                                          weight_by_label_freq,
@@ -775,6 +1034,8 @@ def run_cv(X,y,k_folds,model_name,weight_by_label_freq,random_state,outcome_labe
 
         #print('test_probabilities',test_probabilities.shape,test_probabilities)
         #print('y_train_fold',y_train_fold)
+        
+        y_train_fold_=y_train_fold.copy()
 
         # Store predictions in multiple columns (pred_class_0, pred_class_1, ...)
         for class_idx in range(train_probabilities.shape[1]):
@@ -796,6 +1057,26 @@ def run_cv(X,y,k_folds,model_name,weight_by_label_freq,random_state,outcome_labe
             
             train_roc_auc_scores_per_study.append(train_roc_auc_per_study)
             test_roc_auc_scores_per_study.append(test_roc_auc_per_study)
+
+        if calibrate_model==True:
+
+            conf_metrics = calibrate_model_and_extract_confidence_metrics(
+                                                               model=model,
+                                                               X_train=X_train_fold,
+                                                               X_test=X_test_fold,
+                                                               y_train=y_train_fold_,
+                                                               outcome_label=outcome_label,
+                                                               label_weights_dict=label_weights_dict,
+                                                               cv_roc_auc_scores=None,
+                                                               cv_splitter=skf)
+   
+            
+            ood_df = return_ood_metrics(X_train_fold,X_test_fold)
+        
+            #ood_conf_df=cv_roc_auc_scores['ood_conf']
+            conf_metrics.loc[ood_df.index,ood_df.columns.tolist()] = ood_df.values
+            conf_metrics_list.append(conf_metrics)
+
             
       
         # Calculate ROC AUC scores for all prediction across all studies
@@ -817,7 +1098,14 @@ def run_cv(X,y,k_folds,model_name,weight_by_label_freq,random_state,outcome_labe
         train_roc_auc_scores_all.append(train_roc_auc)
         test_roc_auc_scores_all.append(test_roc_auc)
         
+    ## Add train-test IDs
+    cv_roc_auc_scores['inner_train_val_splits']['train_ids']=train_ids_
+    cv_roc_auc_scores['inner_train_val_splits']['test_ids']=test_ids_
 
+    if calibrate_model==True:
+        ## Concatenate and add Confidence metrics + Mahalanobis and KNN confidence dataframes of the 5 validation sets
+        cv_roc_auc_scores['inner_CV_conf_metrics'] = pd.concat(conf_metrics_list).loc[X.index,:]
+    
     ## Add ROC-AUC values calculated across all studies to the result dictionary
     cv_roc_auc_scores['train_score']=train_roc_auc_scores_all
     cv_roc_auc_scores['test_score']=test_roc_auc_scores_all
@@ -839,12 +1127,16 @@ def run_cv(X,y,k_folds,model_name,weight_by_label_freq,random_state,outcome_labe
 
 ##=========================================
 ## RUN CV OF GIVEN MODEL & TRAIN FINAL MODEL AFTERWARDS
-def run_parameter_search(model_name,X_train,y_train_data,
-                                k_folds,random_state,
+def run_parameter_search(model_name,
+                         X_train,
+                         y_train_data,
+                                k_folds,
+                         random_state,
                                 outcome_label,
                                 param_search_dict,
                                 weight_by_label_freq,
-                                train_params):
+                                train_params,
+                        calibrate_model):
     from tqdm.auto import tqdm
     
     param_search_results={}
@@ -970,12 +1262,16 @@ def extract_best_model_params(param_search_results,metric_func,num_of_top_models
 
 ##=========================================
 ## RUN CV OF GIVEN MODEL & TRAIN FINAL MODEL AFTERWARDS
-def calc_roc_auc_score_of_model(model_name,X_train,y_train_data,
-                                k_folds,random_state,
+def calc_roc_auc_score_of_model(model_name,
+                                X_train,
+                                y_train_data,
+                                k_folds,
+                                random_state,
                                 outcome_label,
                                 model_params,
                                 weight_by_label_freq,
-                               train_params):
+                               train_params,
+                               calibrate_model):
         
     ### RUN CV & TRAIN MODEL AFTERWARDS
     if model_name in ['XGBoost','GradientBoost']:
@@ -985,7 +1281,8 @@ def calc_roc_auc_score_of_model(model_name,X_train,y_train_data,
                                  model_name,weight_by_label_freq,
                                  random_state,outcome_label,
                                  model_params,
-                                 train_params)
+                                 train_params,
+                                calibrate_model)
         
         ## INITIALIZE MODEL & TRAIN 
         model,label_weights,label_weights_dict=init_model(model_name,X_train,y_train_data,
@@ -1004,7 +1301,8 @@ def calc_roc_auc_score_of_model(model_name,X_train,y_train_data,
                                  model_name,weight_by_label_freq,
                                  random_state,outcome_label,
                                  model_params,
-                                 train_params)
+                                 train_params,
+                                calibrate_model)
         
         ## INITIALIZE MODEL & TRAIN 
         model,label_weights,label_weights_dict=init_model(model_name,X_train,y_train_data,
@@ -1436,8 +1734,8 @@ def subset_pats_with_therapy_in_period(period_num,period_end_days,last_init_ther
     #. => IF PERIOD IS 4 MONTHS OR LESS, KEEP ALL PATIENTS
     #. => IF PERIOD IS OVER 4 MONTHS KEEP ONLY PATIENTS IN ARMS WITH 6 MONTHS OF TB DRUG APPLICATION    
 
-    month_4_arms=['Gatifloxacin (4 month)','2MHRZ/2MHR', '2EMRZ/2MR']
-    month_6_arms=['Control (6 month)','2EHRZ/4HR']
+    month_4_arms=['Gatifloxacin','2MHRZ/2MHR', '2EMRZ/2MR']
+    month_6_arms=['Control','2EHRZ/4HR']
 
     if outcome_label=='RESULT_AT_END_OF_TREATMENT':
         month4_periods=['baseline',31,62,93,125][:-1]
@@ -1602,8 +1900,8 @@ def replace_cumul_day_of_appl_with_adherence(X):
     scheduled_doses={'2EHRZ/4HR':182, # 8+9+9 weeks , 7 days /week
                     '2MHRZ/2MHR':119,# 8+9 weeks , 7 days /week
                     '2EMRZ/2MR':119,# 8+9 weeks , 7 days /week
-                    'Gatifloxacin (4 month)':102, # 4 months (==8+9 weeks) , 6 days /week
-                    'Control (6 month)':156  # 6 months (26== weeks) , 6 days /week
+                    'Gatifloxacin':102, # 4 months (==8+9 weeks) , 6 days /week
+                    'Control':156  # 6 months (26== weeks) , 6 days /week
                     } 
     
     
@@ -1646,16 +1944,24 @@ def load_and_modify_preprocessed_data(data_param_key):
     ## One-hot encode 'SEX'
     X['SEX'] = X['SEX'].replace({0:'F',1:'M'})
     X = pd.concat([X.drop(columns=['SEX']),pd.get_dummies(X['SEX'],dtype=int,prefix='SEX')],axis=1)
+    X=X.drop(columns=['SEX_F'])
 
     ## One-hot encode 'ZN-smear oridinal column'
     #if 'mb_ZN-smear_STD_CAT_ORDINAL_RESULT' in X.columns:
     #    X = pd.concat([X.drop(columns=['mb_ZN-smear_STD_CAT_ORDINAL_RESULT']),\
     #                   pd.get_dummies(X['mb_ZN-smear_STD_CAT_ORDINAL_RESULT'].astype('Int64'),dtype=int,prefix='mb_ZN-smear')],axis=1)
+
     X=X.drop(columns=['mb_ZN-smear_STD_RESULT'])
+
     
     X['vs_BMI_STD_NUM_RESULT'] = (X['vs_Weight_STD_NUM_RESULT']/(X['vs_Height_STD_NUM_RESULT']/100)**2).values
-    X['ARM']=X['ARM'].replace({'Gati-arm regimen (4 month regimen)':'Gatifloxacin (4 month)',
-                             'Control-arm regimen (6 month regimen)':'Control (6 month)'},regex=False)
+    X['ARM']=X['ARM'].replace({'Gati-arm regimen (4 month regimen)':'Gatifloxacin',
+                             'Control-arm regimen (6 month regimen)':'Control'},regex=False)
+
+    ## One-hot encode 'ARM'
+    if 'with_arm' in data_param_key:
+        X = pd.concat([X,pd.get_dummies(X['ARM'],dtype=int,prefix='ARM')],axis=1)
+
 
     ## Replace extreme Hyperkalemia values with mean (probably false measurements)
     mean_K=X.loc[X['lb_Blood Potassium_STD_NUM_RESULT']<=12,'lb_Blood Potassium_STD_NUM_RESULT'].mean()
@@ -1682,16 +1988,27 @@ def load_and_modify_preprocessed_data(data_param_key):
         X = replace_cumul_day_of_appl_with_adherence(X)
     
 
-    '''
     ## SPLIT THE CUMULATIVE DOSES OF THE PATIENTS BETWEEN THE ARMS ==> CONTROLLING FOR THE DIFFERENT NUMBER OF SCHEDULED DOSES BETWEEN ARMS
-    arm_cumul_colnames=[f"{arm}_drugs_cumul" for arm in X['ARM'].unique()]
-    X[arm_cumul_colnames]=0
-    
-    for arm in X['ARM'].unique():
-        X.loc[X['ARM']==arm,f"{arm}_drugs_cumul"]=X.loc[X["ARM"]==arm,'dr_reg_study_drugs_cumul'].values
-    
-    X=X.drop(columns=['dr_reg_study_drugs_cumul'])
-    '''
+    if 'dr_reg_per_arm' in data_param_key:
+        
+        X_=X.copy()
+        dr_cumul_colnames = X_.columns[X_.columns.str.startswith('dr_reg')].tolist()
+        arms_names= X_['ARM'].unique()
+        dr_cumul_colns_within_arm=[f'{dr}_{arm}' for dr in dr_cumul_colnames for arm in arms_names]
+        X_[dr_cumul_colns_within_arm]=0
+        
+        
+        for dr in dr_cumul_colnames:
+            for arm in X_['ARM'].unique():
+                X_.loc[X_['ARM']==arm,f'{dr}_{arm}']=X_.loc[X_["ARM"]==arm,dr].values
+        
+        ## Identify columns with all 0 values ==> 
+        #. these are drugs that were not taken in the arm 
+        #. => drop them along with the original dr_reg colnames
+        regs_with_no_appl=(X_[dr_cumul_colns_within_arm]==0).all()[(X_[dr_cumul_colns_within_arm]==0).all()].index.tolist()
+        cols_to_drop = dr_cumul_colnames + regs_with_no_appl
+        
+        X=X_.drop(columns=cols_to_drop)
 
     return X,race_colnames
 
@@ -1867,3 +2184,62 @@ def return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
         
         
     return pat_ids,y,target_df,outcome_label_#,clust_df_concat
+
+
+######====================================
+## 1. Calibrate model with best hyperparams + extract calibrated prediction probs
+## 2. Calculate confidence statistice from calirbated prediction probs.
+
+def extract_confidence_and_ood_metrics(model,cv_roc_auc_scores,X_train,y_train,outcome_label,label_weights_dict):
+
+    ## Calculate calibrated probabilities of trained best model
+    from sklearn.calibration import CalibratedClassifierCV
+
+    ## Extract train and validation ids to perform calibration on the same train-test sets as the hyperparam search
+    cv_splits=zip(cv_roc_auc_scores['inner_train_val_splits']['train_ids'],
+                  cv_roc_auc_scores['inner_train_val_splits']['test_ids'])
+    
+    sample_weights=y_train[outcome_label].map(label_weights_dict).values
+
+    ## Fit calibrated model
+    calibrated_model = CalibratedClassifierCV(estimator=model,
+                                       cv=cv_splits,
+                                       #n_jobs=-1,                                        
+                                       method="isotonic")
+    calibrated_model.fit(X_train.values, 
+                           y_train.values,
+                          sample_weight=sample_weights)
+
+    ## Extract calibrated pred probs
+    probs_calibrated = calibrated_model.predict_proba(X_train)[:, 1]
+    probs_uncalibrated = model.predict_proba(X_train)[:, 1]
+
+
+    
+    """
+    Compute per-model confidence statistics from probabilities.
+    """
+    eps = 1e-12
+    p_cal = np.clip(probs_calibrated, eps, 1 - eps)
+    p_uncal = np.clip(probs_uncalibrated, eps, 1 - eps)
+    margin = np.abs(p_cal - 0.5)
+    entropy = -(p_cal * np.log(p_cal) + (1 - p_cal) * np.log(1 - p_cal))
+    conf_entropy = 1 - entropy / np.log(2)
+    conf_metrics = pd.DataFrame({
+        'prob_calibrated': p_cal,
+        'prob_uncalibrated':p_uncal,
+        'margin': margin,
+        'entropy_conf': conf_entropy
+    })
+    if probs_uncalibrated is not None:
+        conf_metrics['delta_calib'] = p_cal - p_uncal
+    else:
+        conf_metrics['delta_calib'] = 0.0
+
+    conf_metrics.index=X_train.index
+
+    ## Add out-of-distribution confidence variables (Mahalanobis and KNN confidence)
+    ood_conf_df=cv_roc_auc_scores['ood_conf']
+    conf_metrics.loc[ood_conf_df.index,ood_conf_df.columns.tolist()] = ood_conf_df.values
+    
+    return conf_metrics, calibrated_model

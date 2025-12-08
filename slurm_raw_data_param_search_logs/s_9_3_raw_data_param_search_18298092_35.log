@@ -1,687 +1,0 @@
-Loading anaconda
-Activate conda env
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg
-all_days_in_period
-93
-LogisticRegression
-/data/gpfs/projects/punim2121/C-Path/outcome_prediction/outcome_prediction/s9_3_baseline_ML_models_functions.py:1251: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  de_['RELAPSE']=de_['RELAPSE'].astype(float)
-===========
- tb21_22_2984_pats_22_vars_relapse_without_dr_reg 
-
-pat_ids_ before arm check 2401
-2401
-Excluded 0 out of 2401 patients (0.0%)
-
-  0%|          | 0/1 [00:00<?, ?model/s]
-=====================
-LogisticRegression
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg - Model: LogisticRegression - Period: 93 days  - data for training: all_days_in_period - CV:1
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1059  139
-TB-1022  1046  113
-pat_ids_ 2401 final_pat_ids_for_anal 2357
-Running training with all_days_in_period model: 97 vars
-Num of CV-repeat:1
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:   6%|▌         | 1/18 [00:00<00:04,  3.89parameter_set/s][A
-Processing:  17%|█▋        | 3/18 [00:01<00:09,  1.56parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:04<00:17,  1.26s/parameter_set][A
-Processing:  28%|██▊       | 5/18 [00:10<00:38,  3.00s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:17<00:49,  4.16s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:17<00:22,  2.22s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:18<00:16,  1.79s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:24<00:23,  2.94s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:30<00:27,  3.97s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:37<00:28,  4.72s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:37<00:10,  2.68s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:39<00:07,  2.37s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:44<00:06,  3.01s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:50<00:04,  4.00s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:57<00:00,  4.75s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:57<00:00,  3.19s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg - Model: LogisticRegression - Period: 93 days  - data for training: all_days_in_period - CV:2
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1059  139
-TB-1022  1046  113
-pat_ids_ 2401 final_pat_ids_for_anal 2357
-Running training with all_days_in_period model: 97 vars
-Num of CV-repeat:2
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 11.23parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:02<00:08,  1.60parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:09<00:32,  2.49s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:15<00:44,  3.71s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:15<00:20,  2.05s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:17<00:18,  2.01s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:23<00:24,  3.03s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:30<00:28,  4.13s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:37<00:29,  4.83s/parameter_set][A
-Processing:  72%|███████▏  | 13/18 [00:37<00:17,  3.49s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:37<00:10,  2.53s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:39<00:06,  2.18s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:44<00:06,  3.04s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:51<00:04,  4.26s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:58<00:00,  4.99s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:58<00:00,  3.22s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg - Model: LogisticRegression - Period: 93 days  - data for training: all_days_in_period - CV:3
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1059  139
-TB-1022  1046  113
-pat_ids_ 2401 final_pat_ids_for_anal 2357
-Running training with all_days_in_period model: 97 vars
-Num of CV-repeat:3
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 10.55parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:03<00:13,  1.05parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:09<00:33,  2.60s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:16<00:45,  3.79s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:16<00:20,  2.10s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:18<00:18,  2.01s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:24<00:25,  3.13s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:31<00:28,  4.09s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:38<00:28,  4.81s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:38<00:10,  2.74s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:39<00:07,  2.41s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:44<00:06,  3.13s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:51<00:04,  4.09s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:58<00:00,  4.87s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:58<00:00,  3.25s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg - Model: LogisticRegression - Period: 93 days  - data for training: all_days_in_period - CV:4
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1059  139
-TB-1022  1046  113
-pat_ids_ 2401 final_pat_ids_for_anal 2357
-Running training with all_days_in_period model: 97 vars
-Num of CV-repeat:4
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 10.85parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:02<00:10,  1.28parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:09<00:32,  2.47s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:15<00:44,  3.69s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:15<00:20,  2.04s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:17<00:16,  1.88s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:23<00:23,  2.91s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:29<00:27,  3.93s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:36<00:28,  4.68s/parameter_set][A
-Processing:  72%|███████▏  | 13/18 [00:36<00:16,  3.38s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:36<00:09,  2.46s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:38<00:06,  2.15s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:43<00:05,  2.96s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:49<00:04,  4.07s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:56<00:00,  4.84s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:56<00:00,  3.14s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg - Model: LogisticRegression - Period: 93 days  - data for training: all_days_in_period - CV:5
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1059  139
-TB-1022  1046  113
-pat_ids_ 2401 final_pat_ids_for_anal 2357
-Running training with all_days_in_period model: 97 vars
-Num of CV-repeat:5
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 10.15parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:04<00:16,  1.16s/parameter_set][A
-Processing:  28%|██▊       | 5/18 [00:10<00:35,  2.74s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:17<00:46,  3.87s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:17<00:21,  2.14s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:19<00:18,  2.11s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:25<00:25,  3.23s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:32<00:29,  4.16s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:38<00:29,  4.85s/parameter_set][A
-Processing:  72%|███████▏  | 13/18 [00:39<00:17,  3.50s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:39<00:10,  2.55s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:40<00:06,  2.19s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:45<00:06,  3.11s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:52<00:04,  4.18s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:59<00:00,  4.92s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:59<00:00,  3.30s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg - Model: LogisticRegression - Period: 93 days  - data for training: all_days_in_period - CV:6
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1059  139
-TB-1022  1046  113
-pat_ids_ 2401 final_pat_ids_for_anal 2357
-Running training with all_days_in_period model: 97 vars
-Num of CV-repeat:6
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01,  9.83parameter_set/s][A
-Processing:  17%|█▋        | 3/18 [00:00<00:02,  6.49parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:01<00:08,  1.74parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:08<00:33,  2.60s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:14<00:46,  3.91s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:14<00:20,  2.06s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:20<00:26,  2.95s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:24<00:26,  3.26s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:30<00:28,  4.11s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:37<00:29,  4.84s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:37<00:10,  2.74s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:38<00:06,  2.29s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:41<00:05,  2.51s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:48<00:03,  3.60s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:55<00:00,  4.46s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:55<00:00,  3.06s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg - Model: LogisticRegression - Period: 93 days  - data for training: all_days_in_period - CV:7
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1059  139
-TB-1022  1046  113
-pat_ids_ 2401 final_pat_ids_for_anal 2357
-Running training with all_days_in_period model: 97 vars
-Num of CV-repeat:7
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01,  9.99parameter_set/s][A
-Processing:  17%|█▋        | 3/18 [00:00<00:02,  6.33parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:02<00:09,  1.44parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:08<00:35,  2.71s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:15<00:47,  3.99s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:15<00:20,  2.10s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:15<00:15,  1.69s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:21<00:22,  2.79s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:28<00:27,  3.86s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:34<00:27,  4.64s/parameter_set][A
-Processing:  72%|███████▏  | 13/18 [00:35<00:16,  3.36s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:35<00:09,  2.44s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:36<00:06,  2.07s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:40<00:05,  2.74s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:47<00:03,  3.91s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:54<00:00,  4.74s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:54<00:00,  3.01s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg - Model: LogisticRegression - Period: 93 days  - data for training: all_days_in_period - CV:8
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1059  139
-TB-1022  1046  113
-pat_ids_ 2401 final_pat_ids_for_anal 2357
-Running training with all_days_in_period model: 97 vars
-Num of CV-repeat:8
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 10.83parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:02<00:11,  1.22parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:09<00:32,  2.50s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:15<00:44,  3.70s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:16<00:20,  2.05s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:16<00:15,  1.67s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:22<00:22,  2.85s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:29<00:27,  3.88s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:36<00:27,  4.65s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:36<00:10,  2.65s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:37<00:07,  2.36s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:42<00:06,  3.04s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:49<00:04,  4.02s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:56<00:00,  4.76s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:56<00:00,  3.12s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg - Model: LogisticRegression - Period: 93 days  - data for training: all_days_in_period - CV:9
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1059  139
-TB-1022  1046  113
-pat_ids_ 2401 final_pat_ids_for_anal 2357
-Running training with all_days_in_period model: 97 vars
-Num of CV-repeat:9
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 11.43parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:02<00:10,  1.33parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:09<00:31,  2.45s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:15<00:43,  3.67s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:15<00:20,  2.02s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:16<00:15,  1.67s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:22<00:22,  2.82s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:29<00:27,  3.86s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:35<00:27,  4.63s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:36<00:10,  2.64s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:37<00:06,  2.33s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:43<00:06,  3.21s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:49<00:04,  4.13s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:56<00:00,  4.83s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:56<00:00,  3.14s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg - Model: LogisticRegression - Period: 93 days  - data for training: all_days_in_period - CV:10
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1059  139
-TB-1022  1046  113
-pat_ids_ 2401 final_pat_ids_for_anal 2357
-Running training with all_days_in_period model: 97 vars
-Num of CV-repeat:10
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 10.06parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:02<00:08,  1.74parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:08<00:30,  2.32s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:15<00:42,  3.58s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:15<00:19,  1.98s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:18<00:20,  2.22s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:22<00:21,  2.68s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:28<00:26,  3.73s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:35<00:27,  4.55s/parameter_set][A
-Processing:  72%|███████▏  | 13/18 [00:35<00:16,  3.28s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:35<00:09,  2.39s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:36<00:05,  1.96s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:40<00:04,  2.38s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:46<00:03,  3.59s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:53<00:00,  4.51s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:53<00:00,  2.95s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg - Model: LogisticRegression - Period: 93 days  - data for training: all_days_in_period - CV:11
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1059  139
-TB-1022  1046  113
-pat_ids_ 2401 final_pat_ids_for_anal 2357
-Running training with all_days_in_period model: 97 vars
-Num of CV-repeat:11
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 11.18parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:02<00:11,  1.18parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:09<00:32,  2.52s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:16<00:45,  3.76s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:16<00:20,  2.08s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:18<00:18,  2.02s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:24<00:24,  3.10s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:30<00:28,  4.07s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:37<00:28,  4.78s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:37<00:10,  2.72s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:39<00:07,  2.40s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:45<00:06,  3.30s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:51<00:04,  4.21s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:58<00:00,  4.89s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:58<00:00,  3.25s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg - Model: LogisticRegression - Period: 93 days  - data for training: all_days_in_period - CV:12
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1059  139
-TB-1022  1046  113
-pat_ids_ 2401 final_pat_ids_for_anal 2357
-Running training with all_days_in_period model: 97 vars
-Num of CV-repeat:12
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01,  9.54parameter_set/s][A
-Processing:  17%|█▋        | 3/18 [00:00<00:02,  5.48parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:02<00:11,  1.17parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:08<00:36,  2.80s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:15<00:48,  4.04s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:15<00:21,  2.13s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:16<00:15,  1.73s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:22<00:23,  2.91s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:29<00:27,  3.94s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:35<00:28,  4.70s/parameter_set][A
-Processing:  72%|███████▏  | 13/18 [00:35<00:16,  3.37s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:35<00:09,  2.45s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:37<00:06,  2.13s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:42<00:05,  2.94s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:48<00:04,  4.05s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:55<00:00,  4.82s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:55<00:00,  3.08s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg - Model: LogisticRegression - Period: 93 days  - data for training: all_days_in_period - CV:13
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1059  139
-TB-1022  1046  113
-pat_ids_ 2401 final_pat_ids_for_anal 2357
-Running training with all_days_in_period model: 97 vars
-Num of CV-repeat:13
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 10.83parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:02<00:10,  1.28parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:09<00:32,  2.48s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:15<00:44,  3.68s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:15<00:20,  2.04s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:16<00:14,  1.66s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:22<00:22,  2.85s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:29<00:27,  3.87s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:35<00:27,  4.63s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:36<00:10,  2.64s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:37<00:06,  2.32s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:42<00:06,  3.06s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:49<00:04,  4.02s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:55<00:00,  4.75s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:55<00:00,  3.11s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg - Model: LogisticRegression - Period: 93 days  - data for training: all_days_in_period - CV:14
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1059  139
-TB-1022  1046  113
-pat_ids_ 2401 final_pat_ids_for_anal 2357
-Running training with all_days_in_period model: 97 vars
-Num of CV-repeat:14
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 11.20parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:03<00:13,  1.05parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:09<00:33,  2.56s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:16<00:44,  3.74s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:16<00:20,  2.07s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:18<00:18,  2.06s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:23<00:23,  2.94s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:30<00:27,  3.87s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:36<00:27,  4.64s/parameter_set][A
-Processing:  72%|███████▏  | 13/18 [00:36<00:16,  3.35s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:37<00:09,  2.44s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:38<00:06,  2.04s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:42<00:05,  2.72s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:49<00:03,  3.92s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:56<00:00,  4.77s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:56<00:00,  3.12s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg - Model: LogisticRegression - Period: 93 days  - data for training: all_days_in_period - CV:15
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1059  139
-TB-1022  1046  113
-pat_ids_ 2401 final_pat_ids_for_anal 2357
-Running training with all_days_in_period model: 97 vars
-Num of CV-repeat:15
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 10.16parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:02<00:11,  1.23parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:09<00:32,  2.50s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:15<00:44,  3.72s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:16<00:20,  2.06s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:18<00:18,  2.09s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:24<00:24,  3.09s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:31<00:28,  4.08s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:37<00:28,  4.81s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:37<00:10,  2.74s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:39<00:07,  2.42s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:44<00:06,  3.08s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:51<00:04,  4.05s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:57<00:00,  4.79s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:57<00:00,  3.21s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg - Model: LogisticRegression - Period: 93 days  - data for training: all_days_in_period - CV:16
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1059  139
-TB-1022  1046  113
-pat_ids_ 2401 final_pat_ids_for_anal 2357
-Running training with all_days_in_period model: 97 vars
-Num of CV-repeat:16
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 11.35parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:03<00:12,  1.09parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:09<00:33,  2.57s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:16<00:45,  3.76s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:16<00:20,  2.08s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:17<00:15,  1.71s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:23<00:22,  2.83s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:29<00:27,  3.87s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:36<00:27,  4.64s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:36<00:10,  2.65s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:38<00:07,  2.35s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:43<00:06,  3.03s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:49<00:04,  4.02s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:56<00:00,  4.76s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:56<00:00,  3.14s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg - Model: LogisticRegression - Period: 93 days  - data for training: all_days_in_period - CV:17
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1059  139
-TB-1022  1046  113
-pat_ids_ 2401 final_pat_ids_for_anal 2357
-Running training with all_days_in_period model: 97 vars
-Num of CV-repeat:17
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 10.04parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:02<00:10,  1.39parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:09<00:31,  2.44s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:15<00:43,  3.66s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:15<00:20,  2.03s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:16<00:15,  1.68s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:22<00:22,  2.79s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:28<00:26,  3.80s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:35<00:27,  4.59s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:35<00:10,  2.62s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:37<00:06,  2.31s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:42<00:06,  3.06s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:48<00:03,  3.99s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:55<00:00,  4.73s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:55<00:00,  3.09s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg - Model: LogisticRegression - Period: 93 days  - data for training: all_days_in_period - CV:18
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1059  139
-TB-1022  1046  113
-pat_ids_ 2401 final_pat_ids_for_anal 2357
-Running training with all_days_in_period model: 97 vars
-Num of CV-repeat:18
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 10.14parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:02<00:11,  1.21parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:10<00:38,  2.93s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:18<00:53,  4.45s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:19<00:24,  2.45s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:19<00:18,  2.01s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:26<00:26,  3.37s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:35<00:32,  4.66s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:42<00:32,  5.50s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:43<00:12,  3.13s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:44<00:08,  2.77s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:49<00:06,  3.37s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:57<00:04,  4.57s/parameter_set][A
-Processing: 100%|██████████| 18/18 [01:05<00:00,  5.55s/parameter_set][AProcessing: 100%|██████████| 18/18 [01:05<00:00,  3.65s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg - Model: LogisticRegression - Period: 93 days  - data for training: all_days_in_period - CV:19
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1059  139
-TB-1022  1046  113
-pat_ids_ 2401 final_pat_ids_for_anal 2357
-Running training with all_days_in_period model: 97 vars
-Num of CV-repeat:19
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 10.57parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:03<00:12,  1.13parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:10<00:38,  2.93s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:18<00:51,  4.33s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:18<00:23,  2.39s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:19<00:17,  1.97s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:26<00:26,  3.37s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:34<00:31,  4.50s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:42<00:32,  5.42s/parameter_set][A
-Processing:  72%|███████▏  | 13/18 [00:42<00:19,  3.90s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:42<00:11,  2.85s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:44<00:07,  2.49s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:50<00:07,  3.78s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:58<00:04,  4.89s/parameter_set][A
-Processing: 100%|██████████| 18/18 [01:06<00:00,  5.76s/parameter_set][AProcessing: 100%|██████████| 18/18 [01:06<00:00,  3.68s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg - Model: LogisticRegression - Period: 93 days  - data for training: all_days_in_period - CV:20
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1059  139
-TB-1022  1046  113
-pat_ids_ 2401 final_pat_ids_for_anal 2357
-Running training with all_days_in_period model: 97 vars
-Num of CV-repeat:20
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 10.01parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:02<00:09,  1.46parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:08<00:31,  2.40s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:15<00:43,  3.63s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:15<00:20,  2.01s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:17<00:17,  1.93s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:23<00:23,  2.93s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:29<00:27,  3.93s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:36<00:28,  4.68s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:36<00:10,  2.67s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:37<00:07,  2.34s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:42<00:05,  2.99s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:49<00:03,  3.98s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:56<00:00,  4.72s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:56<00:00,  3.12s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg - Model: LogisticRegression - Period: 93 days  - data for training: all_days_in_period - CV:21
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1059  139
-TB-1022  1046  113
-pat_ids_ 2401 final_pat_ids_for_anal 2357
-Running training with all_days_in_period model: 97 vars
-Num of CV-repeat:21
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 10.68parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:03<00:12,  1.09parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:09<00:33,  2.56s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:16<00:44,  3.74s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:16<00:20,  2.06s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:20<00:23,  2.65s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:25<00:26,  3.25s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:32<00:29,  4.18s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:39<00:29,  4.86s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:39<00:11,  2.77s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:40<00:07,  2.35s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:44<00:05,  2.75s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:50<00:03,  3.79s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:57<00:00,  4.59s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:57<00:00,  3.20s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg - Model: LogisticRegression - Period: 93 days  - data for training: all_days_in_period - CV:22
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1059  139
-TB-1022  1046  113
-pat_ids_ 2401 final_pat_ids_for_anal 2357
-Running training with all_days_in_period model: 97 vars
-Num of CV-repeat:22
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 10.75parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:02<00:08,  1.57parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:08<00:30,  2.36s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:15<00:43,  3.60s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:15<00:19,  1.99s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:16<00:15,  1.68s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:22<00:22,  2.82s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:28<00:26,  3.85s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:35<00:27,  4.62s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:35<00:10,  2.64s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:36<00:06,  2.31s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:41<00:05,  2.96s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:48<00:03,  3.95s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:55<00:00,  4.70s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:55<00:00,  3.07s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg - Model: LogisticRegression - Period: 93 days  - data for training: all_days_in_period - CV:23
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1059  139
-TB-1022  1046  113
-pat_ids_ 2401 final_pat_ids_for_anal 2357
-Running training with all_days_in_period model: 97 vars
-Num of CV-repeat:23
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 10.94parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:02<00:10,  1.31parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:09<00:31,  2.46s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:15<00:44,  3.70s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:15<00:20,  2.04s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:17<00:17,  1.98s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:23<00:24,  3.07s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:30<00:28,  4.07s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:37<00:28,  4.78s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:37<00:10,  2.73s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:38<00:07,  2.41s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:44<00:06,  3.27s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:51<00:04,  4.18s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:58<00:00,  4.90s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:58<00:00,  3.23s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg - Model: LogisticRegression - Period: 93 days  - data for training: all_days_in_period - CV:24
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1059  139
-TB-1022  1046  113
-pat_ids_ 2401 final_pat_ids_for_anal 2357
-Running training with all_days_in_period model: 97 vars
-Num of CV-repeat:24
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 11.21parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:04<00:16,  1.20s/parameter_set][A
-Processing:  28%|██▊       | 5/18 [00:10<00:35,  2.76s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:17<00:46,  3.88s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:17<00:21,  2.14s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:19<00:18,  2.04s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:25<00:24,  3.10s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:31<00:28,  4.06s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:38<00:28,  4.77s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:38<00:10,  2.72s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:40<00:07,  2.39s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:45<00:06,  3.13s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:52<00:04,  4.08s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:58<00:00,  4.79s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:58<00:00,  3.26s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg - Model: LogisticRegression - Period: 93 days  - data for training: all_days_in_period - CV:25
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1059  139
-TB-1022  1046  113
-pat_ids_ 2401 final_pat_ids_for_anal 2357
-Running training with all_days_in_period model: 97 vars
-Num of CV-repeat:25
-
-Processing:   0%|          | 0/18 [00:00<?, ?parameter_set/s][A
-Processing:  11%|█         | 2/18 [00:00<00:01, 10.91parameter_set/s][A
-Processing:  22%|██▏       | 4/18 [00:02<00:11,  1.26parameter_set/s][A
-Processing:  28%|██▊       | 5/18 [00:09<00:32,  2.47s/parameter_set][A
-Processing:  33%|███▎      | 6/18 [00:15<00:44,  3.68s/parameter_set][A
-Processing:  44%|████▍     | 8/18 [00:15<00:20,  2.03s/parameter_set][A
-Processing:  50%|█████     | 9/18 [00:16<00:14,  1.64s/parameter_set][A
-Processing:  56%|█████▌    | 10/18 [00:22<00:22,  2.83s/parameter_set][A
-Processing:  61%|██████    | 11/18 [00:29<00:27,  3.87s/parameter_set][A
-Processing:  67%|██████▋   | 12/18 [00:35<00:27,  4.63s/parameter_set][A
-Processing:  78%|███████▊  | 14/18 [00:36<00:10,  2.64s/parameter_set][A
-Processing:  83%|████████▎ | 15/18 [00:37<00:07,  2.34s/parameter_set][A
-Processing:  89%|████████▉ | 16/18 [00:43<00:06,  3.19s/parameter_set][A
-Processing:  94%|█████████▍| 17/18 [00:49<00:04,  4.13s/parameter_set][A
-Processing: 100%|██████████| 18/18 [00:56<00:00,  4.83s/parameter_set][AProcessing: 100%|██████████| 18/18 [00:56<00:00,  3.14s/parameter_set]
-100%|██████████| 1/1 [28:07<00:00, 1687.98s/model]100%|██████████| 1/1 [28:07<00:00, 1687.98s/model]
-Training duration:
-Elapsed time:0 hours:28 minutes

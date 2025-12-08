@@ -25,7 +25,9 @@ parser.add_argument("--data_inclusion_type",
                     nargs='+',  # ← this makes it accept one or more values
                     help="List of data inclusion types: ['baseline_last_day','baseline_vars','all_days']")
 
-#parser.add_argument("--model", help="One of the 2 models: ['XGBoost','LogisticRegression']")
+parser.add_argument("--pool_methods",
+                    nargs='+',  # ← this makes it accept one or more values
+                    help="Pooling methods: ['mean_pooling','attention_pooling']")
 parser.add_argument("--period_end_day", 
                     nargs='+',  # ← this makes it accept one or more values
                     help="One of the 6 periods: [baseline,31,62,93,125,160,'all']")
@@ -35,6 +37,7 @@ parser.add_argument("--period_end_day",
 args = parser.parse_args()
 dataset_name_=[args.dataset_name]
 data_inclusion_types_ = [t for t in args.data_inclusion_type]
+pool_methods_ = [t for t in args.pool_methods]
 #model_names_ = [args.model]
 #period_end_day_=[args.period_end_day if args.period_end_day in ['baseline','all'] else int(args.period_end_day)]
 period_end_days_ = [p if p in ['baseline', 'all'] else int(p) for p in args.period_end_day]
@@ -48,14 +51,14 @@ period_end_days_ = [p if p in ['baseline', 'all'] else int(p) for p in args.peri
 
 parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':{
                             'result_cat':'RESULT_AT_END_OF_TREATMENT',
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment'
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'selection_method':'patient_clustering',
                             'clust_comb':'2-3-4-5',
                             'graph_metric':None,
                             'num_of_common_vars':22,
                             'training_days':120},
                          
-                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_wo_dr_reg':{
+                         'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
                             'result_cat':'RESULT_AT_END_OF_TREATMENT',
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment'},
                         
@@ -502,11 +505,13 @@ for dataset_param_key in dataset_name_:
             
       
                 model_id=f"{llm_model_name}_{fine_tuned_tag}"
-                output_dir=f"../data/{dataset_param_key}_{model_id}_{period_end_day}_days_{data_inclusion_type}"
-                os.makedirs(output_dir,exist_ok=True)
+                #output_dir=f"../data/{dataset_param_key}_{model_id}_{period_end_day}_days_{data_inclusion_type}"
+                #os.makedirs(output_dir,exist_ok=True)
                 
                 ## TOKENIZE DATASET
-                all_dataset_raw=Dataset.from_dict({"text": all_texts[:], "labels": all_labels[:],'pat_ids':[*pat_ids][:]}).with_format("torch")
+                all_dataset_raw=Dataset.from_dict({"text": all_texts, 
+                                                   #"labels": all_labels[:],
+                                                   'pat_ids':[*pat_ids]}).with_format("torch")
                 all_dataset_tokenized=all_dataset_raw.map(lambda x: tokenizer(x['text'],truncation=False, padding=False, return_tensors='pt'),batched=False)
                 all_loader=DataLoader(all_dataset_tokenized, batch_size=1)
                 
@@ -514,33 +519,136 @@ for dataset_param_key in dataset_name_:
                 
                 print(f'Extract embedding of {model_id}/{data_inclusion_type}/')
                 with torch.no_grad():
-                    print(model_id,dataset_param_key,period_end_day)
-                    for n, batch in enumerate(tqdm(all_loader, desc="Processing", unit="batch")):
-                        input_ids, attention_mask, labels,pat_id = batch['input_ids'],batch['attention_mask'], batch['labels'],batch['pat_ids']
-                        input_ids, attention_mask, labels = input_ids.to(device), attention_mask.to(device), labels.to(device)
-    
-                        #print('input_ids.shape',input_ids.shape)
+
+                    for pool_method in pool_methods_:
                         
-                        ## Get mean of embedding vector rowvise ==> mean(input_token_dim x embed_dimension) ==> embed_dimension
+                        output_dir=f"../data/{key}_{model_id}_{period_end_day}_days_{data_inclusion_type}_{pool_method}"
+                        os.makedirs(output_dir,exist_ok=True)
                         
-                        #mask=attention_mask.detach().cpu()!=0
+                        print(model_id,dataset_param_key,period_end_day,pool_method)
                         
-                        if 'long-t5' in llm_model_name:
-                            outputs = model(input_ids, attention_mask=attention_mask)
-                            embed=outputs.last_hidden_state
-                            #embed=embed[mask,:].detach().cpu()
-                            embed_mean=torch.mean(embed[mask,:].detach().cpu(),axis=0)
-                            fn=f"{output_dir}/{pat_ids[0].replace('/','_')}.pt"
-                            torch.save(embed_mean,fn)
-                        
-                        else:
-                            if 'TB-1018' in pat_id[0]:
-                                #print(pat_id)
-                                continue
-                              
-                            if 'TB-1018' not in pat_id[0]:
-                                outputs = model(input_ids.squeeze(0), attention_mask=attention_mask, labels=labels)
-                                embed=(outputs.hidden_states[-1]).squeeze(0)
-                                embed_mean=torch.mean(embed[:,:].detach().cpu(),axis=0)
-                                fn=f"{output_dir}/{pat_id[0].replace('/','_')}.pt"
+                        #print(model_id,dataset_param_key,period_end_day)
+                        for n, batch in enumerate(tqdm(all_loader, desc="Processing", unit="batch")):
+                            input_ids, attention_mask, pat_id = batch['input_ids'],batch['attention_mask'],batch['pat_ids']
+                            input_ids, attention_mask = input_ids.to(device), attention_mask.to(device)
+        
+                            #print('input_ids.shape',input_ids.shape)
+                            
+                            ## Get mean of embedding vector rowvise ==> mean(input_token_dim x embed_dimension) ==> embed_dimension
+                            
+                            #mask=attention_mask.detach().cpu()!=0
+                            
+                            if 'long-t5' in llm_model_name:
+                                outputs = model(input_ids, attention_mask=attention_mask)
+                                embed=outputs.last_hidden_state
+                                #embed=embed[mask,:].detach().cpu()
+                                embed_mean=torch.mean(embed[mask,:].detach().cpu(),axis=0)
+                                fn=f"{output_dir}/{pat_ids[0].replace('/','_')}.pt"
                                 torch.save(embed_mean,fn)
+                            
+                            else:
+                                if 'TB-1018' in pat_id[0]:
+                                    #print(pat_id)
+                                    continue
+                                  
+                                if 'TB-1018' not in pat_id[0]:
+
+                                    if pool_method=='mean_pooling':
+                                        outputs = model(input_ids.squeeze(0), 
+                                                        attention_mask=attention_mask,
+                                                        use_cache=False, #labels=labels,
+                                                        output_attentions=False)
+                                        
+                                        del input_ids,attention_mask
+                                        embed=(outputs.hidden_states[-1]).squeeze(0)
+                                        
+                                        del outputs
+                                        torch.cuda.empty_cache()
+                                        
+                                        embed_mean=torch.mean(embed.detach(),axis=0)
+                                        
+                                        del embed
+                                        torch.cuda.empty_cache()
+                                        
+                                        fn=f"{output_dir}/{pat_id[0].replace('/','_')}.pt"
+                                        torch.save(embed_mean,fn)
+                                        
+                                        del embed_mean
+                                        torch.cuda.empty_cache()
+
+                                    
+                                    
+                                    
+                                    if pool_method=='attention_pooling':
+                                    
+                                        outputs = model(input_ids.squeeze(0), 
+                                                        attention_mask=attention_mask,
+                                                        use_cache=False, #labels=labels,
+                                                        output_attentions=True)
+                                        
+                                        
+                                        # ---- 2) Last 4 attention layers with minimal memory ----
+                                        # outputs.attentions is a tuple(list) of length num_layers
+                                        # each element: [num_heads, seq, seq] for decoder-only models (or [batch, heads, seq, seq] depending on architecture)
+                                        #attentions =   # tuple of length L
+                
+                                        # Get only the last 4 layers
+                                        #last4_attn = attentions[-4:]  # list of 4 tensors
+                
+                                        # Instead of saving full [layers x heads x seq x seq], we
+                                        # reduce them to per-token importance scores to save memory.
+            
+                                        token_importance = None
+                                        n_layers = 0
+                
+                                        for att in outputs.attentions[-4:]:
+                                            # att: [batch, heads, seq, seq] -> [heads, seq, seq]
+                                            if att.dim() == 4:
+                                                att = att.squeeze(0)
+                                        
+                                            # mean over heads and query positions -> [seq_key]
+                                            per_layer_importance = att.mean(dim=(0, 1))#.detach().cpu()  # [seq]
+                                            del att
+                                            #torch.cuda.empty_cache()
+                                        
+                                            if token_importance is None:
+                                                token_importance = per_layer_importance
+                                            else:
+                                                token_importance = token_importance + per_layer_importance
+                                        
+                                            n_layers += 1
+                                            # free this layer's attention tensor
+                                            del per_layer_importance
+                                            #torch.cuda.empty_cache()
+                                        
+                                        embed=(outputs.hidden_states[-1]).squeeze(0)
+                                    
+                                        del outputs
+                                        #torch.cuda.empty_cache()
+                                        
+                                        # average over the 4 layers
+                                        token_importance = token_importance / n_layers  # [seq]
+                                        
+                                        # Apply padding mask and normalise
+                                        #token_importance = token_importance * mask.float()
+                                        if token_importance.sum() > 0:
+                                            token_importance = token_importance / token_importance.sum()
+                
+                                        
+                                        #token_importance_cpu = token_importance.detach().cpu()
+                                        weighted_embed = (embed * token_importance.unsqueeze(-1)).sum(dim=0)#.cpu()
+    
+                                        del embed
+                                        
+                                        fn=f"{output_dir}/{pat_id[0].replace('/','_')}.pt"
+                                        torch.save(weighted_embed,fn)
+    
+                                        del weighted_embed
+                                        #torch.cuda.empty_cache()
+    
+                                        fn=f"{output_dir}/{pat_id[0].replace('/','_')}_tok_imp.pt"
+                                        torch.save(token_importance,fn)
+                                        
+                                        del token_importance                                   
+                                        torch.cuda.empty_cache()
+                                        

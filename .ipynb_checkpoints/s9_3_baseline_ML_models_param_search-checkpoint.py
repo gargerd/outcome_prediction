@@ -49,8 +49,33 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'}, 
 
+                        'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_dr_reg_per_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+            
+                        'tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
+                            'result_cat':'RELAPSE'}, 
+
+                         
+                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_with_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+            
+                        'tb21_22_2984_pats_22_vars_relapse_with_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
+                            'result_cat':'RELAPSE'}, 
+
                          'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'},
+                         
+                        'tb21_22_2263_pats_24_vars_relapse':{
+                            'fn':'tb21_22_2263_pats_24_vars_relapse',
                             'result_cat':'RELAPSE'},
 
                          'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_with_adherence':{
@@ -104,8 +129,6 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'result_cat':'llm_pred_prob_norm'},
                          
                         }
-
-
 
 ###=========================================================================================
 # 1 . Define training parameters
@@ -192,8 +215,8 @@ param_search_dict={'RandomForest':{'n_estimators':[300,500,700],
                    
                   'LogisticRegression':{#'l1_ratio':[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1],
                                         #'l1_ratio':[1]
-                                        'l1_ratio':[1,0.5,0.1],
-                                         'C': [0.0001, 0.001, 0.01, 0.1, 1, 10],
+                                        'l1_ratio':[1],
+                                         'C': [0.001, 0.01, 0.1, 1, 10],
                                           },
                    
                   'SVC':{'C':[1e-3,1e-2,1e-1,1e0,1e1,1e2],
@@ -215,6 +238,14 @@ for data_param_key in dataset_name_:
     #outcome_label=data_param_key.split('vars_')[-1].upper()
     outcome_label = parameters_for_analysis[data_param_key]['result_cat']
 
+     ## LOAD FINAL PATIENT IDS FOR ANALYSIS, SAVED DURING PREPROCESSING OF THE BASELINE MODELS IN NOTEBOOK S9_3
+    if 'pat_ids_fn' in parameters_for_analysis[data_param_key].keys():
+        fn=f"../data/{parameters_for_analysis[data_param_key]['pat_ids_fn']}_final_pat_ids_for_analysis.pickle"
+    else:  
+        fn=f'../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
+    with open(fn, 'rb') as handle:
+        final_pat_ids_for_analysis=pickle.load(handle)
+
     ## Load preprocessed-imputed data, and modify the variables (add or drop) depending on the prediction setup, which is contained at the 
     #. end of the "data_param_key" variable
     X,race_colnames = load_and_modify_preprocessed_data(data_param_key)
@@ -223,33 +254,6 @@ for data_param_key in dataset_name_:
     pat_ids,y,target_df,outcome_label = return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
                                                                   outcome_df,outcome_label,model_names)
         
-    '''
-    ## If not RELAPSE shpuld be predicted, subset the patients according to the availbility of the outcome results
-    if parameters_for_analysis[data_param_key]['result_cat']!='RELAPSE':
-        
-        ## Extract patients who have their last therapy day before therapy_day_thr ==> these patient probably dropped out
-        last_day_per_pat_df=X.sort_values(by=['DAY']).groupby('USUBJID').apply(lambda x: x.loc[x.index[-1],:])
-        pat_ids=last_day_per_pat_df[last_day_per_pat_df['DAY']>therapy_day_thr]['USUBJID'].tolist()
-        #pat_ids=X['USUBJID'].unique().tolist()
-        
-        ## Subset outcome dataframe to patient considered
-        target_df=outcome_df.loc[pat_ids,outcome_label]
-        y=target_df.loc[pat_ids].replace(label2id)
-        
-    if parameters_for_analysis[data_param_key]['result_cat']=='RELAPSE':
-        outcome_label='RELAPSE'
-        pats_with_relapse_df=extract_21_22_relapse_pats()
-
-        pats_with_relapse_df = pats_with_relapse_df.loc[list(set(X['USUBJID'].unique())&set(pats_with_relapse_df.index))]
-
-        ## Create new prediction labels (or even multilabels) in the "RELAPSE" column based on the relapse day intervals defined in "bins" 
-        if 'bins' in parameters_for_analysis[data_param_key].keys():
-            pats_with_relapse_df = cut_relapse_days_to_interval_categories(pats_with_relapse_df,data_param_key)
-        
-        pat_ids=pats_with_relapse_df.index.tolist()
-        target_df=pats_with_relapse_df[[outcome_label]]
-        y=pats_with_relapse_df[[outcome_label]]
-    '''   
        
     df_=target_df.reset_index()#
     df_['STUDYID']=df_['USUBJID'].str.split('/',expand=True)[0].values
@@ -262,7 +266,6 @@ for data_param_key in dataset_name_:
     
     for period_end_day in period_end_day_[:]:  
 
-        final_pat_ids_for_analysis[period_end_day]={}
         
         period_num = period_end_days.index(period_end_day)
 
@@ -382,6 +385,7 @@ for data_param_key in dataset_name_:
                     ## If baseline, don't drop these rows, as they are being used to impute some variables at baseline
                     if period_end_day=='baseline':
                         X_subset_=X_subset.copy()
+                        X_subset_ = X_subset_.loc[:,~X_subset_.columns.str.startswith('ARM_')]
 
                     #final_pat_ids_for_analysis[period_end_day]=X_subset_['USUBJID'].unique().tolist()
                     
@@ -392,12 +396,14 @@ for data_param_key in dataset_name_:
                     X_train,X_test,y_train,y_test,_,_ = create_std_training_testing_data(X_subset_,
                                                                                          y,
                                                                                          pat_ids_,
-                                                                                          train_params['test_size_ratio'],
-                                                                                          rand_state,training_data_type,
-                                                                                          columns_to_drop_,
-                                                                                          period_end_day,
-                                                                                          outcome_label)
-                    
+                                                                                         train_params['test_size_ratio'],
+                                                                                         rand_state,training_data_type,
+                                                                                         columns_to_drop_,
+                                                                                         period_end_day,
+                                                                                         outcome_label,
+                                                                                         cv_repeat_num=cv_repeat_num,
+                                                                                         final_pat_ids_for_analysis=final_pat_ids_for_analysis)
+        
                     final_pat_ids_for_anal=X_train.index.unique().tolist() + X_test.index.unique().tolist()
                     print(pd.crosstab(df_.loc[df_['USUBJID'].isin(final_pat_ids_for_anal),'STUDYID'],\
                                       df_.loc[df_['USUBJID'].isin(final_pat_ids_for_anal),outcome_label]))
@@ -423,6 +429,7 @@ for data_param_key in dataset_name_:
                     
                 
                     ## RUN PARAMETER SEARCH
+                    calibrate_model=False
                     param_search_results = run_parameter_search(model_name,
                                                                 X_train,
                                                                 y_train,
@@ -431,7 +438,8 @@ for data_param_key in dataset_name_:
                                                                 outcome_label,
                                                                 param_search_dict,
                                                                 train_params['weight_by_label_freq'],
-                                                                train_params,)
+                                                                train_params,
+                                                                calibrate_model)
                     
                     
 
@@ -448,11 +456,11 @@ for data_param_key in dataset_name_:
                     pickle.dump(training_results, handle)
 
         
-        if training_data_type=='last_therapy_day':              
+        #if training_data_type=='last_therapy_day':              
             ## SAVE DICTIONARY OF FINAL PATIENT IDS                    
-            fn=f'../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
-            with open(fn, 'wb') as handle:
-                pickle.dump(final_pat_ids_for_analysis, handle)
+        #    fn=f'../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
+        #    with open(fn, 'wb') as handle:
+        #        pickle.dump(final_pat_ids_for_analysis, handle)
         
         
 loop_time=time.time()

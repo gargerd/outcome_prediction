@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --array=1-2%4
+#SBATCH --array=1-4%4
 #SBATCH --job-name=s_9_3_raw_data_test
 #SBATCH -o slurm_raw_data_testing_logs/s_9_3_raw_data_test_%A_%a.log
 #SBATCH -e slurm_raw_data_testing_logs/s_9_3_raw_data_test_%A_%a.log
@@ -8,7 +8,7 @@
 #SBATCH --partition=sapphire #bigmem
 ##SBATCH --qos=cpu_normal
 ##SBATCH --gres=gpu:2
-#SBATCH --time=1-00:00:00
+#SBATCH --time=0-06:00:00
 #SBATCH --nice=10000
 
 set -euo pipefail

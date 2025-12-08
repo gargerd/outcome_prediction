@@ -68,12 +68,6 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'result_cat':'RELAPSE'},
 
 
-                          'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE'},
-
-                         
-
                          'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_weight_norm':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RESULT_AT_END_OF_TREATMENT'},
@@ -239,7 +233,10 @@ def load_input_emebddings_of_model(data_param_key,llm_model_name,fine_tuned_tag,
 
 
 ###=========================================
-def load_input_embeddings_of_model(data_param_key, llm_model_name, fine_tuned_tag, period_end_day, llm_model_name_with_tag,data_inclusion_type, autoencoder_merged, max_workers=8):
+###=========================================
+def load_input_embeddings_of_model(data_param_key, llm_model_name, fine_tuned_tag, period_end_day, 
+                                   llm_model_name_with_tag,data_inclusion_type, pool_method,
+                                   autoencoder_merged, max_workers=8):
     
     import os
     import numpy as np
@@ -250,7 +247,7 @@ def load_input_embeddings_of_model(data_param_key, llm_model_name, fine_tuned_ta
     base = "../data"
     dataset_name = parameters_for_analysis[data_param_key]['fn']
 
-    parts = [dataset_name, llm_model_name, fine_tuned_tag, str(period_end_day), 'days', data_inclusion_type]
+    parts = [dataset_name, llm_model_name, fine_tuned_tag, str(period_end_day), 'days', data_inclusion_type,pool_method]
     if autoencoder_merged:
         parts.append('autoencoder_merged')
     model_dir = os.path.join(base, '_'.join(parts))
@@ -274,9 +271,9 @@ def load_input_embeddings_of_model(data_param_key, llm_model_name, fine_tuned_ta
             if text_embedding_mode:
                 embed = np.load(path)
             else:
-                embed = torch.load(path).detach().cpu().numpy()
+                embed = torch.load(path,map_location=torch.device('cpu')).detach().cpu().numpy()
 
-            # 🔐 Replace inf before appending
+            # Replace inf before appending
             embed = np.where(np.isinf(embed), np.nan, embed)
 
             pat_id = fname.replace('_', '/').replace('.pt', '').replace('.npy', '')
@@ -312,7 +309,6 @@ def load_input_embeddings_of_model(data_param_key, llm_model_name, fine_tuned_ta
     df_pt = df_pt.fillna(df_pt.mean(numeric_only=True))
 
     return df_pt
-
 
 
 
@@ -646,19 +642,22 @@ def run_lig_on_chunk(input_ids_chunk, model,tokenizer,n_steps,internal_batch_siz
     def forward_func(input_ids,mean,scale,lr_torch):
         # input_ids shape: (batch, seq_len)
         outputs = model(input_ids=input_ids, output_hidden_states=True)
-        # last hidden layer
-        hidden = outputs.hidden_states[-1]           # (batch, seq_len, hidden_dim)
-        mean_embed = hidden.mean(dim=1)             # (batch, hidden_dim)
+        
+        mean_embed = outputs.hidden_states[-1].mean(dim=1)             # (batch, hidden_dim)
+        del outputs
         # standardize using saved scaler params (mean, scale) in torch tensors on device
         
         
         mean_=torch.reshape(mean, shape = mean_embed.shape)
         scale_=torch.reshape(scale, shape = mean_embed.shape)
+        del mean, scale
         #print('within forward_func, mean_embed.shape,mean_.shape,scale_.shape',mean_embed.shape,mean_.shape,scale_.shape)
         
         standardized_embed = (mean_embed - mean_) / scale_
+        del mean_embed,mean_,scale_
         # pass through saved LR wrapper (lr_torch) which returns probability in (batch,1) or (batch,)
         probs = lr_torch(standardized_embed)        # expect shape (batch, 1) or (batch,)
+        del standardized_embed
         
         # ensure a scalar per example; return shape (batch,) or (batch,1)
         #if probs.ndim == 2 and probs.shape[1] == 1:
