@@ -169,7 +169,7 @@ param_search_dict={'RandomForest':{'n_estimators':[300,500,700],
 
                    'LogisticRegression':{#'l1_ratio':[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1],
                                         #'l1_ratio':[1]
-                                       'n_jobs':[4],
+                                       #'n_jobs':[4],
                                         'l1_ratio':[1],
                                          'C': [0.001, 0.01, 0.1, 1, 10],
                                           },
@@ -325,7 +325,6 @@ label2id={"FAVOURABLE": 0, "UNFAVOURABLE": 1}
 therapy_day_thr=80
 period_end_days=['baseline',31,62,93,125,160,'all']
 
-## Define training parameters
 train_params={'num_cv_repeats':25,
               'k_folds':5,              
               'weight_by_label_freq':True,
@@ -338,19 +337,26 @@ train_params={'num_cv_repeats':25,
 
 
 dense_network_params={#'input_dim' :len(data.drop(columns=['STUDYID','ARM']).columns),
-                        'batch_size':128,
-                        'hidden_dims':[128,32],
+                        'batch_size':32,
+                        'hidden_dims':[512,128,16],
                         'output_dim':len(id2label.keys()),
+                        #'output_dim':1,
                         'learning_rate':1e-4,
                         'weight_decay':1e-5,
-                        'dropout_prob':0.1,
-                        'num_epochs':5,
-                        'label_weights':[1,30],
+                        'dropout_prob':0.2,
+                        'num_epochs':200,
+                        'label_weights':[1,1],
                         'hidden_activation':nn.ReLU(), #nn. Sigmoid()
-                        'last_activation': nn.Softmax(dim=1), # #nn.Hardsigmoid()
-                        'criterion':'CrossEntropyLoss'
+                        #'last_activation': nn.Softmax(dim=1), # #nn.Hardsigmoid()
+                        #'criterion':'CrossEntropyLoss',
+                        'last_activation': nn.Identity(),#nn.ReLU(), # #nn.Hardsigmoid()
+                        'criterion': 'FocalLoss',         # <--- new
+                        'focal_gamma': 2.0,               # typical default
+                        'focal_alpha': None,              # or e.g. [0.25, 0.75]
+    
+                        #'criterion':'MSELoss',
+    
                         }
-
 
 
 ####=================================================
@@ -393,6 +399,11 @@ for data_param_key in dataset_name_:
             
             for period_end_day in period_end_day_:                
                 period_num = period_end_days.index(period_end_day)
+
+                
+                if period_end_day=='all' and outcome_label=='RESULT_AT_END_OF_TREATMENT':
+                    print(f'No prediction for {outcome_label} at timepoint {period_end_day}')
+                    continue
                 
                 print(f'Training on {period_end_day} days of data')
 
@@ -556,25 +567,29 @@ for data_param_key in dataset_name_:
                                                                                                                      dense_network_params,
                                                                                                                      train_param_comb,
                                                                                                                      calibrate_model)
+
+                                            if calibrate_model==True:
+                                                print('Calcu;ating conf metrics')
+        
     
-                                            ## Calculate calibrated prediction probs + confidence metrics of prediction probabilities
-                                            test_conf_metrics = calibrate_model_and_extract_confidence_metrics(model=model,
-                                                                                                               X_train=X_train,
-                                                                                                               X_test=X_test,
-                                                                                                               y_train=y_train,
-                                                                                                               outcome_label=outcome_label,
-                                                                                                               label_weights_dict=label_weights_dict,
-                                                                                                               cv_roc_auc_scores=cv_roc_auc_scores,
-                                                                                                               cv_splitter=None)
-                                            
-                                            ## Calculate out-of-distribution confidecne metrics based on Mahalobis distance and to train dataset's averga
-                                            #. and averagge Eucldiean distance of KNN-neighbours 
-                                            use_pca=True
-                                            ood_df = return_ood_metrics(X_train,X_test,use_pca)
-                            
-                                            #ood_conf_df=cv_roc_auc_scores['ood_conf']
-                                            test_conf_metrics.loc[ood_df.index,ood_df.columns.tolist()] = ood_df.values
-    
+                                                ## Calculate calibrated prediction probs + confidence metrics of prediction probabilities
+                                                test_conf_metrics = calibrate_model_and_extract_confidence_metrics(model=model,
+                                                                                                                   X_train=X_train,
+                                                                                                                   X_test=X_test,
+                                                                                                                   y_train=y_train,
+                                                                                                                   outcome_label=outcome_label,
+                                                                                                                   label_weights_dict=label_weights_dict,
+                                                                                                                   cv_roc_auc_scores=cv_roc_auc_scores,
+                                                                                                                   cv_splitter=None)
+                                                
+                                                ## Calculate out-of-distribution confidecne metrics based on Mahalobis distance and to train dataset's averga
+                                                #. and averagge Eucldiean distance of KNN-neighbours 
+                                                use_pca=True
+                                                ood_df = return_ood_metrics(X_train,X_test,use_pca)
+                                
+                                                #ood_conf_df=cv_roc_auc_scores['ood_conf']
+                                                test_conf_metrics.loc[ood_df.index,ood_df.columns.tolist()] = ood_df.values
+        
     
                                             ## Save the best model's ROC-AUC scores as CV validation ROC-AUC
                                             #. + Savel 'label_weights_dict' ==> it depends on the train-test split, so label_weights_dict is the same for all
@@ -584,8 +599,10 @@ for data_param_key in dataset_name_:
                                                 training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['label_weights_dict']=label_weights_dict
                                             
                                             training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['model'][n]=model
-                                            training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['test_conf_metrics'][n]=test_conf_metrics
-                                            training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['inner_CV_conf_metrics'][n]=cv_roc_auc_scores['inner_CV_conf_metrics']
+                                            
+                                            if calibrate_model==True:
+                                                training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['test_conf_metrics'][n]=test_conf_metrics
+                                                training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['inner_CV_conf_metrics'][n]=cv_roc_auc_scores['inner_CV_conf_metrics']
     
                                   
             

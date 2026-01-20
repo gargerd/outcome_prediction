@@ -1,6 +1,6 @@
 #!/bin/bash
-##SBATCH --array=1-84%42
-#SBATCH --array=46,48,49,50,51,52,56,57
+#SBATCH --array=1-42%42
+##SBATCH --array=46,48,49,50,51,52,56,57
 #SBATCH --job-name=s_9_4_ML_LLM_param_search
 #SBATCH -o slurm_llm_param_search_logs/s_9_4_ML_LLM_param_search_%A_%a.log
 #SBATCH -e slurm_llm_param_search_logs/s_9_4_ML_LLM_param_search_%A_%a.log
@@ -9,7 +9,7 @@
 #SBATCH --partition=sapphire #bigmem
 ##SBATCH --qos=cpu_normal
 ##SBATCH --gres=gpu:2
-#SBATCH --time=2-00:00:00
+#SBATCH --time=1-00:00:00
 #SBATCH --nice=10000
 
 set -euo pipefail

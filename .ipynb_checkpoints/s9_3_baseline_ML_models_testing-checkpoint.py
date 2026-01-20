@@ -288,10 +288,8 @@ for data_param_key in dataset_name_:
 
     ## Return dataframe with the outcome label
     pat_ids,y,target_df,outcome_label = return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
-                                                                  outcome_df,outcome_label,model_names)
-        
+                                                          outcome_df,outcome_label,model_names)
 
-       
 
     ## Subset initial therapy last day dataframe to all patient considered in analysis
     #init_ther_df=last_initial_therapy_day_df.loc[pat_ids,:]
@@ -300,16 +298,27 @@ for data_param_key in dataset_name_:
 
     fig,ax=plt.subplots(1,1,figsize=(12,5.5))
     
-
+    
     for training_data_type in training_data_type_:
         cv_res_df_list,cv_res_df_per_study_list=[],[]
+
+        pred_results_dict,pred_results_dict_per_study={},{}
         
-            
+        start_period=time.time()
+        
         for period_end_day in period_end_day_:  
             scores,cv_num_list,model_name_list,scores_per_study_list,\
-                            cv_num_per_study_list,model_name_per_study_list,study_list,split_coln_list=[],[],[],[],[],[],[],[]
+                 cv_num_per_study_list,model_name_per_study_list,study_list,\
+                  split_coln_list,pred_prob_list, pred_prob_per_study_list, \
+                    pred_prob_list_calibr,pred_prob_per_study_list_calibr, \
+                     scores_calibr,scores_per_study_list_calibr,x_test_list,\
+                      x_test_per_study_list, label_weights_list,label_weights_per_study_list,\
+                       y_label_list,y_label_per_study_list =[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]
 
             period_num = period_end_days.index(period_end_day)
+
+            pred_results_dict[period_end_day]={}
+            pred_results_dict_per_study[period_end_day]={}
     
             ## SUBSET TO PATIENTS WHO WERE TAKING DRUGS DURING THE PERIOD
             #  ==> keep only patients who took TB drugs in period (not only placebo)
@@ -382,7 +391,10 @@ for data_param_key in dataset_name_:
             #fig,axes=plt.subplots(1,ncols,figsize=(ncols*8,12))
 
             
-
+            data_wr_time=time.time()
+            #print('data_wr_time:',(data_wr_time-start_period))
+            #print_elapsed_time_(start_period,data_wr_time) 
+            
             for model_name in model_names_:
                 print(model_name)
 
@@ -392,47 +404,62 @@ for data_param_key in dataset_name_:
 
                 cv_results=training_results['cv_results']
 
+                pickle_loading_time=time.time()
+                #print('picle_loadingt_time:')
+                #print_elapsed_time_(data_wr_time,pickle_loading_time) 
+                
+                if len(columns_to_drop)>0:
+                    columns_to_drop_=columns_to_drop + X_subset.columns[X_subset.columns.str.startswith(tuple(temp_cols_to_drop))].tolist()
 
+                    ## If colunm name is in the temp_cols_to_keep list, don't drop it
+                    columns_to_drop_=[coln for coln in columns_to_drop_ if coln not in temp_cols_to_keep]
+
+
+                ## 1. Drop patients with no drug regimen data
+                ## 2. Drop rows, where the variables columns selcted for analysis contains NaNs
+                if period_end_day!='baseline':
+
+                    ## 1. 
+                    dr_reg_cols=X_subset.columns[X_subset.columns.str.contains('dr_reg')].tolist()
+                    pats_wo_drug_reg = X_subset.loc[X_subset[dr_reg_cols].isna().any(axis=1),'USUBJID'].unique()
+                    X_subset_=X_subset.loc[~X_subset['USUBJID'].isin(pats_wo_drug_reg),:].copy()
+
+                    ## 2. 
+                    cols_for_anal=X_subset_.drop(columns=columns_to_drop_).columns.tolist()
+                    #X_subset_ = X_subset[['DAY']+cols_for_anal].sort_values(by=['DAY']).groupby('USUBJID',as_index=False).apply(lambda x: x.loc[x.index[-1],:]).dropna(how='any',axis=1)
+                    #X_subset_ = X_subset.dropna(subset=cols_for_anal,how='any',axis=0)
+                    X_subset_=X_subset_[['DAY']+cols_for_anal].copy()
+                    
+                    ## Drop all columns that contain only zeroes and refreash the columns_to_drop_ list with columns that are still there in X_susbet_
+                    X_subset_=X_subset_.loc[:, (X_subset_!= 0).any(axis=0)]
+                    columns_to_drop_= list(set(columns_to_drop_)&set(X_subset_.columns))
+
+                ## If baseline, don't drop these rows, as they are being used to impute some variables at baseline
+                if period_end_day=='baseline':
+                    X_subset_=X_subset.copy()
+                    X_subset_ = X_subset_.loc[:,~X_subset_.columns.str.startswith('ARM_')]
+
+
+
+                
                 print(f'++ \n {data_param_key} - {training_data_type} - Model {model_name} - Period: {period_end_day} days \n+++++++++++++++++')
                 #for cv_repeat_num in range(len([*cv_results])):
+                #for cv_repeat_num in tqdm(range(1)):
                 for cv_repeat_num in tqdm(range(len([*cv_results]))):
+
+                
+                    #print('cv_repeat_num',cv_repeat_num)
+                    cv_repeat_start=time.time()
 
                     ## Based on the saved random state used at training, re-create the train-test data split
                     rand_state=cv_results[f'cv_rep_{cv_repeat_num}']['rand_state']
 
-                    if len(columns_to_drop)>0:
-                        columns_to_drop_=columns_to_drop + X_subset.columns[X_subset.columns.str.startswith(tuple(temp_cols_to_drop))].tolist()
-
-                        ## If colunm name is in the temp_cols_to_keep list, don't drop it
-                        columns_to_drop_=[coln for coln in columns_to_drop_ if coln not in temp_cols_to_keep]
-
-
-                    ## 1. Drop patients with no drug regimen data
-                    ## 2. Drop rows, where the variables columns selcted for analysis contains NaNs
-                    if period_end_day!='baseline':
-
-                        ## 1. 
-                        dr_reg_cols=X_subset.columns[X_subset.columns.str.contains('dr_reg')].tolist()
-                        pats_wo_drug_reg = X_subset.loc[X_subset[dr_reg_cols].isna().any(axis=1),'USUBJID'].unique()
-                        X_subset_=X_subset.loc[~X_subset['USUBJID'].isin(pats_wo_drug_reg),:].copy()
-
-                        ## 2. 
-                        cols_for_anal=X_subset_.drop(columns=columns_to_drop_).columns.tolist()
-                        #X_subset_ = X_subset[['DAY']+cols_for_anal].sort_values(by=['DAY']).groupby('USUBJID',as_index=False).apply(lambda x: x.loc[x.index[-1],:]).dropna(how='any',axis=1)
-                        #X_subset_ = X_subset.dropna(subset=cols_for_anal,how='any',axis=0)
-                        X_subset_=X_subset_[['DAY']+cols_for_anal].copy()
-                        
-                        ## Drop all columns that contain only zeroes and refreash the columns_to_drop_ list with columns that are still there in X_susbet_
-                        X_subset_=X_subset_.loc[:, (X_subset_!= 0).any(axis=0)]
-                        columns_to_drop_= list(set(columns_to_drop_)&set(X_subset_.columns))
-
-                    ## If baseline, don't drop these rows, as they are being used to impute some variables at baseline
-                    if period_end_day=='baseline':
-                        X_subset_=X_subset.copy()
-                        X_subset_ = X_subset_.loc[:,~X_subset_.columns.str.startswith('ARM_')]
-
                     #print(pd.crosstab(df_.loc[df_['USUBJID'].isin(X_subset_['USUBJID'].unique()),'STUDYID'],df_.loc[df_['USUBJID'].isin(X_subset_['USUBJID'].unique()),outcome_label]))
 
+                    #final_wr_time=time.time()
+                    #print('final_wr_time:')
+                    #print_elapsed_time_(cv_repeat_start,final_wr_time) 
+                
                     X_train,X_test,y_train,y_test,\
                                     X_train_pat_ids,X_test_pat_ids= create_std_training_testing_data(X_subset_,
                                                                                                      y,
@@ -444,6 +471,10 @@ for data_param_key in dataset_name_:
                                                                                                      outcome_label,
                                                                                                      cv_repeat_num=cv_repeat_num,
                                                                                                      final_pat_ids_for_analysis=final_pat_ids_for_analysis)
+
+                    #strain_test_creat=time.time()
+                    #print('strain_test_creat:')
+                    #print_elapsed_time_(final_wr_time,strain_test_creat) 
                     
                     
                     
@@ -464,69 +495,131 @@ for data_param_key in dataset_name_:
                     test_probs=[]
                     #for n in range(len(cv_results[f'cv_rep_{cv_repeat_num}']['model'].keys())):
                     for n in range(0,1):
+                    
                         model=cv_results[f'cv_rep_{cv_repeat_num}']['model'][n]
                         test_probabilities = model.predict_proba(X_test.values)[:, 1]
                         test_probs.append(test_probabilities)
+
+                    #pred_time=time.time()
+                    #print('pred_time:')
+                    #print_elapsed_time(strain_test_creat,pred_time) 
                         
                     final_test_probabilities =np.mean(np.array(test_probs),axis=0)
 
                     # Predict probabilities on the training and test data
                     #test_probabilities = model.predict_proba(X_test)[:, 1]
-                    #test_roc_auc=roc_auc_score(y_test, final_test_probabilities)
-                    test_roc_auc=roc_auc_score(y_test, final_test_probabilities,sample_weight=label_weights)
+                    test_conf_metrics = cv_results[f'cv_rep_{cv_repeat_num}']['test_conf_metrics'][0]
+                    test_probabilities_calibr= test_conf_metrics.loc[X_test.index,['prob_calibrated']].values
+                    
+                    test_roc_auc=roc_auc_score(y_test, test_probabilities,sample_weight=label_weights)
+                    test_roc_auc_calibr=roc_auc_score(y_test, test_probabilities_calibr,sample_weight=label_weights)
 
                     #cv_roc_auc_scores=cv_results[f'cv_rep_{cv_repeat_num}']['cv_roc_auc_scores']['test_score']
                     scores.append(test_roc_auc)
+                    scores_calibr.append(test_roc_auc_calibr)
                     cv_num_list.append(cv_repeat_num+1)
                     model_name_list.append(model_name)
+                    
+                    pred_prob_list.append(test_probabilities)
+                    pred_prob_list_calibr.append(test_probabilities_calibr)
+                    x_test_list.append(X_test.index.tolist())
+                    label_weights_list.append(label_weights)
+                    y_label_list.append(y_test)
 
                     ## IF THERE ARE MULTIPLE STUDIES IN THE DATA, CALCULATE THE ROC-AUC SCORES WITHIN THE STUDIES AS WELL
-                    study_coln='STUDYID'
+                    split_coln='STUDYID'
                     #study_coln='ARM'
-                    
-                    for split_coln in ['STUDYID','ARM']:
+
+                    for split_coln in ['STUDYID','ARM'][:]:
                     
                         study_ids=X_subset[split_coln].unique()
+                        #print(study_ids)
                         #study_ids=['2EMRZ/2MR']
                         if len(study_ids)>0:
                             
                             for study_id in study_ids:
+                                #print(study_id)
                                 X_test_study_idx=X_subset.loc[(X_subset[split_coln]==study_id)&(X_subset['USUBJID'].isin(X_test_pat_ids)),'USUBJID'].tolist()
                                 X_test_study=X_test.loc[X_test_study_idx,:]
                                 #y_test_study=y_test.loc[y_test.index.get_level_values('STUDYID')==study_id]
                                 y_test_study=y_test.loc[X_test_study_idx]
+
+                                #print(X.loc[X['USUBJID'].isin(X_test_study_idx),'ARM'].value_counts())
+                                if len(X_test_study_idx)<1:
+                                    continue
     
                                 # Predict probabilities on the training and test data
                                 try:
+                                    test_probabilities_calibr=test_conf_metrics.loc[X_test_study.index,['prob_calibrated']].values
                                     test_probabilities = model.predict_proba(X_test_study.values)[:, 1]
+                                    
                                     label_weights=y_test_study[outcome_label].map(label_weights_dict).values
+                                    
                                     test_roc_auc=roc_auc_score(y_test_study, test_probabilities,sample_weight=label_weights)
+                                    test_roc_auc_calibr=roc_auc_score(y_test_study, test_probabilities_calibr,sample_weight=label_weights)
+                                    
                                 except ValueError:
                                     print(f'No pats in cv-repeat_num {cv_repeat_num} - {split_coln} - {study_id}')
                                     continue
     
                                 scores_per_study_list.append(test_roc_auc)
+                                scores_per_study_list_calibr.append(test_roc_auc_calibr)
                                 cv_num_per_study_list.append(cv_repeat_num+1)
                                 model_name_per_study_list.append(model_name)
                                 study_list.append(study_id) 
-                                split_coln_list.append(split_coln)   
+                                split_coln_list.append(split_coln)
+                                
+                                pred_prob_per_study_list.append(test_probabilities)
+                                pred_prob_per_study_list_calibr.append(test_probabilities_calibr)
+                                x_test_per_study_list.append(X_test_study.index.tolist())
+                                label_weights_per_study_list.append(label_weights)
+                                y_label_per_study_list.append(y_test_study)
                                          
-                
-            cv_res_df=pd.DataFrame.from_dict({'model_name':model_name_list,'Num_of_CV_repeat':cv_num_list,'ROC_AUC_score':scores})
+               
+            cv_res_df=pd.DataFrame.from_dict({'model_name':model_name_list,
+                                                                  'Num_of_CV_repeat':cv_num_list,
+                                                                  'ROC_AUC_score':scores,
+                                                                  'ROC_AUC_score_calibr':scores_calibr,
+                                                                  #'pred_prob':pred_prob_list,
+                                                                  #'pred_prob_calibr':pred_prob_list_calibr,
+                                                                 #'X_test_ids':x_test_list,
+                                                                 })
+        
             cv_res_df['inclusion_period']=period_end_day
             cv_res_df_list.append(cv_res_df)
 
+            pred_dict_ = {'model_name':model_name_list,
+                          'Num_of_CV_repeat':cv_num_list,
+                          'pred_prob':pred_prob_list,
+                          'pred_prob_calibr':pred_prob_list_calibr,
+                          'label_weights':label_weights_list,
+                          'y_label':y_label_list,
+                          'X_test_ids':x_test_list}
+
+            pred_results_dict[period_end_day]=pred_dict_
+                                              
+
             if len(study_ids)>0:
                 cv_res_per_study_df=pd.DataFrame.from_dict({'model_name':model_name_per_study_list,
-                                                  'Num_of_CV_repeat':cv_num_per_study_list,
-                                                  'ROC_AUC_score':scores_per_study_list,
-                                                   'split_coln_level':study_list,
-                                                   'split_coln':split_coln_list})
+                                                                              'Num_of_CV_repeat':cv_num_per_study_list,
+                                                                              'ROC_AUC_score':scores_per_study_list,
+                                                                              'ROC_AUC_score_calibr':scores_per_study_list_calibr,
+                                                                               'split_coln_level':study_list,
+                                                                               'split_coln':split_coln_list})
                 
                 cv_res_per_study_df['inclusion_period']=period_end_day
                 #cv_res_per_study_df['training_data_type']=training_data_type
                 cv_res_df_per_study_list.append(cv_res_per_study_df)
-                
+
+                pred_dict_per_study = {'model_name':model_name_per_study_list,
+                                       'Num_of_CV_repeat':cv_num_per_study_list,
+                                       'pred_prob':pred_prob_per_study_list,
+                                      'pred_prob_calibr':pred_prob_per_study_list_calibr,
+                                      'label_weights':label_weights_list,
+                                      'y_label':y_label_per_study_list,
+                                      'X_test_ids':x_test_per_study_list}
+                                    
+                pred_results_dict_per_study[period_end_day]=pred_dict_per_study
                 
         cv_res_acros_time_df=pd.concat(cv_res_df_list,axis=0)
         cv_res_acros_time_df = cv_res_acros_time_df.reset_index().drop(columns='index')
@@ -537,17 +630,28 @@ for data_param_key in dataset_name_:
         ## SAVE TEST DATFRAME FOR LATER COMPARISON
         fn=f'../data/test_roc_auc_values/baseline/{data_param_key}_days_{training_data_type}_test_ROC_AUC_across_time_all_studies.csv'
         cv_res_acros_time_df.to_csv(fn)
+
+        ## SAVE PREDICTION RESULTS 
+        #fn=f'../data/test_roc_auc_values/LLM/{data_param_key}_{llm_model_name_with_tag}_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_test_pred_results_all_studies.pickle'                                                    
+        fn=f'../data/test_roc_auc_values/baseline/{data_param_key}_days_{training_data_type}_test_pred_results_all_studies.pickle'
+        with open(fn, 'wb') as handle:
+            pickle.dump(pred_results_dict, handle)
         
               
         ## IF THERE ARE AUC-ROC VALUES PER STUDY AVAILABLE, PLOT HEM IN A SEPERATE BOXPLOT
         #if len(scores_per_study_list)>0 and plot_split_by_studies==True:
     
         cv_res_per_study_df=pd.concat(cv_res_df_per_study_list,axis=0)
-        
+            
         ## SAVE TEST DATFRAME FOR LATER COMPARISON
         #fn=f'../data/{data_param_key}_{model_name}_{period_end_day}_days_{training_data_type}_test_ROC_AUC_across_time_per_study.csv' 
         fn=f'../data/test_roc_auc_values/baseline/{data_param_key}_days_{training_data_type}_test_ROC_AUC_across_time_per_study..csv'
         cv_res_per_study_df.to_csv(fn)
+
+        ## SAVE PREDICTION RESULTS 
+        fn=f'../data/test_roc_auc_values/baseline/{data_param_key}_days_{training_data_type}_test_pred_results_per_study.pickle  '                                                  
+        with open(fn, 'wb') as handle:
+            pickle.dump(pred_results_dict_per_study, handle)
 
         
 loop_time=time.time()

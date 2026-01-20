@@ -63,28 +63,42 @@ print('data_inclusion_type_',data_inclusion_type_,'model_names_',model_names_,'p
 # DEFINE DATASET NAMES + FUNCTIONS
 parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT',
-                            'selection_method':'patient_clustering',
-                            'clust_comb':'2-3-4-5',
-                            'graph_metric':None,
-                            'num_of_common_vars':22,
-                            'training_days':120},
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
             
-
                         'tb21_22_2984_pats_22_vars_relapse':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE',
-                            'selection_method':'patient_clustering',
-                            'clust_comb':'2-3-4-5',
-                            'graph_metric':None,
-                            'num_of_common_vars':22,
-                            'training_days':120}, 
+                            'result_cat':'RELAPSE'}, 
 
-                       'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
+
+                         
+                        'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_dr_reg_per_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+            
+                        'tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
+                            'result_cat':'RELAPSE'}, 
+
+                        'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
                             'fn':'tb21_22_2984_pats_22_vars_relapse_without_dr_reg',#_wo_dr_reg',
                             'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
                             'result_cat':'RELAPSE'},
+
+                          'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_with_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                               'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+            
+                        'tb21_22_2984_pats_22_vars_relapse_with_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
+                            'result_cat':'RELAPSE'}, 
+
 
                            'tb21_22_2984_pats_22_vars_raw_pred_prob_norm_loss':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
@@ -93,64 +107,84 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                         'tb21_22_2984_pats_22_vars_llm_pred_prob_norm_loss':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'llm_pred_prob_norm'},
+
+                 
+
+                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_mb_only':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+
+                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_mb':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+
+                         'tb21_22_2984_pats_22_vars_relapse_mb_only':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'},
+
+                         'tb21_22_2984_pats_22_vars_relapse_without_mb':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'},
+
+                         'tb21_1405_pats_40_vars_result_at_end_of_treatment':{
+                            'fn':'tb21_1405_pats_40_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+                         
+                         'tb21_1405_pats_40_vars_relapse':{
+                            'fn':'tb21_1405_pats_40_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'},
+
+                         'tb22_1499_pats_31_vars_result_at_end_of_treatment':{
+                             'fn':'tb22_1499_pats_31_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+                         
+                         'tb22_1499_pats_31_vars_relapse':{
+                             'fn':'tb22_1499_pats_31_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'},
+
+
+                      
+
+                         
+
+                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_weight_norm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+            
+                        'tb21_22_2984_pats_22_vars_relapse_weight_norm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'}, 
+                        
+
+                         'tb21_22_2984_pats_22_vars_relapse_1_year':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE',
+                             'bins':[0,365][:],
+                             'labels':[1]}, 
+
+                         'tb21_22_2984_pats_22_vars_relapse_half_years':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE',
+                             'bins':[0,182,365,np.inf],
+                             'labels':[1,2,3]}, 
                          
                          
                          'tb21_22_2840_pats_23_vars_result_at_end_of_treatment':{
                             'fn':'tb21_22_2840_pats_23_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT',
-                            'selection_method':'patient_clustering',
-                            'clust_comb':'2-3-4-5',
-                            'graph_metric':None,
-                            'num_of_common_vars':23,
-                            'training_days':120},
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
 
                          'tb21_22_2840_pats_23_vars_relapse':{
                             'fn':'tb21_22_2840_pats_23_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE',
-                            'selection_method':'patient_clustering',
-                            'clust_comb':'2-3-4-5',
-                            'graph_metric':None,
-                            'num_of_common_vars':23,
-                            'training_days':120},
-    
-    
+                            'result_cat':'RELAPSE'},
+        
 
                          'tb21_22_2798_pats_24_vars_result_at_end_of_treatment':{
                             'fn':'tb21_22_2798_pats_24_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT',
-                            'selection_method':'patient_clustering',
-                            'clust_comb':'2-3-4-5',
-                            'graph_metric':None,
-                            'num_of_common_vars':24,
-                            'training_days':120},   
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},   
 
                           'tb21_22_2798_pats_24_vars_relapse':{
                             'fn':'tb21_22_2798_pats_24_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE',
-                            'selection_method':'patient_clustering',
-                            'clust_comb':'2-3-4-5',
-                            'graph_metric':None,
-                            'num_of_common_vars':24,
-                            'training_days':120}, 
-
-
-                         'tb21_1405_pats_40_vars_result_at_end_of_treatment':{
-                            'fn':'tb21_1405_pats_40_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT',
-                            'selection_method':'patient_clustering',
-                            'clust_comb':'1-3-4-5',
-                            'graph_metric':None,
-                            'num_of_common_vars':40,
-                            'training_days':120},
-                         
-                         'tb21_1405_pats_40_vars_relapse':{
-                            'fn':'tb21_1405_pats_40_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE',
-                            'selection_method':'patient_clustering',
-                            'clust_comb':'1-3-4-5',
-                            'graph_metric':None,
-                            'num_of_common_vars':40,
-                            'training_days':120},
+                            'result_cat':'RELAPSE'}, 
                          
                          }
 ## Define string descriptions to add as a prefix for each ds_type, for LLM to know what the variables describe
@@ -277,7 +311,7 @@ llm_model_names=['BioMistral/BioMistral-7B',"epfl-llm/meditron-70b","epfl-llm/me
 
 fine_tuned_tags=['base','fine_tuned']
 model_names=['XGBoost','GradientBoost','LogisticRegression','RandomForest']#,'SVC','KNN']
-model_names=['XGBoost','LogisticRegression']#,'Dense']#,'SVC','KNN']
+model_names=['XGBoost','LogisticRegression','Dense']#,'SVC','KNN']
 
 #model_names=['LogisticRegression','XGBoost'][:]
 training_data_types=['full','pca']
@@ -304,19 +338,29 @@ train_params={'num_cv_repeats':25,
                                      ## only considered if weight_by_label_freq=False !
               'label2id':label2id}
 
+
 dense_network_params={#'input_dim' :len(data.drop(columns=['STUDYID','ARM']).columns),
-                        'batch_size':128,
-                        'hidden_dims':[128,32],
+                        'batch_size':32,
+                        'hidden_dims':[512,128,16],
                         'output_dim':len(id2label.keys()),
+                        #'output_dim':1,
                         'learning_rate':1e-4,
                         'weight_decay':1e-5,
-                        'dropout_prob':0.1,
-                        'num_epochs':5,
-                        'label_weights':[1,30],
+                        'dropout_prob':0.2,
+                        'num_epochs':1000,
+                        'label_weights':[1,1],
                         'hidden_activation':nn.ReLU(), #nn. Sigmoid()
-                        'last_activation': nn.Softmax(dim=1), # #nn.Hardsigmoid()
-                        'criterion':'CrossEntropyLoss'
+                        #'last_activation': nn.Softmax(dim=1), # #nn.Hardsigmoid()
+                        #'criterion':'CrossEntropyLoss',
+                        'last_activation': nn.Identity(),#nn.ReLU(), # #nn.Hardsigmoid()
+                        'criterion': 'FocalLoss',         # <--- new
+                        'focal_gamma': 2.0,               # typical default
+                        'focal_alpha': None,              # or e.g. [0.25, 0.75]
+    
+                        #'criterion':'MSELoss',
+    
                         }
+
 
 
 
@@ -354,9 +398,8 @@ param_search_dict={'RandomForest':{'n_estimators':[300,500,700],
                    
                   'KNN':{'n_neighbors':[2,5,10,25,50,100]},
                    
-                  'Dense':{'learning_rate':[5e-4],#1e-3],
-                          'batch_size':[128],
-                          'num_epochs':[1000],},
+                  'Dense':{'learning_rate':[1e-4,5e-5,1e-5],
+                            'batch_size':[64,128]}
                   }  
 
 

@@ -25,6 +25,17 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification, Adam
 from datasets import Dataset 
 from torch.utils.data import DataLoader, TensorDataset
 
+import io
+import pickle
+import torch
+
+# Monkey-patch: force all tensor loads to map to CPU
+def _cpu_load_from_bytes(b):
+    # this is the same as torch.load(...), but we inject map_location='cpu'
+    return torch.load(io.BytesIO(b), map_location='cpu')
+
+
+
 
 from s9_8_LST_on_LLM_embeddings_functions import *
 
@@ -228,19 +239,20 @@ train_params={'num_cv_repeats':25,
               'label_weights':[1,1], ## [index_0: weight for label 0 (negative),index_1: weight for label 1 (positive)], only
                                      ## only considered if weight_by_label_freq=False !
               'label2id':label2id,
-             'num_epochs':10,
-            'hidden_dim':128,
-            'num_layers':2,
-            'batch_size':32,
-            'chunk_len':1024,
-            'use_focal_loss':True,
+             'num_epochs':15,
+            'hidden_dim':256,
+            'num_layers':1,
+            'batch_size':64,
+            'chunk_len':4096,#1024,
+            'use_focal_loss':False,
             'focal_gamma':2.0,
             'focal_alpha':0.25,
-            'llm_batch_size':4,
-            'patience':1,
+            'llm_batch_size':1,
+            'patience':3,
               'base_lr':1e-4,
               'label_weight_inv_freq':False,
             #'input_dim':llm_model.config.hidden_size,                
+              'scheduler_name':'plateau', #'cosine'
             'device' : "cuda"}
 
 
@@ -427,6 +439,7 @@ for data_param_key in dataset_name_:
                             device=train_params['device']
                             base_lr=train_params['base_lr']
                             label_weight_inv_freq=train_params['label_weight_inv_freq']
+                            scheduler_name = train_params['scheduler_name']
                                                          
                             model, history = train_full_pipeline(
                                                 train_texts=train_texts,
@@ -445,6 +458,8 @@ for data_param_key in dataset_name_:
                                                 patience=patience,
                                                 base_lr=base_lr,
                                                 llm_model=llm_model,
+                                                device=device,
+                                                scheduler_name = scheduler_name,
                                                 num_layers=num_layers,
                                                 label_weight_inv_freq=label_weight_inv_freq,
                                                 input_dim=input_dim)

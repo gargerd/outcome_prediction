@@ -1,274 +1,0 @@
-Loading anaconda
-Activate conda env
-all_days
-baseline
-XGBoost
-data_inclusion_type_ ['all_days'] model_names_ ['XGBoost'] period_end_day_ ['baseline']
-Loading embeddings:   0%|          | 0/1 [00:00<?, ?set/s]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.17s/set]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.17s/set]
-
-→ Loading: tb21_22_2984_pats_22_vars_result_at_end_of_treatment | BioMistral-7B_base | baseline | all_days | autoenc=False | mean_pooling 
-Loaded in 1.98 seconds.
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment
-Training on baseline days of data
-Loading embeddings of tb21_22_2984_pats_22_vars_result_at_end_of_treatment data / BioMistral-7B_base /baseline /all_days /autoenc False / mean_pooling model
-+++++++
-Running training with full model: 4096 vars
-+++++++
-Processing:   0%|          | 0/1 [00:00<?, ?model/s]
-=====================
-XGBoost
-
-Processing:   0%|          | 0/25 [00:00<?, ?cv_repeat/s][ANum of CV-repeat:1
-Num of CV-repeat:1 - Model:XGBoost - Data inclusion type:all_days - Period:baseline - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [22:37<00:00, 1357.70s/model][A[A100%|██████████| 1/1 [22:37<00:00, 1357.70s/model]
-
-Processing:   4%|▍         | 1/25 [22:37<9:03:09, 1357.88s/cv_repeat][ACV test_score: [0.6905898876404495, 0.5620777027027026, 0.736768018018018, 0.5726351351351352, 0.5944538288288288]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:2
-Num of CV-repeat:2 - Model:XGBoost - Data inclusion type:all_days - Period:baseline - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [16:56<00:00, 1016.93s/model][A[A100%|██████████| 1/1 [16:56<00:00, 1016.93s/model]
-
-Processing:   8%|▊         | 2/25 [39:35<7:23:41, 1157.45s/cv_repeat][ACV test_score: [0.6228885135135136, 0.6349943693693694, 0.6302200902934537, 0.5434537246049661, 0.5519187358916477]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:3
-Num of CV-repeat:3 - Model:XGBoost - Data inclusion type:all_days - Period:baseline - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [16:44<00:00, 1004.41s/model][A[A100%|██████████| 1/1 [16:44<00:00, 1004.41s/model]
-
-Processing:  12%|█▏        | 3/25 [56:19<6:38:48, 1087.66s/cv_repeat][ACV test_score: [0.7246049661399548, 0.5832392776523702, 0.5890237020316027, 0.6803047404063205, 0.6484198645598195]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:4
-Num of CV-repeat:4 - Model:XGBoost - Data inclusion type:all_days - Period:baseline - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [16:38<00:00, 998.93s/model][A[A100%|██████████| 1/1 [16:38<00:00, 998.93s/model]
-
-Processing:  16%|█▌        | 4/25 [1:12:58<6:08:26, 1052.71s/cv_repeat][ACV test_score: [0.5332957110609481, 0.6650677200902935, 0.657872460496614, 0.6221783295711061, 0.6266968325791855]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:5
-Num of CV-repeat:5 - Model:XGBoost - Data inclusion type:all_days - Period:baseline - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [20:02<00:00, 1202.93s/model][A[A100%|██████████| 1/1 [20:02<00:00, 1202.93s/model]
-
-Processing:  20%|██        | 5/25 [1:33:01<6:08:59, 1106.95s/cv_repeat][ACV test_score: [0.7685393258426967, 0.5198033707865168, 0.6776685393258428, 0.7195945945945947, 0.7014358108108107]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:6
-Num of CV-repeat:6 - Model:XGBoost - Data inclusion type:all_days - Period:baseline - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [07:28<00:00, 448.56s/model][A[A100%|██████████| 1/1 [07:28<00:00, 448.56s/model]
-
-Processing:  24%|██▍       | 6/25 [1:40:30<4:39:40, 883.17s/cv_repeat] [ACV test_score: [0.5129796839729119, 0.6508182844243793, 0.6474322799097065, 0.6151241534988714, 0.5562923250564334]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:7
-Num of CV-repeat:7 - Model:XGBoost - Data inclusion type:all_days - Period:baseline - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [19:41<00:00, 1181.39s/model][A[A100%|██████████| 1/1 [19:41<00:00, 1181.39s/model]
-
-Processing:  28%|██▊       | 7/25 [2:00:12<4:54:13, 980.73s/cv_repeat][ACV test_score: [0.6431587837837838, 0.6081081081081081, 0.6109234234234234, 0.6907376126126126, 0.6538569819819819]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:8
-Num of CV-repeat:8 - Model:XGBoost - Data inclusion type:all_days - Period:baseline - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [16:19<00:00, 979.59s/model][A[A100%|██████████| 1/1 [16:19<00:00, 979.59s/model]
-
-Processing:  32%|███▏      | 8/25 [2:16:32<4:37:47, 980.43s/cv_repeat][ACV test_score: [0.6134572072072072, 0.6677927927927928, 0.6118792325056432, 0.7004796839729119, 0.6283860045146727]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:9
-Num of CV-repeat:9 - Model:XGBoost - Data inclusion type:all_days - Period:baseline - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [20:43<00:00, 1243.52s/model][A[A100%|██████████| 1/1 [20:43<00:00, 1243.52s/model]
-
-Processing:  36%|███▌      | 9/25 [2:37:15<4:43:23, 1062.74s/cv_repeat][ACV test_score: [0.6241573033707866, 0.5351123595505618, 0.5889044943820225, 0.626685393258427, 0.7208532061473238]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:10
-Num of CV-repeat:10 - Model:XGBoost - Data inclusion type:all_days - Period:baseline - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [18:16<00:00, 1096.86s/model][A[A100%|██████████| 1/1 [18:16<00:00, 1096.86s/model]
-
-Processing:  40%|████      | 10/25 [2:55:32<4:28:19, 1073.33s/cv_repeat][ACV test_score: [0.6444256756756757, 0.6369650900900901, 0.6392494356659142, 0.5512133182844243, 0.7202313769751694]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:11
-Num of CV-repeat:11 - Model:XGBoost - Data inclusion type:all_days - Period:baseline - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [06:49<00:00, 409.02s/model][A[A100%|██████████| 1/1 [06:49<00:00, 409.02s/model]
-
-Processing:  44%|████▍     | 11/25 [3:02:22<3:23:01, 870.07s/cv_repeat] [ACV test_score: [0.6523085585585585, 0.5837556306306306, 0.7125563063063063, 0.5806587837837838, 0.6886286681715575]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:12
-Num of CV-repeat:12 - Model:XGBoost - Data inclusion type:all_days - Period:baseline - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [17:01<00:00, 1021.16s/model][A[A100%|██████████| 1/1 [17:01<00:00, 1021.16s/model]
-
-Processing:  48%|████▊     | 12/25 [3:19:23<3:18:29, 916.09s/cv_repeat][ACV test_score: [0.6133426966292135, 0.6082488738738738, 0.6738457207207207, 0.6175394144144144, 0.7093186936936937]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:13
-Num of CV-repeat:13 - Model:XGBoost - Data inclusion type:all_days - Period:baseline - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [07:11<00:00, 431.01s/model][A[A100%|██████████| 1/1 [07:11<00:00, 431.01s/model]
-
-Processing:  52%|█████▏    | 13/25 [3:26:34<2:33:50, 769.20s/cv_repeat][ACV test_score: [0.6014390519187359, 0.5060665914221218, 0.6063769751693002, 0.570823927765237, 0.6337471783295712]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:14
-Num of CV-repeat:14 - Model:XGBoost - Data inclusion type:all_days - Period:baseline - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [15:18<00:00, 918.52s/model][A[A100%|██████████| 1/1 [15:18<00:00, 918.52s/model]
-
-Processing:  56%|█████▌    | 14/25 [3:41:53<2:29:17, 814.36s/cv_repeat][ACV test_score: [0.600365990990991, 0.6595654627539503, 0.6216139954853273, 0.6417889390519188, 0.6182279909706546]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:15
-Num of CV-repeat:15 - Model:XGBoost - Data inclusion type:all_days - Period:baseline - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [07:05<00:00, 425.32s/model][A[A100%|██████████| 1/1 [07:05<00:00, 425.32s/model]
-
-Processing:  60%|██████    | 15/25 [3:48:58<1:56:11, 697.15s/cv_repeat][ACV test_score: [0.6596283783783784, 0.510275900900901, 0.6282376126126126, 0.6635698198198199, 0.6657731376975169]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:16
-Num of CV-repeat:16 - Model:XGBoost - Data inclusion type:all_days - Period:baseline - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [20:29<00:00, 1229.30s/model][A[A100%|██████████| 1/1 [20:29<00:00, 1229.30s/model]
-
-Processing:  64%|██████▍   | 16/25 [4:09:28<2:08:36, 857.38s/cv_repeat][ACV test_score: [0.5567286036036035, 0.5591139954853273, 0.7275677200902935, 0.6690180586907449, 0.5464164785553047]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:17
-Num of CV-repeat:17 - Model:XGBoost - Data inclusion type:all_days - Period:baseline - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [07:32<00:00, 452.29s/model][A[A100%|██████████| 1/1 [07:32<00:00, 452.29s/model]
-
-Processing:  68%|██████▊   | 17/25 [4:17:00<1:38:05, 735.63s/cv_repeat][ACV test_score: [0.6331460674157304, 0.6214887640449438, 0.6317415730337079, 0.46157094594594594, 0.600365990990991]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:18
-Num of CV-repeat:18 - Model:XGBoost - Data inclusion type:all_days - Period:baseline - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [07:32<00:00, 452.89s/model][A[A100%|██████████| 1/1 [07:32<00:00, 452.89s/model]
-
-Processing:  72%|███████▏  | 18/25 [4:24:33<1:15:55, 650.73s/cv_repeat][ACV test_score: [0.6160313901345291, 0.5449438202247191, 0.7007022471910113, 0.7391853932584269, 0.5990168539325842]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:19
-Num of CV-repeat:19 - Model:XGBoost - Data inclusion type:all_days - Period:baseline - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [15:09<00:00, 909.40s/model][A[A100%|██████████| 1/1 [15:09<00:00, 909.40s/model]
-
-Processing:  76%|███████▌  | 19/25 [4:39:43<1:12:51, 728.52s/cv_repeat][ACV test_score: [0.7181151241534989, 0.7040067720090293, 0.4760158013544018, 0.7092268623024831, 0.7218608597285068]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:20
-Num of CV-repeat:20 - Model:XGBoost - Data inclusion type:all_days - Period:baseline - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [07:02<00:00, 422.60s/model][A[A100%|██████████| 1/1 [07:02<00:00, 422.60s/model]
-
-Processing:  80%|████████  | 20/25 [4:46:46<53:03, 636.73s/cv_repeat]  [ACV test_score: [0.6474322799097065, 0.4861738148984198, 0.6170993227990971, 0.5849322799097065, 0.5994638826185101]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:21
-Num of CV-repeat:21 - Model:XGBoost - Data inclusion type:all_days - Period:baseline - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [17:07<00:00, 1027.42s/model][A[A100%|██████████| 1/1 [17:07<00:00, 1027.42s/model]
-
-Processing:  84%|████████▍ | 21/25 [5:03:53<50:16, 754.06s/cv_repeat][ACV test_score: [0.6588483146067415, 0.5078651685393258, 0.58061797752809, 0.6442415730337079, 0.543918918918919]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:22
-Num of CV-repeat:22 - Model:XGBoost - Data inclusion type:all_days - Period:baseline - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [16:56<00:00, 1016.02s/model][A[A100%|██████████| 1/1 [16:56<00:00, 1016.02s/model]
-
-Processing:  88%|████████▊ | 22/25 [5:20:50<41:38, 832.73s/cv_repeat][ACV test_score: [0.730152027027027, 0.6738457207207207, 0.5757319819819819, 0.5482505643340858, 0.5643340857787811]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:23
-Num of CV-repeat:23 - Model:XGBoost - Data inclusion type:all_days - Period:baseline - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [15:16<00:00, 916.72s/model][A[A100%|██████████| 1/1 [15:16<00:00, 916.72s/model]
-
-Processing:  92%|█████████▏| 23/25 [5:36:07<28:35, 857.99s/cv_repeat][ACV test_score: [0.6597691441441441, 0.6531531531531531, 0.7566159909909911, 0.6031320541760722, 0.7715857787810384]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:24
-Num of CV-repeat:24 - Model:XGBoost - Data inclusion type:all_days - Period:baseline - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [19:55<00:00, 1195.54s/model][A[A100%|██████████| 1/1 [19:55<00:00, 1195.54s/model]
-
-Processing:  96%|█████████▌| 24/25 [5:56:02<15:59, 959.34s/cv_repeat][ACV test_score: [0.6413288288288288, 0.6175806665781437, 0.6272573363431151, 0.5862020316027089, 0.6279627539503386]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Num of CV-repeat:25
-Num of CV-repeat:25 - Model:XGBoost - Data inclusion type:all_days - Period:baseline - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [15:16<00:00, 916.59s/model][A[A100%|██████████| 1/1 [15:16<00:00, 916.59s/model]
-
-Processing: 100%|██████████| 25/25 [6:11:19<00:00, 946.57s/cv_repeat][AProcessing: 100%|██████████| 25/25 [6:11:19<00:00, 891.18s/cv_repeat]
-Processing: 100%|██████████| 1/1 [6:11:19<00:00, 22279.99s/model]Processing: 100%|██████████| 1/1 [6:11:19<00:00, 22279.99s/model]
-CV test_score: [0.6584269662921348, 0.6409065315315314, 0.665822072072072, 0.6590653153153153, 0.6960867117117118]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Training duration:
-Elapsed time:6 hours:11 minutes seconds:43

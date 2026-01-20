@@ -517,15 +517,17 @@ for dataset_param_key in dataset_name_:
                 
             
                 
-                print(f'Extract embedding of {model_id}/{data_inclusion_type}/')
+                
                 with torch.no_grad():
 
                     for pool_method in pool_methods_:
                         
+                        
                         output_dir=f"../data/{key}_{model_id}_{period_end_day}_days_{data_inclusion_type}_{pool_method}"
                         os.makedirs(output_dir,exist_ok=True)
                         
-                        print(model_id,dataset_param_key,period_end_day,pool_method)
+                        #print(' - '.join([model_id,dataset_param_key,data_inclusion_type,period_end_day,pool_method]))
+                        print(f'{model_id} - {dataset_param_key} - {data_inclusion_type} - {period_end_day} - {pool_method}')
                         
                         #print(model_id,dataset_param_key,period_end_day)
                         for n, batch in enumerate(tqdm(all_loader, desc="Processing", unit="batch")):

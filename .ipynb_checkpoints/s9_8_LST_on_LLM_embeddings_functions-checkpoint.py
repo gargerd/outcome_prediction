@@ -24,6 +24,7 @@ from sklearn.model_selection import StratifiedShuffleSplit, train_test_split
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, AdamW
 from datasets import Dataset 
 from torch.utils.data import DataLoader, TensorDataset
+from sklearn.metrics import roc_auc_score, average_precision_score
 
 
 
@@ -2473,10 +2474,16 @@ class BiLSTMAttentionClassifier(nn.Module):
         bidirectional: bool = True,
         dropout: float = 0.1,
         attention_dim: int = 128,
+        fc_layers: list = None,   # e.g. [256, 128] or [128] or []
+        fc_dropout: float = 0.2,
+        activation: str = "relu",  # "relu" or "gelu"
     ):
         super().__init__()
         self.bidirectional = bidirectional
 
+        # -----------------------------
+        #        BiLSTM encoder
+        # -----------------------------
         self.lstm = nn.LSTM(
             input_size=input_dim,
             hidden_size=hidden_dim,
@@ -2488,12 +2495,42 @@ class BiLSTMAttentionClassifier(nn.Module):
 
         lstm_out_dim = hidden_dim * (2 if bidirectional else 1)
 
-        # additive attention
+        # -----------------------------
+        #          Attention
+        # -----------------------------
         self.attn_W = nn.Linear(lstm_out_dim, attention_dim, bias=True)
         self.attn_v = nn.Linear(attention_dim, 1, bias=False)
 
-        self.fc = nn.Linear(lstm_out_dim, 1)
+        # -----------------------------
+        #         MLP head
+        # -----------------------------
+        if fc_layers is None:
+            fc_layers = []   # → single linear layer to output, same as before
 
+        mlp_layers = []
+        prev_dim = lstm_out_dim
+
+        # Build hidden FC layers
+        for dim in fc_layers:
+            mlp_layers.append(nn.Linear(prev_dim, dim))
+            if activation == "relu":
+                mlp_layers.append(nn.ReLU())
+            elif activation == "gelu":
+                mlp_layers.append(nn.GELU())
+            else:
+                raise ValueError("Invalid activation: choose relu or gelu")
+
+            mlp_layers.append(nn.Dropout(fc_dropout))
+            prev_dim = dim
+
+        # Final output layer
+        mlp_layers.append(nn.Linear(prev_dim, 1))
+
+        self.mlp = nn.Sequential(*mlp_layers)
+
+    # -----------------------------
+    #           Forward
+    # -----------------------------
     def forward(self, x, lengths):
         """
         x:       (B, T_max, H)
@@ -2507,21 +2544,26 @@ class BiLSTMAttentionClassifier(nn.Module):
 
         B, T_max, D = out.shape
         device = out.device
+
+        # ----- Mask for padded tokens -----
         idxs = torch.arange(T_max, device=device).unsqueeze(0)   # (1, T_max)
         mask = idxs < lengths.unsqueeze(1)                       # (B, T_max)
 
+        # ----- Attention -----
         attn_hidden = torch.tanh(self.attn_W(out))               # (B, T_max, A)
         scores = self.attn_v(attn_hidden).squeeze(-1)            # (B, T_max)
 
         scores_masked = scores.masked_fill(~mask, float("-inf"))
         attn_weights = F.softmax(scores_masked, dim=1)           # (B, T_max)
+        attn_weights_exp = attn_weights.unsqueeze(-1)
 
-        attn_weights_exp = attn_weights.unsqueeze(-1)            # (B, T_max, 1)
+        # Weighted sum
         context = torch.sum(attn_weights_exp * out, dim=1)       # (B, D)
 
-        logits = self.fc(context).squeeze(-1)                    # (B,)
-        return logits, attn_weights
+        # ----- MLP head -----
+        logits = self.mlp(context).squeeze(-1)                   # (B,)
 
+        return logits, attn_weights
 
 class BinaryFocalLoss(nn.Module):
     def __init__(self, alpha=None, gamma=2.0, reduction="none"):
@@ -2991,6 +3033,8 @@ def eval_bilstm_with_llm(
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+
 def train_full_pipeline(
     train_texts: List[str],
     train_labels: List[int],
@@ -3005,18 +3049,19 @@ def train_full_pipeline(
     num_epochs: int,
     base_lr: float,
     patience: int,
+    scheduler_name: str,
     llm_model,
     label_weight_inv_freq: bool,
+    device: str,
     use_focal_loss: bool = False,
     focal_alpha: Optional[float] = None,
     focal_gamma: float = 2.0,
     pos_weight: Optional[float] = None,
-    scheduler_name: Optional[str] = "cosine",
+   
     scheduler_kwargs: Optional[dict] = None,
  
     max_grad_norm: Optional[float] = 5.0,
-
-    device: str = DEVICE,
+ 
  
 ):
 
@@ -3056,21 +3101,26 @@ def train_full_pipeline(
                               #batch_size=batch_size, 
                               #shuffle=True,  
                               collate_fn=collate_text,
-                              num_workers=4,
+                              num_workers=2,
                                 pin_memory=True,
                               batch_sampler=sampler)
     
-    val_loader   = DataLoader(val_ds,   batch_size=batch_size, shuffle=False, collate_fn=collate_text,num_workers=4,
-                pin_memory=True,)
+    val_loader   = DataLoader(val_ds,   batch_size=batch_size, shuffle=False, collate_fn=collate_text,
+                             num_workers=2,
+                             pin_memory=True,)
 
     model = BiLSTMAttentionClassifier(
         input_dim=input_dim,
         hidden_dim=hidden_dim,
+        fc_layers=[256, 128],
+        activation="gelu",
+        fc_dropout=0.2,
         num_layers=num_layers,
         bidirectional=True,
         dropout=0.1,
         attention_dim=hidden_dim,
     ).to(device)
+
 
     optimizer = torch.optim.Adam(model.parameters(), lr=base_lr)
 
@@ -3086,10 +3136,24 @@ def train_full_pipeline(
     scheduler_kwargs = scheduler_kwargs or {}
     scheduler = make_scheduler(optimizer, scheduler_name, num_epochs, **scheduler_kwargs)
 
+ 
+
+
+    # --- Early stopping based on AUC ---
+    best_val_auc  = -float("inf")
     best_val_loss = float("inf")
+    best_val_ap  = -float("inf")
     best_state    = None
     no_improve    = 0
-    history       = []
+    #min_delta_auc = 1e-4  # minimum AUC improvement to "count"
+
+
+    # --- Early stopping based on PR–AUC (average precision) ---
+    best_val_ap  = -float("inf")
+    best_state   = None
+    no_improve   = 0
+    min_delta_ap = 1e-4  # minimum AP improvement to "count"
+
 
     from tqdm import trange
     #from tqdm import tqdm
@@ -3098,6 +3162,8 @@ def train_full_pipeline(
         w_neg,w_pos = return_label_weights(train_labels)
     else:
         w_neg,w_pos=1.0,1.0
+
+    history = []
 
     for epoch in trange(1, num_epochs + 1, desc="Epochs"):
     #for epoch in tqdm(1, num_epochs + 1, desc="Epochs"):
@@ -3129,24 +3195,60 @@ def train_full_pipeline(
             llm_batch_size=llm_batch_size,
         )
 
+        try:
+            val_ap = average_precision_score(val_labels, val_probs)
+        except ValueError:
+            val_ap = np.nan
+
+         # --- Step scheduler ---
         if scheduler is not None:
             if isinstance(scheduler, ReduceLROnPlateau):
-                scheduler.step(val_loss)
+                # IMPORTANT: configure ReduceLROnPlateau with mode="max"
+                scheduler.step(val_ap)
             else:
                 scheduler.step()
 
         lr = optimizer.param_groups[0]["lr"]
-        print(f"Epoch {epoch:03d} | train_loss={train_loss:.4f} | val_loss={val_loss:.4f} | lr={lr:.2e}")
-        history.append({"epoch": epoch, "train_loss": train_loss, "val_loss": val_loss, "lr": lr,'val_probs':val_probs,'val_labels':val_labels})
 
-        if val_loss < best_val_loss - 1e-6:
-            best_val_loss = val_loss
-            best_state    = copy.deepcopy(model.state_dict())
-            no_improve    = 0
+         # --- Compute ROC–AUC and PR–AUC on validation set ---
+        try:
+            val_auc_roc = roc_auc_score(val_labels, val_probs)
+        except ValueError:
+            val_auc_roc = np.nan
+
+
+
+
+        
+        print(
+            f"Epoch {epoch:03d} | "
+            f"train_loss={train_loss:.4f} | "
+            f"val_loss={val_loss:.4f} | "
+            f"ROC-AUC={val_auc_roc:.4f} | "
+            f"PR-AUC={val_ap:.4f} | "
+            f"lr={lr:.2e}"
+        )
+
+        history.append({
+            "epoch": epoch,
+            "train_loss": train_loss,
+            "val_loss":  val_loss,
+            "val_auc_roc": val_auc_roc,
+            "val_ap":   val_ap,
+            "lr": lr,
+            "val_probs":  val_probs,
+            "val_labels": val_labels,
+        })
+
+        # --- Early stopping & best model selection based on PR–AUC ---
+        if not np.isnan(val_ap) and val_ap > best_val_ap + min_delta_ap:
+            best_val_ap = val_ap
+            best_state  = copy.deepcopy(model.state_dict())
+            no_improve  = 0
         else:
             no_improve += 1
             if no_improve >= patience:
-                print(f"Early stopping at epoch {epoch}")
+                print(f"Early stopping at epoch {epoch} (no PR–AUC improvement)")
                 break
     
     torch.cuda.empty_cache()
@@ -3212,7 +3314,8 @@ def run_model_on_test_set(
             seq_emb_list,
             torch.tensor(labels_batch, dtype=torch.float32),
         )
-
+        del seq_emb_list
+        
         padded_seqs = padded_seqs.to(device)
         lengths     = lengths.to(device)
 
@@ -3220,11 +3323,13 @@ def run_model_on_test_set(
         logits, _ = model(padded_seqs, lengths)     # (B,)
         probs  = sigmoid(logits).cpu().numpy()      # convert to probabilities
 
+        del padded_seqs,logits, lengths
+        
         # (4) Store outputs
         pred_probs_list.append(probs)
         true_list.append(labels_tensor.numpy())
 
-        del seq_emb_list, padded_seqs, lengths, labels_tensor, logits, probs
+        del probs
 
     # Concatenate output batches
     import numpy as np
@@ -3232,8 +3337,6 @@ def run_model_on_test_set(
     true_labels = np.concatenate(true_list)
 
     return pred_probs, true_labels
-
-
 
 
 

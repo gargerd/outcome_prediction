@@ -169,18 +169,24 @@ from itertools import product
 import copy
 
 # Base LSTM parameters (unchanging defaults)
+# Base LSTM parameters (unchanging defaults)
 lstm_parameters = {
     'batch_size': 128,
     'hidden_size': 128,
     'fc_hidden_dims': [64, 32, 8],
     'num_of_lstm_layers': 1,
     'output_size': len(categorical_map_dict['labels']),
-    'dropout_prob': 0.3,
+    'dropout_prob': 0.2,
     'bidirectional': True,
     'weight_Cross_Entropy_by_label_freq': True,
     'weight_celoss': 0,
     'weight_mse_loss': 1,
     'criterion': 'CrossEntropyLoss',
+    'early_stopping':True,
+    'early_stopping_patience':10,
+    'early_stopping_min_delta':0.0,
+    'early_stopping_warmup_epochs':0,
+    'early_stopping_restore_best':True,
 
     ## Stochastic weight averaging params
     ## https://pytorch.org/blog/pytorch-1.6-now-includes-stochastic-weight-averaging/
@@ -192,7 +198,7 @@ lstm_parameters = {
     'pretrain_max_lr': 1e-4,
     'pretrain_min_lr': 1e-4,
     'pretrain_weight_decay': 1e-4,
-    'pretrain_epochs': 3,
+    'pretrain_epochs': 100,
     'swa_epochs': 0,
     'swa_max_lr': 1e-2,
     'swa_min_lr': 1e-4,
@@ -201,8 +207,9 @@ lstm_parameters = {
 
 # Define the grid of parameters to search
 param_grid = {
-    'pretrain_epochs':[100,200],
-    'num_of_lstm_layers': [1, 2, 4][:],
+    'pretrain_epochs':[300],
+    'bidirectional':[True,False],
+    'num_of_lstm_layers': [1, 2, 3][:],
     'hidden_size': [64, 128][:]}
 
 # Generate all combinations of the specified parameters
@@ -228,6 +235,7 @@ for n,combo in enumerate(combinations):
 ## Create dataframe containing hyperparameters
 grid_search_df=pd.DataFrame.from_dict(parameter_sets).T
 grid_search_df.index.name='param_combnum'
+grid_search_df['early_stopping_best_epoch']=np.nan
 
 
 
@@ -274,6 +282,14 @@ for model_complex in model_complexity_:
     
     for data_param_key in dataset_name_:
 
+         ## LOAD FINAL PATIENT IDS FOR ANALYSIS, SAVED DURING PREPROCESSING OF THE BASELINE MODELS IN NOTEBOOK S9_3
+        if 'pat_ids_fn' in parameters_for_analysis[data_param_key].keys():
+            fn=f"../data/{parameters_for_analysis[data_param_key]['pat_ids_fn']}_final_pat_ids_for_analysis.pickle"
+        else:  
+            fn=f'../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
+        with open(fn, 'rb') as handle:
+            final_pat_ids_for_analysis=pickle.load(handle)
+
         ## Load preprocessed-imputed data, and modify the variables (add or drop) depending on the prediction setup, which is contained at the 
         #. end of the "data_param_key" variable
         X,race_colnames = load_and_modify_preprocessed_data(data_param_key)
@@ -291,31 +307,10 @@ for model_complex in model_complexity_:
         fn='../data/'+parameters_for_analysis[data_param_key]['fn']+'_preproc_data_with_imp.csv.gz'
         data=pd.read_csv(fn,index_col=0,low_memory=False)
 
-        ## If not RELAPSE shpuld be predicted, subset the patients according to the availbility of the outcome results
-        if parameters_for_analysis[data_param_key]['result_cat']!='RELAPSE':
-            
-            ## Extract patients who have their last therapy day before therapy_day_thr ==> these patient probably dropped out
-            last_day_per_pat_df=data.sort_values(by=['DAY']).groupby('USUBJID').apply(lambda x: x.loc[x.index[-1],:])
-            pat_ids=last_day_per_pat_df[last_day_per_pat_df['DAY']>therapy_day_thr]['USUBJID'].tolist()
-            #pat_ids=X['USUBJID'].unique().tolist()
-            
-            ## Subset outcome dataframe to patient considered
-            target_df=outcome_df.loc[pat_ids,outcome_label]
-            y=target_df.loc[pat_ids].replace(label2id)
-            
-        if parameters_for_analysis[data_param_key]['result_cat']=='RELAPSE':
-            outcome_label='RELAPSE'
-            pats_with_relapse_df=extract_21_22_relapse_pats()
-    
-            pats_with_relapse_df = pats_with_relapse_df.loc[list(set(data['USUBJID'].unique())&set(pats_with_relapse_df.index))]
-    
-            ## Create new prediction labels (or even multilabels) in the "RELAPSE" column based on the relapse day intervals defined in "bins" 
-            if 'bins' in parameters_for_analysis[data_param_key].keys():
-                pats_with_relapse_df = cut_relapse_days_to_interval_categories(pats_with_relapse_df,data_param_key)
-            
-            pat_ids=pats_with_relapse_df.index.tolist()
-            target_df=pats_with_relapse_df[[outcome_label]]
-            y=pats_with_relapse_df[[outcome_label]]
+        ## Return dataframe with the outcome label
+        pat_ids,y,target_df,outcome_label = return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
+                                                                      outcome_df,outcome_label)
+        target_df=target_df.loc[pat_ids].replace(label2id)
 
         ## Subset initial therapy last day dataframe to all patient considered in analysis
         #init_ther_df=last_initial_therapy_day_df.loc[pat_ids,:]
@@ -323,8 +318,9 @@ for model_complex in model_complexity_:
 
         
         ## Subset outcome dataframe to patient considered
-        outcome_label=data_param_key.split('vars_')[-1].upper()
-        target_df=target_df.loc[pat_ids].replace(label2id)
+        #outcome_label=data_param_key.split('vars_')[-1].upper()
+        outcome_label = parameters_for_analysis[data_param_key]['result_cat']
+  
             
 
 
@@ -403,6 +399,7 @@ for model_complex in model_complexity_:
 
             
             ## Update previously created dicts with ML results
+            '''
             train_data_results,test_data_results=train_models(data,target_df_,pat_ids_,period_end_day,cat_vars_not_to_hot_encode,
                                                               scoring_methods,outcome_label,\
                                                               training_days,random_state,data_split_random_state,\
@@ -414,6 +411,35 @@ for model_complex in model_complexity_:
                                                               categorical_map_dict,
                                                               num_of_cv_repeats,
                                                               columns_to_drop,
+                                                              verbose=False,                                                              
+                                                              cross_validation=cross_validation,
+                                                              get_feature_importances=False)
+            '''                                                              
+
+            train_data_results,test_data_results=train_models(data,
+                                                              target_df_,
+                                                              pat_ids_,
+                                                              period_end_day,
+                                                              cat_vars_not_to_hot_encode,
+                                                              scoring_methods,
+                                                              outcome_label,
+                                                              training_days,
+                                                              random_state,
+                                                              data_split_random_state,
+                                                              test_data_results,
+                                                              train_data_results,
+                                                              parameter_sets,
+                                                              data_param_key,
+                                                              cross_entropy_weights_dict,
+                                                              model_complex,
+                                                              k_folds,
+                                                              best_param_combinations,
+                                                              start,
+                                                              categorical_map_dict,
+                                                              num_of_cv_repeats,
+                                                              columns_to_drop,
+                                                              grid_search_df,
+                                                              final_pat_ids_for_analysis,
                                                               verbose=False,                                                              
                                                               cross_validation=cross_validation,
                                                               get_feature_importances=False)

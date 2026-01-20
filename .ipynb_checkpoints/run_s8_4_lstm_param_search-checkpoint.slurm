@@ -3,11 +3,11 @@
 #SBATCH --job-name=s_8_4_lstm_param_search
 #SBATCH -o slurm_lstm_param_search_logs/s_8_4_lstm_param_search_%A_%a.log
 #SBATCH -e slurm_lstm_param_search_logs/s_8_4_lstm_param_search_%A_%a.log
-#SBATCH --cpus-per-task=4
+#SBATCH --cpus-per-task=2
 #SBATCH --mem-per-cpu=32G
 #SBATCH --partition=sapphire #bigmem
 ##SBATCH --qos=cpu_normal
-##SBATCH --gres=gpu:2
+##SBATCH --gres=gpu:1
 #SBATCH --time=3-00:00:00
 #SBATCH --nice=10000
 
@@ -28,7 +28,7 @@ conda activate scarches
 # Specify the path to the config file
 config="lstm_train_param_combinations.tsv"
 
-
+#SLURM_ARRAY_TASK_ID=1
 # Extract the parameters from the parameter configuration dataframe
 period_end_day=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$4==ArrayTaskID {print $2}' $config)
 #data_inclusion_type=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$4==ArrayTaskID {print $4}' $config)
@@ -43,7 +43,7 @@ echo ${period_end_day}
 
 
 
-python s8_4_LSTM_classification_param_search.py \
+/data/gpfs/projects/punim2121/anaconda3/envs/scarches/bin/python s8_4_LSTM_classification_param_search.py \
                     --dataset_name $dataset_name\
                     --model_complexity $model_complexity \
                     --period_end_day $period_end_day 

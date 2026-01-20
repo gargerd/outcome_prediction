@@ -22,31 +22,44 @@ mpl.rcParams['figure.dpi'] = 300
 
 
 
-# DEFINE DATASET NAMES + FUNCTIONS
 parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT',
-                            'selection_method':'patient_clustering',
-                            'clust_comb':'2-3-4-5',
-                            'graph_metric':None,
-                            'num_of_common_vars':22,
-                            'training_days':120},
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
             
-
                         'tb21_22_2984_pats_22_vars_relapse':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE',
-                            'selection_method':'patient_clustering',
-                            'clust_comb':'2-3-4-5',
-                            'graph_metric':None,
-                            'num_of_common_vars':22,
-                            'training_days':120}, 
+                            'result_cat':'RELAPSE'}, 
 
-                        'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
-                            #'fn':'tb21_22_2984_pats_22_vars_relapse_without_dr_reg',#_wo_dr_reg',
+
+                         
+                        'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_dr_reg_per_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+            
+                        'tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
+                            'result_cat':'RELAPSE'}, 
+
+                        'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
+                            'fn':'tb21_22_2984_pats_22_vars_relapse_without_dr_reg',#_wo_dr_reg',
+                            'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
                             'result_cat':'RELAPSE'},
+
+                          'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_with_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                               'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+            
+                        'tb21_22_2984_pats_22_vars_relapse_with_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
+                            'result_cat':'RELAPSE'}, 
+
 
                            'tb21_22_2984_pats_22_vars_raw_pred_prob_norm_loss':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
@@ -55,64 +68,84 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                         'tb21_22_2984_pats_22_vars_llm_pred_prob_norm_loss':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'llm_pred_prob_norm'},
+
+                 
+
+                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_mb_only':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+
+                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_mb':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+
+                         'tb21_22_2984_pats_22_vars_relapse_mb_only':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'},
+
+                         'tb21_22_2984_pats_22_vars_relapse_without_mb':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'},
+
+                         'tb21_1405_pats_40_vars_result_at_end_of_treatment':{
+                            'fn':'tb21_1405_pats_40_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+                         
+                         'tb21_1405_pats_40_vars_relapse':{
+                            'fn':'tb21_1405_pats_40_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'},
+
+                         'tb22_1499_pats_31_vars_result_at_end_of_treatment':{
+                             'fn':'tb22_1499_pats_31_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+                         
+                         'tb22_1499_pats_31_vars_relapse':{
+                             'fn':'tb22_1499_pats_31_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'},
+
+
+                      
+
+                         
+
+                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_weight_norm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+            
+                        'tb21_22_2984_pats_22_vars_relapse_weight_norm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'}, 
+                        
+
+                         'tb21_22_2984_pats_22_vars_relapse_1_year':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE',
+                             'bins':[0,365][:],
+                             'labels':[1]}, 
+
+                         'tb21_22_2984_pats_22_vars_relapse_half_years':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE',
+                             'bins':[0,182,365,np.inf],
+                             'labels':[1,2,3]}, 
                          
                          
                          'tb21_22_2840_pats_23_vars_result_at_end_of_treatment':{
                             'fn':'tb21_22_2840_pats_23_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT',
-                            'selection_method':'patient_clustering',
-                            'clust_comb':'2-3-4-5',
-                            'graph_metric':None,
-                            'num_of_common_vars':23,
-                            'training_days':120},
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
 
                          'tb21_22_2840_pats_23_vars_relapse':{
                             'fn':'tb21_22_2840_pats_23_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE',
-                            'selection_method':'patient_clustering',
-                            'clust_comb':'2-3-4-5',
-                            'graph_metric':None,
-                            'num_of_common_vars':23,
-                            'training_days':120},
-    
-    
+                            'result_cat':'RELAPSE'},
+        
 
                          'tb21_22_2798_pats_24_vars_result_at_end_of_treatment':{
                             'fn':'tb21_22_2798_pats_24_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT',
-                            'selection_method':'patient_clustering',
-                            'clust_comb':'2-3-4-5',
-                            'graph_metric':None,
-                            'num_of_common_vars':24,
-                            'training_days':120},   
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},   
 
                           'tb21_22_2798_pats_24_vars_relapse':{
                             'fn':'tb21_22_2798_pats_24_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE',
-                            'selection_method':'patient_clustering',
-                            'clust_comb':'2-3-4-5',
-                            'graph_metric':None,
-                            'num_of_common_vars':24,
-                            'training_days':120}, 
-
-
-                         'tb21_1405_pats_40_vars_result_at_end_of_treatment':{
-                            'fn':'tb21_1405_pats_40_vars_result_at_end_of_treatment',
-                            'result_cat':'RESULT_AT_END_OF_TREATMENT',
-                            'selection_method':'patient_clustering',
-                            'clust_comb':'1-3-4-5',
-                            'graph_metric':None,
-                            'num_of_common_vars':40,
-                            'training_days':120},
-                         
-                         'tb21_1405_pats_40_vars_relapse':{
-                            'fn':'tb21_1405_pats_40_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE',
-                            'selection_method':'patient_clustering',
-                            'clust_comb':'1-3-4-5',
-                            'graph_metric':None,
-                            'num_of_common_vars':40,
-                            'training_days':120},
+                            'result_cat':'RELAPSE'}, 
                          
                          }
 ## Define string descriptions to add as a prefix for each ds_type, for LLM to know what the variables describe
@@ -324,7 +357,11 @@ def load_input_embeddings_of_model(data_param_key, llm_model_name, fine_tuned_ta
 ###=========================================
 ### Initialise Dense Network structure -> number of layers and activation function as hyperparameters
 class DenseNetwork(nn.Module):
-    def __init__(self, input_dim, output_dim, hidden_dims,hidden_activation,last_activation):
+    def __init__(self, input_dim, 
+                 output_dim, 
+                 hidden_dims,
+                 hidden_activation,
+                 last_activation):
         super(DenseNetwork, self).__init__()
         
         dims=[input_dim] + hidden_dims + [output_dim]
@@ -360,16 +397,87 @@ class CustomDataset(Dataset):
         y_patient_data=torch.tensor(y.values, dtype=torch.float32)
         return X_patient_data, y_patient_data
 
-
 #=================================================================
+
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class FocalLoss(nn.Module):
+    def __init__(self, gamma=2.0, alpha=None, weight=None, reduction='mean'):
+        """
+        gamma: focusing parameter (>=0). 0 -> plain CE
+        alpha: None or tensor of shape [num_classes] for class balancing
+        weight: like CrossEntropyLoss 'weight' (class weights)
+        """
+        super().__init__()
+        self.gamma = gamma
+        self.reduction = reduction
+
+        # class weights passed to CE
+        self.register_buffer('weight', None if weight is None else torch.as_tensor(weight, dtype=torch.float))
+
+        # focal alpha (per-class)
+        if alpha is not None:
+            self.register_buffer('alpha', torch.as_tensor(alpha, dtype=torch.float))
+        else:
+            self.alpha = None
+
+    def forward(self, logits, targets):
+        """
+        logits: (N, C)
+        targets: (N,) with class indices
+        """
+        # standard CE per-sample (no reduction)
+        ce_loss = F.cross_entropy(logits, targets, weight=self.weight, reduction='none')  # (N,)
+
+        # pt = exp(-CE) = predicted prob of true class
+        pt = torch.exp(-ce_loss)  # (N,)
+
+        # focal factor
+        focal_factor = (1 - pt) ** self.gamma  # (N,)
+
+        if self.alpha is not None:
+            # get alpha per sample: alpha_t = alpha[targets]
+            alpha_t = self.alpha[targets]  # (N,)
+            loss = alpha_t * focal_factor * ce_loss
+        else:
+            loss = focal_factor * ce_loss
+
+        if self.reduction == 'mean':
+            return loss.mean()
+        elif self.reduction == 'sum':
+            return loss.sum()
+        else:
+            return loss
 
 #=================================================================
 ## Function for training DenseNetwork
-def train_dense_network(X_train,y_train_data_with_index,dense_network_params,label_weights_dict,
-                        train_param_comb,plot_loss_function,verbose=True):
+def train_dense_network(X_train,
+                        y_train_data_with_index,
+                        dense_network_params,
+                        label_weights_dict,
+                        train_param_comb,
+                        plot_loss_function,
+                        verbose,
+                        patience=10,
+                        X_val=None,
+                        y_val_data_with_index=None):
     
     from torch.optim.lr_scheduler import CosineAnnealingLR
 
+    if 'early_stop_epoch' in dense_network_params.keys():
+        early_stopping_by_predef_epoch=True
+        stop_epoch_num=int(np.ceil(dense_network_params['early_stop_epoch'])) + 1
+    
+    if 'early_stop_epoch' not in dense_network_params.keys():
+        early_stopping_by_predef_epoch=False
+        
+
+    if X_val is not None and y_val_data_with_index is not None:
+        early_stopping_by_val_loss=True
+    else:
+        early_stopping_by_val_loss=False        
 
     
     ### TRAIN MODEL ###
@@ -380,12 +488,18 @@ def train_dense_network(X_train,y_train_data_with_index,dense_network_params,lab
     # Create data loaders
     train_dataset=CustomDataset(X_train,y_train_data_with_index)
     train_loader=DataLoader(train_dataset,batch_size=batch_size, shuffle=True)
+
+    if early_stopping_by_val_loss==True:
+        val_dataset= CustomDataset(X_val, y_val_data_with_index)
+        val_loader= DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
     
     # Initialize the model and optimizer
     device=torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model=DenseNetwork(len(X_train.columns), dense_network_params['output_dim'], 
-                        dense_network_params['hidden_dims'],dense_network_params['last_activation'],
-                        dense_network_params['last_activation'])
+                        dense_network_params['hidden_dims'],
+                        dense_network_params['hidden_activation'],
+                        dense_network_params['last_activation']).to(device)
+  
 
     #print(model)
 
@@ -399,11 +513,38 @@ def train_dense_network(X_train,y_train_data_with_index,dense_network_params,lab
     ## Initialize loss function    
     if dense_network_params['criterion']=='CrossEntropyLoss':
         if label_weights_dict is not None:
-            criterion=nn.CrossEntropyLoss(weight=torch.FloatTensor(cross_entropy_weights))
+            weight_tensor = torch.tensor(cross_entropy_weights, dtype=torch.float, device=device)
+            criterion=nn.CrossEntropyLoss(weight=weight_tensor)
         if label_weights_dict is None:
             criterion=nn.CrossEntropyLoss()
 
-    if dense_network_params['criterion']=='MSELoss':
+    elif dense_network_params['criterion'] == 'FocalLoss':
+        # build class weights from label_weights_dict if provided
+        if label_weights_dict is not None:
+            ce_weights = [label_weights_dict[key] for key in np.sort([*label_weights_dict])]
+        else:
+            ce_weights = None
+        
+        # focal alpha from params (optional)
+        focal_alpha = dense_network_params.get('focal_alpha', None)
+        gamma = dense_network_params.get('focal_gamma', 2.0)
+
+        target_label_freq=y_train_data_with_index.value_counts(normalize=True)
+        #print('target_label_freq',target_label_freq)
+        focal_alpha = torch.tensor([target_label_freq.loc[0].values[0],
+                                    target_label_freq.loc[1].values[0]])
+        #print('target_label_freq',target_label_freq)
+        #print('focal_alpha',focal_alpha)
+    
+        criterion = FocalLoss(
+            gamma=gamma,
+            alpha=focal_alpha,
+            weight=ce_weights,
+            reduction='mean'
+        ).to(device)
+
+
+    elif dense_network_params['criterion']=='MSELoss':
         criterion=nn.MSELoss()
   
 
@@ -417,7 +558,22 @@ def train_dense_network(X_train,y_train_data_with_index,dense_network_params,lab
         eta_min=0  # Minimum learning rate
     )
 
+
+
+     # ---- early stopping state ----
+    best_val_loss = float('inf')
+    best_model_state = None
+    epochs_no_improve = 0
+
+    
+ 
+
+    epoch_loss_list = []
+    
     for epoch in range(num_of_epochs):
+        model.train()
+        
+        epoch_losses = []
         #print('epoch:',epoch)
         for inputs, targets in train_loader:
             #print('inputs.shape',inputs.shape,'targets.shape',targets.shape)
@@ -426,19 +582,22 @@ def train_dense_network(X_train,y_train_data_with_index,dense_network_params,lab
         
             outputs = model(inputs)
             #print('outputs.shape',outputs,'targets.shape',targets)
-            if dense_network_params['criterion']=='CrossEntropyLoss':
+            if dense_network_params['criterion'] in ['CrossEntropyLoss', 'FocalLoss']:
                 loss = criterion(outputs, targets.squeeze(1).long())
             
-            if dense_network_params['criterion']=='MSELoss':
+            elif dense_network_params['criterion']=='MSELoss':
                 loss = criterion(outputs, targets.squeeze(1))
             #print('loss',loss.item())
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
 
+            # store per-batch loss
+            epoch_losses.append(loss.item())
+
             if plot_loss_function==True:
                 loss_items_list.append(loss.item())
-
+        '''
         if verbose==True:
             if num_of_epochs>10:
                 if epoch==0:
@@ -446,7 +605,75 @@ def train_dense_network(X_train,y_train_data_with_index,dense_network_params,lab
                 if (epoch+1) % round(num_of_epochs/10) == 0:
                     print(f'Mean Loss Epoch [{epoch+1}/{num_of_epochs}], Loss: {round(np.mean(loss_items_list[-round(num_of_epochs/10):]),3)}')
             else:
-                print(f'Epoch [{epoch+1}], Loss: {loss.item():.3f}')   
+                print(f'Epoch [{epoch+1}], Loss: {loss.item():.3f}') 
+        '''
+
+        mean_epoch_loss = np.mean(epoch_losses)
+        epoch_loss_list.append(mean_epoch_loss)
+
+        if early_stopping_by_val_loss==True:
+            # -------- VALIDATION --------
+            model.eval()
+            val_losses = []
+            with torch.no_grad():
+                for inputs, targets in val_loader:
+                    inputs = inputs.to(device)
+                    targets = targets.to(device)
+    
+                    outputs = model(inputs)
+                    if dense_network_params['criterion'] in ['CrossEntropyLoss', 'FocalLoss']:
+                        val_loss = criterion(outputs, targets.squeeze(1).long())
+    
+                    elif dense_network_params['criterion']=='MSELoss':
+                        val_loss = criterion(outputs, targets.squeeze(1))
+                   
+                    val_losses.append(val_loss.item())
+    
+            mean_val_loss = float(np.mean(val_losses))
+        
+        
+        scheduler.step()
+
+        
+        if verbose==True:
+            if num_of_epochs > 10:
+                #if epoch==0:
+                #    print(f'Epoch [{epoch+1}/{num_of_epochs}], Loss: {loss.item():.3f}')
+                    
+                if (epoch + 1) % round(num_of_epochs / 10) == 0:
+                    n = round(num_of_epochs / 10)
+                    mean_last_n_epochs = np.mean(epoch_loss_list[-n:])
+                    print(f"Mean Loss over last {n} epochs at epoch {epoch+1}: "
+                          f"{mean_last_n_epochs:.3f}")
+            else:
+                print(f"Epoch [{epoch+1}], Loss: {mean_epoch_loss:.3f}")
+
+        if early_stopping_by_val_loss==True:
+
+            # -------- EARLY STOPPING CHECK --------
+            
+            if mean_val_loss < best_val_loss - 1e-6:  # small tolerance
+                best_val_loss = mean_val_loss
+                best_model_state = copy.deepcopy(model.state_dict())
+                epochs_no_improve = 0
+            else:
+                epochs_no_improve += 1
+                if epochs_no_improve >= patience:
+                    #if verbose:
+                    print(f"Early stopping at epoch {epoch+1}. Best val loss: {best_val_loss:.3f}")
+                    break
+            
+        # -------- EARLY STOPPING AT PREDEFINED EPOCH --------
+        if early_stopping_by_predef_epoch==True and epoch >= stop_epoch_num:
+            print(f"Early stopping at predefined epoch {epoch+1}.")
+            best_model_state = copy.deepcopy(model.state_dict())
+            break
+                
+
+    # restore best model
+    if best_model_state is not None:
+        model.load_state_dict(best_model_state)
+        
     
     ### PLOT LOSS FUNCTION OVER TRAINING STEPS
     if plot_loss_function==True:
@@ -458,7 +685,7 @@ def train_dense_network(X_train,y_train_data_with_index,dense_network_params,lab
         ax.set_ylabel('Loss',fontsize=7)
         fig.suptitle(train_param_comb,fontsize=6,fontweight='bold') 
             
-    return model
+    return model, epoch
 
 
 
@@ -467,6 +694,12 @@ def train_dense_network(X_train,y_train_data_with_index,dense_network_params,lab
 #  1. Test the model with training dataset
 #  2. Test the model with unseen testing dataset
 def test_dense_model(model,X_test,y_test_data_with_index):
+
+
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+    model.to(device)
+    model.eval()
     
     ### TEST MODEL ###
     with torch.no_grad():
@@ -494,6 +727,7 @@ def test_dense_model(model,X_test,y_test_data_with_index):
     predicted_output_list = predicted_output.squeeze(0).detach().numpy()
     
     return predicted_output_list
+
 
 
 
@@ -852,8 +1086,8 @@ def scale_by_training_data(X_train, X_test):
     '''
     std_scaler = StandardScaler()
     std_scaler.fit(X_train)
-    X_train.loc[:,:]=std_scaler.transform(X_train)
-    X_test.loc[:,:]=std_scaler.transform(X_test)
+    X_train[X_train.columns]=std_scaler.transform(X_train)
+    X_test[X_test.columns]=std_scaler.transform(X_test)
     return (X_train, X_test)
 
 
@@ -1001,7 +1235,7 @@ def run_cv(X,
     skf = StratifiedKFold(n_splits=k_folds, shuffle=True, random_state=random_state)
 
     # Initialize lists to store the evaluation scores
-    train_roc_auc_scores_all,test_roc_auc_scores_all=[],[]
+    train_roc_auc_scores_all,test_roc_auc_scores_all,early_stop_epochs=[],[],[]
     train_roc_auc_scores_per_study,test_roc_auc_scores_per_study=[],[]
     train_ids_,test_ids_,conf_metrics_list=[],[],[]
     
@@ -1050,20 +1284,25 @@ def run_cv(X,
                                                  train_params,
                                                  updated_dense_network_params) 
         #start=time.time()
-                
+        early_stop_epoch=None
+        
         ## Fit model
         if model_name in ['XGBoost','GradientBoost']:
             model.fit(X_train_fold, y_train_fold.values.ravel(),sample_weight=label_weights)
         elif model_name in ['RandomForest','LogisticRegression','SVC','KNN']:
             model.fit(X_train_fold, y_train_fold.values.ravel())
         elif model_name in ['Dense']:
-            model = train_dense_network(X_train_fold,y_train_fold,updated_dense_network_params,label_weights_dict,
-                                        train_param_comb,
-                                        plot_loss_function=True,verbose=True)
+            model,early_stop_epoch = train_dense_network(X_train_fold,
+                                                y_train_fold,
+                                                updated_dense_network_params,
+                                                label_weights_dict,
+                                                train_param_comb,
+                                                X_val=X_test_fold,
+                                                y_val_data_with_index=y_test_fold,
+                                                plot_loss_function=False,
+                                                verbose=False)
         #stop=time.time()
         #print_elapsed_time(start,stop)
-
-        y_train_fold_=y_train_fold.copy()
         
         if 'Dense' in model_name:
             model.eval()  # Set the model to evaluation mode
@@ -1078,7 +1317,7 @@ def run_cv(X,
                 ## REGRESSION
                 #train_probabilities = test_dense_model(model,X_train_fold,y_train_fold)
                 #test_probabilities = test_dense_model(model,X_test_fold,y_test_fold)
-
+                '''
                 fig,ax=plt.subplots(1,1,figsize=(10,5))
                 #print(y_train_fold.values.flatten())
                 #print(train_probabilities.flatten())
@@ -1087,6 +1326,7 @@ def run_cv(X,
                 ax.set_ylim(0,None)
                 ax.set_ylabel('Loss',fontsize=7)
                 fig.suptitle(train_param_comb,fontsize=6,fontweight='bold') 
+                '''
                 
 
         
@@ -1095,6 +1335,7 @@ def run_cv(X,
             train_probabilities = model.predict_proba(X_train_fold)[:,1]
             test_probabilities = model.predict_proba(X_test_fold)[:,1]
         
+        y_train_fold_=y_train_fold.copy()
         
         ## If patients come from multiple studies, calculate the ROC-AUC score within the studies as well
         if len(y.index.get_level_values('STUDYID').unique())>1:
@@ -1119,6 +1360,7 @@ def run_cv(X,
         ## CLASSIFIER
         train_roc_auc=roc_auc_score(y_train_fold[outcome_label], train_probabilities)
         test_roc_auc=roc_auc_score(y_test_fold[outcome_label], test_probabilities)
+        
 
         ## REGRESSION
         #train_roc_auc=r2_score(y_train_fold[outcome_label], train_probabilities)
@@ -1128,10 +1370,12 @@ def run_cv(X,
         # Append the scores to the lists
         train_roc_auc_scores_all.append(train_roc_auc)
         test_roc_auc_scores_all.append(test_roc_auc)
+        
+        if early_stop_epoch is not None:
+            early_stop_epochs.append(early_stop_epoch)
 
 
         if calibrate_model==True:
-
             use_pca=True
             conf_metrics = calibrate_model_and_extract_confidence_metrics(
                                                                model=model,
@@ -1163,6 +1407,9 @@ def run_cv(X,
     cv_roc_auc_scores['train_score']=train_roc_auc_scores_all
     cv_roc_auc_scores['test_score']=test_roc_auc_scores_all
 
+    if len(early_stop_epochs)>0:
+        cv_roc_auc_scores['early_stop_epochs']=early_stop_epochs
+
     print('CV test_score:',test_roc_auc_scores_all)
     print('CV train_score:',train_roc_auc_scores_all)
 
@@ -1180,13 +1427,14 @@ def run_cv(X,
 
 
 
+
 ##=========================================
 ## RUN CV OF GIVEN MODEL & TRAIN FINAL MODEL AFTERWARDS
 def run_parameter_search(model_name,
                          X_train,
                          y_train_data,
                          k_folds,
-                        random_state,
+                         random_state,
                         outcome_label,
                         param_search_dict,
                         weight_by_label_freq,
@@ -1224,7 +1472,9 @@ def run_parameter_search(model_name,
                                  train_params,
                                  dense_network_params,
                                  train_param_comb,
-                                calibrate_model)
+                                 calibrate_model)
+
+                               
         
         ## SAVE RESULT OF CV WITH GIVEN PARAMETER SET
         param_search_results[param_set_string]=cv_roc_auc_scores
@@ -1235,10 +1485,9 @@ def run_parameter_search(model_name,
 
 
 ##=========================================
-
-##=========================================
-def extract_best_model_params(param_search_results,metric_func,num_of_top_models_per_cv,
+def extract_best_model_params(param_search_results,metric_func,num_of_top_models_per_cv,model_name,
                               average_models_across_splits=False):
+    import re
     
     def is_float(s):
         try:
@@ -1256,22 +1505,39 @@ def extract_best_model_params(param_search_results,metric_func,num_of_top_models
         
         cv_rep_param_search_results = param_search_results['param_search_results'][cv_rep_num]
 
+        if 'early_stop_epochs' in cv_rep_param_search_results[[*cv_rep_param_search_results][0]].keys():
+            early_stopping=True
+        else:
+            early_stopping=False
+
         ## Construct a dataframe with the parmeter sets and the corresponding mean or median of the validation ROC-AUC of model trained with parameter set
         param_roc_auc_df=pd.DataFrame.from_dict({param_set_string:cv_rep_param_search_results[param_set_string]['test_score'] for param_set_string in cv_rep_param_search_results.keys()})
         best_model_params = np.mean(param_roc_auc_df,axis=0).sort_values(ascending=False).index[:num_of_top_models_per_cv]
 
-        best_params_dict={}
+    
+        best_params_dict={}            
         for n,best_param_set in enumerate(best_model_params):
             
             ## Convert the best parameter-set to a dictionary
-            best_model_params={key_val_pair.split(':')[0]:key_val_pair.split(':')[1] for key_val_pair in best_param_set.split('-')}
+            ## Split at points, where '-' is followd by next "parameter_name:"
+
+            if model_name=='Dense':
+                pairs = re.split(r'-(?=[A-Za-z_]+:)', best_param_set)
+                best_model_params = {
+                    k: v for k, v in (pair.split(':', 1) for pair in pairs)}
+            else:
+                best_model_params={key_val_pair.split(':')[0]:key_val_pair.split(':')[1] for key_val_pair in best_param_set.split('-')}
+            #best_model_params={key_val_pair.split(':')[0]:key_val_pair.split(':')[1] for key_val_pair in best_param_set.split('-')}
+
+            if early_stopping==True:
+                best_model_params['early_stop_epoch']=np.mean(cv_rep_param_search_results[best_param_set]['early_stop_epochs'])
+                
             best_params_dict[n]=best_model_params
             #print('best_model_params',best_model_params)
     
         
         #best_model_params={key:float(value) if is_float(value) else value for key,value in best_model_params.items() }
-        #print('best_model_params',best_model_params)
-        
+        #print('best_model_params',best_model_params)        
         best_cv_rep_results[cv_rep_num]=best_params_dict
         
         #print(f'Best CV-score {best_score} in CV-rep {cv_rep_num}, best params: {best_model_params}')
@@ -1326,6 +1592,7 @@ def extract_best_model_params(param_search_results,metric_func,num_of_top_models
         return best_cv_rep_results
 
 
+
 ##=========================================
 ## RUN CV OF GIVEN MODEL & TRAIN FINAL MODEL AFTERWARDS
 def calc_roc_auc_score_of_model(model_name,
@@ -1339,7 +1606,7 @@ def calc_roc_auc_score_of_model(model_name,
                                 train_params,
                                 dense_network_params,
                                 train_param_comb,
-                               calibrate_model):
+                                calibrate_model):
         
     ### RUN CV & TRAIN MODEL AFTERWARDS
     if model_name in ['XGBoost','GradientBoost']:
@@ -1357,14 +1624,11 @@ def calc_roc_auc_score_of_model(model_name,
                                  dense_network_params,
                                  train_param_comb,
                                 calibrate_model)
+                    
         
         ## INITIALIZE MODEL & TRAIN 
-        model,label_weights,label_weights_dict=init_model(model_name,
-                                                          X_train,
-                                                          y_train_data,
-                                                          k_folds,
-                                                          random_state,
-                                                          outcome_label,
+        model,label_weights,label_weights_dict=init_model(model_name,X_train,y_train_data,
+                                                          k_folds,random_state,outcome_label,
                                                           model_params,
                                                           weight_by_label_freq,
                                                           train_params,
@@ -1373,7 +1637,8 @@ def calc_roc_auc_score_of_model(model_name,
         X_train,_ = scale_by_training_data(X_train, X_train)
         model.fit(X_train, y_train_data,sample_weight=label_weights)
         
-    else:
+    #else:
+    elif model_name in ['RandomForest','LogisticRegression','SVC','KNN']:
         
         ## CALCULATE CV-SCORES
         cv_roc_auc_scores=run_cv(X_train,
@@ -1387,21 +1652,65 @@ def calc_roc_auc_score_of_model(model_name,
                                  train_params,
                                  dense_network_params,
                                  train_param_comb,
-                                calibrate_model)
+                                 calibrate_model)
+                          
         
         ## INITIALIZE MODEL & TRAIN 
-        model,label_weights,label_weights_dict=init_model(model_name,
-                                                          X_train,
-                                                          y_train_data,
-                                                          k_folds,
-                                                          random_state,
-                                                          outcome_label,
+        model,label_weights,label_weights_dict=init_model(model_name,X_train,y_train_data,
+                                                          k_folds,random_state,outcome_label,
                                                           model_params,
                                                           weight_by_label_freq,
                                                           train_params,
                                                           dense_network_params) 
         X_train,_ = scale_by_training_data(X_train, X_train)
         model.fit(X_train, y_train_data)
+
+    elif model_name in ['Dense']:
+
+        ## CALCULATE CV-SCORES
+        cv_roc_auc_scores=run_cv(X_train,
+                                 y_train_data,
+                                 k_folds,
+                                 model_name,
+                                 weight_by_label_freq,
+                                 random_state,
+                                 outcome_label,
+                                 model_params,
+                                 train_params,
+                                 dense_network_params,
+                                 train_param_comb,
+                                 calibrate_model)
+
+        ## INITIALIZE MODEL & TRAIN 
+
+        ## Update dens network default parameters with the parameters selected for given CV run
+        updated_dense_network_params=copy.deepcopy(dense_network_params)
+        for param in model_params.keys(): 
+            if param in dense_network_params.keys():
+                updated_dense_network_params[param]=model_params[param]
+
+
+        #print('before training\n')
+        #print('model_params.keys()',model_params.keys())
+        #print('\n')
+        if 'early_stop_epoch' in model_params.keys():
+            updated_dense_network_params['early_stop_epoch']=model_params['early_stop_epoch']
+                
+                
+        model,label_weights,label_weights_dict=init_model(model_name,X_train,y_train_data,
+                                                          k_folds,random_state,outcome_label,
+                                                          model_params,
+                                                          weight_by_label_freq,
+                                                          train_params,
+                                                          updated_dense_network_params) 
+
+        model,_ = train_dense_network(X_train,
+                                    y_train_data,
+                                    updated_dense_network_params,
+                                    label_weights_dict,
+                                    train_param_comb,
+                                    plot_loss_function=False,
+                                    verbose=False)
         
     return model,cv_roc_auc_scores,label_weights_dict
 

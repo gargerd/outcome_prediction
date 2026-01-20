@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --array=1-4%4
+#SBATCH --array=1-2%2
 #SBATCH --job-name=s_9_3_raw_data_test
 #SBATCH -o slurm_raw_data_testing_logs/s_9_3_raw_data_test_%A_%a.log
 #SBATCH -e slurm_raw_data_testing_logs/s_9_3_raw_data_test_%A_%a.log

@@ -449,8 +449,9 @@ class SklearnLRWrapper(nn.Module):
 
     def forward(self, x):
         logits = torch.matmul(x, self.weights.T) + self.bias  # shape (batch, 1)
-        probs = torch.sigmoid(logits)
-        return probs
+        #probs = torch.sigmoid(logits)
+        return logits.squeeze(1)  # (batch,)
+        #return probs
 
 
 

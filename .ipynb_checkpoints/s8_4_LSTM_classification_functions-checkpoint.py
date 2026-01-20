@@ -24,6 +24,7 @@ from torch.utils.data import TensorDataset, DataLoader,Dataset
 from torch.nn.utils.rnn import pad_sequence,pack_padded_sequence,pad_packed_sequence
 from torch.optim.lr_scheduler import CosineAnnealingLR, CyclicLR
 from torch.optim.swa_utils import AveragedModel
+import copy
 #from pytorch_model_summary import summary
 
 
@@ -101,6 +102,28 @@ class Grouped_Train_Dataset(Dataset):
 '''
 
 
+## Drop patients who have their last data at an earlier timepoint than threshold
+therapy_day_thr=80
+
+period_end_days=['baseline',31,62,93,125,160,'all']
+
+## Set up prediction labels
+id2label={0: "FAVOURABLE", 1: "UNFAVOURABLE"}
+label2id={"FAVOURABLE": 0, "UNFAVOURABLE": 1}
+
+
+import time
+
+outcome_df=pd.read_csv('../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
+outcome_df=outcome_df.set_index('USUBJID',drop=True)
+outcome_df=outcome_df.rename(columns={'UNFAVOURABLE_OUTCOME_CATEGORY_AT_18_MONTHS':'UNFAVOUR_CAT_AT_18_MONTHS'})
+
+## List of temporal dataframe names to drop from loaded dataframe (as they are highly sparse, perhaps only add noise?)
+temporal_data_names=['ae_','cmind_','cmdos_','cmday_','mh']
+
+#columns_to_drop=['USUBJID','ARM','STUDYID','DAY','index']
+columns_to_drop=['ARM','STUDYID','DAY','index'][:-1]
+temp_cols_to_drop=['ae','ce','mh','cm']
 
 
 ##========
@@ -137,6 +160,8 @@ class Grouped_Train_Dataset(Dataset):
             self.combn_to_data[comb] = torch.tensor(df_selected.values, dtype=torch.float32)
 
         # Index y data by patient ID for faster slicing
+        #print('y within init:')
+        #print(y,'\n')
         self.y_by_patient = {
             pat: torch.tensor(val.values, dtype=torch.float32)
             for pat, val in y.groupby(level='USUBJID')
@@ -168,7 +193,8 @@ class Grouped_Train_Dataset(Dataset):
         inputs, targets = zip(*batch)
         inputs_padded = pad_sequence(inputs, batch_first=True, padding_value=0)
         targets = torch.stack(targets)
-        seq_lens = torch.tensor([len(seq) for seq in inputs], dtype=torch.float32)
+        #seq_lens = torch.tensor([len(seq) for seq in inputs], dtype=torch.float32)
+        seq_lens = torch.tensor([len(seq) for seq in inputs], dtype=torch.long) 
         return inputs_padded, targets, seq_lens
 
 
@@ -602,7 +628,8 @@ def return_averaged_model(model_state_dict,lstm_parameters):
 ## Function for splitting a list of patient IDs into training and testing sublists of patient IDs-> 
 #  - This function splits up the sliding-window dataset into patients who are used for training and patients 
 #    whose used for testing + it also splits up the training patients IDs into K-fold training-validation sets
-def stratified_train_test_split_with_CV_split(y,test_data_ratio,k_folds,rand_state):
+def stratified_train_test_split_with_CV_split(y,test_data_ratio,final_pat_ids_for_analysis,cv_repeat_num,period_end_day,
+                                              k_folds,rand_state):
     import random     
     import itertools 
     from sklearn.model_selection import train_test_split, StratifiedKFold
@@ -616,10 +643,28 @@ def stratified_train_test_split_with_CV_split(y,test_data_ratio,k_folds,rand_sta
 
     #id_list=X_slid_wind['USUBJID'].unique().tolist()
     #print(y)
-    id_list=y.index.get_level_values('USUBJID').tolist()
+    #id_list=y.index.get_level_values('USUBJID').tolist()
 
     ## Split patients into 
-    training_ids, testing_ids, _, _ = train_test_split(id_list, y, test_size=test_data_ratio, stratify=y,random_state=rand_state)
+    #training_ids, testing_ids, _, _ = train_test_split(id_list, y, test_size=test_data_ratio, stratify=y,random_state=rand_state)
+    
+    #pat_ids_ = y.index.get_level_values('USUBJID').tolist()
+    #df_=y.loc[pat_ids_].reset_index()#
+    #df_['STUDYID']=df_['USUBJID'].str.split('/',expand=True)[0].values
+    #y_for_strat=df_[outcome_label].astype(str) + "_" + df_['STUDYID']#.astype(str)
+
+    ## STRATIFY ON OUTCOME LABEL & STUDYID 
+    ## IF STRATIFIED PATIENT IDS WERE ALREADY CALCULATED, LOAD THEM 
+    if final_pat_ids_for_analysis is not None and cv_repeat_num is not None:
+
+        training_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num]['X_train_ids']
+        testing_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num]['X_test_ids']
+    
+    else:
+        ## Split patients into 
+        training_ids, testing_ids, _, _ = train_test_split(pat_ids_, y, test_size=test_data_ratio, 
+                                                           stratify=y,random_state=rand_state)
+
 
     ## If NO CV (==k_folds is None), return only training/testing IDs as nested listds (to keep same format as with k_folds== not None)
     #  Return training,validation, testing IDs -> testing_ids is split up in half: validation_ids (half) + testing_ids (half)
@@ -646,8 +691,11 @@ def stratified_train_test_split_with_CV_split(y,test_data_ratio,k_folds,rand_sta
         
   
         if k_folds>1:
+            print('within kfolds y:\n',y,'\n')
             # Create array for StratifiedKFold
-            y_train_array = np.array(y.loc[y.index.get_level_values('USUBJID').isin(training_ids)].values)
+            #y_train_array = np.array(y.loc[y.index.get_level_values('USUBJID').isin(training_ids)].values)
+            #print('within kfolds y_train_array\n',y.loc[y.index.get_level_values('USUBJID').isin(training_ids)],'\n')
+            y_train_array = y.loc[training_ids].values
             training_ids_array = np.array(training_ids)
     
             skf = StratifiedKFold(n_splits=k_folds, shuffle=True, random_state=rand_state)
@@ -655,7 +703,9 @@ def stratified_train_test_split_with_CV_split(y,test_data_ratio,k_folds,rand_sta
             cv_training_id_array = []
             cv_validation_id_array = []
     
+            #for train_index, val_index in skf.split(training_ids_array, y_train_array):
             for train_index, val_index in skf.split(training_ids_array, y_train_array):
+                #y_for_strat
                 train_ids = training_ids_array[train_index].tolist()
                 val_ids = training_ids_array[val_index].tolist()
                 cv_training_id_array.append(train_ids)
@@ -818,15 +868,61 @@ def load_sliding_window_train_data(data_param_key,period_end_day):
 
 
 ### ==========================================================
-def train_LSTM_model(X_slid_wind,train_ids,y,num_of_classes,
-                     model_complex,columns_to_drop,lstm_parameters,
-                    DataLoader_num_workers,pin_memory,ds_name,outcome_label,verbose):
+### ==========================================================
+def train_LSTM_model(X_slid_wind,train_ids,valid_ids,y,num_of_classes,outcome_label,
+                     model_complex,columns_to_drop,grid_search_df,param_comb_num,lstm_parameters,
+                    DataLoader_num_workers,pin_memory,ds_name,verbose):
     
-    from tqdm import tqdm,trange
+    from tqdm import trange
+    from tqdm.auto import tqdm
 
     mode='training'
     train_loss_list=[]
     lr_list=[]  
+
+
+    
+    # ---------------------------
+    # Early stopping config
+    # ---------------------------
+    es_enabled = bool(lstm_parameters.get("early_stopping", True))
+    es_patience = int(lstm_parameters.get("early_stopping_patience", 10))
+    es_min_delta = float(lstm_parameters.get("early_stopping_min_delta", 0.0))
+    es_warmup_epochs = int(lstm_parameters.get("early_stopping_warmup_epochs", 0))
+    es_restore_best = bool(lstm_parameters.get("early_stopping_restore_best", True))
+
+    best_metric = float("inf")          # monitoring val_loss 
+    best_epoch = -1
+    best_state = None                  # best model state_dict
+    best_swa_state = None              # best swa_model state_dict (if used)
+    bad_epochs = 0
+
+    def _avg_loss_on_loader(model_to_eval, loader, criterion_, device_):
+        """Compute average loss on a DataLoader."""
+        model_to_eval.eval()
+        running = 0.0
+        n_batches = 0
+        with torch.no_grad():
+            #for inputs, targets, seq_lens in loader:
+           
+            for inputs, targets in loader:
+                if inputs.size(0) == 1:
+                    continue
+
+                inputs = inputs.to(device_)
+                targets = targets.to(device_)
+                
+                batch_size = inputs.size(0)
+                seq_len = inputs.size(1)                
+                seq_lens = torch.full((batch_size,),seq_len,dtype=torch.long,device='cpu')
+                
+                outputs = model_to_eval(inputs, seq_lens, mode)  # keep your signature
+                loss = criterion_(outputs, targets.squeeze().long())
+                running += float(loss.item())
+                n_batches += 1
+        model_to_eval.train()
+        return (running / n_batches) if n_batches > 0 else float("inf")
+    
     
     ### STANDARDISE INPUT DATA
     ## Fit StandardScaler to training data: 
@@ -863,6 +959,10 @@ def train_LSTM_model(X_slid_wind,train_ids,y,num_of_classes,
 
         cross_entropy_weights_dict=dict(zip(target_label_freq.index.tolist(),[1/x for x in target_label_freq.values.tolist()]))
     
+    if lstm_parameters['weight_Cross_Entropy_by_label_freq']==False:
+        target_label_freq=y[outcome_label].value_counts(normalize=True)
+        cross_entropy_weights_dict=dict(zip(target_label_freq.index.tolist(),[1 for x in target_label_freq.values.tolist()]))
+        
     #print(cross_entropy_weights_dict)
 
 
@@ -872,7 +972,27 @@ def train_LSTM_model(X_slid_wind,train_ids,y,num_of_classes,
     batch_size=lstm_parameters['batch_size']
     train_loader=DataLoader(train_dataset, batch_size=batch_size, shuffle=True, 
                             collate_fn=train_dataset.collate_fn,num_workers=DataLoader_num_workers,
-                            pin_memory=pin_memory,persistent_workers=True)
+                            pin_memory=pin_memory,persistent_workers=False)
+
+
+    # ---------------------------
+    ## Loading validation data
+
+    x_for_val=X_slid_wind[X_slid_wind['USUBJID'].isin(valid_ids)]
+    x_for_val=standardise_non_binary_num_vars(x_for_val,non_binary_num_cols,std_scaler_train_data)
+    y_data_with_index=y[y.index.get_level_values('USUBJID').isin(valid_ids)]
+
+    
+    #print(x_for_test)
+    #print('---y_test labels---\n',y_data_with_index[outcome_label].value_counts(dropna=False),'\n')
+    val_dataset=Grouped_Test_Dataset_whole_data(x_for_val,y_data_with_index,model_complex,columns_to_drop,
+                                                 dataset_type='validation')
+    
+    val_loader=DataLoader(val_dataset, batch_size=batch_size, shuffle=False,
+                            num_workers=DataLoader_num_workers,
+                            pin_memory=pin_memory,
+                          collate_fn=val_dataset.collate_fn)
+   
 
     # Initialize the model and optimizer           
     lstm_parameters['input_size']=X_train_slid_wind.drop(columns=['USUBJID','COMBNUM']).shape[1]
@@ -888,8 +1008,8 @@ def train_LSTM_model(X_slid_wind,train_ids,y,num_of_classes,
                         lstm_parameters['fc_hidden_dims'],device,
                         lstm_parameters['dropout_prob'],
                         bidirectional=lstm_parameters['bidirectional']).to(device)
-    
     '''
+    
     model=LSTM_with_Attention(lstm_parameters['input_size'], lstm_parameters['hidden_size'], \
                         lstm_parameters['num_of_lstm_layers'], lstm_parameters['output_size'], 
                         lstm_parameters['fc_hidden_dims'],device,
@@ -903,13 +1023,14 @@ def train_LSTM_model(X_slid_wind,train_ids,y,num_of_classes,
                                         lstm_parameters['fc_hidden_dims'],device,
                                         lstm_parameters['dropout_prob'],
                                         bidirectional=lstm_parameters['bidirectional'],
-                                        n_heads=2).to(device)
-    '''    
+                                        n_heads=4).to(device)
+    '''  
 
     ## Remove big data variables as they are not necessary for evaluation         
     del X_train_slid_wind,train_dataset                                            
 
     ## Set loss function + optimizer
+    '''
     if lstm_parameters['criterion']=='CrossEntropyLoss':
         criterion=nn.CrossEntropyLoss(weight=torch.FloatTensor(list(cross_entropy_weights_dict.values())))
         
@@ -917,6 +1038,22 @@ def train_LSTM_model(X_slid_wind,train_ids,y,num_of_classes,
         criterion=CrossEntropy_MSELoss(weight_celoss=lstm_parameters['weight_celoss'],
                                     weight_mse_loss=lstm_parameters['weight_mse_loss'],
                                     ce_weight=torch.FloatTensor(list(cross_entropy_weights_dict.values())))
+    '''
+
+    ce_w = None
+    if lstm_parameters.get('weight_Cross_Entropy_by_label_freq', False) and cross_entropy_weights_dict is not None:
+        ce_w = torch.tensor(list(cross_entropy_weights_dict.values()),
+                            dtype=torch.float32, device=device)
+    
+    if lstm_parameters['criterion'] == 'CrossEntropyLoss':
+        criterion = nn.CrossEntropyLoss(weight=ce_w)
+    
+    elif lstm_parameters['criterion'] == 'CrossEntropy_MSELoss':
+        criterion = CrossEntropy_MSELoss(
+            weight_celoss=lstm_parameters['weight_celoss'],
+            weight_mse_loss=lstm_parameters['weight_mse_loss'],
+            ce_weight=ce_w
+        )
 
 
     if verbose==True:
@@ -964,14 +1101,20 @@ def train_LSTM_model(X_slid_wind,train_ids,y,num_of_classes,
     model.train()    
 
     #epoch_bar = trange(num_of_epochs, desc="Training", leave=True)
+    #epoch_bar = tqdm(num_of_epochs, desc="Training")
+    #epoch_bar = tqdm(range(num_of_epochs), desc="Training", leave=True)
+    
     #for epoch in epoch_bar:
     for epoch in range(num_of_epochs):
+
+
         epoch_start=time.time()
         running_loss=0 
 
         for n,(inputs, targets,seq_lens) in enumerate(train_loader,0):
             if inputs.size(0) == 1:
                 continue  # Skip batch size of 1 to avoid BatchNorm error
+
 
             #print('inputs.shape',inputs.shape,'targets.shape',targets.shape,'seq_lens',seq_lens)
             #print('inputs',inputs)
@@ -1023,21 +1166,74 @@ def train_LSTM_model(X_slid_wind,train_ids,y,num_of_classes,
         avg_loss = running_loss / len(train_loader)
         elapsed_time = epoch_end - epoch_start
 
-        '''
+        
         # Update tqdm epoch bar with loss and time info
-        epoch_bar.set_postfix({
-            "Loss": f"{avg_loss:.4f}",
-            "Epoch train. time": f"{elapsed_time:.1f}s"})
-        '''
+        #epoch_bar.set_postfix({"Loss": f"{avg_loss:.4f}",
+        #    "Epoch train. time": f"{elapsed_time:.1f}s"})
+        
         
         ## Save weights of the model for plotting later
         # If folder doesn't exist, create it
         folder_path='../data/saved_lstm_class_models'
         create_folder_if_not_exists(folder_path)
 
-        fn=f'../data/saved_lstm_class_models/{ds_name}_{num_of_classes}_classes_epoch_{epoch+1}.pt'
-        pickle.dump(model.state_dict(),open(fn,"wb"))
+        #fn=f'../data/saved_lstm_class_models/{ds_name}_{num_of_classes}_classes_epoch_{epoch+1}.pt'
+        #pickle.dump(model.state_dict(),open(fn,"wb"))
 
+        # ---------------------------
+        # Validation + early stopping
+        # ---------------------------
+        if val_loader is not None:
+            # If SWA is active, you usually care about swa_model once it exists.
+            eval_model = swa_model if swa_model is not None else model
+            val_loss = _avg_loss_on_loader(eval_model, val_loader, criterion, device)
+
+            if verbose:
+                elapsed = time.time() - epoch_start
+                print(f"Epoch [{epoch+1}/{num_of_epochs}]  train_loss={running_loss/len(train_loader):.4f} "
+                      f"val_loss={val_loss:.4f}  time={elapsed:.1f}s")
+
+            # Early stopping decision
+            if es_enabled and (epoch + 1) >= es_warmup_epochs:
+                improved = (best_metric - val_loss) > es_min_delta
+                if improved:
+                    best_metric = val_loss
+                    best_epoch = epoch
+                    bad_epochs = 0
+
+                    # Store best weights (copy to detach from graph; keep on CPU to be safe)
+                    best_state = copy.deepcopy(model.state_dict())
+                    if swa_model is not None:
+                        best_swa_state = copy.deepcopy(swa_model.state_dict())
+                else:
+                    bad_epochs += 1
+
+                if bad_epochs >= es_patience:
+                    ## Update grid_seerch_df with best epoch
+                    #grid_search_df.loc[param_num_comb,'best_early_stop_epoch']=best_epoch
+                    if verbose:
+                        print(f"Early stopping triggered at epoch {epoch+1}. "
+                              f"Best val_loss={best_metric:.4f} at epoch {best_epoch+1}.")
+                    break
+        else:
+            # No validation loader available
+            if verbose:
+                elapsed = time.time() - epoch_start
+                print(f"Epoch [{epoch+1}/{num_of_epochs}]  train_loss={running_loss/len(train_loader):.4f} "
+                      f"time={elapsed:.1f}s")
+
+    # Restore best weights if requested and available
+    if es_enabled and es_restore_best and (best_state is not None):
+        model.load_state_dict(best_state)
+        if swa_model is not None and (best_swa_state is not None):
+            swa_model.load_state_dict(best_swa_state)
+
+    ## If early stopping was not triggered, set the last epoch as best epoch
+    if best_epoch == -1:
+        best_epoch = copy.deepcopy(epoch)
+
+
+        '''
         if verbose==True:
             ## Print epoch number
             if num_of_epochs>10:
@@ -1047,27 +1243,43 @@ def train_LSTM_model(X_slid_wind,train_ids,y,num_of_classes,
                     print(f'Epoch [{epoch+1}/{num_of_epochs}], Loss: {loss.item():.3f}, Epoch runtime: {t}')
             else:
                 print(f'Epoch [{epoch+1}], Loss: {loss.item():.7f}, Epoch runtime: {t}')     
-
+        '''
     ## Add training loss + learning rates
     norm_train_loss_list=[tr_loss/max(train_loss_list) for tr_loss in train_loss_list]
 
-    return model,swa_model,train_loss_list,lr_list,std_scaler_train_data,non_binary_num_cols
+    return model,swa_model,train_loss_list,lr_list,std_scaler_train_data,non_binary_num_cols,best_epoch
 
 # --------------------------------------------------------------------------------------------------------------------------
 ### Traing the models
-def train_models(data,target_df_,pat_ids_,period_end_day,cat_vars_not_to_hot_encode,
-                 scoring_methods,outcome_label,training_days,
-                 random_state,data_split_random_state,\
-                 test_data_results,train_data_results,parameter_sets,
-                 ds_name,cross_entropy_weights_dict,model_complex,k_folds,
+def train_models(data,
+                 target_df_,
+                 pat_ids_,
+                 period_end_day,
+                 cat_vars_not_to_hot_encode,
+                 scoring_methods,
+                 outcome_label,
+                 training_days,
+                 random_state,
+                 data_split_random_state,
+                 test_data_results,
+                 train_data_results,
+                 parameter_sets,
+                 ds_name,
+                 cross_entropy_weights_dict,
+                 model_complex,
+                 k_folds,
                  best_param_combinations,
                  start,
-                 categorical_map_dict,
-                 num_of_cv_repeats,
-                 columns_to_drop,
+                  categorical_map_dict,
+                  num_of_cv_repeats,
+                  columns_to_drop,
+                 grid_search_df,
+                 final_pat_ids_for_analysis,
                  verbose,
                  cross_validation=False, 
                  get_feature_importances=False):
+
+           
 
     from tqdm import tqdm,trange
     import copy
@@ -1100,7 +1312,7 @@ def train_models(data,target_df_,pat_ids_,period_end_day,cat_vars_not_to_hot_enc
 
     # Create data loaders
     #train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=False)
-    DataLoader_num_workers=4
+    DataLoader_num_workers=0
 
     ##### LOAD SLIDING-WINDOW TRAINING DATA #######
     ## Check if the sliding windows training datasets for X_train and y_train are already created ->
@@ -1135,7 +1347,9 @@ def train_models(data,target_df_,pat_ids_,period_end_day,cat_vars_not_to_hot_enc
 
     ## Collect trainig results into cv_rep_dict, which will be added in the end to "train_data_results"
     cv_rep_dict={}
-    for rep_num,rep in enumerate(num_of_train_reps):
+    #for rep_num,rep in enumerate(num_of_train_reps):
+    for rep_num,rep in  tqdm(enumerate(num_of_train_reps), desc="Outer-CV-repeat", leave=False):
+
         #if cross_validation==True:
         print(f'\n===={ds_name} - {period_end_day} - {rep}/{num_of_cv_repeats} CV repeats===\n')
 
@@ -1162,6 +1376,9 @@ def train_models(data,target_df_,pat_ids_,period_end_day,cat_vars_not_to_hot_enc
         training_pat_ids,testing_pat_ids,\
             cv_training_ids, cv_validation_ids=stratified_train_test_split_with_CV_split(y=y_for_strat.loc[pat_ids_],
                                                                                          test_data_ratio=0.2,
+                                                                                         final_pat_ids_for_analysis=final_pat_ids_for_analysis,
+                                                                                         cv_repeat_num=rep_num,
+                                                                                         period_end_day=period_end_day,
                                                                                          k_folds=k_folds,
                                                                                          rand_state=data_split_random_state_)
         cv_rep_dict[rep]['training_pat_ids']=training_pat_ids
@@ -1184,12 +1401,13 @@ def train_models(data,target_df_,pat_ids_,period_end_day,cat_vars_not_to_hot_enc
         ## IF FINAL MODEL IS TRAINED, ONLY LOOP OVER THE BEST PARAMETER COMBINATION
         if best_param_combinations is not None:
             parameter_sets_={0:best_param_combinations[rep]}
+            print('best params:',parameter_sets_)
     
         
         ##  - FOR EACH HYPERPARAMETER COMBINATION, RUN THE TRAINING K_FOLD TIMES, if parameter_search is done,
         ##. - If final training, then best parameter combination for given CV-rep is used for training
         #for param_comb_num,lstm_parameters in parameter_sets_.items():
-        for param_comb_num, lstm_parameters in tqdm(parameter_sets_.items(), desc="Hyperparameter combinations"):
+        for param_comb_num, lstm_parameters in tqdm(parameter_sets_.items(), desc="Hyperparameter combinations",leave=False):
 
             #print()
             test_data_results[rep]['results']={}
@@ -1203,20 +1421,30 @@ def train_models(data,target_df_,pat_ids_,period_end_day,cat_vars_not_to_hot_enc
 
             
             ## Run training K-fold times (if no CV -> just 1 loop with training and testing data)
-            for k, train_ids,valid_ids in zip(range(k_folds_),cv_training_ids,cv_validation_ids):
+            #for k, train_ids,valid_ids in zip(range(k_folds_),cv_training_ids,cv_validation_ids):
+
+            for k, train_ids,valid_ids in tqdm(zip(range(k_folds_),cv_training_ids,cv_validation_ids),
+                                               desc="Inner-CV",leave=True):
+                
                 if cross_validation==True and verbose==True:
                     print(f'Starting training of {k+1}/{k_folds_}-fold\n')
 
                 cv_rep_dict[rep]['results']['training'][param_comb_num][k]={}
                 cv_rep_dict[rep]['results']['validation'][param_comb_num][k]={}
+                
+
+                
 
                 ### TRAIN LSTM MODEL
                 model,swa_model,train_loss_list,\
-                    lr_list,std_scaler_train_data,non_binary_num_cols = train_LSTM_model(X_slid_wind,train_ids,y,num_of_classes,
-                                                                                               model_complex,columns_to_drop,
-                                                                                               lstm_parameters,DataLoader_num_workers,
-                                                                                               pin_memory,ds_name,outcome_label,verbose)
-    
+                    lr_list,std_scaler_train_data,\
+                        non_binary_num_cols,best_epoch = train_LSTM_model(X_slid_wind,train_ids,valid_ids,
+                                                                          y,num_of_classes,outcome_label,
+                                                                         model_complex,columns_to_drop,
+                                                                         grid_search_df,param_comb_num,
+                                                                         lstm_parameters,DataLoader_num_workers,
+                                                                         pin_memory,ds_name,verbose)
+
                 ## Add training loss + learning rates
                 norm_train_loss_list=[tr_loss/max(train_loss_list) for tr_loss in train_loss_list]
                 #plt.plot(np.arange(len(train_loss_list)),norm_train_loss_list,label=f'{rep_num}-split/{k}-fold')
@@ -1226,13 +1454,15 @@ def train_models(data,target_df_,pat_ids_,period_end_day,cat_vars_not_to_hot_enc
        
                 cv_rep_dict[rep]['results']['training'][param_comb_num][k]['training_loss']=train_loss_list
                 cv_rep_dict[rep]['results']['training'][param_comb_num][k]['training_learning_rate']=lr_list
+                cv_rep_dict[rep]['results']['training'][param_comb_num][k]['best_epoch']=best_epoch
                 
                 ## Set the averaged model as model for testing
                 #if 'swa_model' in locals():
                 if swa_model is not None:
                     model=swa_model
-                    print('Usng swa model as final model')
+                    print('Using swa model as final model')
                 cv_rep_dict[rep]['results']['training'][param_comb_num][k]['model']=model
+                
   
                 
                 training_stop=time.time()
@@ -1285,10 +1515,16 @@ def train_models(data,target_df_,pat_ids_,period_end_day,cat_vars_not_to_hot_enc
                         
                             #print('test input shape',inputs.squeeze(0).shape)
                             #print('test targets',targets.detach().cpu().numpy())
-                            predicted_output=model(inputs,len(inputs),mode)
+                            inputs = inputs.to(device)
+                            targets = targets.to(device)
+                            batch_size = inputs.size(0)
+                            seq_len = inputs.size(1)                
+                            seq_lens = torch.full((batch_size,),seq_len,dtype=torch.long,device='cpu')
+                        
+                            predicted_output=model(inputs,seq_lens,mode)
                             #print('predicted_output',predicted_output.detach().cpu().numpy()[:,].shape,'targets',targets.detach().cpu().numpy().shape)#squeeze(1))
                             predicted_output_prob_list.append(predicted_output.detach().cpu().numpy()[:,1])
-                            predicted_output_label_list.append(torch.argmax(predicted_output.detach(),dim=1).numpy().flatten())
+                            predicted_output_label_list.append(torch.argmax(predicted_output.detach(),dim=1).cpu().numpy().flatten())
                             target_list.append(targets.detach().cpu().numpy().squeeze(1))
                         
                         predicted_output=list(chain(*predicted_output_label_list))
@@ -1319,7 +1555,13 @@ def train_models(data,target_df_,pat_ids_,period_end_day,cat_vars_not_to_hot_enc
                         cv_rep_dict[rep]['results'][dataset_type][param_comb_num][k]['x']=x_for_test
                         cv_rep_dict[rep]['results'][dataset_type][param_comb_num][k]['roc_auc']=roc_auc
                         #cv_rep_dict[rep]['results']['training'][k]['model_state_dict']=model.state_dict()
-                        cv_rep_dict[rep]['grid_search_df'] = grid_search_df
+
+            ## Average over the early stopping best epoechs for each  inner CV-fold (k), and save it as the best epoch to stop for given
+            #. parameter combination tested
+            param_comb_d = cv_rep_dict[rep]['results']['training'][param_comb_num]
+            avg_best_epoch = np.mean([param_comb_d[k]['best_epoch'] for k in param_comb_d.keys()])
+            grid_search_df.loc[param_comb_num,'early_stopping_best_epoch']=avg_best_epoch
+            cv_rep_dict[rep]['grid_search_df'] = grid_search_df
             
  
             ###====== TRAINING FINAL MODEL =====#### 
@@ -1378,10 +1620,16 @@ def train_models(data,target_df_,pat_ids_,period_end_day,cat_vars_not_to_hot_enc
         
                     predicted_output_label_list,predicted_output_prob_list,target_list=[],[],[]
                     for inputs, targets in test_loader:
-                        
-                        predicted_output=final_model(inputs,len(inputs),mode)
+
+                        inputs = inputs.to(device)
+                        targets = targets.to(device)
+                        batch_size = inputs.size(0)
+                        seq_len = inputs.size(1)                
+                        seq_lens = torch.full((batch_size,),seq_len,dtype=torch.long,device='cpu')
+                    
+                        predicted_output=final_model(inputs,seq_lens,mode)
                         predicted_output_prob_list.append(predicted_output.detach().cpu().numpy()[:,1])
-                        predicted_output_label_list.append(torch.argmax(predicted_output.detach(),dim=1).numpy().flatten())
+                        predicted_output_label_list.append(torch.argmax(predicted_output.detach(),dim=1).cpu().numpy().flatten())
                         target_list.append(targets.detach().cpu().numpy().squeeze(1))
                     
                     predicted_output=list(chain(*predicted_output_label_list))
@@ -1974,10 +2222,28 @@ def load_and_modify_preprocessed_data(data_param_key):
         X['RACE']=X['USUBJID'].map(race_dict)
         X = pd.concat([X.drop(columns=['RACE']),pd.get_dummies(X['RACE'],dtype=int,prefix='RACE')],axis=1)
         race_colnames=X.columns[X.columns.str.contains('RACE_')].tolist()
+
+    ## One-hot encode 'SEX'
+    X['SEX'] = X['SEX'].replace({0:'F',1:'M'})
+    X = pd.concat([X.drop(columns=['SEX']),pd.get_dummies(X['SEX'],dtype=int,prefix='SEX')],axis=1)
+    X=X.drop(columns=['SEX_F'])
+
+    ## One-hot encode 'ZN-smear oridinal column'
+    #if 'mb_ZN-smear_STD_CAT_ORDINAL_RESULT' in X.columns:
+    #    X = pd.concat([X.drop(columns=['mb_ZN-smear_STD_CAT_ORDINAL_RESULT']),\
+    #                   pd.get_dummies(X['mb_ZN-smear_STD_CAT_ORDINAL_RESULT'].astype('Int64'),dtype=int,prefix='mb_ZN-smear')],axis=1)
+
+    X=X.drop(columns=['mb_ZN-smear_STD_RESULT'])
+
     
     X['vs_BMI_STD_NUM_RESULT'] = (X['vs_Weight_STD_NUM_RESULT']/(X['vs_Height_STD_NUM_RESULT']/100)**2).values
-    X['ARM']=X['ARM'].replace({'Gati-arm regimen (4 month regimen)':'Gatifloxacin (4 month)',
-                             'Control-arm regimen (6 month regimen)':'Control (6 month)'},regex=False)
+    X['ARM']=X['ARM'].replace({'Gati-arm regimen (4 month regimen)':'Gatifloxacin',
+                             'Control-arm regimen (6 month regimen)':'Control'},regex=False)
+
+    ## One-hot encode 'ARM'
+    if 'with_arm' in data_param_key:# and period_end_day!='baseline':
+        X = pd.concat([X,pd.get_dummies(X['ARM'],dtype=int,prefix='ARM')],axis=1)
+
 
     ## Replace extreme Hyperkalemia values with mean (probably false measurements)
     mean_K=X.loc[X['lb_Blood Potassium_STD_NUM_RESULT']<=12,'lb_Blood Potassium_STD_NUM_RESULT'].mean()
@@ -1998,20 +2264,38 @@ def load_and_modify_preprocessed_data(data_param_key):
     ## Drop drug regimen variables, except for drug adherence (dr_cumul_dose)
     if 'without_dr_reg' in data_param_key:
         X = X.loc[:,~X.columns.str.endswith('cumulative_dose')]
+
+    ## Divide cumulative days of application with the number of days scheduled ==> approximate drug adherence with a 0-1 number
+    if 'with_adherence' in data_param_key:
+        X = replace_cumul_day_of_appl_with_adherence(X)
     
 
-    '''
+    
     ## SPLIT THE CUMULATIVE DOSES OF THE PATIENTS BETWEEN THE ARMS ==> CONTROLLING FOR THE DIFFERENT NUMBER OF SCHEDULED DOSES BETWEEN ARMS
-    arm_cumul_colnames=[f"{arm}_drugs_cumul" for arm in X['ARM'].unique()]
-    X[arm_cumul_colnames]=0
-    
-    for arm in X['ARM'].unique():
-        X.loc[X['ARM']==arm,f"{arm}_drugs_cumul"]=X.loc[X["ARM"]==arm,'dr_reg_study_drugs_cumul'].values
-    
-    X=X.drop(columns=['dr_reg_study_drugs_cumul'])
-    '''
+    if 'dr_reg_per_arm' in data_param_key:
+        
+        X_=X.copy()
+        dr_cumul_colnames = X_.columns[X_.columns.str.startswith('dr_reg')].tolist()
+        arms_names= X_['ARM'].unique()
+        dr_cumul_colns_within_arm=[f'{dr}_{arm}' for dr in dr_cumul_colnames for arm in arms_names]
+        X_[dr_cumul_colns_within_arm]=0
+        
+        
+        for dr in dr_cumul_colnames:
+            for arm in X_['ARM'].unique():
+                X_.loc[X_['ARM']==arm,f'{dr}_{arm}']=X_.loc[X_["ARM"]==arm,dr].values
+        
+        ## Identify columns with all 0 values ==> 
+        #. these are drugs that were not taken in the arm 
+        #. => drop them along with the original dr_reg colnames
+        regs_with_no_appl=(X_[dr_cumul_colns_within_arm]==0).all()[(X_[dr_cumul_colns_within_arm]==0).all()].index.tolist()
+        cols_to_drop = dr_cumul_colnames + regs_with_no_appl
+        
+        X=X_.drop(columns=cols_to_drop)
+        
 
     return X,race_colnames
+
 
 ###========================
 def load_merged_data_of_lab_vars():
@@ -2095,7 +2379,7 @@ def subset_pats_with_therapy_in_period(period_num,period_end_days,last_init_ther
     
     ## SUBSET TO PATIENTS WHO WERE HAD THEIR RELAPSE AFTER THE END OF PERIOD & PATIENTS WITHOUT RELAPSE 
     ## (RELAPSE DAY IS NAN + 2 PATIENTS WITH RELAPSE IN FOLLOW-UP PERIOD, BUT UNKNOWN EXACT RELAPSE DAY)
-    if parameters_for_analysis[data_param_key]['result_cat']=='RELAPSE': 
+    if parameters_for_analysis[data_param_key]['result_cat']=='RELAPSE' or 'pred_prob' in outcome_label:
         
         if isinstance(period_end_day,int):#!='all':
             pat_ids__ = pats_with_relapse_df[(pats_with_relapse_df['RELAPSE_DAY']>period_end_day)\
@@ -2123,14 +2407,14 @@ def subset_pats_with_therapy_in_period(period_num,period_end_days,last_init_ther
     #. => IF PERIOD IS 4 MONTHS OR LESS, KEEP ALL PATIENTS
     #. => IF PERIOD IS OVER 4 MONTHS KEEP ONLY PATIENTS IN ARMS WITH 6 MONTHS OF TB DRUG APPLICATION    
 
-    month_4_arms=['Gatifloxacin (4 month)','2MHRZ/2MHR', '2EMRZ/2MR']
-    month_6_arms=['Control (6 month)','2EHRZ/4HR']
+    month_4_arms=['Gatifloxacin','2MHRZ/2MHR', '2EMRZ/2MR']
+    month_6_arms=['Control','2EHRZ/4HR']
 
     if outcome_label=='RESULT_AT_END_OF_TREATMENT':
         month4_periods=['baseline',31,62,93,125][:-1]
         month6_periods=[125,160,'all'][:-1]
 
-    if outcome_label=='RELAPSE':
+    if outcome_label=='RELAPSE' or 'pred_prob' in outcome_label:
         month4_periods=['baseline',31,62,93,125]
         month6_periods=[160,'all']
         
@@ -2220,4 +2504,108 @@ def select_visits_with_dual_thresholds(
               f"({num_excluded_patients / total_patients:.1%})\n")
     
     return filtered_df
+
+
+
+
+#####=======================================
+def return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
+                                  outcome_df,outcome_label,model_names=None):
+    import copy
+    
+    ## If not RELAPSE shpuld be predicted, subset the patients according to the availbility of the outcome results
+    if parameters_for_analysis[data_param_key]['result_cat']=='RESULT_AT_END_OF_TREATMENT':
+        
+        ## Extract patients who have their last therapy day before therapy_day_thr ==> these patient probably dropped out
+        last_day_per_pat_df=X.sort_values(by=['DAY']).groupby('USUBJID').apply(lambda x: x.loc[x.index[-1],:])
+        pat_ids=last_day_per_pat_df[last_day_per_pat_df['DAY']>therapy_day_thr]['USUBJID'].tolist()
+        #pat_ids=X['USUBJID'].unique().tolist()
+        
+        ## Subset outcome dataframe to patient considered
+        target_df=outcome_df.loc[pat_ids,outcome_label]
+        y=target_df.loc[pat_ids].replace(label2id)
+        outcome_label_ = copy.deepcopy(outcome_label)
+        
+    if parameters_for_analysis[data_param_key]['result_cat']=='RELAPSE':
+        #outcome_label='RELAPSE'
+        pats_with_relapse_df=extract_21_22_relapse_pats()
+
+        pats_with_relapse_df = pats_with_relapse_df.loc[list(set(X['USUBJID'].unique())&set(pats_with_relapse_df.index))]
+
+        ## Create new prediction labels (or even multilabels) in the "RELAPSE" column based on the relapse day intervals defined in "bins" 
+        if 'bins' in parameters_for_analysis[data_param_key].keys():
+            pats_with_relapse_df = cut_relapse_days_to_interval_categories(pats_with_relapse_df,data_param_key)
+        
+        pat_ids=pats_with_relapse_df.index.tolist()
+        target_df=pats_with_relapse_df[[outcome_label]]
+        y=pats_with_relapse_df[[outcome_label]] 
+        outcome_label_ = copy.deepcopy(outcome_label)
+
+    '''
+    if 'pred_prob' in parameters_for_analysis[data_param_key]['result_cat']:
+        
+
+        ## Create list to collect dataframes of different pred loss clusters
+        clust_df_list=[]
+        
+        for model_name in model_names[1:]:
+            print(model_name)
+
+            ## DEFINE LABELS OF PRED. LOSS CLUSTERS CREATED IN S9_4_ML_on_LLM_embeddings.ipnyb!!!
+            pred_loss_clust_labels={'raw_pred_prob_norm':{1.0:'hard_to_predict',2.0:'easy_to_predict'},                            
+                                    'llm_pred_prob_norm':{1.0:'hard_to_predict',2.0:'easy_to_predict'},
+                                    'raw_pred_prob':{2.0:'hard_to_predict',1.0:'easy_to_predict'},
+                                    'llm_pred_prob':{1.0:'hard_to_predict',2.0:'easy_to_predict'}}
+            
+            ## Map the binary labels to 0 and 1
+            label_2id_={'hard_to_predict':1,'easy_to_predict':0}
+        
+                
+            for pred_prob_coln in ['raw_pred_prob_norm','raw_pred_prob',
+                                   'llm_pred_prob_norm','llm_pred_prob',
+                                   'diff_pred_prob_norm','diff_pred_prob'][:-2]:
+                #print(pred_prob_coln)
+                
+                ## Load pred loss cluster
+                if 'raw' in pred_prob_coln or 'diff' in pred_prob_coln:
+                    data_dir_=f'../data/model_interpretation/baseline/pred_prob_clusters'
+                    
+                    training_data_type_='last_therapy_day'
+
+                    fn=os.path.join(data_dir_,
+                                f'tb21_22_2984_pats_22_vars_relapse_days_{training_data_type_}_{model_name}_{pred_prob_coln}_pred_prob_clusters.csv')
+        
+                if 'llm' in pred_prob_coln:
+                    fn=f"../data/model_interpretation/LLM/pred_prob_clusters/tb21_22_2984_pats_22_vars_relapse_BioMistral-7B_base_LogisticRegression_full_all_days_autoenc_False_{pred_prob_coln}_pred_prob_clusters.csv"               
+        
+                try:
+                    clust_df=pd.read_csv(fn,index_col=0)
+                    
+                except FileNotFoundError:
+                    print(f'{fn} does not exist. Skipping to next model')
+                    continue
+
+                
+                ## Map pred loss lcusters to binary (0:easy to predict; 1: hard to predict)
+                clust_df_=clust_df.loc[clust_df['period']=='baseline',:]  
+                clust_df_[f'{pred_prob_coln}_cluster_binary'] = clust_df_[f'{pred_prob_coln}_cluster'].map(pred_loss_clust_labels[pred_prob_coln]).map(label_2id_)
+                clust_df_=clust_df_.sort_index()
+                #clust_df_list.append(clust_df_[[f'{pred_prob_coln}_cluster_binary']])
+                #print(clust_df_.columns)
+                clust_df_list.append(clust_df_[[f'{pred_prob_coln}_cluster_binary',f'{pred_prob_coln}_loss'][:1]])
+
+        ## Add all pred_prb_loss clusters to one dataframe
+        clust_df_concat = pd.concat(clust_df_list,axis=1)
+
+        ## Select final prediction label
+        outcome_label_ = f'{outcome_label}_cluster_binary'
+        
+        clust_df_concat=clust_df_concat[~clust_df_concat[outcome_label_].isna()]
+        
+        target_df=clust_df_concat[[outcome_label_]]
+        y=clust_df_concat[[outcome_label_]]
+        pat_ids=clust_df_concat.index.tolist()
+        
+    '''    
+    return pat_ids,y,target_df,outcome_label_#,clust_df_concat
 
