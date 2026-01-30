@@ -1461,7 +1461,7 @@ def train_models(data,
                 if swa_model is not None:
                     model=swa_model
                     print('Using swa model as final model')
-                cv_rep_dict[rep]['results']['training'][param_comb_num][k]['model']=model
+                #cv_rep_dict[rep]['results']['training'][param_comb_num][k]['model']=model
                 
   
                 
@@ -1552,7 +1552,7 @@ def train_models(data,
                         cv_rep_dict[rep]['results'][dataset_type][param_comb_num][k]['predicted_label']=predicted_output
                         cv_rep_dict[rep]['results'][dataset_type][param_comb_num][k]['predicted_prob']=predicted_output_prob_list
                         cv_rep_dict[rep]['results'][dataset_type][param_comb_num][k]['cross_entropy_weights_dict']=cross_entropy_weights_dict
-                        cv_rep_dict[rep]['results'][dataset_type][param_comb_num][k]['x']=x_for_test
+                        #cv_rep_dict[rep]['results'][dataset_type][param_comb_num][k]['x']=x_for_test
                         cv_rep_dict[rep]['results'][dataset_type][param_comb_num][k]['roc_auc']=roc_auc
                         #cv_rep_dict[rep]['results']['training'][k]['model_state_dict']=model.state_dict()
 
@@ -1574,8 +1574,8 @@ def train_models(data,
         
                 ## Create an AveragedModel object using the first model trained
                 #  ==> if there was no CV, this model is the final model!!
-                model_ = cv_rep_dict[rep]['results']['training'][param_comb_num][0]['model']
-                final_model = cv_rep_dict[rep]['results']['training'][param_comb_num][0]['model']
+                #model_ = cv_rep_dict[rep]['results']['training'][param_comb_num][0]['model']
+                #final_model = cv_rep_dict[rep]['results']['training'][param_comb_num][0]['model']
                 #final_model=AveragedModel(model_,device=device,use_buffers=True)
                 
 
@@ -1627,7 +1627,7 @@ def train_models(data,
                         seq_len = inputs.size(1)                
                         seq_lens = torch.full((batch_size,),seq_len,dtype=torch.long,device='cpu')
                     
-                        predicted_output=final_model(inputs,seq_lens,mode)
+                        predicted_output=model(inputs,seq_lens,mode)
                         predicted_output_prob_list.append(predicted_output.detach().cpu().numpy()[:,1])
                         predicted_output_label_list.append(torch.argmax(predicted_output.detach(),dim=1).cpu().numpy().flatten())
                         target_list.append(targets.detach().cpu().numpy().squeeze(1))

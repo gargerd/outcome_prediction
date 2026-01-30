@@ -1,13 +1,14 @@
 #!/bin/bash
-#SBATCH --array=1-14%14
+##SBATCH --array=1-14%14
+#SBATCH --array=3,4,11,12
 #SBATCH --job-name=s_8_4_lstm_param_search
 #SBATCH -o slurm_lstm_param_search_logs/s_8_4_lstm_param_search_%A_%a.log
 #SBATCH -e slurm_lstm_param_search_logs/s_8_4_lstm_param_search_%A_%a.log
-#SBATCH --cpus-per-task=2
-#SBATCH --mem-per-cpu=32G
-#SBATCH --partition=sapphire #bigmem
+#SBATCH --cpus-per-task=1
+#SBATCH --mem-per-cpu=48G
+#SBATCH --partition=gpu-a100 #sapphire #bigmem
 ##SBATCH --qos=cpu_normal
-##SBATCH --gres=gpu:1
+#SBATCH --gres=gpu:1
 #SBATCH --time=3-00:00:00
 #SBATCH --nice=10000
 
