@@ -1,0 +1,1101 @@
+Loading anaconda
+Activate conda env
+tb21_22_2263_pats_24_vars_relapse
+all_days_in_period
+93
+XGBoost
+6-month
+/data/gpfs/projects/punim2121/C-Path/outcome_prediction/outcome_prediction/s9_9_baseline_survival_models_functions.py:1585: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  de_['RELAPSE']=de_['RELAPSE'].astype(float)
+===========
+ tb21_22_2263_pats_24_vars_relapse 
+
+pat_ids_ before arm check 2262
+2262
+Excluded 0 out of 2262 patients (0.0%)
+
+  0%|          | 0/1 [00:00<?, ?model/s]
+=====================
+XGBoost
+++++++++++++++++++ 
+tb21_22_2263_pats_24_vars_relapse - Model: XGBoost - Period: 93 days  6-month cohort - data for training: all_days_in_period - CV:1
++++++++++++++++++
+Running training with all_days_in_period model: 120 vars
+Num of CV-repeat:1
+
+Processing:   0%|          | 0/36 [00:00<?, ?parameter_set/s][A
+Processing:   3%|▎         | 1/36 [00:00<00:23,  1.51parameter_set/s][A
+Processing:   6%|▌         | 2/36 [00:01<00:19,  1.72parameter_set/s][A
+Processing:   8%|▊         | 3/36 [00:01<00:18,  1.82parameter_set/s][A
+Processing:  11%|█         | 4/36 [00:02<00:19,  1.67parameter_set/s][A
+Processing:  14%|█▍        | 5/36 [00:03<00:19,  1.60parameter_set/s][A
+Processing:  17%|█▋        | 6/36 [00:03<00:18,  1.59parameter_set/s][A
+Processing:  19%|█▉        | 7/36 [00:04<00:17,  1.68parameter_set/s][A
+Processing:  22%|██▏       | 8/36 [00:04<00:16,  1.75parameter_set/s][A
+Processing:  25%|██▌       | 9/36 [00:05<00:14,  1.81parameter_set/s][A
+Processing:  28%|██▊       | 10/36 [00:05<00:15,  1.69parameter_set/s][A
+Processing:  31%|███       | 11/36 [00:06<00:15,  1.63parameter_set/s][A
+Processing:  33%|███▎      | 12/36 [00:07<00:14,  1.61parameter_set/s][A
+Processing:  36%|███▌      | 13/36 [00:08<00:15,  1.48parameter_set/s][A
+Processing:  39%|███▉      | 14/36 [00:08<00:15,  1.41parameter_set/s][A
+Processing:  42%|████▏     | 15/36 [00:09<00:15,  1.38parameter_set/s][A
+Processing:  44%|████▍     | 16/36 [00:10<00:17,  1.15parameter_set/s][A
+Processing:  47%|████▋     | 17/36 [00:11<00:17,  1.07parameter_set/s][A
+Processing:  50%|█████     | 18/36 [00:12<00:17,  1.04parameter_set/s][A
+Processing:  53%|█████▎    | 19/36 [00:13<00:15,  1.10parameter_set/s][A
+Processing:  56%|█████▌    | 20/36 [00:14<00:13,  1.15parameter_set/s][A
+Processing:  58%|█████▊    | 21/36 [00:15<00:12,  1.19parameter_set/s][A
+Processing:  61%|██████    | 22/36 [00:16<00:12,  1.10parameter_set/s][A
+Processing:  64%|██████▍   | 23/36 [00:17<00:12,  1.05parameter_set/s][A
+Processing:  67%|██████▋   | 24/36 [00:18<00:11,  1.04parameter_set/s][A
+Processing:  69%|██████▉   | 25/36 [00:19<00:10,  1.01parameter_set/s][A
+Processing:  72%|███████▏  | 26/36 [00:20<00:10,  1.01s/parameter_set][A
+Processing:  75%|███████▌  | 27/36 [00:21<00:09,  1.01s/parameter_set][A
+Processing:  78%|███████▊  | 28/36 [00:22<00:09,  1.16s/parameter_set][A
+Processing:  81%|████████  | 29/36 [00:24<00:08,  1.25s/parameter_set][A
+Processing:  83%|████████▎ | 30/36 [00:25<00:07,  1.28s/parameter_set][A
+Processing:  86%|████████▌ | 31/36 [00:26<00:06,  1.21s/parameter_set][A
+Processing:  89%|████████▉ | 32/36 [00:27<00:04,  1.16s/parameter_set][A
+Processing:  92%|█████████▏| 33/36 [00:28<00:03,  1.11s/parameter_set][A
+Processing:  94%|█████████▍| 34/36 [00:30<00:02,  1.23s/parameter_set][A
+Processing:  97%|█████████▋| 35/36 [00:31<00:01,  1.29s/parameter_set][A
+Processing: 100%|██████████| 36/36 [00:33<00:00,  1.30s/parameter_set][AProcessing: 100%|██████████| 36/36 [00:33<00:00,  1.09parameter_set/s]
+++++++++++++++++++ 
+tb21_22_2263_pats_24_vars_relapse - Model: XGBoost - Period: 93 days  6-month cohort - data for training: all_days_in_period - CV:2
++++++++++++++++++
+Running training with all_days_in_period model: 120 vars
+Num of CV-repeat:2
+
+Processing:   0%|          | 0/36 [00:00<?, ?parameter_set/s][A
+Processing:   3%|▎         | 1/36 [00:00<00:18,  1.90parameter_set/s][A
+Processing:   6%|▌         | 2/36 [00:01<00:17,  1.90parameter_set/s][A
+Processing:   8%|▊         | 3/36 [00:01<00:17,  1.92parameter_set/s][A
+Processing:  11%|█         | 4/36 [00:02<00:19,  1.60parameter_set/s][A
+Processing:  14%|█▍        | 5/36 [00:03<00:19,  1.57parameter_set/s][A
+Processing:  17%|█▋        | 6/36 [00:03<00:19,  1.56parameter_set/s][A
+Processing:  19%|█▉        | 7/36 [00:04<00:17,  1.66parameter_set/s][A
+Processing:  22%|██▏       | 8/36 [00:04<00:16,  1.73parameter_set/s][A
+Processing:  25%|██▌       | 9/36 [00:05<00:15,  1.80parameter_set/s][A
+Processing:  28%|██▊       | 10/36 [00:05<00:15,  1.69parameter_set/s][A
+Processing:  31%|███       | 11/36 [00:06<00:15,  1.63parameter_set/s][A
+Processing:  33%|███▎      | 12/36 [00:07<00:14,  1.62parameter_set/s][A
+Processing:  36%|███▌      | 13/36 [00:07<00:15,  1.49parameter_set/s][A
+Processing:  39%|███▉      | 14/36 [00:08<00:15,  1.42parameter_set/s][A
+Processing:  42%|████▏     | 15/36 [00:09<00:15,  1.38parameter_set/s][A
+Processing:  44%|████▍     | 16/36 [00:10<00:16,  1.20parameter_set/s][A
+Processing:  47%|████▋     | 17/36 [00:11<00:17,  1.11parameter_set/s][A
+Processing:  50%|█████     | 18/36 [00:12<00:16,  1.07parameter_set/s][A
+Processing:  53%|█████▎    | 19/36 [00:13<00:15,  1.12parameter_set/s][A
+Processing:  56%|█████▌    | 20/36 [00:14<00:13,  1.17parameter_set/s][A
+Processing:  58%|█████▊    | 21/36 [00:15<00:12,  1.21parameter_set/s][A
+Processing:  61%|██████    | 22/36 [00:16<00:12,  1.11parameter_set/s][A
+Processing:  64%|██████▍   | 23/36 [00:17<00:12,  1.06parameter_set/s][A
+Processing:  67%|██████▋   | 24/36 [00:18<00:11,  1.04parameter_set/s][A
+Processing:  69%|██████▉   | 25/36 [00:19<00:10,  1.01parameter_set/s][A
+Processing:  72%|███████▏  | 26/36 [00:20<00:10,  1.00s/parameter_set][A
+Processing:  75%|███████▌  | 27/36 [00:21<00:09,  1.01s/parameter_set][A
+Processing:  78%|███████▊  | 28/36 [00:22<00:09,  1.15s/parameter_set][A
+Processing:  81%|████████  | 29/36 [00:24<00:08,  1.24s/parameter_set][A
+Processing:  83%|████████▎ | 30/36 [00:25<00:07,  1.28s/parameter_set][A
+Processing:  86%|████████▌ | 31/36 [00:26<00:06,  1.21s/parameter_set][A
+Processing:  89%|████████▉ | 32/36 [00:27<00:04,  1.16s/parameter_set][A
+Processing:  92%|█████████▏| 33/36 [00:28<00:03,  1.11s/parameter_set][A
+Processing:  94%|█████████▍| 34/36 [00:30<00:02,  1.22s/parameter_set][A
+Processing:  97%|█████████▋| 35/36 [00:31<00:01,  1.27s/parameter_set][A
+Processing: 100%|██████████| 36/36 [00:32<00:00,  1.29s/parameter_set][AProcessing: 100%|██████████| 36/36 [00:32<00:00,  1.10parameter_set/s]
+++++++++++++++++++ 
+tb21_22_2263_pats_24_vars_relapse - Model: XGBoost - Period: 93 days  6-month cohort - data for training: all_days_in_period - CV:3
++++++++++++++++++
+Running training with all_days_in_period model: 121 vars
+Num of CV-repeat:3
+
+Processing:   0%|          | 0/36 [00:00<?, ?parameter_set/s][A
+Processing:   3%|▎         | 1/36 [00:00<00:18,  1.87parameter_set/s][A
+Processing:   6%|▌         | 2/36 [00:01<00:17,  1.89parameter_set/s][A
+Processing:   8%|▊         | 3/36 [00:01<00:17,  1.91parameter_set/s][A
+Processing:  11%|█         | 4/36 [00:02<00:20,  1.60parameter_set/s][A
+Processing:  14%|█▍        | 5/36 [00:03<00:19,  1.56parameter_set/s][A
+Processing:  17%|█▋        | 6/36 [00:03<00:19,  1.56parameter_set/s][A
+Processing:  19%|█▉        | 7/36 [00:04<00:17,  1.65parameter_set/s][A
+Processing:  22%|██▏       | 8/36 [00:04<00:16,  1.73parameter_set/s][A
+Processing:  25%|██▌       | 9/36 [00:05<00:15,  1.79parameter_set/s][A
+Processing:  28%|██▊       | 10/36 [00:05<00:15,  1.68parameter_set/s][A
+Processing:  31%|███       | 11/36 [00:06<00:15,  1.62parameter_set/s][A
+Processing:  33%|███▎      | 12/36 [00:07<00:14,  1.60parameter_set/s][A
+Processing:  36%|███▌      | 13/36 [00:08<00:15,  1.48parameter_set/s][A
+Processing:  39%|███▉      | 14/36 [00:08<00:15,  1.41parameter_set/s][A
+Processing:  42%|████▏     | 15/36 [00:09<00:15,  1.38parameter_set/s][A
+Processing:  44%|████▍     | 16/36 [00:10<00:16,  1.19parameter_set/s][A
+Processing:  47%|████▋     | 17/36 [00:11<00:17,  1.10parameter_set/s][A
+Processing:  50%|█████     | 18/36 [00:12<00:16,  1.06parameter_set/s][A
+Processing:  53%|█████▎    | 19/36 [00:13<00:15,  1.12parameter_set/s][A
+Processing:  56%|█████▌    | 20/36 [00:14<00:13,  1.16parameter_set/s][A
+Processing:  58%|█████▊    | 21/36 [00:15<00:12,  1.20parameter_set/s][A
+Processing:  61%|██████    | 22/36 [00:16<00:12,  1.10parameter_set/s][A
+Processing:  64%|██████▍   | 23/36 [00:17<00:12,  1.05parameter_set/s][A
+Processing:  67%|██████▋   | 24/36 [00:18<00:11,  1.04parameter_set/s][A
+Processing:  69%|██████▉   | 25/36 [00:19<00:10,  1.01parameter_set/s][A
+Processing:  72%|███████▏  | 26/36 [00:20<00:10,  1.01s/parameter_set][A
+Processing:  75%|███████▌  | 27/36 [00:21<00:09,  1.01s/parameter_set][A
+Processing:  78%|███████▊  | 28/36 [00:22<00:09,  1.16s/parameter_set][A
+Processing:  81%|████████  | 29/36 [00:24<00:08,  1.26s/parameter_set][A
+Processing:  83%|████████▎ | 30/36 [00:25<00:07,  1.29s/parameter_set][A
+Processing:  86%|████████▌ | 31/36 [00:26<00:06,  1.22s/parameter_set][A
+Processing:  89%|████████▉ | 32/36 [00:27<00:04,  1.16s/parameter_set][A
+Processing:  92%|█████████▏| 33/36 [00:28<00:03,  1.12s/parameter_set][A
+Processing:  94%|█████████▍| 34/36 [00:30<00:02,  1.22s/parameter_set][A
+Processing:  97%|█████████▋| 35/36 [00:31<00:01,  1.28s/parameter_set][A
+Processing: 100%|██████████| 36/36 [00:33<00:00,  1.30s/parameter_set][AProcessing: 100%|██████████| 36/36 [00:33<00:00,  1.09parameter_set/s]
+++++++++++++++++++ 
+tb21_22_2263_pats_24_vars_relapse - Model: XGBoost - Period: 93 days  6-month cohort - data for training: all_days_in_period - CV:4
++++++++++++++++++
+Running training with all_days_in_period model: 121 vars
+Num of CV-repeat:4
+
+Processing:   0%|          | 0/36 [00:00<?, ?parameter_set/s][A
+Processing:   3%|▎         | 1/36 [00:00<00:18,  1.86parameter_set/s][A
+Processing:   6%|▌         | 2/36 [00:01<00:18,  1.87parameter_set/s][A
+Processing:   8%|▊         | 3/36 [00:01<00:17,  1.90parameter_set/s][A
+Processing:  11%|█         | 4/36 [00:02<00:20,  1.59parameter_set/s][A
+Processing:  14%|█▍        | 5/36 [00:03<00:20,  1.55parameter_set/s][A
+Processing:  17%|█▋        | 6/36 [00:03<00:19,  1.55parameter_set/s][A
+Processing:  19%|█▉        | 7/36 [00:04<00:17,  1.64parameter_set/s][A
+Processing:  22%|██▏       | 8/36 [00:04<00:16,  1.72parameter_set/s][A
+Processing:  25%|██▌       | 9/36 [00:05<00:15,  1.78parameter_set/s][A
+Processing:  28%|██▊       | 10/36 [00:05<00:15,  1.67parameter_set/s][A
+Processing:  31%|███       | 11/36 [00:06<00:15,  1.61parameter_set/s][A
+Processing:  33%|███▎      | 12/36 [00:07<00:15,  1.59parameter_set/s][A
+Processing:  36%|███▌      | 13/36 [00:08<00:15,  1.47parameter_set/s][A
+Processing:  39%|███▉      | 14/36 [00:08<00:15,  1.40parameter_set/s][A
+Processing:  42%|████▏     | 15/36 [00:09<00:15,  1.36parameter_set/s][A
+Processing:  44%|████▍     | 16/36 [00:10<00:16,  1.18parameter_set/s][A
+Processing:  47%|████▋     | 17/36 [00:11<00:17,  1.09parameter_set/s][A
+Processing:  50%|█████     | 18/36 [00:12<00:17,  1.06parameter_set/s][A
+Processing:  53%|█████▎    | 19/36 [00:13<00:15,  1.11parameter_set/s][A
+Processing:  56%|█████▌    | 20/36 [00:14<00:13,  1.15parameter_set/s][A
+Processing:  58%|█████▊    | 21/36 [00:15<00:12,  1.20parameter_set/s][A
+Processing:  61%|██████    | 22/36 [00:16<00:12,  1.10parameter_set/s][A
+Processing:  64%|██████▍   | 23/36 [00:17<00:12,  1.05parameter_set/s][A
+Processing:  67%|██████▋   | 24/36 [00:18<00:11,  1.03parameter_set/s][A
+Processing:  69%|██████▉   | 25/36 [00:19<00:10,  1.00parameter_set/s][A
+Processing:  72%|███████▏  | 26/36 [00:20<00:10,  1.01s/parameter_set][A
+Processing:  75%|███████▌  | 27/36 [00:21<00:09,  1.01s/parameter_set][A
+Processing:  78%|███████▊  | 28/36 [00:22<00:09,  1.17s/parameter_set][A
+Processing:  81%|████████  | 29/36 [00:24<00:08,  1.25s/parameter_set][A
+Processing:  83%|████████▎ | 30/36 [00:25<00:07,  1.29s/parameter_set][A
+Processing:  86%|████████▌ | 31/36 [00:26<00:06,  1.22s/parameter_set][A
+Processing:  89%|████████▉ | 32/36 [00:27<00:04,  1.17s/parameter_set][A
+Processing:  92%|█████████▏| 33/36 [00:28<00:03,  1.12s/parameter_set][A
+Processing:  94%|█████████▍| 34/36 [00:30<00:02,  1.23s/parameter_set][A
+Processing:  97%|█████████▋| 35/36 [00:31<00:01,  1.30s/parameter_set][A
+Processing: 100%|██████████| 36/36 [00:33<00:00,  1.31s/parameter_set][AProcessing: 100%|██████████| 36/36 [00:33<00:00,  1.08parameter_set/s]
+++++++++++++++++++ 
+tb21_22_2263_pats_24_vars_relapse - Model: XGBoost - Period: 93 days  6-month cohort - data for training: all_days_in_period - CV:5
++++++++++++++++++
+Running training with all_days_in_period model: 120 vars
+Num of CV-repeat:5
+
+Processing:   0%|          | 0/36 [00:00<?, ?parameter_set/s][A
+Processing:   3%|▎         | 1/36 [00:00<00:18,  1.87parameter_set/s][A
+Processing:   6%|▌         | 2/36 [00:01<00:17,  1.89parameter_set/s][A
+Processing:   8%|▊         | 3/36 [00:01<00:17,  1.90parameter_set/s][A
+Processing:  11%|█         | 4/36 [00:02<00:18,  1.70parameter_set/s][A
+Processing:  14%|█▍        | 5/36 [00:02<00:19,  1.62parameter_set/s][A
+Processing:  17%|█▋        | 6/36 [00:03<00:18,  1.60parameter_set/s][A
+Processing:  19%|█▉        | 7/36 [00:04<00:17,  1.68parameter_set/s][A
+Processing:  22%|██▏       | 8/36 [00:04<00:16,  1.74parameter_set/s][A
+Processing:  25%|██▌       | 9/36 [00:05<00:15,  1.80parameter_set/s][A
+Processing:  28%|██▊       | 10/36 [00:05<00:15,  1.69parameter_set/s][A
+Processing:  31%|███       | 11/36 [00:06<00:15,  1.63parameter_set/s][A
+Processing:  33%|███▎      | 12/36 [00:07<00:14,  1.61parameter_set/s][A
+Processing:  36%|███▌      | 13/36 [00:07<00:15,  1.48parameter_set/s][A
+Processing:  39%|███▉      | 14/36 [00:08<00:15,  1.41parameter_set/s][A
+Processing:  42%|████▏     | 15/36 [00:09<00:15,  1.37parameter_set/s][A
+Processing:  44%|████▍     | 16/36 [00:10<00:16,  1.19parameter_set/s][A
+Processing:  47%|████▋     | 17/36 [00:11<00:17,  1.10parameter_set/s][A
+Processing:  50%|█████     | 18/36 [00:12<00:16,  1.06parameter_set/s][A
+Processing:  53%|█████▎    | 19/36 [00:13<00:15,  1.12parameter_set/s][A
+Processing:  56%|█████▌    | 20/36 [00:14<00:13,  1.16parameter_set/s][A
+Processing:  58%|█████▊    | 21/36 [00:15<00:12,  1.20parameter_set/s][A
+Processing:  61%|██████    | 22/36 [00:16<00:12,  1.10parameter_set/s][A
+Processing:  64%|██████▍   | 23/36 [00:17<00:12,  1.06parameter_set/s][A
+Processing:  67%|██████▋   | 24/36 [00:18<00:11,  1.04parameter_set/s][A
+Processing:  69%|██████▉   | 25/36 [00:19<00:10,  1.01parameter_set/s][A
+Processing:  72%|███████▏  | 26/36 [00:20<00:10,  1.01s/parameter_set][A
+Processing:  75%|███████▌  | 27/36 [00:21<00:09,  1.01s/parameter_set][A
+Processing:  78%|███████▊  | 28/36 [00:22<00:09,  1.16s/parameter_set][A
+Processing:  81%|████████  | 29/36 [00:24<00:08,  1.25s/parameter_set][A
+Processing:  83%|████████▎ | 30/36 [00:25<00:07,  1.28s/parameter_set][A
+Processing:  86%|████████▌ | 31/36 [00:26<00:06,  1.21s/parameter_set][A
+Processing:  89%|████████▉ | 32/36 [00:27<00:04,  1.16s/parameter_set][A
+Processing:  92%|█████████▏| 33/36 [00:28<00:03,  1.11s/parameter_set][A
+Processing:  94%|█████████▍| 34/36 [00:30<00:02,  1.22s/parameter_set][A
+Processing:  97%|█████████▋| 35/36 [00:31<00:01,  1.28s/parameter_set][A
+Processing: 100%|██████████| 36/36 [00:32<00:00,  1.30s/parameter_set][AProcessing: 100%|██████████| 36/36 [00:32<00:00,  1.09parameter_set/s]
+++++++++++++++++++ 
+tb21_22_2263_pats_24_vars_relapse - Model: XGBoost - Period: 93 days  6-month cohort - data for training: all_days_in_period - CV:6
++++++++++++++++++
+Running training with all_days_in_period model: 121 vars
+Num of CV-repeat:6
+
+Processing:   0%|          | 0/36 [00:00<?, ?parameter_set/s][A
+Processing:   3%|▎         | 1/36 [00:00<00:18,  1.86parameter_set/s][A
+Processing:   6%|▌         | 2/36 [00:01<00:18,  1.88parameter_set/s][A
+Processing:   8%|▊         | 3/36 [00:01<00:17,  1.90parameter_set/s][A
+Processing:  11%|█         | 4/36 [00:02<00:18,  1.70parameter_set/s][A
+Processing:  14%|█▍        | 5/36 [00:02<00:19,  1.62parameter_set/s][A
+Processing:  17%|█▋        | 6/36 [00:03<00:18,  1.60parameter_set/s][A
+Processing:  19%|█▉        | 7/36 [00:04<00:17,  1.69parameter_set/s][A
+Processing:  22%|██▏       | 8/36 [00:04<00:16,  1.75parameter_set/s][A
+Processing:  25%|██▌       | 9/36 [00:05<00:14,  1.80parameter_set/s][A
+Processing:  28%|██▊       | 10/36 [00:05<00:15,  1.68parameter_set/s][A
+Processing:  31%|███       | 11/36 [00:06<00:15,  1.63parameter_set/s][A
+Processing:  33%|███▎      | 12/36 [00:07<00:14,  1.61parameter_set/s][A
+Processing:  36%|███▌      | 13/36 [00:07<00:15,  1.48parameter_set/s][A
+Processing:  39%|███▉      | 14/36 [00:08<00:15,  1.40parameter_set/s][A
+Processing:  42%|████▏     | 15/36 [00:09<00:15,  1.37parameter_set/s][A
+Processing:  44%|████▍     | 16/36 [00:10<00:16,  1.19parameter_set/s][A
+Processing:  47%|████▋     | 17/36 [00:11<00:17,  1.10parameter_set/s][A
+Processing:  50%|█████     | 18/36 [00:12<00:16,  1.06parameter_set/s][A
+Processing:  53%|█████▎    | 19/36 [00:13<00:15,  1.12parameter_set/s][A
+Processing:  56%|█████▌    | 20/36 [00:14<00:13,  1.16parameter_set/s][A
+Processing:  58%|█████▊    | 21/36 [00:15<00:12,  1.20parameter_set/s][A
+Processing:  61%|██████    | 22/36 [00:16<00:12,  1.11parameter_set/s][A
+Processing:  64%|██████▍   | 23/36 [00:17<00:12,  1.06parameter_set/s][A
+Processing:  67%|██████▋   | 24/36 [00:18<00:11,  1.04parameter_set/s][A
+Processing:  69%|██████▉   | 25/36 [00:19<00:10,  1.01parameter_set/s][A
+Processing:  72%|███████▏  | 26/36 [00:20<00:10,  1.01s/parameter_set][A
+Processing:  75%|███████▌  | 27/36 [00:21<00:09,  1.01s/parameter_set][A
+Processing:  78%|███████▊  | 28/36 [00:22<00:09,  1.16s/parameter_set][A
+Processing:  81%|████████  | 29/36 [00:24<00:08,  1.24s/parameter_set][A
+Processing:  83%|████████▎ | 30/36 [00:25<00:07,  1.29s/parameter_set][A
+Processing:  86%|████████▌ | 31/36 [00:26<00:06,  1.22s/parameter_set][A
+Processing:  89%|████████▉ | 32/36 [00:27<00:04,  1.16s/parameter_set][A
+Processing:  92%|█████████▏| 33/36 [00:28<00:03,  1.12s/parameter_set][A
+Processing:  94%|█████████▍| 34/36 [00:30<00:02,  1.23s/parameter_set][A
+Processing:  97%|█████████▋| 35/36 [00:31<00:01,  1.30s/parameter_set][A
+Processing: 100%|██████████| 36/36 [00:33<00:00,  1.33s/parameter_set][AProcessing: 100%|██████████| 36/36 [00:33<00:00,  1.09parameter_set/s]
+++++++++++++++++++ 
+tb21_22_2263_pats_24_vars_relapse - Model: XGBoost - Period: 93 days  6-month cohort - data for training: all_days_in_period - CV:7
++++++++++++++++++
+Running training with all_days_in_period model: 121 vars
+Num of CV-repeat:7
+
+Processing:   0%|          | 0/36 [00:00<?, ?parameter_set/s][A
+Processing:   3%|▎         | 1/36 [00:00<00:19,  1.84parameter_set/s][A
+Processing:   6%|▌         | 2/36 [00:01<00:18,  1.86parameter_set/s][A
+Processing:   8%|▊         | 3/36 [00:01<00:17,  1.89parameter_set/s][A
+Processing:  11%|█         | 4/36 [00:02<00:18,  1.69parameter_set/s][A
+Processing:  14%|█▍        | 5/36 [00:02<00:19,  1.62parameter_set/s][A
+Processing:  17%|█▋        | 6/36 [00:03<00:18,  1.60parameter_set/s][A
+Processing:  19%|█▉        | 7/36 [00:04<00:17,  1.67parameter_set/s][A
+Processing:  22%|██▏       | 8/36 [00:04<00:16,  1.73parameter_set/s][A
+Processing:  25%|██▌       | 9/36 [00:05<00:15,  1.79parameter_set/s][A
+Processing:  28%|██▊       | 10/36 [00:05<00:15,  1.68parameter_set/s][A
+Processing:  31%|███       | 11/36 [00:06<00:15,  1.62parameter_set/s][A
+Processing:  33%|███▎      | 12/36 [00:07<00:14,  1.60parameter_set/s][A
+Processing:  36%|███▌      | 13/36 [00:07<00:15,  1.47parameter_set/s][A
+Processing:  39%|███▉      | 14/36 [00:08<00:15,  1.39parameter_set/s][A
+Processing:  42%|████▏     | 15/36 [00:09<00:15,  1.35parameter_set/s][A
+Processing:  44%|████▍     | 16/36 [00:10<00:16,  1.18parameter_set/s][A
+Processing:  47%|████▋     | 17/36 [00:11<00:17,  1.09parameter_set/s][A
+Processing:  50%|█████     | 18/36 [00:12<00:16,  1.06parameter_set/s][A
+Processing:  53%|█████▎    | 19/36 [00:13<00:15,  1.12parameter_set/s][A
+Processing:  56%|█████▌    | 20/36 [00:14<00:13,  1.16parameter_set/s][A
+Processing:  58%|█████▊    | 21/36 [00:15<00:12,  1.20parameter_set/s][A
+Processing:  61%|██████    | 22/36 [00:16<00:12,  1.10parameter_set/s][A
+Processing:  64%|██████▍   | 23/36 [00:17<00:12,  1.05parameter_set/s][A
+Processing:  67%|██████▋   | 24/36 [00:18<00:11,  1.04parameter_set/s][A
+Processing:  69%|██████▉   | 25/36 [00:19<00:10,  1.00parameter_set/s][A
+Processing:  72%|███████▏  | 26/36 [00:20<00:10,  1.02s/parameter_set][A
+Processing:  75%|███████▌  | 27/36 [00:21<00:09,  1.02s/parameter_set][A
+Processing:  78%|███████▊  | 28/36 [00:22<00:09,  1.16s/parameter_set][A
+Processing:  81%|████████  | 29/36 [00:24<00:08,  1.25s/parameter_set][A
+Processing:  83%|████████▎ | 30/36 [00:25<00:07,  1.29s/parameter_set][A
+Processing:  86%|████████▌ | 31/36 [00:26<00:06,  1.22s/parameter_set][A
+Processing:  89%|████████▉ | 32/36 [00:27<00:04,  1.17s/parameter_set][A
+Processing:  92%|█████████▏| 33/36 [00:28<00:03,  1.12s/parameter_set][A
+Processing:  94%|█████████▍| 34/36 [00:30<00:02,  1.23s/parameter_set][A
+Processing:  97%|█████████▋| 35/36 [00:31<00:01,  1.29s/parameter_set][A
+Processing: 100%|██████████| 36/36 [00:33<00:00,  1.30s/parameter_set][AProcessing: 100%|██████████| 36/36 [00:33<00:00,  1.09parameter_set/s]
+++++++++++++++++++ 
+tb21_22_2263_pats_24_vars_relapse - Model: XGBoost - Period: 93 days  6-month cohort - data for training: all_days_in_period - CV:8
++++++++++++++++++
+Running training with all_days_in_period model: 121 vars
+Num of CV-repeat:8
+
+Processing:   0%|          | 0/36 [00:00<?, ?parameter_set/s][A
+Processing:   3%|▎         | 1/36 [00:00<00:18,  1.88parameter_set/s][A
+Processing:   6%|▌         | 2/36 [00:01<00:18,  1.88parameter_set/s][A
+Processing:   8%|▊         | 3/36 [00:01<00:17,  1.91parameter_set/s][A
+Processing:  11%|█         | 4/36 [00:02<00:19,  1.68parameter_set/s][A
+Processing:  14%|█▍        | 5/36 [00:02<00:19,  1.59parameter_set/s][A
+Processing:  17%|█▋        | 6/36 [00:03<00:19,  1.57parameter_set/s][A
+Processing:  19%|█▉        | 7/36 [00:04<00:17,  1.66parameter_set/s][A
+Processing:  22%|██▏       | 8/36 [00:04<00:16,  1.73parameter_set/s][A
+Processing:  25%|██▌       | 9/36 [00:05<00:15,  1.79parameter_set/s][A
+Processing:  28%|██▊       | 10/36 [00:05<00:15,  1.66parameter_set/s][A
+Processing:  31%|███       | 11/36 [00:06<00:15,  1.60parameter_set/s][A
+Processing:  33%|███▎      | 12/36 [00:07<00:15,  1.58parameter_set/s][A
+Processing:  36%|███▌      | 13/36 [00:08<00:15,  1.46parameter_set/s][A
+Processing:  39%|███▉      | 14/36 [00:08<00:15,  1.40parameter_set/s][A
+Processing:  42%|████▏     | 15/36 [00:09<00:15,  1.37parameter_set/s][A
+Processing:  44%|████▍     | 16/36 [00:10<00:17,  1.17parameter_set/s][A
+Processing:  47%|████▋     | 17/36 [00:11<00:17,  1.08parameter_set/s][A
+Processing:  50%|█████     | 18/36 [00:12<00:17,  1.04parameter_set/s][A
+Processing:  53%|█████▎    | 19/36 [00:13<00:15,  1.10parameter_set/s][A
+Processing:  56%|█████▌    | 20/36 [00:14<00:13,  1.15parameter_set/s][A
+Processing:  58%|█████▊    | 21/36 [00:15<00:12,  1.19parameter_set/s][A
+Processing:  61%|██████    | 22/36 [00:16<00:12,  1.09parameter_set/s][A
+Processing:  64%|██████▍   | 23/36 [00:17<00:12,  1.04parameter_set/s][A
+Processing:  67%|██████▋   | 24/36 [00:18<00:11,  1.02parameter_set/s][A
+Processing:  69%|██████▉   | 25/36 [00:19<00:11,  1.01s/parameter_set][A
+Processing:  72%|███████▏  | 26/36 [00:20<00:10,  1.02s/parameter_set][A
+Processing:  75%|███████▌  | 27/36 [00:21<00:09,  1.02s/parameter_set][A
+Processing:  78%|███████▊  | 28/36 [00:23<00:09,  1.18s/parameter_set][A
+Processing:  81%|████████  | 29/36 [00:24<00:08,  1.27s/parameter_set][A
+Processing:  83%|████████▎ | 30/36 [00:25<00:07,  1.31s/parameter_set][A
+Processing:  86%|████████▌ | 31/36 [00:27<00:06,  1.24s/parameter_set][A
+Processing:  89%|████████▉ | 32/36 [00:28<00:04,  1.18s/parameter_set][A
+Processing:  92%|█████████▏| 33/36 [00:29<00:03,  1.13s/parameter_set][A
+Processing:  94%|█████████▍| 34/36 [00:30<00:02,  1.24s/parameter_set][A
+Processing:  97%|█████████▋| 35/36 [00:32<00:01,  1.31s/parameter_set][A
+Processing: 100%|██████████| 36/36 [00:33<00:00,  1.33s/parameter_set][AProcessing: 100%|██████████| 36/36 [00:33<00:00,  1.08parameter_set/s]
+++++++++++++++++++ 
+tb21_22_2263_pats_24_vars_relapse - Model: XGBoost - Period: 93 days  6-month cohort - data for training: all_days_in_period - CV:9
++++++++++++++++++
+Running training with all_days_in_period model: 121 vars
+Num of CV-repeat:9
+
+Processing:   0%|          | 0/36 [00:00<?, ?parameter_set/s][A
+Processing:   3%|▎         | 1/36 [00:00<00:18,  1.89parameter_set/s][A
+Processing:   6%|▌         | 2/36 [00:01<00:17,  1.89parameter_set/s][A
+Processing:   8%|▊         | 3/36 [00:01<00:17,  1.91parameter_set/s][A
+Processing:  11%|█         | 4/36 [00:02<00:19,  1.68parameter_set/s][A
+Processing:  14%|█▍        | 5/36 [00:02<00:19,  1.59parameter_set/s][A
+Processing:  17%|█▋        | 6/36 [00:03<00:19,  1.56parameter_set/s][A
+Processing:  19%|█▉        | 7/36 [00:04<00:17,  1.65parameter_set/s][A
+Processing:  22%|██▏       | 8/36 [00:04<00:16,  1.73parameter_set/s][A
+Processing:  25%|██▌       | 9/36 [00:05<00:15,  1.79parameter_set/s][A
+Processing:  28%|██▊       | 10/36 [00:05<00:15,  1.66parameter_set/s][A
+Processing:  31%|███       | 11/36 [00:06<00:15,  1.60parameter_set/s][A
+Processing:  33%|███▎      | 12/36 [00:07<00:15,  1.57parameter_set/s][A
+Processing:  36%|███▌      | 13/36 [00:08<00:15,  1.46parameter_set/s][A
+Processing:  39%|███▉      | 14/36 [00:08<00:15,  1.40parameter_set/s][A
+Processing:  42%|████▏     | 15/36 [00:09<00:15,  1.36parameter_set/s][A
+Processing:  44%|████▍     | 16/36 [00:10<00:17,  1.17parameter_set/s][A
+Processing:  47%|████▋     | 17/36 [00:11<00:17,  1.07parameter_set/s][A
+Processing:  50%|█████     | 18/36 [00:12<00:17,  1.03parameter_set/s][A
+Processing:  53%|█████▎    | 19/36 [00:13<00:15,  1.09parameter_set/s][A
+Processing:  56%|█████▌    | 20/36 [00:14<00:14,  1.14parameter_set/s][A
+Processing:  58%|█████▊    | 21/36 [00:15<00:12,  1.19parameter_set/s][A
+Processing:  61%|██████    | 22/36 [00:16<00:12,  1.08parameter_set/s][A
+Processing:  64%|██████▍   | 23/36 [00:17<00:12,  1.03parameter_set/s][A
+Processing:  67%|██████▋   | 24/36 [00:18<00:11,  1.01parameter_set/s][A
+Processing:  69%|██████▉   | 25/36 [00:19<00:11,  1.01s/parameter_set][A
+Processing:  72%|███████▏  | 26/36 [00:20<00:10,  1.02s/parameter_set][A
+Processing:  75%|███████▌  | 27/36 [00:21<00:09,  1.02s/parameter_set][A
+Processing:  78%|███████▊  | 28/36 [00:23<00:09,  1.18s/parameter_set][A
+Processing:  81%|████████  | 29/36 [00:24<00:08,  1.28s/parameter_set][A
+Processing:  83%|████████▎ | 30/36 [00:26<00:07,  1.32s/parameter_set][A
+Processing:  86%|████████▌ | 31/36 [00:27<00:06,  1.24s/parameter_set][A
+Processing:  89%|████████▉ | 32/36 [00:28<00:04,  1.18s/parameter_set][A
+Processing:  92%|█████████▏| 33/36 [00:29<00:03,  1.13s/parameter_set][A
+Processing:  94%|█████████▍| 34/36 [00:30<00:02,  1.25s/parameter_set][A
+Processing:  97%|█████████▋| 35/36 [00:32<00:01,  1.32s/parameter_set][A
+Processing: 100%|██████████| 36/36 [00:33<00:00,  1.34s/parameter_set][AProcessing: 100%|██████████| 36/36 [00:33<00:00,  1.07parameter_set/s]
+++++++++++++++++++ 
+tb21_22_2263_pats_24_vars_relapse - Model: XGBoost - Period: 93 days  6-month cohort - data for training: all_days_in_period - CV:10
++++++++++++++++++
+Running training with all_days_in_period model: 121 vars
+Num of CV-repeat:10
+
+Processing:   0%|          | 0/36 [00:00<?, ?parameter_set/s][A
+Processing:   3%|▎         | 1/36 [00:00<00:18,  1.87parameter_set/s][A
+Processing:   6%|▌         | 2/36 [00:01<00:18,  1.88parameter_set/s][A
+Processing:   8%|▊         | 3/36 [00:01<00:17,  1.90parameter_set/s][A
+Processing:  11%|█         | 4/36 [00:02<00:18,  1.69parameter_set/s][A
+Processing:  14%|█▍        | 5/36 [00:02<00:19,  1.61parameter_set/s][A
+Processing:  17%|█▋        | 6/36 [00:03<00:18,  1.59parameter_set/s][A
+Processing:  19%|█▉        | 7/36 [00:04<00:17,  1.68parameter_set/s][A
+Processing:  22%|██▏       | 8/36 [00:04<00:16,  1.74parameter_set/s][A
+Processing:  25%|██▌       | 9/36 [00:05<00:15,  1.80parameter_set/s][A
+Processing:  28%|██▊       | 10/36 [00:05<00:15,  1.68parameter_set/s][A
+Processing:  31%|███       | 11/36 [00:06<00:15,  1.62parameter_set/s][A
+Processing:  33%|███▎      | 12/36 [00:07<00:14,  1.61parameter_set/s][A
+Processing:  36%|███▌      | 13/36 [00:07<00:15,  1.47parameter_set/s][A
+Processing:  39%|███▉      | 14/36 [00:08<00:15,  1.40parameter_set/s][A
+Processing:  42%|████▏     | 15/36 [00:09<00:15,  1.36parameter_set/s][A
+Processing:  44%|████▍     | 16/36 [00:10<00:16,  1.18parameter_set/s][A
+Processing:  47%|████▋     | 17/36 [00:11<00:17,  1.09parameter_set/s][A
+Processing:  50%|█████     | 18/36 [00:12<00:17,  1.06parameter_set/s][A
+Processing:  53%|█████▎    | 19/36 [00:13<00:15,  1.11parameter_set/s][A
+Processing:  56%|█████▌    | 20/36 [00:14<00:13,  1.15parameter_set/s][A
+Processing:  58%|█████▊    | 21/36 [00:15<00:12,  1.20parameter_set/s][A
+Processing:  61%|██████    | 22/36 [00:16<00:12,  1.10parameter_set/s][A
+Processing:  64%|██████▍   | 23/36 [00:17<00:12,  1.05parameter_set/s][A
+Processing:  67%|██████▋   | 24/36 [00:18<00:11,  1.03parameter_set/s][A
+Processing:  69%|██████▉   | 25/36 [00:19<00:10,  1.00parameter_set/s][A
+Processing:  72%|███████▏  | 26/36 [00:20<00:10,  1.01s/parameter_set][A
+Processing:  75%|███████▌  | 27/36 [00:21<00:09,  1.02s/parameter_set][A
+Processing:  78%|███████▊  | 28/36 [00:22<00:09,  1.17s/parameter_set][A
+Processing:  81%|████████  | 29/36 [00:24<00:08,  1.25s/parameter_set][A
+Processing:  83%|████████▎ | 30/36 [00:25<00:07,  1.29s/parameter_set][A
+Processing:  86%|████████▌ | 31/36 [00:26<00:06,  1.22s/parameter_set][A
+Processing:  89%|████████▉ | 32/36 [00:27<00:04,  1.17s/parameter_set][A
+Processing:  92%|█████████▏| 33/36 [00:28<00:03,  1.12s/parameter_set][A
+Processing:  94%|█████████▍| 34/36 [00:30<00:02,  1.23s/parameter_set][A
+Processing:  97%|█████████▋| 35/36 [00:31<00:01,  1.29s/parameter_set][A
+Processing: 100%|██████████| 36/36 [00:33<00:00,  1.31s/parameter_set][AProcessing: 100%|██████████| 36/36 [00:33<00:00,  1.09parameter_set/s]
+++++++++++++++++++ 
+tb21_22_2263_pats_24_vars_relapse - Model: XGBoost - Period: 93 days  6-month cohort - data for training: all_days_in_period - CV:11
++++++++++++++++++
+Running training with all_days_in_period model: 120 vars
+Num of CV-repeat:11
+
+Processing:   0%|          | 0/36 [00:00<?, ?parameter_set/s][A
+Processing:   3%|▎         | 1/36 [00:00<00:18,  1.88parameter_set/s][A
+Processing:   6%|▌         | 2/36 [00:01<00:17,  1.90parameter_set/s][A
+Processing:   8%|▊         | 3/36 [00:01<00:17,  1.92parameter_set/s][A
+Processing:  11%|█         | 4/36 [00:02<00:18,  1.71parameter_set/s][A
+Processing:  14%|█▍        | 5/36 [00:02<00:19,  1.62parameter_set/s][A
+Processing:  17%|█▋        | 6/36 [00:03<00:18,  1.60parameter_set/s][A
+Processing:  19%|█▉        | 7/36 [00:04<00:17,  1.69parameter_set/s][A
+Processing:  22%|██▏       | 8/36 [00:04<00:16,  1.75parameter_set/s][A
+Processing:  25%|██▌       | 9/36 [00:05<00:14,  1.80parameter_set/s][A
+Processing:  28%|██▊       | 10/36 [00:05<00:15,  1.68parameter_set/s][A
+Processing:  31%|███       | 11/36 [00:06<00:15,  1.63parameter_set/s][A
+Processing:  33%|███▎      | 12/36 [00:07<00:14,  1.61parameter_set/s][A
+Processing:  36%|███▌      | 13/36 [00:07<00:15,  1.48parameter_set/s][A
+Processing:  39%|███▉      | 14/36 [00:08<00:15,  1.41parameter_set/s][A
+Processing:  42%|████▏     | 15/36 [00:09<00:15,  1.38parameter_set/s][A
+Processing:  44%|████▍     | 16/36 [00:10<00:16,  1.19parameter_set/s][A
+Processing:  47%|████▋     | 17/36 [00:11<00:17,  1.10parameter_set/s][A
+Processing:  50%|█████     | 18/36 [00:12<00:16,  1.07parameter_set/s][A
+Processing:  53%|█████▎    | 19/36 [00:13<00:15,  1.12parameter_set/s][A
+Processing:  56%|█████▌    | 20/36 [00:14<00:13,  1.16parameter_set/s][A
+Processing:  58%|█████▊    | 21/36 [00:14<00:12,  1.20parameter_set/s][A
+Processing:  61%|██████    | 22/36 [00:16<00:12,  1.10parameter_set/s][A
+Processing:  64%|██████▍   | 23/36 [00:17<00:12,  1.05parameter_set/s][A
+Processing:  67%|██████▋   | 24/36 [00:18<00:11,  1.04parameter_set/s][A
+Processing:  69%|██████▉   | 25/36 [00:19<00:10,  1.01parameter_set/s][A
+Processing:  72%|███████▏  | 26/36 [00:20<00:10,  1.01s/parameter_set][A
+Processing:  75%|███████▌  | 27/36 [00:21<00:09,  1.01s/parameter_set][A
+Processing:  78%|███████▊  | 28/36 [00:22<00:09,  1.16s/parameter_set][A
+Processing:  81%|████████  | 29/36 [00:24<00:08,  1.25s/parameter_set][A
+Processing:  83%|████████▎ | 30/36 [00:25<00:07,  1.28s/parameter_set][A
+Processing:  86%|████████▌ | 31/36 [00:26<00:06,  1.22s/parameter_set][A
+Processing:  89%|████████▉ | 32/36 [00:27<00:04,  1.16s/parameter_set][A
+Processing:  92%|█████████▏| 33/36 [00:28<00:03,  1.11s/parameter_set][A
+Processing:  94%|█████████▍| 34/36 [00:30<00:02,  1.22s/parameter_set][A
+Processing:  97%|█████████▋| 35/36 [00:31<00:01,  1.28s/parameter_set][A
+Processing: 100%|██████████| 36/36 [00:32<00:00,  1.30s/parameter_set][AProcessing: 100%|██████████| 36/36 [00:32<00:00,  1.09parameter_set/s]
+++++++++++++++++++ 
+tb21_22_2263_pats_24_vars_relapse - Model: XGBoost - Period: 93 days  6-month cohort - data for training: all_days_in_period - CV:12
++++++++++++++++++
+Running training with all_days_in_period model: 120 vars
+Num of CV-repeat:12
+
+Processing:   0%|          | 0/36 [00:00<?, ?parameter_set/s][A
+Processing:   3%|▎         | 1/36 [00:00<00:18,  1.88parameter_set/s][A
+Processing:   6%|▌         | 2/36 [00:01<00:18,  1.88parameter_set/s][A
+Processing:   8%|▊         | 3/36 [00:01<00:17,  1.90parameter_set/s][A
+Processing:  11%|█         | 4/36 [00:02<00:18,  1.69parameter_set/s][A
+Processing:  14%|█▍        | 5/36 [00:02<00:19,  1.61parameter_set/s][A
+Processing:  17%|█▋        | 6/36 [00:03<00:18,  1.59parameter_set/s][A
+Processing:  19%|█▉        | 7/36 [00:04<00:17,  1.67parameter_set/s][A
+Processing:  22%|██▏       | 8/36 [00:04<00:16,  1.74parameter_set/s][A
+Processing:  25%|██▌       | 9/36 [00:05<00:15,  1.80parameter_set/s][A
+Processing:  28%|██▊       | 10/36 [00:05<00:15,  1.68parameter_set/s][A
+Processing:  31%|███       | 11/36 [00:06<00:15,  1.62parameter_set/s][A
+Processing:  33%|███▎      | 12/36 [00:07<00:15,  1.60parameter_set/s][A
+Processing:  36%|███▌      | 13/36 [00:07<00:15,  1.47parameter_set/s][A
+Processing:  39%|███▉      | 14/36 [00:08<00:15,  1.41parameter_set/s][A
+Processing:  42%|████▏     | 15/36 [00:09<00:15,  1.37parameter_set/s][A
+Processing:  44%|████▍     | 16/36 [00:10<00:16,  1.19parameter_set/s][A
+Processing:  47%|████▋     | 17/36 [00:11<00:17,  1.09parameter_set/s][A
+Processing:  50%|█████     | 18/36 [00:12<00:17,  1.05parameter_set/s][A
+Processing:  53%|█████▎    | 19/36 [00:13<00:15,  1.11parameter_set/s][A
+Processing:  56%|█████▌    | 20/36 [00:14<00:13,  1.16parameter_set/s][A
+Processing:  58%|█████▊    | 21/36 [00:15<00:12,  1.20parameter_set/s][A
+Processing:  61%|██████    | 22/36 [00:16<00:12,  1.10parameter_set/s][A
+Processing:  64%|██████▍   | 23/36 [00:17<00:12,  1.05parameter_set/s][A
+Processing:  67%|██████▋   | 24/36 [00:18<00:11,  1.04parameter_set/s][A
+Processing:  69%|██████▉   | 25/36 [00:19<00:10,  1.01parameter_set/s][A
+Processing:  72%|███████▏  | 26/36 [00:20<00:10,  1.01s/parameter_set][A
+Processing:  75%|███████▌  | 27/36 [00:21<00:09,  1.01s/parameter_set][A
+Processing:  78%|███████▊  | 28/36 [00:22<00:09,  1.16s/parameter_set][A
+Processing:  81%|████████  | 29/36 [00:24<00:08,  1.25s/parameter_set][A
+Processing:  83%|████████▎ | 30/36 [00:25<00:07,  1.29s/parameter_set][A
+Processing:  86%|████████▌ | 31/36 [00:26<00:06,  1.22s/parameter_set][A
+Processing:  89%|████████▉ | 32/36 [00:27<00:04,  1.16s/parameter_set][A
+Processing:  92%|█████████▏| 33/36 [00:28<00:03,  1.12s/parameter_set][A
+Processing:  94%|█████████▍| 34/36 [00:30<00:02,  1.23s/parameter_set][A
+Processing:  97%|█████████▋| 35/36 [00:31<00:01,  1.29s/parameter_set][A
+Processing: 100%|██████████| 36/36 [00:33<00:00,  1.31s/parameter_set][AProcessing: 100%|██████████| 36/36 [00:33<00:00,  1.09parameter_set/s]
+++++++++++++++++++ 
+tb21_22_2263_pats_24_vars_relapse - Model: XGBoost - Period: 93 days  6-month cohort - data for training: all_days_in_period - CV:13
++++++++++++++++++
+Running training with all_days_in_period model: 121 vars
+Num of CV-repeat:13
+
+Processing:   0%|          | 0/36 [00:00<?, ?parameter_set/s][A
+Processing:   3%|▎         | 1/36 [00:00<00:18,  1.86parameter_set/s][A
+Processing:   6%|▌         | 2/36 [00:01<00:18,  1.89parameter_set/s][A
+Processing:   8%|▊         | 3/36 [00:01<00:17,  1.90parameter_set/s][A
+Processing:  11%|█         | 4/36 [00:02<00:18,  1.69parameter_set/s][A
+Processing:  14%|█▍        | 5/36 [00:02<00:19,  1.61parameter_set/s][A
+Processing:  17%|█▋        | 6/36 [00:03<00:18,  1.59parameter_set/s][A
+Processing:  19%|█▉        | 7/36 [00:04<00:17,  1.67parameter_set/s][A
+Processing:  22%|██▏       | 8/36 [00:04<00:16,  1.74parameter_set/s][A
+Processing:  25%|██▌       | 9/36 [00:05<00:15,  1.79parameter_set/s][A
+Processing:  28%|██▊       | 10/36 [00:05<00:15,  1.67parameter_set/s][A
+Processing:  31%|███       | 11/36 [00:06<00:15,  1.61parameter_set/s][A
+Processing:  33%|███▎      | 12/36 [00:07<00:15,  1.59parameter_set/s][A
+Processing:  36%|███▌      | 13/36 [00:08<00:15,  1.46parameter_set/s][A
+Processing:  39%|███▉      | 14/36 [00:08<00:15,  1.39parameter_set/s][A
+Processing:  42%|████▏     | 15/36 [00:09<00:15,  1.36parameter_set/s][A
+Processing:  44%|████▍     | 16/36 [00:10<00:16,  1.18parameter_set/s][A
+Processing:  47%|████▋     | 17/36 [00:11<00:17,  1.09parameter_set/s][A
+Processing:  50%|█████     | 18/36 [00:12<00:17,  1.05parameter_set/s][A
+Processing:  53%|█████▎    | 19/36 [00:13<00:15,  1.11parameter_set/s][A
+Processing:  56%|█████▌    | 20/36 [00:14<00:13,  1.15parameter_set/s][A
+Processing:  58%|█████▊    | 21/36 [00:15<00:12,  1.19parameter_set/s][A
+Processing:  61%|██████    | 22/36 [00:16<00:12,  1.09parameter_set/s][A
+Processing:  64%|██████▍   | 23/36 [00:17<00:12,  1.04parameter_set/s][A
+Processing:  67%|██████▋   | 24/36 [00:18<00:11,  1.03parameter_set/s][A
+Processing:  69%|██████▉   | 25/36 [00:19<00:11,  1.00s/parameter_set][A
+Processing:  72%|███████▏  | 26/36 [00:20<00:10,  1.02s/parameter_set][A
+Processing:  75%|███████▌  | 27/36 [00:21<00:09,  1.02s/parameter_set][A
+Processing:  78%|███████▊  | 28/36 [00:22<00:09,  1.17s/parameter_set][A
+Processing:  81%|████████  | 29/36 [00:24<00:08,  1.26s/parameter_set][A
+Processing:  83%|████████▎ | 30/36 [00:25<00:07,  1.30s/parameter_set][A
+Processing:  86%|████████▌ | 31/36 [00:26<00:06,  1.23s/parameter_set][A
+Processing:  89%|████████▉ | 32/36 [00:27<00:04,  1.17s/parameter_set][A
+Processing:  92%|█████████▏| 33/36 [00:28<00:03,  1.13s/parameter_set][A
+Processing:  94%|█████████▍| 34/36 [00:30<00:02,  1.24s/parameter_set][A
+Processing:  97%|█████████▋| 35/36 [00:31<00:01,  1.30s/parameter_set][A
+Processing: 100%|██████████| 36/36 [00:33<00:00,  1.32s/parameter_set][AProcessing: 100%|██████████| 36/36 [00:33<00:00,  1.08parameter_set/s]
+++++++++++++++++++ 
+tb21_22_2263_pats_24_vars_relapse - Model: XGBoost - Period: 93 days  6-month cohort - data for training: all_days_in_period - CV:14
++++++++++++++++++
+Running training with all_days_in_period model: 119 vars
+Num of CV-repeat:14
+
+Processing:   0%|          | 0/36 [00:00<?, ?parameter_set/s][A
+Processing:   3%|▎         | 1/36 [00:00<00:18,  1.87parameter_set/s][A
+Processing:   6%|▌         | 2/36 [00:01<00:18,  1.88parameter_set/s][A
+Processing:   8%|▊         | 3/36 [00:01<00:17,  1.91parameter_set/s][A
+Processing:  11%|█         | 4/36 [00:02<00:18,  1.70parameter_set/s][A
+Processing:  14%|█▍        | 5/36 [00:02<00:19,  1.61parameter_set/s][A
+Processing:  17%|█▋        | 6/36 [00:03<00:18,  1.59parameter_set/s][A
+Processing:  19%|█▉        | 7/36 [00:04<00:17,  1.67parameter_set/s][A
+Processing:  22%|██▏       | 8/36 [00:04<00:16,  1.74parameter_set/s][A
+Processing:  25%|██▌       | 9/36 [00:05<00:14,  1.80parameter_set/s][A
+Processing:  28%|██▊       | 10/36 [00:05<00:15,  1.68parameter_set/s][A
+Processing:  31%|███       | 11/36 [00:06<00:15,  1.62parameter_set/s][A
+Processing:  33%|███▎      | 12/36 [00:07<00:15,  1.60parameter_set/s][A
+Processing:  36%|███▌      | 13/36 [00:07<00:15,  1.47parameter_set/s][A
+Processing:  39%|███▉      | 14/36 [00:08<00:15,  1.40parameter_set/s][A
+Processing:  42%|████▏     | 15/36 [00:09<00:15,  1.32parameter_set/s][A
+Processing:  44%|████▍     | 16/36 [00:10<00:17,  1.15parameter_set/s][A
+Processing:  47%|████▋     | 17/36 [00:11<00:17,  1.07parameter_set/s][A
+Processing:  50%|█████     | 18/36 [00:12<00:17,  1.04parameter_set/s][A
+Processing:  53%|█████▎    | 19/36 [00:13<00:15,  1.10parameter_set/s][A
+Processing:  56%|█████▌    | 20/36 [00:14<00:13,  1.15parameter_set/s][A
+Processing:  58%|█████▊    | 21/36 [00:15<00:12,  1.19parameter_set/s][A
+Processing:  61%|██████    | 22/36 [00:16<00:12,  1.09parameter_set/s][A
+Processing:  64%|██████▍   | 23/36 [00:17<00:12,  1.04parameter_set/s][A
+Processing:  67%|██████▋   | 24/36 [00:18<00:11,  1.03parameter_set/s][A
+Processing:  69%|██████▉   | 25/36 [00:19<00:11,  1.00s/parameter_set][A
+Processing:  72%|███████▏  | 26/36 [00:20<00:10,  1.01s/parameter_set][A
+Processing:  75%|███████▌  | 27/36 [00:21<00:09,  1.02s/parameter_set][A
+Processing:  78%|███████▊  | 28/36 [00:23<00:09,  1.17s/parameter_set][A
+Processing:  81%|████████  | 29/36 [00:24<00:08,  1.26s/parameter_set][A
+Processing:  83%|████████▎ | 30/36 [00:25<00:07,  1.30s/parameter_set][A
+Processing:  86%|████████▌ | 31/36 [00:26<00:06,  1.23s/parameter_set][A
+Processing:  89%|████████▉ | 32/36 [00:27<00:04,  1.17s/parameter_set][A
+Processing:  92%|█████████▏| 33/36 [00:28<00:03,  1.12s/parameter_set][A
+Processing:  94%|█████████▍| 34/36 [00:30<00:02,  1.23s/parameter_set][A
+Processing:  97%|█████████▋| 35/36 [00:31<00:01,  1.30s/parameter_set][A
+Processing: 100%|██████████| 36/36 [00:33<00:00,  1.32s/parameter_set][AProcessing: 100%|██████████| 36/36 [00:33<00:00,  1.08parameter_set/s]
+++++++++++++++++++ 
+tb21_22_2263_pats_24_vars_relapse - Model: XGBoost - Period: 93 days  6-month cohort - data for training: all_days_in_period - CV:15
++++++++++++++++++
+Running training with all_days_in_period model: 120 vars
+Num of CV-repeat:15
+
+Processing:   0%|          | 0/36 [00:00<?, ?parameter_set/s][A
+Processing:   3%|▎         | 1/36 [00:00<00:18,  1.85parameter_set/s][A
+Processing:   6%|▌         | 2/36 [00:01<00:18,  1.86parameter_set/s][A
+Processing:   8%|▊         | 3/36 [00:01<00:17,  1.89parameter_set/s][A
+Processing:  11%|█         | 4/36 [00:02<00:19,  1.68parameter_set/s][A
+Processing:  14%|█▍        | 5/36 [00:02<00:19,  1.61parameter_set/s][A
+Processing:  17%|█▋        | 6/36 [00:03<00:18,  1.59parameter_set/s][A
+Processing:  19%|█▉        | 7/36 [00:04<00:17,  1.66parameter_set/s][A
+Processing:  22%|██▏       | 8/36 [00:04<00:16,  1.73parameter_set/s][A
+Processing:  25%|██▌       | 9/36 [00:05<00:15,  1.78parameter_set/s][A
+Processing:  28%|██▊       | 10/36 [00:05<00:15,  1.67parameter_set/s][A
+Processing:  31%|███       | 11/36 [00:06<00:15,  1.62parameter_set/s][A
+Processing:  33%|███▎      | 12/36 [00:07<00:14,  1.60parameter_set/s][A
+Processing:  36%|███▌      | 13/36 [00:07<00:15,  1.47parameter_set/s][A
+Processing:  39%|███▉      | 14/36 [00:08<00:15,  1.39parameter_set/s][A
+Processing:  42%|████▏     | 15/36 [00:09<00:15,  1.35parameter_set/s][A
+Processing:  44%|████▍     | 16/36 [00:10<00:17,  1.17parameter_set/s][A
+Processing:  47%|████▋     | 17/36 [00:11<00:17,  1.09parameter_set/s][A
+Processing:  50%|█████     | 18/36 [00:12<00:17,  1.06parameter_set/s][A
+Processing:  53%|█████▎    | 19/36 [00:13<00:15,  1.11parameter_set/s][A
+Processing:  56%|█████▌    | 20/36 [00:14<00:13,  1.15parameter_set/s][A
+Processing:  58%|█████▊    | 21/36 [00:15<00:12,  1.19parameter_set/s][A
+Processing:  61%|██████    | 22/36 [00:16<00:12,  1.09parameter_set/s][A
+Processing:  64%|██████▍   | 23/36 [00:17<00:12,  1.05parameter_set/s][A
+Processing:  67%|██████▋   | 24/36 [00:18<00:11,  1.04parameter_set/s][A
+Processing:  69%|██████▉   | 25/36 [00:19<00:11,  1.03s/parameter_set][A
+Processing:  72%|███████▏  | 26/36 [00:20<00:10,  1.04s/parameter_set][A
+Processing:  75%|███████▌  | 27/36 [00:21<00:09,  1.03s/parameter_set][A
+Processing:  78%|███████▊  | 28/36 [00:23<00:09,  1.18s/parameter_set][A
+Processing:  81%|████████  | 29/36 [00:24<00:08,  1.26s/parameter_set][A
+Processing:  83%|████████▎ | 30/36 [00:25<00:07,  1.29s/parameter_set][A
+Processing:  86%|████████▌ | 31/36 [00:26<00:06,  1.22s/parameter_set][A
+Processing:  89%|████████▉ | 32/36 [00:27<00:04,  1.17s/parameter_set][A
+Processing:  92%|█████████▏| 33/36 [00:28<00:03,  1.12s/parameter_set][A
+Processing:  94%|█████████▍| 34/36 [00:30<00:02,  1.23s/parameter_set][A
+Processing:  97%|█████████▋| 35/36 [00:31<00:01,  1.29s/parameter_set][A
+Processing: 100%|██████████| 36/36 [00:33<00:00,  1.30s/parameter_set][AProcessing: 100%|██████████| 36/36 [00:33<00:00,  1.08parameter_set/s]
+++++++++++++++++++ 
+tb21_22_2263_pats_24_vars_relapse - Model: XGBoost - Period: 93 days  6-month cohort - data for training: all_days_in_period - CV:16
++++++++++++++++++
+Running training with all_days_in_period model: 121 vars
+Num of CV-repeat:16
+
+Processing:   0%|          | 0/36 [00:00<?, ?parameter_set/s][A
+Processing:   3%|▎         | 1/36 [00:00<00:18,  1.87parameter_set/s][A
+Processing:   6%|▌         | 2/36 [00:01<00:18,  1.88parameter_set/s][A
+Processing:   8%|▊         | 3/36 [00:01<00:17,  1.90parameter_set/s][A
+Processing:  11%|█         | 4/36 [00:02<00:19,  1.68parameter_set/s][A
+Processing:  14%|█▍        | 5/36 [00:02<00:19,  1.60parameter_set/s][A
+Processing:  17%|█▋        | 6/36 [00:03<00:19,  1.58parameter_set/s][A
+Processing:  19%|█▉        | 7/36 [00:04<00:17,  1.67parameter_set/s][A
+Processing:  22%|██▏       | 8/36 [00:04<00:16,  1.73parameter_set/s][A
+Processing:  25%|██▌       | 9/36 [00:05<00:15,  1.79parameter_set/s][A
+Processing:  28%|██▊       | 10/36 [00:05<00:15,  1.67parameter_set/s][A
+Processing:  31%|███       | 11/36 [00:06<00:15,  1.60parameter_set/s][A
+Processing:  33%|███▎      | 12/36 [00:07<00:15,  1.58parameter_set/s][A
+Processing:  36%|███▌      | 13/36 [00:08<00:15,  1.46parameter_set/s][A
+Processing:  39%|███▉      | 14/36 [00:08<00:15,  1.39parameter_set/s][A
+Processing:  42%|████▏     | 15/36 [00:09<00:15,  1.36parameter_set/s][A
+Processing:  44%|████▍     | 16/36 [00:10<00:17,  1.18parameter_set/s][A
+Processing:  47%|████▋     | 17/36 [00:11<00:17,  1.09parameter_set/s][A
+Processing:  50%|█████     | 18/36 [00:12<00:17,  1.05parameter_set/s][A
+Processing:  53%|█████▎    | 19/36 [00:13<00:15,  1.10parameter_set/s][A
+Processing:  56%|█████▌    | 20/36 [00:14<00:13,  1.15parameter_set/s][A
+Processing:  58%|█████▊    | 21/36 [00:15<00:12,  1.19parameter_set/s][A
+Processing:  61%|██████    | 22/36 [00:16<00:12,  1.09parameter_set/s][A
+Processing:  64%|██████▍   | 23/36 [00:17<00:12,  1.04parameter_set/s][A
+Processing:  67%|██████▋   | 24/36 [00:18<00:11,  1.02parameter_set/s][A
+Processing:  69%|██████▉   | 25/36 [00:19<00:11,  1.01s/parameter_set][A
+Processing:  72%|███████▏  | 26/36 [00:20<00:10,  1.02s/parameter_set][A
+Processing:  75%|███████▌  | 27/36 [00:21<00:09,  1.02s/parameter_set][A
+Processing:  78%|███████▊  | 28/36 [00:23<00:09,  1.17s/parameter_set][A
+Processing:  81%|████████  | 29/36 [00:24<00:08,  1.27s/parameter_set][A
+Processing:  83%|████████▎ | 30/36 [00:25<00:07,  1.31s/parameter_set][A
+Processing:  86%|████████▌ | 31/36 [00:26<00:06,  1.23s/parameter_set][A
+Processing:  89%|████████▉ | 32/36 [00:28<00:04,  1.17s/parameter_set][A
+Processing:  92%|█████████▏| 33/36 [00:29<00:03,  1.13s/parameter_set][A
+Processing:  94%|█████████▍| 34/36 [00:30<00:02,  1.24s/parameter_set][A
+Processing:  97%|█████████▋| 35/36 [00:31<00:01,  1.31s/parameter_set][A
+Processing: 100%|██████████| 36/36 [00:33<00:00,  1.33s/parameter_set][AProcessing: 100%|██████████| 36/36 [00:33<00:00,  1.08parameter_set/s]
+++++++++++++++++++ 
+tb21_22_2263_pats_24_vars_relapse - Model: XGBoost - Period: 93 days  6-month cohort - data for training: all_days_in_period - CV:17
++++++++++++++++++
+Running training with all_days_in_period model: 121 vars
+Num of CV-repeat:17
+
+Processing:   0%|          | 0/36 [00:00<?, ?parameter_set/s][A
+Processing:   3%|▎         | 1/36 [00:00<00:18,  1.87parameter_set/s][A
+Processing:   6%|▌         | 2/36 [00:01<00:18,  1.88parameter_set/s][A
+Processing:   8%|▊         | 3/36 [00:01<00:17,  1.90parameter_set/s][A
+Processing:  11%|█         | 4/36 [00:02<00:18,  1.69parameter_set/s][A
+Processing:  14%|█▍        | 5/36 [00:02<00:19,  1.61parameter_set/s][A
+Processing:  17%|█▋        | 6/36 [00:03<00:18,  1.58parameter_set/s][A
+Processing:  19%|█▉        | 7/36 [00:04<00:17,  1.67parameter_set/s][A
+Processing:  22%|██▏       | 8/36 [00:04<00:16,  1.73parameter_set/s][A
+Processing:  25%|██▌       | 9/36 [00:05<00:15,  1.79parameter_set/s][A
+Processing:  28%|██▊       | 10/36 [00:05<00:15,  1.67parameter_set/s][A
+Processing:  31%|███       | 11/36 [00:06<00:15,  1.61parameter_set/s][A
+Processing:  33%|███▎      | 12/36 [00:07<00:15,  1.59parameter_set/s][A
+Processing:  36%|███▌      | 13/36 [00:07<00:15,  1.47parameter_set/s][A
+Processing:  39%|███▉      | 14/36 [00:08<00:15,  1.40parameter_set/s][A
+Processing:  42%|████▏     | 15/36 [00:09<00:15,  1.36parameter_set/s][A
+Processing:  44%|████▍     | 16/36 [00:10<00:16,  1.18parameter_set/s][A
+Processing:  47%|████▋     | 17/36 [00:11<00:17,  1.09parameter_set/s][A
+Processing:  50%|█████     | 18/36 [00:12<00:17,  1.06parameter_set/s][A
+Processing:  53%|█████▎    | 19/36 [00:13<00:15,  1.11parameter_set/s][A
+Processing:  56%|█████▌    | 20/36 [00:14<00:13,  1.15parameter_set/s][A
+Processing:  58%|█████▊    | 21/36 [00:15<00:12,  1.19parameter_set/s][A
+Processing:  61%|██████    | 22/36 [00:16<00:12,  1.09parameter_set/s][A
+Processing:  64%|██████▍   | 23/36 [00:17<00:12,  1.04parameter_set/s][A
+Processing:  67%|██████▋   | 24/36 [00:18<00:11,  1.03parameter_set/s][A
+Processing:  69%|██████▉   | 25/36 [00:19<00:11,  1.00s/parameter_set][A
+Processing:  72%|███████▏  | 26/36 [00:20<00:10,  1.02s/parameter_set][A
+Processing:  75%|███████▌  | 27/36 [00:21<00:09,  1.02s/parameter_set][A
+Processing:  78%|███████▊  | 28/36 [00:22<00:09,  1.17s/parameter_set][A
+Processing:  81%|████████  | 29/36 [00:24<00:08,  1.26s/parameter_set][A
+Processing:  83%|████████▎ | 30/36 [00:25<00:07,  1.30s/parameter_set][A
+Processing:  86%|████████▌ | 31/36 [00:26<00:06,  1.23s/parameter_set][A
+Processing:  89%|████████▉ | 32/36 [00:27<00:04,  1.17s/parameter_set][A
+Processing:  92%|█████████▏| 33/36 [00:28<00:03,  1.13s/parameter_set][A
+Processing:  94%|█████████▍| 34/36 [00:30<00:02,  1.24s/parameter_set][A
+Processing:  97%|█████████▋| 35/36 [00:31<00:01,  1.30s/parameter_set][A
+Processing: 100%|██████████| 36/36 [00:33<00:00,  1.32s/parameter_set][AProcessing: 100%|██████████| 36/36 [00:33<00:00,  1.08parameter_set/s]
+++++++++++++++++++ 
+tb21_22_2263_pats_24_vars_relapse - Model: XGBoost - Period: 93 days  6-month cohort - data for training: all_days_in_period - CV:18
++++++++++++++++++
+Running training with all_days_in_period model: 121 vars
+Num of CV-repeat:18
+
+Processing:   0%|          | 0/36 [00:00<?, ?parameter_set/s][A
+Processing:   3%|▎         | 1/36 [00:00<00:18,  1.87parameter_set/s][A
+Processing:   6%|▌         | 2/36 [00:01<00:18,  1.89parameter_set/s][A
+Processing:   8%|▊         | 3/36 [00:01<00:17,  1.91parameter_set/s][A
+Processing:  11%|█         | 4/36 [00:02<00:18,  1.70parameter_set/s][A
+Processing:  14%|█▍        | 5/36 [00:02<00:19,  1.61parameter_set/s][A
+Processing:  17%|█▋        | 6/36 [00:03<00:18,  1.59parameter_set/s][A
+Processing:  19%|█▉        | 7/36 [00:04<00:17,  1.67parameter_set/s][A
+Processing:  22%|██▏       | 8/36 [00:04<00:16,  1.73parameter_set/s][A
+Processing:  25%|██▌       | 9/36 [00:05<00:15,  1.79parameter_set/s][A
+Processing:  28%|██▊       | 10/36 [00:05<00:15,  1.68parameter_set/s][A
+Processing:  31%|███       | 11/36 [00:06<00:15,  1.62parameter_set/s][A
+Processing:  33%|███▎      | 12/36 [00:07<00:15,  1.60parameter_set/s][A
+Processing:  36%|███▌      | 13/36 [00:07<00:15,  1.47parameter_set/s][A
+Processing:  39%|███▉      | 14/36 [00:08<00:15,  1.40parameter_set/s][A
+Processing:  42%|████▏     | 15/36 [00:09<00:15,  1.36parameter_set/s][A
+Processing:  44%|████▍     | 16/36 [00:10<00:16,  1.18parameter_set/s][A
+Processing:  47%|████▋     | 17/36 [00:11<00:17,  1.09parameter_set/s][A
+Processing:  50%|█████     | 18/36 [00:12<00:17,  1.06parameter_set/s][A
+Processing:  53%|█████▎    | 19/36 [00:13<00:15,  1.11parameter_set/s][A
+Processing:  56%|█████▌    | 20/36 [00:14<00:13,  1.15parameter_set/s][A
+Processing:  58%|█████▊    | 21/36 [00:15<00:12,  1.19parameter_set/s][A
+Processing:  61%|██████    | 22/36 [00:16<00:12,  1.10parameter_set/s][A
+Processing:  64%|██████▍   | 23/36 [00:17<00:12,  1.05parameter_set/s][A
+Processing:  67%|██████▋   | 24/36 [00:18<00:11,  1.03parameter_set/s][A
+Processing:  69%|██████▉   | 25/36 [00:19<00:10,  1.00parameter_set/s][A
+Processing:  72%|███████▏  | 26/36 [00:20<00:10,  1.01s/parameter_set][A
+Processing:  75%|███████▌  | 27/36 [00:21<00:09,  1.02s/parameter_set][A
+Processing:  78%|███████▊  | 28/36 [00:22<00:09,  1.16s/parameter_set][A
+Processing:  81%|████████  | 29/36 [00:24<00:08,  1.26s/parameter_set][A
+Processing:  83%|████████▎ | 30/36 [00:25<00:07,  1.29s/parameter_set][A
+Processing:  86%|████████▌ | 31/36 [00:26<00:06,  1.22s/parameter_set][A
+Processing:  89%|████████▉ | 32/36 [00:27<00:04,  1.17s/parameter_set][A
+Processing:  92%|█████████▏| 33/36 [00:28<00:03,  1.12s/parameter_set][A
+Processing:  94%|█████████▍| 34/36 [00:30<00:02,  1.23s/parameter_set][A
+Processing:  97%|█████████▋| 35/36 [00:31<00:01,  1.29s/parameter_set][A
+Processing: 100%|██████████| 36/36 [00:33<00:00,  1.31s/parameter_set][AProcessing: 100%|██████████| 36/36 [00:33<00:00,  1.09parameter_set/s]
+++++++++++++++++++ 
+tb21_22_2263_pats_24_vars_relapse - Model: XGBoost - Period: 93 days  6-month cohort - data for training: all_days_in_period - CV:19
++++++++++++++++++
+Running training with all_days_in_period model: 120 vars
+Num of CV-repeat:19
+
+Processing:   0%|          | 0/36 [00:00<?, ?parameter_set/s][A
+Processing:   3%|▎         | 1/36 [00:00<00:19,  1.82parameter_set/s][A
+Processing:   6%|▌         | 2/36 [00:01<00:18,  1.84parameter_set/s][A
+Processing:   8%|▊         | 3/36 [00:01<00:19,  1.70parameter_set/s][A
+Processing:  11%|█         | 4/36 [00:02<00:20,  1.59parameter_set/s][A
+Processing:  14%|█▍        | 5/36 [00:03<00:19,  1.55parameter_set/s][A
+Processing:  17%|█▋        | 6/36 [00:03<00:19,  1.55parameter_set/s][A
+Processing:  19%|█▉        | 7/36 [00:04<00:17,  1.64parameter_set/s][A
+Processing:  22%|██▏       | 8/36 [00:04<00:16,  1.71parameter_set/s][A
+Processing:  25%|██▌       | 9/36 [00:05<00:15,  1.77parameter_set/s][A
+Processing:  28%|██▊       | 10/36 [00:06<00:15,  1.66parameter_set/s][A
+Processing:  31%|███       | 11/36 [00:06<00:15,  1.61parameter_set/s][A
+Processing:  33%|███▎      | 12/36 [00:07<00:15,  1.59parameter_set/s][A
+Processing:  36%|███▌      | 13/36 [00:08<00:15,  1.45parameter_set/s][A
+Processing:  39%|███▉      | 14/36 [00:08<00:15,  1.38parameter_set/s][A
+Processing:  42%|████▏     | 15/36 [00:09<00:15,  1.34parameter_set/s][A
+Processing:  44%|████▍     | 16/36 [00:10<00:17,  1.17parameter_set/s][A
+Processing:  47%|████▋     | 17/36 [00:11<00:17,  1.08parameter_set/s][A
+Processing:  50%|█████     | 18/36 [00:12<00:17,  1.05parameter_set/s][A
+Processing:  53%|█████▎    | 19/36 [00:13<00:15,  1.10parameter_set/s][A
+Processing:  56%|█████▌    | 20/36 [00:14<00:13,  1.14parameter_set/s][A
+Processing:  58%|█████▊    | 21/36 [00:15<00:12,  1.18parameter_set/s][A
+Processing:  61%|██████    | 22/36 [00:16<00:12,  1.09parameter_set/s][A
+Processing:  64%|██████▍   | 23/36 [00:17<00:12,  1.04parameter_set/s][A
+Processing:  67%|██████▋   | 24/36 [00:18<00:11,  1.03parameter_set/s][A
+Processing:  69%|██████▉   | 25/36 [00:19<00:11,  1.01s/parameter_set][A
+Processing:  72%|███████▏  | 26/36 [00:20<00:10,  1.03s/parameter_set][A
+Processing:  75%|███████▌  | 27/36 [00:21<00:09,  1.03s/parameter_set][A
+Processing:  78%|███████▊  | 28/36 [00:23<00:09,  1.18s/parameter_set][A
+Processing:  81%|████████  | 29/36 [00:24<00:08,  1.26s/parameter_set][A
+Processing:  83%|████████▎ | 30/36 [00:26<00:07,  1.30s/parameter_set][A
+Processing:  86%|████████▌ | 31/36 [00:27<00:06,  1.23s/parameter_set][A
+Processing:  89%|████████▉ | 32/36 [00:28<00:04,  1.18s/parameter_set][A
+Processing:  92%|█████████▏| 33/36 [00:29<00:03,  1.14s/parameter_set][A
+Processing:  94%|█████████▍| 34/36 [00:30<00:02,  1.24s/parameter_set][A
+Processing:  97%|█████████▋| 35/36 [00:32<00:01,  1.30s/parameter_set][A
+Processing: 100%|██████████| 36/36 [00:33<00:00,  1.31s/parameter_set][AProcessing: 100%|██████████| 36/36 [00:33<00:00,  1.08parameter_set/s]
+++++++++++++++++++ 
+tb21_22_2263_pats_24_vars_relapse - Model: XGBoost - Period: 93 days  6-month cohort - data for training: all_days_in_period - CV:20
++++++++++++++++++
+Running training with all_days_in_period model: 120 vars
+Num of CV-repeat:20
+
+Processing:   0%|          | 0/36 [00:00<?, ?parameter_set/s][A
+Processing:   3%|▎         | 1/36 [00:00<00:18,  1.88parameter_set/s][A
+Processing:   6%|▌         | 2/36 [00:01<00:18,  1.88parameter_set/s][A
+Processing:   8%|▊         | 3/36 [00:01<00:17,  1.90parameter_set/s][A
+Processing:  11%|█         | 4/36 [00:02<00:19,  1.68parameter_set/s][A
+Processing:  14%|█▍        | 5/36 [00:02<00:19,  1.60parameter_set/s][A
+Processing:  17%|█▋        | 6/36 [00:03<00:19,  1.58parameter_set/s][A
+Processing:  19%|█▉        | 7/36 [00:04<00:17,  1.66parameter_set/s][A
+Processing:  22%|██▏       | 8/36 [00:04<00:16,  1.73parameter_set/s][A
+Processing:  25%|██▌       | 9/36 [00:05<00:15,  1.79parameter_set/s][A
+Processing:  28%|██▊       | 10/36 [00:05<00:15,  1.67parameter_set/s][A
+Processing:  31%|███       | 11/36 [00:06<00:15,  1.60parameter_set/s][A
+Processing:  33%|███▎      | 12/36 [00:07<00:15,  1.59parameter_set/s][A
+Processing:  36%|███▌      | 13/36 [00:08<00:16,  1.40parameter_set/s][A
+Processing:  39%|███▉      | 14/36 [00:08<00:16,  1.36parameter_set/s][A
+Processing:  42%|████▏     | 15/36 [00:09<00:15,  1.33parameter_set/s][A
+Processing:  44%|████▍     | 16/36 [00:10<00:17,  1.16parameter_set/s][A
+Processing:  47%|████▋     | 17/36 [00:11<00:17,  1.08parameter_set/s][A
+Processing:  50%|█████     | 18/36 [00:12<00:17,  1.04parameter_set/s][A
+Processing:  53%|█████▎    | 19/36 [00:13<00:15,  1.10parameter_set/s][A
+Processing:  56%|█████▌    | 20/36 [00:14<00:13,  1.15parameter_set/s][A
+Processing:  58%|█████▊    | 21/36 [00:15<00:12,  1.19parameter_set/s][A
+Processing:  61%|██████    | 22/36 [00:16<00:12,  1.09parameter_set/s][A
+Processing:  64%|██████▍   | 23/36 [00:17<00:12,  1.04parameter_set/s][A
+Processing:  67%|██████▋   | 24/36 [00:18<00:11,  1.02parameter_set/s][A
+Processing:  69%|██████▉   | 25/36 [00:19<00:11,  1.01s/parameter_set][A
+Processing:  72%|███████▏  | 26/36 [00:20<00:10,  1.02s/parameter_set][A
+Processing:  75%|███████▌  | 27/36 [00:21<00:09,  1.02s/parameter_set][A
+Processing:  78%|███████▊  | 28/36 [00:23<00:09,  1.18s/parameter_set][A
+Processing:  81%|████████  | 29/36 [00:24<00:08,  1.27s/parameter_set][A
+Processing:  83%|████████▎ | 30/36 [00:26<00:07,  1.31s/parameter_set][A
+Processing:  86%|████████▌ | 31/36 [00:27<00:06,  1.23s/parameter_set][A
+Processing:  89%|████████▉ | 32/36 [00:28<00:04,  1.18s/parameter_set][A
+Processing:  92%|█████████▏| 33/36 [00:29<00:03,  1.13s/parameter_set][A
+Processing:  94%|█████████▍| 34/36 [00:30<00:02,  1.24s/parameter_set][A
+Processing:  97%|█████████▋| 35/36 [00:32<00:01,  1.31s/parameter_set][A
+Processing: 100%|██████████| 36/36 [00:33<00:00,  1.33s/parameter_set][AProcessing: 100%|██████████| 36/36 [00:33<00:00,  1.07parameter_set/s]
+++++++++++++++++++ 
+tb21_22_2263_pats_24_vars_relapse - Model: XGBoost - Period: 93 days  6-month cohort - data for training: all_days_in_period - CV:21
++++++++++++++++++
+Running training with all_days_in_period model: 120 vars
+Num of CV-repeat:21
+
+Processing:   0%|          | 0/36 [00:00<?, ?parameter_set/s][A
+Processing:   3%|▎         | 1/36 [00:00<00:18,  1.86parameter_set/s][A
+Processing:   6%|▌         | 2/36 [00:01<00:18,  1.86parameter_set/s][A
+Processing:   8%|▊         | 3/36 [00:01<00:17,  1.88parameter_set/s][A
+Processing:  11%|█         | 4/36 [00:02<00:19,  1.66parameter_set/s][A
+Processing:  14%|█▍        | 5/36 [00:03<00:19,  1.58parameter_set/s][A
+Processing:  17%|█▋        | 6/36 [00:03<00:19,  1.55parameter_set/s][A
+Processing:  19%|█▉        | 7/36 [00:04<00:17,  1.64parameter_set/s][A
+Processing:  22%|██▏       | 8/36 [00:04<00:16,  1.71parameter_set/s][A
+Processing:  25%|██▌       | 9/36 [00:05<00:15,  1.77parameter_set/s][A
+Processing:  28%|██▊       | 10/36 [00:05<00:15,  1.65parameter_set/s][A
+Processing:  31%|███       | 11/36 [00:06<00:15,  1.59parameter_set/s][A
+Processing:  33%|███▎      | 12/36 [00:07<00:15,  1.57parameter_set/s][A
+Processing:  36%|███▌      | 13/36 [00:08<00:15,  1.45parameter_set/s][A
+Processing:  39%|███▉      | 14/36 [00:08<00:15,  1.38parameter_set/s][A
+Processing:  42%|████▏     | 15/36 [00:09<00:15,  1.34parameter_set/s][A
+Processing:  44%|████▍     | 16/36 [00:10<00:17,  1.16parameter_set/s][A
+Processing:  47%|████▋     | 17/36 [00:11<00:17,  1.07parameter_set/s][A
+Processing:  50%|█████     | 18/36 [00:13<00:17,  1.03parameter_set/s][A
+Processing:  53%|█████▎    | 19/36 [00:13<00:15,  1.08parameter_set/s][A
+Processing:  56%|█████▌    | 20/36 [00:14<00:14,  1.13parameter_set/s][A
+Processing:  58%|█████▊    | 21/36 [00:15<00:12,  1.17parameter_set/s][A
+Processing:  61%|██████    | 22/36 [00:16<00:13,  1.07parameter_set/s][A
+Processing:  64%|██████▍   | 23/36 [00:17<00:12,  1.02parameter_set/s][A
+Processing:  67%|██████▋   | 24/36 [00:18<00:11,  1.00parameter_set/s][A
+Processing:  69%|██████▉   | 25/36 [00:19<00:11,  1.06s/parameter_set][A
+Processing:  72%|███████▏  | 26/36 [00:20<00:10,  1.06s/parameter_set][A
+Processing:  75%|███████▌  | 27/36 [00:21<00:09,  1.05s/parameter_set][A
+Processing:  78%|███████▊  | 28/36 [00:23<00:09,  1.21s/parameter_set][A
+Processing:  81%|████████  | 29/36 [00:25<00:09,  1.30s/parameter_set][A
+Processing:  83%|████████▎ | 30/36 [00:26<00:08,  1.34s/parameter_set][A
+Processing:  86%|████████▌ | 31/36 [00:27<00:06,  1.26s/parameter_set][A
+Processing:  89%|████████▉ | 32/36 [00:28<00:04,  1.20s/parameter_set][A
+Processing:  92%|█████████▏| 33/36 [00:29<00:03,  1.15s/parameter_set][A
+Processing:  94%|█████████▍| 34/36 [00:31<00:02,  1.26s/parameter_set][A
+Processing:  97%|█████████▋| 35/36 [00:32<00:01,  1.33s/parameter_set][A
+Processing: 100%|██████████| 36/36 [00:34<00:00,  1.35s/parameter_set][AProcessing: 100%|██████████| 36/36 [00:34<00:00,  1.06parameter_set/s]
+++++++++++++++++++ 
+tb21_22_2263_pats_24_vars_relapse - Model: XGBoost - Period: 93 days  6-month cohort - data for training: all_days_in_period - CV:22
++++++++++++++++++
+Running training with all_days_in_period model: 120 vars
+Num of CV-repeat:22
+
+Processing:   0%|          | 0/36 [00:00<?, ?parameter_set/s][A
+Processing:   3%|▎         | 1/36 [00:00<00:18,  1.88parameter_set/s][A
+Processing:   6%|▌         | 2/36 [00:01<00:18,  1.88parameter_set/s][A
+Processing:   8%|▊         | 3/36 [00:01<00:17,  1.91parameter_set/s][A
+Processing:  11%|█         | 4/36 [00:02<00:18,  1.69parameter_set/s][A
+Processing:  14%|█▍        | 5/36 [00:02<00:19,  1.60parameter_set/s][A
+Processing:  17%|█▋        | 6/36 [00:03<00:19,  1.58parameter_set/s][A
+Processing:  19%|█▉        | 7/36 [00:04<00:17,  1.67parameter_set/s][A
+Processing:  22%|██▏       | 8/36 [00:04<00:16,  1.74parameter_set/s][A
+Processing:  25%|██▌       | 9/36 [00:05<00:15,  1.79parameter_set/s][A
+Processing:  28%|██▊       | 10/36 [00:05<00:15,  1.67parameter_set/s][A
+Processing:  31%|███       | 11/36 [00:06<00:15,  1.61parameter_set/s][A
+Processing:  33%|███▎      | 12/36 [00:07<00:15,  1.59parameter_set/s][A
+Processing:  36%|███▌      | 13/36 [00:07<00:15,  1.47parameter_set/s][A
+Processing:  39%|███▉      | 14/36 [00:08<00:15,  1.40parameter_set/s][A
+Processing:  42%|████▏     | 15/36 [00:09<00:15,  1.37parameter_set/s][A
+Processing:  44%|████▍     | 16/36 [00:10<00:16,  1.18parameter_set/s][A
+Processing:  47%|████▋     | 17/36 [00:11<00:17,  1.09parameter_set/s][A
+Processing:  50%|█████     | 18/36 [00:12<00:17,  1.05parameter_set/s][A
+Processing:  53%|█████▎    | 19/36 [00:13<00:15,  1.10parameter_set/s][A
+Processing:  56%|█████▌    | 20/36 [00:14<00:13,  1.15parameter_set/s][A
+Processing:  58%|█████▊    | 21/36 [00:15<00:12,  1.19parameter_set/s][A
+Processing:  61%|██████    | 22/36 [00:16<00:12,  1.09parameter_set/s][A
+Processing:  64%|██████▍   | 23/36 [00:17<00:12,  1.04parameter_set/s][A
+Processing:  67%|██████▋   | 24/36 [00:18<00:11,  1.02parameter_set/s][A
+Processing:  69%|██████▉   | 25/36 [00:19<00:11,  1.00s/parameter_set][A
+Processing:  72%|███████▏  | 26/36 [00:20<00:10,  1.02s/parameter_set][A
+Processing:  75%|███████▌  | 27/36 [00:21<00:09,  1.02s/parameter_set][A
+Processing:  78%|███████▊  | 28/36 [00:22<00:09,  1.17s/parameter_set][A
+Processing:  81%|████████  | 29/36 [00:24<00:09,  1.29s/parameter_set][A
+Processing:  83%|████████▎ | 30/36 [00:25<00:07,  1.32s/parameter_set][A
+Processing:  86%|████████▌ | 31/36 [00:26<00:06,  1.24s/parameter_set][A
+Processing:  89%|████████▉ | 32/36 [00:28<00:04,  1.18s/parameter_set][A
+Processing:  92%|█████████▏| 33/36 [00:29<00:03,  1.13s/parameter_set][A
+Processing:  94%|█████████▍| 34/36 [00:30<00:02,  1.24s/parameter_set][A
+Processing:  97%|█████████▋| 35/36 [00:31<00:01,  1.30s/parameter_set][A
+Processing: 100%|██████████| 36/36 [00:33<00:00,  1.32s/parameter_set][AProcessing: 100%|██████████| 36/36 [00:33<00:00,  1.08parameter_set/s]
+++++++++++++++++++ 
+tb21_22_2263_pats_24_vars_relapse - Model: XGBoost - Period: 93 days  6-month cohort - data for training: all_days_in_period - CV:23
++++++++++++++++++
+Running training with all_days_in_period model: 121 vars
+Num of CV-repeat:23
+
+Processing:   0%|          | 0/36 [00:00<?, ?parameter_set/s][A
+Processing:   3%|▎         | 1/36 [00:00<00:19,  1.83parameter_set/s][A
+Processing:   6%|▌         | 2/36 [00:01<00:18,  1.85parameter_set/s][A
+Processing:   8%|▊         | 3/36 [00:01<00:17,  1.87parameter_set/s][A
+Processing:  11%|█         | 4/36 [00:02<00:19,  1.68parameter_set/s][A
+Processing:  14%|█▍        | 5/36 [00:02<00:19,  1.60parameter_set/s][A
+Processing:  17%|█▋        | 6/36 [00:03<00:18,  1.58parameter_set/s][A
+Processing:  19%|█▉        | 7/36 [00:04<00:17,  1.66parameter_set/s][A
+Processing:  22%|██▏       | 8/36 [00:04<00:16,  1.72parameter_set/s][A
+Processing:  25%|██▌       | 9/36 [00:05<00:15,  1.77parameter_set/s][A
+Processing:  28%|██▊       | 10/36 [00:05<00:15,  1.67parameter_set/s][A
+Processing:  31%|███       | 11/36 [00:06<00:15,  1.62parameter_set/s][A
+Processing:  33%|███▎      | 12/36 [00:07<00:14,  1.61parameter_set/s][A
+Processing:  36%|███▌      | 13/36 [00:08<00:15,  1.46parameter_set/s][A
+Processing:  39%|███▉      | 14/36 [00:08<00:15,  1.38parameter_set/s][A
+Processing:  42%|████▏     | 15/36 [00:09<00:15,  1.34parameter_set/s][A
+Processing:  44%|████▍     | 16/36 [00:10<00:17,  1.17parameter_set/s][A
+Processing:  47%|████▋     | 17/36 [00:11<00:17,  1.09parameter_set/s][A
+Processing:  50%|█████     | 18/36 [00:12<00:17,  1.05parameter_set/s][A
+Processing:  53%|█████▎    | 19/36 [00:13<00:15,  1.10parameter_set/s][A
+Processing:  56%|█████▌    | 20/36 [00:14<00:14,  1.14parameter_set/s][A
+Processing:  58%|█████▊    | 21/36 [00:15<00:12,  1.18parameter_set/s][A
+Processing:  61%|██████    | 22/36 [00:16<00:12,  1.09parameter_set/s][A
+Processing:  64%|██████▍   | 23/36 [00:17<00:12,  1.05parameter_set/s][A
+Processing:  67%|██████▋   | 24/36 [00:18<00:11,  1.04parameter_set/s][A
+Processing:  69%|██████▉   | 25/36 [00:19<00:11,  1.01s/parameter_set][A
+Processing:  72%|███████▏  | 26/36 [00:20<00:10,  1.03s/parameter_set][A
+Processing:  75%|███████▌  | 27/36 [00:21<00:09,  1.04s/parameter_set][A
+Processing:  78%|███████▊  | 28/36 [00:23<00:09,  1.18s/parameter_set][A
+Processing:  81%|████████  | 29/36 [00:24<00:08,  1.27s/parameter_set][A
+Processing:  83%|████████▎ | 30/36 [00:25<00:07,  1.30s/parameter_set][A
+Processing:  86%|████████▌ | 31/36 [00:27<00:06,  1.23s/parameter_set][A
+Processing:  89%|████████▉ | 32/36 [00:28<00:04,  1.18s/parameter_set][A
+Processing:  92%|█████████▏| 33/36 [00:29<00:03,  1.14s/parameter_set][A
+Processing:  94%|█████████▍| 34/36 [00:30<00:02,  1.24s/parameter_set][A
+Processing:  97%|█████████▋| 35/36 [00:32<00:01,  1.30s/parameter_set][A
+Processing: 100%|██████████| 36/36 [00:33<00:00,  1.32s/parameter_set][AProcessing: 100%|██████████| 36/36 [00:33<00:00,  1.08parameter_set/s]
+++++++++++++++++++ 
+tb21_22_2263_pats_24_vars_relapse - Model: XGBoost - Period: 93 days  6-month cohort - data for training: all_days_in_period - CV:24
++++++++++++++++++
+Running training with all_days_in_period model: 121 vars
+Num of CV-repeat:24
+
+Processing:   0%|          | 0/36 [00:00<?, ?parameter_set/s][A
+Processing:   3%|▎         | 1/36 [00:00<00:18,  1.85parameter_set/s][A
+Processing:   6%|▌         | 2/36 [00:01<00:18,  1.88parameter_set/s][A
+Processing:   8%|▊         | 3/36 [00:01<00:17,  1.90parameter_set/s][A
+Processing:  11%|█         | 4/36 [00:02<00:19,  1.68parameter_set/s][A
+Processing:  14%|█▍        | 5/36 [00:02<00:19,  1.60parameter_set/s][A
+Processing:  17%|█▋        | 6/36 [00:03<00:19,  1.57parameter_set/s][A
+Processing:  19%|█▉        | 7/36 [00:04<00:17,  1.66parameter_set/s][A
+Processing:  22%|██▏       | 8/36 [00:04<00:16,  1.73parameter_set/s][A
+Processing:  25%|██▌       | 9/36 [00:05<00:15,  1.79parameter_set/s][A
+Processing:  28%|██▊       | 10/36 [00:05<00:15,  1.66parameter_set/s][A
+Processing:  31%|███       | 11/36 [00:06<00:15,  1.60parameter_set/s][A
+Processing:  33%|███▎      | 12/36 [00:07<00:15,  1.58parameter_set/s][A
+Processing:  36%|███▌      | 13/36 [00:08<00:15,  1.46parameter_set/s][A
+Processing:  39%|███▉      | 14/36 [00:08<00:15,  1.39parameter_set/s][A
+Processing:  42%|████▏     | 15/36 [00:09<00:15,  1.36parameter_set/s][A
+Processing:  44%|████▍     | 16/36 [00:10<00:17,  1.17parameter_set/s][A
+Processing:  47%|████▋     | 17/36 [00:11<00:17,  1.08parameter_set/s][A
+Processing:  50%|█████     | 18/36 [00:12<00:17,  1.04parameter_set/s][A
+Processing:  53%|█████▎    | 19/36 [00:13<00:15,  1.10parameter_set/s][A
+Processing:  56%|█████▌    | 20/36 [00:14<00:13,  1.15parameter_set/s][A
+Processing:  58%|█████▊    | 21/36 [00:15<00:12,  1.19parameter_set/s][A
+Processing:  61%|██████    | 22/36 [00:16<00:12,  1.08parameter_set/s][A
+Processing:  64%|██████▍   | 23/36 [00:17<00:12,  1.03parameter_set/s][A
+Processing:  67%|██████▋   | 24/36 [00:18<00:11,  1.02parameter_set/s][A
+Processing:  69%|██████▉   | 25/36 [00:19<00:11,  1.01s/parameter_set][A
+Processing:  72%|███████▏  | 26/36 [00:20<00:10,  1.02s/parameter_set][A
+Processing:  75%|███████▌  | 27/36 [00:21<00:09,  1.02s/parameter_set][A
+Processing:  78%|███████▊  | 28/36 [00:23<00:09,  1.18s/parameter_set][A
+Processing:  81%|████████  | 29/36 [00:24<00:08,  1.27s/parameter_set][A
+Processing:  83%|████████▎ | 30/36 [00:26<00:07,  1.31s/parameter_set][A
+Processing:  86%|████████▌ | 31/36 [00:27<00:06,  1.24s/parameter_set][A
+Processing:  89%|████████▉ | 32/36 [00:28<00:04,  1.18s/parameter_set][A
+Processing:  92%|█████████▏| 33/36 [00:29<00:03,  1.13s/parameter_set][A
+Processing:  94%|█████████▍| 34/36 [00:30<00:02,  1.24s/parameter_set][A
+Processing:  97%|█████████▋| 35/36 [00:32<00:01,  1.31s/parameter_set][A
+Processing: 100%|██████████| 36/36 [00:33<00:00,  1.33s/parameter_set][AProcessing: 100%|██████████| 36/36 [00:33<00:00,  1.08parameter_set/s]
+++++++++++++++++++ 
+tb21_22_2263_pats_24_vars_relapse - Model: XGBoost - Period: 93 days  6-month cohort - data for training: all_days_in_period - CV:25
++++++++++++++++++
+Running training with all_days_in_period model: 121 vars
+Num of CV-repeat:25
+
+Processing:   0%|          | 0/36 [00:00<?, ?parameter_set/s][A
+Processing:   3%|▎         | 1/36 [00:00<00:19,  1.82parameter_set/s][A
+Processing:   6%|▌         | 2/36 [00:01<00:18,  1.83parameter_set/s][A
+Processing:   8%|▊         | 3/36 [00:01<00:17,  1.85parameter_set/s][A
+Processing:  11%|█         | 4/36 [00:02<00:19,  1.66parameter_set/s][A
+Processing:  14%|█▍        | 5/36 [00:03<00:19,  1.58parameter_set/s][A
+Processing:  17%|█▋        | 6/36 [00:03<00:19,  1.57parameter_set/s][A
+Processing:  19%|█▉        | 7/36 [00:04<00:17,  1.64parameter_set/s][A
+Processing:  22%|██▏       | 8/36 [00:04<00:16,  1.70parameter_set/s][A
+Processing:  25%|██▌       | 9/36 [00:05<00:15,  1.75parameter_set/s][A
+Processing:  28%|██▊       | 10/36 [00:05<00:15,  1.64parameter_set/s][A
+Processing:  31%|███       | 11/36 [00:06<00:15,  1.59parameter_set/s][A
+Processing:  33%|███▎      | 12/36 [00:07<00:15,  1.58parameter_set/s][A
+Processing:  36%|███▌      | 13/36 [00:08<00:15,  1.44parameter_set/s][A
+Processing:  39%|███▉      | 14/36 [00:08<00:16,  1.36parameter_set/s][A
+Processing:  42%|████▏     | 15/36 [00:09<00:15,  1.33parameter_set/s][A
+Processing:  44%|████▍     | 16/36 [00:10<00:17,  1.16parameter_set/s][A
+Processing:  47%|████▋     | 17/36 [00:11<00:17,  1.07parameter_set/s][A
+Processing:  50%|█████     | 18/36 [00:12<00:17,  1.04parameter_set/s][A
+Processing:  53%|█████▎    | 19/36 [00:13<00:15,  1.09parameter_set/s][A
+Processing:  56%|█████▌    | 20/36 [00:14<00:14,  1.13parameter_set/s][A
+Processing:  58%|█████▊    | 21/36 [00:15<00:12,  1.16parameter_set/s][A
+Processing:  61%|██████    | 22/36 [00:16<00:13,  1.07parameter_set/s][A
+Processing:  64%|██████▍   | 23/36 [00:17<00:12,  1.03parameter_set/s][A
+Processing:  67%|██████▋   | 24/36 [00:18<00:11,  1.02parameter_set/s][A
+Processing:  69%|██████▉   | 25/36 [00:19<00:11,  1.02s/parameter_set][A
+Processing:  72%|███████▏  | 26/36 [00:20<00:10,  1.04s/parameter_set][A
+Processing:  75%|███████▌  | 27/36 [00:21<00:09,  1.05s/parameter_set][A
+Processing:  78%|███████▊  | 28/36 [00:23<00:09,  1.19s/parameter_set][A
+Processing:  81%|████████  | 29/36 [00:24<00:08,  1.28s/parameter_set][A
+Processing:  83%|████████▎ | 30/36 [00:26<00:07,  1.31s/parameter_set][A
+Processing:  86%|████████▌ | 31/36 [00:27<00:06,  1.25s/parameter_set][A
+Processing:  89%|████████▉ | 32/36 [00:28<00:04,  1.20s/parameter_set][A
+Processing:  92%|█████████▏| 33/36 [00:29<00:03,  1.16s/parameter_set][A
+Processing:  94%|█████████▍| 34/36 [00:31<00:02,  1.26s/parameter_set][A
+Processing:  97%|█████████▋| 35/36 [00:32<00:01,  1.32s/parameter_set][A
+Processing: 100%|██████████| 36/36 [00:33<00:00,  1.33s/parameter_set][AProcessing: 100%|██████████| 36/36 [00:33<00:00,  1.06parameter_set/s]
+100%|██████████| 1/1 [15:43<00:00, 943.08s/model]100%|██████████| 1/1 [15:43<00:00, 943.08s/model]
+Training duration:
+Elapsed time:0 hours:16 minutes

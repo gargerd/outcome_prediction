@@ -1,426 +1,0 @@
-Loading anaconda
-Activate conda env
-tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm
-last_therapy_day
-93
-LogisticRegression
-/data/gpfs/projects/punim2121/C-Path/outcome_prediction/outcome_prediction/s9_3_baseline_ML_models_functions.py:1549: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  de_['RELAPSE']=de_['RELAPSE'].astype(float)
-===========
- tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm 
-
-pat_ids_ before arm check 2401
-2401
-Excluded 0 out of 2401 patients (0.0%)
-
-  0%|          | 0/1 [00:00<?, ?model/s]
-=====================
-LogisticRegression
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm - Model: LogisticRegression - Period: 93 days  - data for training: last_therapy_day - CV:1
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1060  139
-TB-1022  1081  116
-pat_ids_ 2401 final_pat_ids_for_anal 2396
-Running training with last_therapy_day model: 62 vars
-Num of CV-repeat:1
-
-Processing:   0%|          | 0/5 [00:00<?, ?parameter_set/s][A
-Processing:  20%|██        | 1/5 [00:00<00:00,  8.92parameter_set/s][A
-Processing:  40%|████      | 2/5 [00:00<00:00,  3.76parameter_set/s][A
-Processing:  60%|██████    | 3/5 [00:02<00:02,  1.17s/parameter_set][A
-Processing:  80%|████████  | 4/5 [00:05<00:01,  1.94s/parameter_set][A
-Processing: 100%|██████████| 5/5 [00:09<00:00,  2.40s/parameter_set][AProcessing: 100%|██████████| 5/5 [00:09<00:00,  1.81s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm - Model: LogisticRegression - Period: 93 days  - data for training: last_therapy_day - CV:2
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1060  139
-TB-1022  1081  116
-pat_ids_ 2401 final_pat_ids_for_anal 2396
-Running training with last_therapy_day model: 62 vars
-Num of CV-repeat:2
-
-Processing:   0%|          | 0/5 [00:00<?, ?parameter_set/s][A
-Processing:  40%|████      | 2/5 [00:00<00:00,  4.56parameter_set/s][A
-Processing:  60%|██████    | 3/5 [00:01<00:01,  1.38parameter_set/s][A
-Processing:  80%|████████  | 4/5 [00:04<00:01,  1.60s/parameter_set][A
-Processing: 100%|██████████| 5/5 [00:08<00:00,  2.14s/parameter_set][AProcessing: 100%|██████████| 5/5 [00:08<00:00,  1.62s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm - Model: LogisticRegression - Period: 93 days  - data for training: last_therapy_day - CV:3
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1060  139
-TB-1022  1081  116
-pat_ids_ 2401 final_pat_ids_for_anal 2396
-Running training with last_therapy_day model: 62 vars
-Num of CV-repeat:3
-
-Processing:   0%|          | 0/5 [00:00<?, ?parameter_set/s][A
-Processing:  40%|████      | 2/5 [00:00<00:00,  6.59parameter_set/s][A
-Processing:  60%|██████    | 3/5 [00:03<00:02,  1.27s/parameter_set][A
-Processing:  80%|████████  | 4/5 [00:06<00:01,  1.98s/parameter_set][A
-Processing: 100%|██████████| 5/5 [00:09<00:00,  2.42s/parameter_set][AProcessing: 100%|██████████| 5/5 [00:09<00:00,  1.91s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm - Model: LogisticRegression - Period: 93 days  - data for training: last_therapy_day - CV:4
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1060  139
-TB-1022  1081  116
-pat_ids_ 2401 final_pat_ids_for_anal 2396
-Running training with last_therapy_day model: 62 vars
-Num of CV-repeat:4
-
-Processing:   0%|          | 0/5 [00:00<?, ?parameter_set/s][A
-Processing:  40%|████      | 2/5 [00:01<00:02,  1.05parameter_set/s][A
-Processing:  60%|██████    | 3/5 [00:03<00:02,  1.09s/parameter_set][A
-Processing:  80%|████████  | 4/5 [00:06<00:01,  1.84s/parameter_set][A
-Processing: 100%|██████████| 5/5 [00:09<00:00,  2.29s/parameter_set][AProcessing: 100%|██████████| 5/5 [00:09<00:00,  1.89s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm - Model: LogisticRegression - Period: 93 days  - data for training: last_therapy_day - CV:5
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1060  139
-TB-1022  1081  116
-pat_ids_ 2401 final_pat_ids_for_anal 2396
-Running training with last_therapy_day model: 62 vars
-Num of CV-repeat:5
-
-Processing:   0%|          | 0/5 [00:00<?, ?parameter_set/s][A
-Processing:  40%|████      | 2/5 [00:00<00:00,  7.39parameter_set/s][A
-Processing:  60%|██████    | 3/5 [00:02<00:02,  1.05s/parameter_set][A
-Processing:  80%|████████  | 4/5 [00:05<00:01,  1.83s/parameter_set][A
-Processing: 100%|██████████| 5/5 [00:08<00:00,  2.30s/parameter_set][AProcessing: 100%|██████████| 5/5 [00:08<00:00,  1.78s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm - Model: LogisticRegression - Period: 93 days  - data for training: last_therapy_day - CV:6
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1060  139
-TB-1022  1081  116
-pat_ids_ 2401 final_pat_ids_for_anal 2396
-Running training with last_therapy_day model: 62 vars
-Num of CV-repeat:6
-
-Processing:   0%|          | 0/5 [00:00<?, ?parameter_set/s][A
-Processing:  40%|████      | 2/5 [00:00<00:00,  7.87parameter_set/s][A
-Processing:  60%|██████    | 3/5 [00:01<00:01,  1.70parameter_set/s][A
-Processing:  80%|████████  | 4/5 [00:04<00:01,  1.52s/parameter_set][A
-Processing: 100%|██████████| 5/5 [00:07<00:00,  2.08s/parameter_set][AProcessing: 100%|██████████| 5/5 [00:07<00:00,  1.54s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm - Model: LogisticRegression - Period: 93 days  - data for training: last_therapy_day - CV:7
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1060  139
-TB-1022  1081  116
-pat_ids_ 2401 final_pat_ids_for_anal 2396
-Running training with last_therapy_day model: 62 vars
-Num of CV-repeat:7
-
-Processing:   0%|          | 0/5 [00:00<?, ?parameter_set/s][A
-Processing:  40%|████      | 2/5 [00:00<00:00,  8.01parameter_set/s][A
-Processing:  60%|██████    | 3/5 [00:01<00:01,  1.32parameter_set/s][A
-Processing:  80%|████████  | 4/5 [00:04<00:01,  1.63s/parameter_set][A
-Processing: 100%|██████████| 5/5 [00:08<00:00,  2.16s/parameter_set][AProcessing: 100%|██████████| 5/5 [00:08<00:00,  1.63s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm - Model: LogisticRegression - Period: 93 days  - data for training: last_therapy_day - CV:8
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1060  139
-TB-1022  1081  116
-pat_ids_ 2401 final_pat_ids_for_anal 2396
-Running training with last_therapy_day model: 62 vars
-Num of CV-repeat:8
-
-Processing:   0%|          | 0/5 [00:00<?, ?parameter_set/s][A
-Processing:  40%|████      | 2/5 [00:01<00:01,  1.98parameter_set/s][A
-Processing:  60%|██████    | 3/5 [00:01<00:01,  1.47parameter_set/s][A
-Processing:  80%|████████  | 4/5 [00:04<00:01,  1.56s/parameter_set][A
-Processing: 100%|██████████| 5/5 [00:08<00:00,  2.10s/parameter_set][AProcessing: 100%|██████████| 5/5 [00:08<00:00,  1.62s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm - Model: LogisticRegression - Period: 93 days  - data for training: last_therapy_day - CV:9
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1060  139
-TB-1022  1081  116
-pat_ids_ 2401 final_pat_ids_for_anal 2396
-Running training with last_therapy_day model: 62 vars
-Num of CV-repeat:9
-
-Processing:   0%|          | 0/5 [00:00<?, ?parameter_set/s][A
-Processing:  40%|████      | 2/5 [00:00<00:00,  6.54parameter_set/s][A
-Processing:  60%|██████    | 3/5 [00:01<00:00,  2.13parameter_set/s][A
-Processing:  80%|████████  | 4/5 [00:04<00:01,  1.43s/parameter_set][A
-Processing: 100%|██████████| 5/5 [00:07<00:00,  2.02s/parameter_set][AProcessing: 100%|██████████| 5/5 [00:07<00:00,  1.48s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm - Model: LogisticRegression - Period: 93 days  - data for training: last_therapy_day - CV:10
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1060  139
-TB-1022  1081  116
-pat_ids_ 2401 final_pat_ids_for_anal 2396
-Running training with last_therapy_day model: 62 vars
-Num of CV-repeat:10
-
-Processing:   0%|          | 0/5 [00:00<?, ?parameter_set/s][A
-Processing:  40%|████      | 2/5 [00:00<00:01,  2.42parameter_set/s][A
-Processing:  60%|██████    | 3/5 [00:02<00:01,  1.01parameter_set/s][A
-Processing:  80%|████████  | 4/5 [00:05<00:01,  1.78s/parameter_set][A
-Processing: 100%|██████████| 5/5 [00:08<00:00,  2.27s/parameter_set][AProcessing: 100%|██████████| 5/5 [00:08<00:00,  1.79s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm - Model: LogisticRegression - Period: 93 days  - data for training: last_therapy_day - CV:11
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1060  139
-TB-1022  1081  116
-pat_ids_ 2401 final_pat_ids_for_anal 2396
-Running training with last_therapy_day model: 62 vars
-Num of CV-repeat:11
-
-Processing:   0%|          | 0/5 [00:00<?, ?parameter_set/s][A
-Processing:  40%|████      | 2/5 [00:00<00:01,  2.27parameter_set/s][A
-Processing:  60%|██████    | 3/5 [00:02<00:01,  1.19parameter_set/s][A
-Processing:  80%|████████  | 4/5 [00:05<00:01,  1.67s/parameter_set][A
-Processing: 100%|██████████| 5/5 [00:08<00:00,  2.19s/parameter_set][AProcessing: 100%|██████████| 5/5 [00:08<00:00,  1.70s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm - Model: LogisticRegression - Period: 93 days  - data for training: last_therapy_day - CV:12
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1060  139
-TB-1022  1081  116
-pat_ids_ 2401 final_pat_ids_for_anal 2396
-Running training with last_therapy_day model: 62 vars
-Num of CV-repeat:12
-
-Processing:   0%|          | 0/5 [00:00<?, ?parameter_set/s][A
-Processing:  40%|████      | 2/5 [00:00<00:01,  2.16parameter_set/s][A
-Processing:  60%|██████    | 3/5 [00:02<00:02,  1.03s/parameter_set][A
-Processing:  80%|████████  | 4/5 [00:05<00:01,  1.83s/parameter_set][A
-Processing: 100%|██████████| 5/5 [00:09<00:00,  2.30s/parameter_set][AProcessing: 100%|██████████| 5/5 [00:09<00:00,  1.82s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm - Model: LogisticRegression - Period: 93 days  - data for training: last_therapy_day - CV:13
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1060  139
-TB-1022  1081  116
-pat_ids_ 2401 final_pat_ids_for_anal 2396
-Running training with last_therapy_day model: 62 vars
-Num of CV-repeat:13
-
-Processing:   0%|          | 0/5 [00:00<?, ?parameter_set/s][A
-Processing:  40%|████      | 2/5 [00:00<00:00,  6.22parameter_set/s][A
-Processing:  60%|██████    | 3/5 [00:01<00:01,  1.42parameter_set/s][A
-Processing:  80%|████████  | 4/5 [00:04<00:01,  1.59s/parameter_set][A
-Processing: 100%|██████████| 5/5 [00:07<00:00,  2.13s/parameter_set][AProcessing: 100%|██████████| 5/5 [00:07<00:00,  1.60s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm - Model: LogisticRegression - Period: 93 days  - data for training: last_therapy_day - CV:14
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1060  139
-TB-1022  1081  116
-pat_ids_ 2401 final_pat_ids_for_anal 2396
-Running training with last_therapy_day model: 62 vars
-Num of CV-repeat:14
-
-Processing:   0%|          | 0/5 [00:00<?, ?parameter_set/s][A
-Processing:  40%|████      | 2/5 [00:02<00:03,  1.04s/parameter_set][A
-Processing:  60%|██████    | 3/5 [00:03<00:02,  1.35s/parameter_set][A
-Processing:  80%|████████  | 4/5 [00:06<00:01,  1.99s/parameter_set][A
-Processing: 100%|██████████| 5/5 [00:10<00:00,  2.38s/parameter_set][AProcessing: 100%|██████████| 5/5 [00:10<00:00,  2.01s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm - Model: LogisticRegression - Period: 93 days  - data for training: last_therapy_day - CV:15
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1060  139
-TB-1022  1081  116
-pat_ids_ 2401 final_pat_ids_for_anal 2396
-Running training with last_therapy_day model: 62 vars
-Num of CV-repeat:15
-
-Processing:   0%|          | 0/5 [00:00<?, ?parameter_set/s][A
-Processing:  40%|████      | 2/5 [00:00<00:00,  9.23parameter_set/s][A
-Processing:  60%|██████    | 3/5 [00:02<00:02,  1.20s/parameter_set][A
-Processing:  80%|████████  | 4/5 [00:06<00:01,  1.93s/parameter_set][A
-Processing: 100%|██████████| 5/5 [00:09<00:00,  2.38s/parameter_set][AProcessing: 100%|██████████| 5/5 [00:09<00:00,  1.87s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm - Model: LogisticRegression - Period: 93 days  - data for training: last_therapy_day - CV:16
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1060  139
-TB-1022  1081  116
-pat_ids_ 2401 final_pat_ids_for_anal 2396
-Running training with last_therapy_day model: 62 vars
-Num of CV-repeat:16
-
-Processing:   0%|          | 0/5 [00:00<?, ?parameter_set/s][A
-Processing:  40%|████      | 2/5 [00:00<00:00,  3.07parameter_set/s][A
-Processing:  60%|██████    | 3/5 [00:02<00:01,  1.30parameter_set/s][A
-Processing:  80%|████████  | 4/5 [00:05<00:01,  1.63s/parameter_set][A
-Processing: 100%|██████████| 5/5 [00:08<00:00,  2.16s/parameter_set][AProcessing: 100%|██████████| 5/5 [00:08<00:00,  1.65s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm - Model: LogisticRegression - Period: 93 days  - data for training: last_therapy_day - CV:17
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1060  139
-TB-1022  1081  116
-pat_ids_ 2401 final_pat_ids_for_anal 2396
-Running training with last_therapy_day model: 62 vars
-Num of CV-repeat:17
-
-Processing:   0%|          | 0/5 [00:00<?, ?parameter_set/s][A
-Processing:  40%|████      | 2/5 [00:00<00:00,  8.81parameter_set/s][A
-Processing:  60%|██████    | 3/5 [00:03<00:02,  1.27s/parameter_set][A
-Processing:  80%|████████  | 4/5 [00:06<00:01,  1.97s/parameter_set][A
-Processing: 100%|██████████| 5/5 [00:09<00:00,  2.41s/parameter_set][AProcessing: 100%|██████████| 5/5 [00:09<00:00,  1.90s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm - Model: LogisticRegression - Period: 93 days  - data for training: last_therapy_day - CV:18
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1060  139
-TB-1022  1081  116
-pat_ids_ 2401 final_pat_ids_for_anal 2396
-Running training with last_therapy_day model: 62 vars
-Num of CV-repeat:18
-
-Processing:   0%|          | 0/5 [00:00<?, ?parameter_set/s][A
-Processing:  40%|████      | 2/5 [00:01<00:02,  1.32parameter_set/s][A
-Processing:  60%|██████    | 3/5 [00:02<00:01,  1.02parameter_set/s][A
-Processing:  80%|████████  | 4/5 [00:05<00:01,  1.77s/parameter_set][A
-Processing: 100%|██████████| 5/5 [00:09<00:00,  2.25s/parameter_set][AProcessing: 100%|██████████| 5/5 [00:09<00:00,  1.81s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm - Model: LogisticRegression - Period: 93 days  - data for training: last_therapy_day - CV:19
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1060  139
-TB-1022  1081  116
-pat_ids_ 2401 final_pat_ids_for_anal 2396
-Running training with last_therapy_day model: 62 vars
-Num of CV-repeat:19
-
-Processing:   0%|          | 0/5 [00:00<?, ?parameter_set/s][A
-Processing:  40%|████      | 2/5 [00:01<00:01,  1.96parameter_set/s][A
-Processing:  60%|██████    | 3/5 [00:02<00:01,  1.02parameter_set/s][A
-Processing:  80%|████████  | 4/5 [00:05<00:01,  1.77s/parameter_set][A
-Processing: 100%|██████████| 5/5 [00:08<00:00,  2.25s/parameter_set][AProcessing: 100%|██████████| 5/5 [00:08<00:00,  1.78s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm - Model: LogisticRegression - Period: 93 days  - data for training: last_therapy_day - CV:20
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1060  139
-TB-1022  1081  116
-pat_ids_ 2401 final_pat_ids_for_anal 2396
-Running training with last_therapy_day model: 62 vars
-Num of CV-repeat:20
-
-Processing:   0%|          | 0/5 [00:00<?, ?parameter_set/s][A
-Processing:  40%|████      | 2/5 [00:00<00:00,  5.34parameter_set/s][A
-Processing:  60%|██████    | 3/5 [00:02<00:02,  1.02s/parameter_set][A
-Processing:  80%|████████  | 4/5 [00:05<00:01,  1.79s/parameter_set][A
-Processing: 100%|██████████| 5/5 [00:08<00:00,  2.26s/parameter_set][AProcessing: 100%|██████████| 5/5 [00:08<00:00,  1.76s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm - Model: LogisticRegression - Period: 93 days  - data for training: last_therapy_day - CV:21
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1060  139
-TB-1022  1081  116
-pat_ids_ 2401 final_pat_ids_for_anal 2396
-Running training with last_therapy_day model: 62 vars
-Num of CV-repeat:21
-
-Processing:   0%|          | 0/5 [00:00<?, ?parameter_set/s][A
-Processing:  40%|████      | 2/5 [00:00<00:00,  5.81parameter_set/s][A
-Processing:  60%|██████    | 3/5 [00:01<00:01,  1.47parameter_set/s][A
-Processing:  80%|████████  | 4/5 [00:04<00:01,  1.56s/parameter_set][A
-Processing: 100%|██████████| 5/5 [00:07<00:00,  2.10s/parameter_set][AProcessing: 100%|██████████| 5/5 [00:07<00:00,  1.58s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm - Model: LogisticRegression - Period: 93 days  - data for training: last_therapy_day - CV:22
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1060  139
-TB-1022  1081  116
-pat_ids_ 2401 final_pat_ids_for_anal 2396
-Running training with last_therapy_day model: 62 vars
-Num of CV-repeat:22
-
-Processing:   0%|          | 0/5 [00:00<?, ?parameter_set/s][A
-Processing:  40%|████      | 2/5 [00:01<00:02,  1.01parameter_set/s][A
-Processing:  60%|██████    | 3/5 [00:03<00:02,  1.33s/parameter_set][A
-Processing:  80%|████████  | 4/5 [00:06<00:01,  1.99s/parameter_set][A
-Processing: 100%|██████████| 5/5 [00:10<00:00,  2.39s/parameter_set][AProcessing: 100%|██████████| 5/5 [00:10<00:00,  2.00s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm - Model: LogisticRegression - Period: 93 days  - data for training: last_therapy_day - CV:23
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1060  139
-TB-1022  1081  116
-pat_ids_ 2401 final_pat_ids_for_anal 2396
-Running training with last_therapy_day model: 62 vars
-Num of CV-repeat:23
-
-Processing:   0%|          | 0/5 [00:00<?, ?parameter_set/s][A
-Processing:  40%|████      | 2/5 [00:00<00:00,  9.64parameter_set/s][A
-Processing:  60%|██████    | 3/5 [00:01<00:01,  1.35parameter_set/s][A
-Processing:  80%|████████  | 4/5 [00:04<00:01,  1.61s/parameter_set][A
-Processing: 100%|██████████| 5/5 [00:08<00:00,  2.14s/parameter_set][AProcessing: 100%|██████████| 5/5 [00:08<00:00,  1.61s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm - Model: LogisticRegression - Period: 93 days  - data for training: last_therapy_day - CV:24
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1060  139
-TB-1022  1081  116
-pat_ids_ 2401 final_pat_ids_for_anal 2396
-Running training with last_therapy_day model: 62 vars
-Num of CV-repeat:24
-
-Processing:   0%|          | 0/5 [00:00<?, ?parameter_set/s][A
-Processing:  40%|████      | 2/5 [00:00<00:01,  2.55parameter_set/s][A
-Processing:  60%|██████    | 3/5 [00:02<00:01,  1.14parameter_set/s][A
-Processing:  80%|████████  | 4/5 [00:05<00:01,  1.69s/parameter_set][A
-Processing: 100%|██████████| 5/5 [00:08<00:00,  2.19s/parameter_set][AProcessing: 100%|██████████| 5/5 [00:08<00:00,  1.70s/parameter_set]
-++++++++++++++++++ 
-tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm - Model: LogisticRegression - Period: 93 days  - data for training: last_therapy_day - CV:25
-+++++++++++++++++
-RELAPSE     0    1
-STUDYID           
-TB-1021  1060  139
-TB-1022  1081  116
-pat_ids_ 2401 final_pat_ids_for_anal 2396
-Running training with last_therapy_day model: 62 vars
-Num of CV-repeat:25
-
-Processing:   0%|          | 0/5 [00:00<?, ?parameter_set/s][A
-Processing:  40%|████      | 2/5 [00:00<00:01,  2.52parameter_set/s][A
-Processing:  60%|██████    | 3/5 [00:02<00:02,  1.00s/parameter_set][A
-Processing:  80%|████████  | 4/5 [00:05<00:01,  1.78s/parameter_set][A
-Processing: 100%|██████████| 5/5 [00:08<00:00,  2.26s/parameter_set][AProcessing: 100%|██████████| 5/5 [00:08<00:00,  1.78s/parameter_set]
-100%|██████████| 1/1 [04:04<00:00, 244.43s/model]100%|██████████| 1/1 [04:04<00:00, 244.43s/model]
-Training duration:
-Elapsed time:0 hours:4 minutes

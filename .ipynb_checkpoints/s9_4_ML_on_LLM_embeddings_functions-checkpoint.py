@@ -1833,6 +1833,8 @@ def select_temporal_cols_with_suff_pat_data(temp_data_name,X_subset,temp_col_thr
 
 def extract_21_22_relapse_pats():
 
+    print('Extracting relapse information...')
+    
     ### ====== LOAD ALL PATIENTS DATA =======
     fn='../data/tb21_22_2984_pats_22_vars_result_at_end_of_treatment_preproc_data_with_imp.csv.gz'
     X_subset=pd.read_csv(fn,index_col=0)
@@ -1958,7 +1960,7 @@ def extract_21_22_relapse_pats():
         &(de['RELAPSE'].isin(['YES','FOLLOW-UP PHASE']))].index
 
     
-    print('set(idx)&set(de_.index)',set(idx)&set(de_.index))
+    #print('set(idx)&set(de_.index)',set(idx)&set(de_.index))
     
     pats_with_sparse_relapse_data=pd.DataFrame({'RELAPSE':[238,np.nan,np.nan],
                                                   'ARM':arms.loc[idx],
@@ -1991,6 +1993,95 @@ def extract_21_22_relapse_pats():
     pats_relapse_df = pd.concat([pats_with_relapse_df,pats_wo_relapse_df],axis=0)
 
     pats_relapse_df.index.name='USUBJID'
+
+
+
+    
+    ## FOR SOME PATIENTS, RETREATMENT DURING FOLLOW-UP STARTED EARLIER AS THE RELAPSE_DAY IN THE DISPOSITION EVENTS
+    ## ==> TAKE THE FIRST DAY OF RETREATMENT AS RELAPSE DAYS FOR THESE PATIENTS
+    ex = pd.read_csv('../../C-Path_data/fullExportDb-1025-Member-CSV/ex.csv', low_memory=False)
+    ex = ex[ex['USUBJID'].isin(pats_relapse_df.index.tolist())]
+    
+    ## Extract patients with retreatmetn during follow-up
+    retreatment=ex.loc[ex['EPOCH'].str.contains('FOLLOW',na=False),:].groupby('USUBJID').apply(lambda x: x['EXSTDY'].min()).sort_index().to_frame()
+    retreatment_idx=ex.loc[ex['EPOCH'].str.contains('FOLLOW',na=False),'USUBJID'].unique()
+    a=pats_relapse_df.loc[retreatment_idx,'RELAPSE_DAY'].sort_index()
+    
+    ## Concatenate retreatment start day with relapse day coming from disposition events
+    b = pd.concat([retreatment,a],axis=1)
+    b.columns=['retreatment_start','RELAPSE_DAY']
+    
+    ## For patients where retreatment started earlier then relapse_day, take the retreatment day as their relapse day
+    retreatment_earlier_than_relapse = b[(b['RELAPSE_DAY'] - b['retreatment_start'])>0].index.tolist()
+    pats_relapse_df.loc[retreatment_earlier_than_relapse,'RELAPSE_DAY'] = b.loc[retreatment_earlier_than_relapse,'retreatment_start'].values
+
+
+
+
+    ### EXTRACT THE LAST DAY OF THERAPY DRUG ADMINISTRATION USING THE DR_REG DATAFRAME
+    #  => FOR SOME REMOXTB PATIENTS, LAST DAY OF THERAPY WAS TAKEN DOWN AS LAST DAY PALCEBO WAS APPLIED
+    #  => INSTEAD, EXXTRACT LAST DAY WHERE NON-PLACEBO THERAPY DRUGS WERE APPLIED, TO GET A BETTER SENSE OF RELAPSE AFTER EOT
+    month_4_idx = pats_relapse_df[~pats_relapse_df['ARM'].str.contains('Control|2EHRZ')].index.tolist()
+
+    t=pd.read_csv('../data/out_temporal_pat_regimens_1018_20_21_22_30.csv.gz',low_memory=False,index_col=0)
+    t = t[t['USUBJID'].isin(month_4_idx)]
+    
+    max_days = {}
+
+
+    ## Loop over 4-month patients, and extract the last day of therapy drug adpplication before relapse or if there was no relapse,
+    #  take the last day of therapy drug application (250 days are set as a threshold to include patients with extendedn baseline therapy)
+    
+    for pat_id in (month_4_idx[:]):        
+
+        rel_day = pats_relapse_df.loc[pat_id,'RELAPSE_DAY']#.values
+
+    
+        #print('rel_day',rel_day)
+    
+        ## If no relapse, take the 250 as threshold
+        if str(rel_day)=='nan':
+            try:
+                thr_day = 250 #float(compl_day)
+            except ValueError:
+                #print(f'VAlueERror: {rel_day} is Nan!')
+                continue
+    
+        ## If relapse, take the relapse day as threshold
+        if str(rel_day)!='nan':
+            
+            try:
+                thr_day = np.min([float(rel_day),250])
+                
+            except ValueError:
+                #print(f'VAlueERror: {rel_day} is not Nan!')
+                continue
+    
+        #print('thr_day',thr_day)
+        t_ = t[(t['USUBJID']==pat_id) & (t['DAY']<thr_day)]
+
+        ## If there is drug regimen information, extract the maximal number of non-pacebo drugs taken, and then extract the first day where the meximum dose
+        #  was reached ==> this was the last day therapy drugs were applied
+        if t_.shape[0]>0:
+            #print(t_.loc[:,t_.columns.str.contains('num_of_doses')].max().max())
+            num_of_doses= t_.loc[:,(t_.columns.str.contains('num_of_doses'))&\
+                                   (~t_.columns.str.contains('placebo'))].max().sort_values()
+            coln,val = num_of_doses.tail(1).index, num_of_doses.tail(1).values[0]
+            last_ther_day = t_.loc[(t_[coln]==val).values,'DAY'].iloc[0]
+
+            max_days[pat_id]=last_ther_day
+    
+    
+    max_days=pd.DataFrame(index=max_days.keys(),data=max_days.values())
+
+    ## For patients
+    pats_relapse_df.loc[max_days.index,'last_therapy_day'] = max_days[0].values
+
+    del t
+
+
+
+    pats_relapse_df['DAYS_BETWEEEN_THERAPY_END_AND_RELAPSE']=(pats_relapse_df['RELAPSE_DAY'] - pats_relapse_df['last_therapy_day']).values
 
     return pats_relapse_df#,relapse_during_obs_period,relapse_after_obs_period,pats_with_sparse_relapse_data,max_days
 

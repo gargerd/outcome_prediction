@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --array=1-56%56
+#SBATCH --array=1-28%28
 #SBATCH --job-name=s_9_3_raw_data_train
 #SBATCH -o slurm_raw_data_train_logs/s_9_3_raw_data_train_%A_%a.log
 #SBATCH -e slurm_raw_data_train_logs/s_9_3_raw_data_train_%A_%a.log

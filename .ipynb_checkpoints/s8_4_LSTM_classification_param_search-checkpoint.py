@@ -154,7 +154,7 @@ update_existing_dicts=True
 # - LR: logistic regression with STUDY DAY as input ONLY  
 # - BASE: multiple models with DRUG REGIMEN ONLY ==> NO Study day information
 # - FULL: multiple models with ALL PATIENT DATA + DRUG REGIMEN  ==> NO Study day information
-model_complexities=['day_only','regimen_only','full']
+model_complexities=['day_only','regimen_only','wo_regimen','full']
 
 
 #columns_to_drop=['USUBJID','STUDYID','DAY','ARM','index'] #'ARM'

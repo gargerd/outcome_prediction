@@ -70,8 +70,14 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
                             'result_cat':'RELAPSE'}, 
 
-                         'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
+                        'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
+                            'result_cat':'RELAPSE'},
+                         
+                          'tb21_22_2984_pats_22_vars_relapse_basic_vars':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
                             'result_cat':'RELAPSE'},
                          
                         'tb21_22_2263_pats_24_vars_relapse':{
@@ -401,7 +407,7 @@ for data_param_key in dataset_name_:
                         model=cv_results[f'cv_rep_{cv_repeat_num}']['model'][0]
 
                     ## Calculate SHAP-values * prediction probabilities for both training and testing data
-                    for X_data,y_data,prefix in zip([X_train,X_test][1:],[y_train,y_test][1:],['train','test'][1:]):
+                    for X_data,y_data,prefix in zip([X_train,X_test][:],[y_train,y_test][:],['train','test'][:]):
                         print(prefix)
                         
                         shap_values=calculate_shap_values(X_train,X_data,model,model_name)

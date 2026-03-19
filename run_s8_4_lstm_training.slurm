@@ -1,10 +1,10 @@
 #!/bin/bash
 #SBATCH --array=1-14%14
-#SBATCH --job-name=s_8_4_lstm_param_search
-#SBATCH -o slurm_lstm_train_logs/s_8_4_lstm_param_search_%A_%a.log
-#SBATCH -e slurm_lstm_train_logs/s_8_4_lstm_param_search_%A_%a.log
+#SBATCH --job-name=s_8_4_lstm_training
+#SBATCH -o slurm_lstm_train_logs/s_8_4_lstm_training_%A_%a.log
+#SBATCH -e slurm_lstm_train_logs/s_8_4_lstm_training_%A_%a.log
 #SBATCH --cpus-per-task=4
-#SBATCH --mem-per-cpu=32G
+#SBATCH --mem-per-cpu=24G
 #SBATCH --partition=sapphire #bigmem
 ##SBATCH --qos=cpu_normal
 ##SBATCH --gres=gpu:2

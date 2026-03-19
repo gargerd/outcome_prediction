@@ -141,6 +141,8 @@ class Grouped_Train_Dataset(Dataset):
             include_cols = X.columns[X.columns.str.contains('DAY|COMBNUM|STUDY|ARM|USUBJID')]
         elif model_complex == 'regimen_only':
             include_cols = X.columns[X.columns.str.contains('dr_reg|COMBNUM|STUDY|ARM|USUBJID')]
+        elif model_complex == 'wo_regimen':
+            include_cols = X.columns[~X.columns.str.contains('dr_reg')]
         else:
             include_cols = X.columns
 
@@ -229,7 +231,11 @@ class Grouped_Test_Dataset_whole_data(Dataset):
 
         if self.model_complex=='regimen_only':       
             ### DROP COLUMNS FOR BASE MODEL => STUDY|ARM|USUBJID|DAY will be dropped later in the script
-            X_testing_data=X_testing_data.loc[:,X_testing_data.columns.str.contains('dr_reg|COMBNUM|STUDY|ARM|USUBJID|mb_Time to Detection_STD_NUM_RESULT',regex=True)]                                        
+            X_testing_data=X_testing_data.loc[:,X_testing_data.columns.str.contains('dr_reg|COMBNUM|STUDY|ARM|USUBJID|mb_Time to Detection_STD_NUM_RESULT',regex=True)]       
+
+        if model_complex == 'wo_regimen':
+            X_testing_data = X_testing_data.loc[:,~X_testing_data.columns.str.contains('dr_reg',regex=True)]     
+            
 
         ## Drop predefined categoircal columns
         X_testing_data=X_testing_data.loc[:,~X_testing_data.columns.str.contains('|'.join(columns_to_drop +['COMBNUM','USUBJID']),regex=True)]  
@@ -266,6 +272,10 @@ class Grouped_Test_Dataset_whole_data(Dataset):
         elif model_complex == 'regimen_only':
             include_cols = X_test.columns[X_test.columns.str.contains(
                 'dr_reg|COMBNUM|STUDY|ARM|USUBJID|mb_Time to Detection_STD_NUM_RESULT')]
+
+        elif model_complex == 'wo_regimen':
+            include_cols = X_test.columns[~X_test.columns.str.contains('dr_reg')]
+            
         else:
             include_cols = X_test.columns
 
@@ -855,10 +865,10 @@ def load_sliding_window_train_data(data_param_key,period_end_day):
         print('Loading previously saved training datasets')
         X_train_slid_wind=pd.read_csv(fname_x,index_col=0,low_memory=False)
 
-        if period_end_day not in ['all','baseline']:
+        #if period_end_day not in ['all','baseline']:
             #print('period_end_day',period_end_day)
             #print(X_train_slid_wind['DAY'])
-            X_train_slid_wind=X_train_slid_wind[X_train_slid_wind['DAY']<period_end_day]
+            #X_train_slid_wind=X_train_slid_wind[X_train_slid_wind['DAY']<period_end_day]
         
         return X_train_slid_wind
 
@@ -890,6 +900,10 @@ def train_LSTM_model(X_slid_wind,train_ids,valid_ids,y,num_of_classes,outcome_la
     es_min_delta = float(lstm_parameters.get("early_stopping_min_delta", 0.0))
     es_warmup_epochs = int(lstm_parameters.get("early_stopping_warmup_epochs", 0))
     es_restore_best = bool(lstm_parameters.get("early_stopping_restore_best", True))
+    es_best_epoch = lstm_parameters.get('early_stopping_best_epoch',-1)
+    
+    if es_best_epoch ==-1:
+        es_enabled=False
 
     best_metric = float("inf")          # monitoring val_loss 
     best_epoch = -1
@@ -929,6 +943,15 @@ def train_LSTM_model(X_slid_wind,train_ids,valid_ids,y,num_of_classes,outcome_la
     #  - subset whole data to the training patients 
     #  - fit standardScaler to training data and return scaler for the
     #    standardisation of validation and tesing datasets later
+    
+    ## If there is a best epoch ==> final model is being trained ==> train ids contain all train patients, there are no validation patients initialised
+    #if es_best_epoch !=-1:
+    #    final_ids = np.concatenate([train_ids, valid_ids])
+    #    X_train_slid_wind=X_slid_wind[X_slid_wind['USUBJID'].isin(final_ids)]
+
+    ## If there is no best epoch ==> paramer serach model is being trained ==> use only the training patients ==> in this case it means the internal training patients,
+    #. as validation patients are initialised here
+    #if es_best_epoch == -1:
     X_train_slid_wind=X_slid_wind[X_slid_wind['USUBJID'].isin(train_ids)]
     std_scaler_train_data,non_binary_num_cols=extract_non_binary_num_std_scaler(X_train_slid_wind)
     
@@ -985,13 +1008,18 @@ def train_LSTM_model(X_slid_wind,train_ids,valid_ids,y,num_of_classes,outcome_la
     
     #print(x_for_test)
     #print('---y_test labels---\n',y_data_with_index[outcome_label].value_counts(dropna=False),'\n')
-    val_dataset=Grouped_Test_Dataset_whole_data(x_for_val,y_data_with_index,model_complex,columns_to_drop,
-                                                 dataset_type='validation')
     
-    val_loader=DataLoader(val_dataset, batch_size=batch_size, shuffle=False,
-                            num_workers=DataLoader_num_workers,
-                            pin_memory=pin_memory,
-                          collate_fn=val_dataset.collate_fn)
+    ## IF param search, load validation dataset
+    if es_best_epoch ==-1:
+        val_dataset=Grouped_Test_Dataset_whole_data(x_for_val,y_data_with_index,model_complex,columns_to_drop,
+                                                     dataset_type='validation')
+        
+        val_loader=DataLoader(val_dataset, batch_size=batch_size, shuffle=False,
+                                num_workers=DataLoader_num_workers,
+                                pin_memory=pin_memory,
+                              collate_fn=val_dataset.collate_fn)
+    if es_best_epoch != -1:
+        val_loader =None
    
 
     # Initialize the model and optimizer           
@@ -1094,7 +1122,13 @@ def train_LSTM_model(X_slid_wind,train_ids,valid_ids,y,num_of_classes,outcome_la
                                 step_size_up=1,
                                 step_size_down=lstm_parameters['swa_lr_cycle_length'])                                                                                                 
     
-    num_of_epochs=lstm_parameters['pretrain_epochs'] + lstm_parameters['swa_epochs'] 
+    if es_best_epoch !=-1:
+        num_of_epochs = int(np.ceil(es_best_epoch))
+        print(f'Early stopping at {es_best_epoch}')
+
+    if es_best_epoch ==-1:
+        num_of_epochs=lstm_parameters['pretrain_epochs'] + lstm_parameters['swa_epochs'] 
+ 
 
     
     # Train the model   
@@ -1656,7 +1690,7 @@ def train_models(data,
                     test_data_results[rep]['results'][param_comb_num]['cross_entropy_weights_dict']=cross_entropy_weights_dict
                     test_data_results[rep]['results'][param_comb_num]['x']=x_for_test    
                     test_data_results[rep]['results'][param_comb_num]['roc_auc']=roc_auc
-                    test_data_results[rep]['results'][param_comb_num]['model_state_dict']=final_model.state_dict()
+                    test_data_results[rep]['results'][param_comb_num]['model_state_dict']=model.state_dict()
     
     
     ## Add training (or CV) results to training_data_dict

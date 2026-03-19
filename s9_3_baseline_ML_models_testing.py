@@ -83,8 +83,14 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
                             'result_cat':'RELAPSE'}, 
 
-                         'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
+                        'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
+                            'result_cat':'RELAPSE'},
+                         
+                        'tb21_22_2984_pats_22_vars_relapse_basic_vars':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
                             'result_cat':'RELAPSE'},
                          
                         'tb21_22_2263_pats_24_vars_relapse':{

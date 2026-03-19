@@ -154,7 +154,7 @@ update_existing_dicts=True
 # - LR: logistic regression with STUDY DAY as input ONLY  
 # - BASE: multiple models with DRUG REGIMEN ONLY ==> NO Study day information
 # - FULL: multiple models with ALL PATIENT DATA + DRUG REGIMEN  ==> NO Study day information
-model_complexities=['day_only','regimen_only','full']
+model_complexities=['day_only','regimen_only','wo_regimen','full']
 
 
 #columns_to_drop=['USUBJID','STUDYID','DAY','ARM','index'] #'ARM'
@@ -294,7 +294,8 @@ for model_complex in model_complexity_:
         #. end of the "data_param_key" variable
         X,race_colnames = load_and_modify_preprocessed_data(data_param_key)
 
-        outcome_label=data_param_key.split('vars_')[-1].upper()
+        #outcome_label=data_param_key.split('vars_')[-1].upper()
+        outcome_label = parameters_for_analysis[data_param_key]['result_cat' ]
         
         ## Select the number of training days for the training method 'training_on_first_x_days'
         parameter_dict=parameters_for_analysis[data_param_key]
@@ -396,6 +397,7 @@ for model_complex in model_complexity_:
 
             ## Extract dict containing best parameter combinations per external CV-split
             best_param_combinations = extract_best_param_comb(param_search_result_dict)
+            del param_search_result_dict
 
             
             ## Update previously created dicts with ML results
