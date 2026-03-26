@@ -30,6 +30,11 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'}, 
 
+                        'tb20_21_22_2908_pats_7_vars_relapse':{
+                            'result_cat':'RELAPSE',
+                            'fn':'tb20_21_22_2908_pats_7_vars_relapse',
+                           'include_rifaquin':True},
+
 
                          
                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_dr_reg_per_arm':{
@@ -1343,9 +1348,18 @@ def run_cv(X,
             y_test_fold['pred']=test_probabilities
 
             ## CLASSIFIER
-            train_roc_auc_per_study=y_train_fold.groupby('STUDYID').apply(lambda x:roc_auc_score(x[outcome_label],x['pred']))
+            #train_roc_auc_per_study=y_train_fold.groupby('STUDYID').apply(lambda x:roc_auc_score(x[outcome_label],x['pred']))
+            train_roc_auc_per_study = y_train_fold.groupby('STUDYID').apply(
+                                                                            lambda x: roc_auc_score(x[outcome_label], x['pred'])
+                                                                            if x[outcome_label].nunique() > 1 else np.nan
+                                                                        )
             #print(y_test_fold.groupby('STUDYID').apply(lambda x:(x[outcome_label].value_counts())))
-            test_roc_auc_per_study=y_test_fold.groupby('STUDYID').apply(lambda x:roc_auc_score(x[outcome_label],x['pred']))
+            
+            #test_roc_auc_per_study=y_test_fold.groupby('STUDYID').apply(lambda x:roc_auc_score(x[outcome_label],x['pred']))
+            test_roc_auc_per_study = y_test_fold.groupby('STUDYID').apply(
+                                                                            lambda x: roc_auc_score(x[outcome_label], x['pred'])
+                                                                            if x[outcome_label].nunique() > 1 else np.nan
+                                                                        )
 
             ## REGRESSION
             #train_roc_auc_per_study=y_train_fold.groupby('STUDYID').apply(lambda x:r2_score(x[outcome_label],x['pred']))
@@ -1371,7 +1385,7 @@ def run_cv(X,
         train_roc_auc_scores_all.append(train_roc_auc)
         test_roc_auc_scores_all.append(test_roc_auc)
         
-        if early_stop_epoch is not None:
+        if model_name in ['Dense'] and early_stop_epoch is not None:
             early_stop_epochs.append(early_stop_epoch)
 
 
@@ -1831,7 +1845,61 @@ def select_temporal_cols_with_suff_pat_data(temp_data_name,X_subset,temp_col_thr
 ### 2. COLLECT PATIENTS, WHO HAVE FAVOURABLE OUTCOME AT END OF TREATMENT, BUT HAVE AT LEAST ONE UNFAVOURABLE OUTCOME AT ANY OF THE FOLLOW-UP TIMEPOINTS 
     #. ==>TB-1021: 12 & 18 MONTHS, TB-1022: 18 & 24 MONTHS
 
-def extract_21_22_relapse_pats():
+def extract_rifaquin_relapse():
+
+    def load_merged_data_of_lab_vars():
+        #load patient IDs who are considered in this  analysis
+        pat_id_df=pd.read_csv('../data/patients_in_analysis.csv.gz',index_col=0)
+        # get all pat ids
+        all_ids=pat_id_df['USUBJID'].to_list()
+    
+        fname='merged_df.csv.gz'
+        
+        fn=os.path.join('../data/',fname)
+        merged_df=pd.read_csv(fn,low_memory=False,index_col=0)
+    
+        return merged_df
+    
+    data=load_merged_data_of_lab_vars()
+    arm_df=data.drop_duplicates('USUBJID')[['USUBJID','ARM']].set_index('USUBJID')
+    del data
+    
+    
+    de=pd.read_csv('../../C-Path_data/preprocessing/disposition_events.csv',low_memory=True)
+    de = de.set_index('USUBJID')
+
+
+    
+    outcome_tb1020 = pd.read_csv('../data/tb_1020_outcome.csv.gz')
+    tb_1020_pat_df = outcome_tb1020[outcome_tb1020['UNFAVOURABLE_OUTCOME_CATEGORY_AT_18_MONTHS'].isin(['FAVOURABLE','RELAPSE'])]
+    tb_1020_pat_df = tb_1020_pat_df.rename(columns={'Unnamed: 0':'USUBJID',})
+
+    #df_tb_20 = data[data['USUBJID'].isin(tb_1020_pat_df['USUBJID'].tolist())]
+
+
+
+    tb_1020_pat_df = tb_1020_pat_df.set_index('USUBJID')
+    tb_1020_pat_df['last_therapy_day'] = de.loc[tb_1020_pat_df.index,'COMPLETION CONTINUATION PHASE'].values
+    
+    tb_1020_pat_df['RELAPSE']=tb_1020_pat_df['UNFAVOURABLE_OUTCOME_CATEGORY_AT_18_MONTHS'].replace({'FAVOURABLE':0,'RELAPSE':1})
+    tb_1020_pat_df['RELAPSE_DAY']= tb_1020_pat_df['TIME_TO_EVENT'].values
+    
+    
+    tb_1020_pat_df['DAYS_BETWEEEN_THERAPY_END_AND_RELAPSE'] = (tb_1020_pat_df['RELAPSE_DAY'] - tb_1020_pat_df['last_therapy_day']).values
+    tb_1020_pat_df.loc[tb_1020_pat_df['RELAPSE']==0,['DAYS_BETWEEEN_THERAPY_END_AND_RELAPSE','RELAPSE_DAY']]=np.nan
+
+    #df_tb_20 = data[data['USUBJID'].isin(tb_1020_pat_df.reset_index()['USUBJID'].tolist())]
+   
+    tb_1020_pat_df['ARM'] = arm_df.loc[tb_1020_pat_df.reset_index()['USUBJID'],'ARM'].values
+    tb_1020_pat_df['STUDYID'] = 'Rifaquin'
+
+    
+    return tb_1020_pat_df
+
+
+
+
+def extract_21_22_relapse_pats(include_rifaquin=False):
 
     print('Extracting relapse information...')
     
@@ -1847,7 +1915,9 @@ def extract_21_22_relapse_pats():
     ### COLLECT PATIENTS, WHO ONLY HAVE FAVOURABLE OUTCOMES AT END OF TREATMENT & AT ALL FOLLOW-UP TIMEPOINTS 
     #. ==>TB-1021: 12 & 18 MONTHS, TB-1022: 18 & 24 MONTHS
 
-   
+    outcome_df=pd.read_csv('../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
+    outcome_df=outcome_df.set_index('USUBJID',drop=True)
+    outcome_df=outcome_df.rename(columns={'UNFAVOURABLE_OUTCOME_CATEGORY_AT_18_MONTHS':'UNFAVOUR_CAT_AT_18_MONTHS'})
     
     df_=outcome_df.reset_index()#
     df_['STUDYID']=df_['USUBJID'].str.split('/',expand=True)[0].values
@@ -2083,6 +2153,11 @@ def extract_21_22_relapse_pats():
 
     pats_relapse_df['DAYS_BETWEEEN_THERAPY_END_AND_RELAPSE']=(pats_relapse_df['RELAPSE_DAY'] - pats_relapse_df['last_therapy_day']).values
 
+    if include_rifaquin==True:
+        ## ADD RIFAQUIN RELAPSE PATIENTS
+        rif_rel = extract_rifaquin_relapse()
+        pats_relapse_df = pd.concat([pats_relapse_df,rif_rel[pats_relapse_df.columns]],axis=0)
+
     return pats_relapse_df#,relapse_during_obs_period,relapse_after_obs_period,pats_with_sparse_relapse_data,max_days
 
 ##========================================= 
@@ -2194,7 +2269,9 @@ def return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
         
     if parameters_for_analysis[data_param_key]['result_cat']=='RELAPSE':
         #outcome_label='RELAPSE'
-        pats_with_relapse_df=extract_21_22_relapse_pats()
+        include_rifaquin = parameters_for_analysis[data_param_key].get('include_rifaquin',None)
+        pats_with_relapse_df=extract_21_22_relapse_pats(include_rifaquin)
+        #pats_with_relapse_df=extract_21_22_relapse_pats()
     
         ## IF PEDICTION IS A REGRESSION TASK
         #outcome_label='RELAPSE_DAY'

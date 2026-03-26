@@ -75,6 +75,12 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'num_of_common_vars':22,
                             'training_days':120}, 
 
+                        'tb20_21_22_2908_pats_7_vars_relapse':{
+                            'result_cat':'RELAPSE',
+                            'fn':'tb20_21_22_2908_pats_7_vars_relapse',
+                           'include_rifaquin':True},
+
+
                          'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
                             'fn':'tb21_22_2984_pats_22_vars_relapse_without_dr_reg',#_wo_dr_reg',
                             'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
@@ -158,20 +164,26 @@ param_search_dict={'RandomForest':{'n_estimators':[300,500,700],
                                    'max_features':['sqrt'],
                                    'learning_rate':[0.1,0.3,0.5,0.8]},
                   
-                  'XGBoost':{'n_estimators':[300,500],
-                             'max_depth':[5,7,9],
-                             'eta':[0.1,0.4,0.5,0.8],
+                   #'XGBoost':{'n_estimators':[300,500,700],
+                  #           'max_depth':[3,5,7,9],
+                  #           'eta':[0.1,0.3,0.5,0.8],
                              #'subsample':[1.0,0.9,0.8,0.7]
                              #'tree_method':['hist'],
                              #"device": ["cuda"]
-                             #'n_jobs':[len(cpu_cores_)]
-                            },
+                             #'n_jobs':[4]
+                  #          },
+                  
+                 'XGBoost':{   'n_estimators':     [100, 200, 300],   # 3
+                            'learning_rate':    [0.05, 0.1],        # 2
+                            'max_depth':        [2, 3],             # 2
+                            'min_child_weight': [15, 20, 30],  
+                           },
 
                    'LogisticRegression':{#'l1_ratio':[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1],
                                         #'l1_ratio':[1]
-                                       #'n_jobs':[4],
-                                        'l1_ratio':[1],
-                                         'C': [0.001, 0.01, 0.1, 1, 10],
+                                       'n_jobs':[4],
+                                        'l1_ratio':[1,0.5,0.1],
+                                         'C': [0.001, 0.01, 0.1, 1, 10][:-1],
                                           },
                    
                   'SVC':{'C':[1e-3,1e-2,1e-1,1e0,1e1,1e2],
@@ -179,9 +191,8 @@ param_search_dict={'RandomForest':{'n_estimators':[300,500,700],
                    
                   'KNN':{'n_neighbors':[2,5,10,25,50,100]},
                    
-                  'Dense':{'learning_rate':[5e-4],#1e-3],
-                          'batch_size':[128],
-                          'num_epochs':[1000],},
+                  'Dense':{'learning_rate':[1e-4,5e-5,1e-5],
+                            'batch_size':[64,128]}
                   }  
 
 
