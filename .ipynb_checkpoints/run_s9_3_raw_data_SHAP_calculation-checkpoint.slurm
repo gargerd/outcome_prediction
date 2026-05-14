@@ -1,5 +1,6 @@
 #!/bin/bash
-#SBATCH --array=1-28%28
+#SBATCH --array=27-56%56
+##SBATCH --array=24,25,26,27,54,55,56,57,58
 #SBATCH --job-name=s_9_3_raw_data_SHAP
 #SBATCH -o slurm_raw_data_SHAP_logs/s_9_3_raw_data_SHAP_%A_%a.log
 #SBATCH -e slurm_raw_data_SHAP_logs/s_9_3_raw_data_SHAP_%A_%a.log
@@ -26,6 +27,8 @@ conda activate scarches
 # Specify the path to the config file
 config="raw_data_train_param_combinations.tsv"
 
+#SLURM_ARRAY_TASK_ID=1
+
 # Extract the parameters from the parameter configuration dataframe
 period_end_day=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$5==ArrayTaskID {print $3}' $config)
 training_data_type=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$5==ArrayTaskID {print $4}' $config)
@@ -43,9 +46,9 @@ echo ${model}
 
 
 
-python s9_3_baseline_ML_models_SHAP_calculation.py \
-                    --dataset_name $dataset_name\
-                    --training_data_type $training_data_type \
-                    --model $model \
-                    --period_end_day $period_end_day 
+/data/gpfs/projects/punim2121/anaconda3/envs/scarches/bin/python s9_3_baseline_ML_models_SHAP_calculation.py \
+                                                                --dataset_name $dataset_name\
+                                                                --training_data_type $training_data_type \
+                                                                --model $model \
+                                                                --period_end_day $period_end_day 
       

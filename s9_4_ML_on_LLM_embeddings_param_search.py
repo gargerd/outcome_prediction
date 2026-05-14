@@ -69,7 +69,26 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'}, 
 
+                        'tb21_22_2984_pats_22_vars_relapse_ext_pats':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'}, 
+
+                         
+                        
+                        'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats':{
+                            'fn':'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats',
+                            'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
+                            'result_cat':'RELAPSE'},
+
+
+
                          'tb20_21_22_2908_pats_7_vars_relapse':{
+                            'result_cat':'RELAPSE',
+                            'fn':'tb20_21_22_2908_pats_7_vars_relapse',
+                           'include_rifaquin':True},
+
+                        'tb20_21_22_2908_pats_7_vars_relapse_ext_pats':{
                             'result_cat':'RELAPSE',
                             'fn':'tb20_21_22_2908_pats_7_vars_relapse',
                            'include_rifaquin':True},
@@ -564,6 +583,11 @@ for data_param_key in dataset_name_:
     
                                         y_train=y.loc[list(set(X.index)&set(X_train_ids)),:]
                                         y_test=y.loc[list(set(X.index)&set(X_test_ids)),:]
+
+                                        final_pat_ids_for_anal=X_train.index.unique().tolist() + X_test.index.unique().tolist()
+
+                                        print(pd.crosstab(df_.loc[df_['USUBJID'].isin(final_pat_ids_for_anal),'STUDYID'],\
+                                                          df_.loc[df_['USUBJID'].isin(final_pat_ids_for_anal),outcome_label]))
     
     
                                         #if model_name=='LogisticRegression':

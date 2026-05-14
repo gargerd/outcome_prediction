@@ -29,11 +29,12 @@ config="raw_survival_train_param_combinations.tsv"
 #SLURM_ARRAY_TASK_ID=1
 
 # Extract the parameters from the parameter configuration dataframe
-period_end_day=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$6==ArrayTaskID {print $3}' $config)
-training_data_type=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$6==ArrayTaskID {print $4}' $config)
-model=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$6==ArrayTaskID {print $2}' $config)
-dataset_name=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$6==ArrayTaskID {print $1}' $config)
-ther_arm_duration=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$6==ArrayTaskID {print $5}' $config)
+period_end_day=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$7==ArrayTaskID {print $3}' $config)
+training_data_type=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$7==ArrayTaskID {print $4}' $config)
+model=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$7==ArrayTaskID {print $2}' $config)
+dataset_name=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$7==ArrayTaskID {print $1}' $config)
+ther_arm_duration=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$7==ArrayTaskID {print $5}' $config)
+time_origin=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$7==ArrayTaskID {print $6}' $config)
 
 ## Set string if to overwrite existing parameter search results
 overwrite_existing_params='True'
@@ -44,7 +45,7 @@ echo ${training_data_type}
 echo ${period_end_day}
 echo ${model}
 echo ${ther_arm_duration}
-
+echo ${time_origin}
 
 
 /data/gpfs/projects/punim2121/anaconda3/envs/scarches/bin/python  s9_9_baseline_survival_models_training.py \
@@ -52,5 +53,6 @@ echo ${ther_arm_duration}
                                                                     --training_data_type $training_data_type \
                                                                     --model $model \
                                                                     --period_end_day $period_end_day \
-                                                                    --ther_arm_duration $ther_arm_duration
+                                                                    --ther_arm_duration $ther_arm_duration \
+                                                                    --time_origin $time_origin
       

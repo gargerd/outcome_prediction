@@ -28,7 +28,7 @@ parser.add_argument("--training_data_type", help="One of the 2 data inclusion ty
 parser.add_argument("--model", help="One of the 2 models: ['XGBoost','LogisticRegression']")
 parser.add_argument("--period_end_day", help="One of the 7 periods: ['baseline',31,62,93,125,160,'all']")
 parser.add_argument("--ther_arm_duration", help="One of the ther_arm_durationsa: ['4-month','6-month']")
-parser.add_argument("--time_origin", help="Time origin, start or end of therapy: ['SAT','EOT']")
+parser.add_argument("--time_origin", help="Time origin, start or end of therapy: ['SOT','EOT']")
 #parser.add_argument("--overwrite_existing_params", help="If set to True, overwrites the existing dictionaries with the parameter search results")
 #parser.add_argument("--cpu_cores", help="List of integers, setting which CPU cores to be used. i.e. for the first 4 CPU cores: 0-3")
 
@@ -177,6 +177,7 @@ therapy_day_thr=80
 period_end_days=['baseline',31,62,93,125,160,'all']
 
 ## Define training parameters
+## Define training parameters
 train_params={'num_cv_repeats':25,
                 'k_folds':5,             
               'weight_by_label_freq':True,
@@ -184,7 +185,12 @@ train_params={'num_cv_repeats':25,
                                      ## only considered if weight_by_label_freq=False !
               'random_state':42,
               'test_size_ratio':0.2,
+              'early_stopping': True,
+                'patience': 10,
+                'min_delta': 0.0,
+                'val_fraction': 0.2,
               'label2id':label2id}
+
 
 
 ## Load dataframe containing the last day of drug regimen for each patient

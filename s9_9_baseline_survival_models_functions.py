@@ -1308,6 +1308,10 @@ def fit_pycox_model(model_name,
     # ----------------------------
     # fit
     # ----------------------------
+    n_fit = len(X_fit)
+    if batch_size > 1 and n_fit % batch_size == 1:
+        batch_size = batch_size - 1
+        
     log = model.fit(
         X_fit,
         y_fit,
@@ -1774,6 +1778,25 @@ def extract_best_model_params(param_search_results,metric_func,num_of_top_models
             return True
         except ValueError:
             return False
+
+
+    import ast
+
+    def is_list_string(s):
+        try:
+            parsed = ast.literal_eval(s)
+            return isinstance(parsed, list)
+        except (ValueError, SyntaxError):
+            return False
+    
+    def string_to_list(s):
+        if is_list_string(s):
+            return ast.literal_eval(s)
+        else:
+            raise ValueError("Input is not a valid list string")
+    
+    
+
     
     
     ## Init dictionary to hold the best results for each CV-repetition
@@ -1848,6 +1871,10 @@ def extract_best_model_params(param_search_results,metric_func,num_of_top_models
                     
                     if is_float(best_model_params[param_name])==True and float(best_model_params[param_name])<=1:
                         best_model_params[param_name]=float(best_model_params[param_name])
+
+                    if is_list_string(best_model_params[param_name])==True:
+                        best_model_params[param_name]=string_to_list(best_model_params[param_name])
+                            
 
                 best_cv_rep_results[cv_rep_num][n]=best_model_params
         

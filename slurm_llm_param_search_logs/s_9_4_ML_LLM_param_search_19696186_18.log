@@ -1,1299 +1,0 @@
-Loading anaconda
-Activate conda env
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment
-all_days
-160
-Dense
-mean_pooling
-data_inclusion_type_ ['all_days'] model_names_ ['Dense'] period_end_day_ [160]
-Loading embeddings:   0%|          | 0/1 [00:00<?, ?set/s]Loading embeddings: 100%|██████████| 1/1 [00:01<00:00,  1.96s/set]Loading embeddings: 100%|██████████| 1/1 [00:01<00:00,  1.96s/set]
-
-→ Loading: tb21_22_2984_pats_22_vars_result_at_end_of_treatment | BioMistral-7B_base | 160 | all_days | autoenc=False | mean_pooling 
-Loaded in 1.79 seconds.
-tb21_22_2984_pats_22_vars_result_at_end_of_treatment
-Training on 160 days of data
-Loading embeddings of tb21_22_2984_pats_22_vars_result_at_end_of_treatment data / BioMistral-7B_base /160 /all_days /autoenc False / mean_pooling model
-+++++++
-Running training with full model: 4096 vars
-+++++++
-  0%|          | 0/1 [00:00<?, ?model/s]
-=====================
-Dense
-Num of CV-repeat:1 - Model:Dense - Data inclusion type:all_days - Period:160 
-
-Processing:   0%|          | 0/6 [00:00<?, ?parameter_set/s][A
-Processing:  17%|█▋        | 1/6 [00:20<01:44, 20.87s/parameter_set][A
-Processing:  33%|███▎      | 2/6 [00:38<01:15, 18.97s/parameter_set][A
-Processing:  50%|█████     | 3/6 [01:05<01:07, 22.60s/parameter_set][A
-Processing:  67%|██████▋   | 4/6 [01:31<00:48, 24.00s/parameter_set][A
-Processing:  83%|████████▎ | 5/6 [02:21<00:33, 33.44s/parameter_set][A
-Processing: 100%|██████████| 6/6 [03:29<00:00, 44.96s/parameter_set][AProcessing: 100%|██████████| 6/6 [03:29<00:00, 34.85s/parameter_set]
-Early stopping at epoch 20. Best val loss: 0.049
-Early stopping at epoch 15. Best val loss: 0.057
-Early stopping at epoch 19. Best val loss: 0.038
-Early stopping at epoch 14. Best val loss: 0.057
-Early stopping at epoch 11. Best val loss: 0.063
-CV test_score: [0.7473118279569892, 0.6317204301075269, 0.8032258064516129, 0.6720720720720721, 0.4666666666666667]
-CV train_score: [0.9641978202273527, 0.9767959685925232, 0.9896114106019767, 0.7774006670957926, 0.8036748785768624]
-Early stopping at epoch 24. Best val loss: 0.054
-Early stopping at epoch 25. Best val loss: 0.068
-Early stopping at epoch 24. Best val loss: 0.029
-Early stopping at epoch 14. Best val loss: 0.065
-Early stopping at epoch 15. Best val loss: 0.054
-CV test_score: [0.7956989247311828, 0.6908602150537635, 0.813978494623656, 0.5414414414414415, 0.4108108108108107]
-CV train_score: [0.999238251494199, 0.9935544357201452, 0.9978661275831088, 0.5954707706711919, 0.6241441863186846]
-Early stopping at epoch 47. Best val loss: 0.048
-Early stopping at epoch 24. Best val loss: 0.055
-Early stopping at epoch 21. Best val loss: 0.039
-Early stopping at epoch 15. Best val loss: 0.056
-Early stopping at epoch 11. Best val loss: 0.064
-CV test_score: [0.6272401433691757, 0.7204301075268816, 0.8064516129032259, 0.7486486486486486, 0.5396396396396396]
-CV train_score: [0.7330364467362005, 0.9984179069494903, 0.981581311769991, 0.866112704078647, 0.6871671835683772]
-Early stopping at epoch 48. Best val loss: 0.050
-Early stopping at epoch 37. Best val loss: 0.071
-Early stopping at epoch 40. Best val loss: 0.029
-Early stopping at epoch 18. Best val loss: 0.064
-Early stopping at epoch 15. Best val loss: 0.056
-CV test_score: [0.6926523297491038, 0.7123655913978494, 0.8150537634408602, 0.517117117117117, 0.5324324324324323]
-CV train_score: [0.9373022383686863, 0.9737489745693191, 0.9994946091644205, 0.5735853472994323, 0.6874597694423313]
-Early stopping at epoch 62. Best val loss: 0.049
-Early stopping at epoch 38. Best val loss: 0.057
-Early stopping at epoch 75. Best val loss: 0.037
-Early stopping at epoch 37. Best val loss: 0.057
-Early stopping at epoch 17. Best val loss: 0.061
-CV test_score: [0.8593189964157707, 0.7025089605734768, 0.8064516129032258, 0.7234234234234234, 0.45585585585585586]
-CV train_score: [0.9966600257822571, 0.9489628501113325, 0.9955076370170709, 0.8442272807068875, 0.8594417461524957]
-Early stopping at epoch 125. Best val loss: 0.052
-Early stopping at epoch 47. Best val loss: 0.068
-Early stopping at epoch 172. Best val loss: 0.027
-Early stopping at epoch 38. Best val loss: 0.064
-Early stopping at epoch 41. Best val loss: 0.054
-CV test_score: [0.8082437275985662, 0.6872759856630825, 0.8580645161290323, 0.6882882882882883, 0.5126126126126126]
-CV train_score: [0.9980077346771359, 0.879585140044533, 0.9990453728661276, 0.8051378079466324, 0.9404880332377552]
-Num of CV-repeat:2 - Model:Dense - Data inclusion type:all_days - Period:160 
-
-Processing:   0%|          | 0/6 [00:00<?, ?parameter_set/s][A
-Processing:  17%|█▋        | 1/6 [00:20<01:42, 20.58s/parameter_set][A
-Processing:  33%|███▎      | 2/6 [00:37<01:13, 18.48s/parameter_set][A
-Processing:  50%|█████     | 3/6 [01:00<01:01, 20.47s/parameter_set][A
-Processing:  67%|██████▋   | 4/6 [01:20<00:40, 20.30s/parameter_set][A
-Processing:  83%|████████▎ | 5/6 [02:40<00:41, 41.91s/parameter_set][A
-Processing: 100%|██████████| 6/6 [03:37<00:00, 46.81s/parameter_set][AProcessing: 100%|██████████| 6/6 [03:37<00:00, 36.17s/parameter_set]
-Early stopping at epoch 19. Best val loss: 0.058
-Early stopping at epoch 13. Best val loss: 0.059
-Early stopping at epoch 19. Best val loss: 0.050
-Early stopping at epoch 15. Best val loss: 0.049
-Early stopping at epoch 23. Best val loss: 0.055
-CV test_score: [0.681899641577061, 0.5922939068100358, 0.8476702508960573, 0.6698924731182796, 0.7522522522522522]
-CV train_score: [0.9860729123997893, 0.908830241675932, 0.9706243782550179, 0.840231045311799, 0.9950911640953716]
-Early stopping at epoch 24. Best val loss: 0.060
-Early stopping at epoch 13. Best val loss: 0.070
-Early stopping at epoch 15. Best val loss: 0.052
-Early stopping at epoch 15. Best val loss: 0.044
-Early stopping at epoch 32. Best val loss: 0.051
-CV test_score: [0.6317204301075269, 0.5268817204301075, 0.8387096774193549, 0.6860215053763441, 0.727027027027027]
-CV train_score: [0.9596816665691381, 0.5691380420153316, 0.8861840950318919, 0.8474652310453118, 0.980949041608228]
-Early stopping at epoch 23. Best val loss: 0.058
-Early stopping at epoch 15. Best val loss: 0.057
-Early stopping at epoch 20. Best val loss: 0.049
-Early stopping at epoch 19. Best val loss: 0.049
-Early stopping at epoch 23. Best val loss: 0.055
-CV test_score: [0.7365591397849462, 0.6227598566308243, 0.8566308243727598, 0.6311827956989248, 0.7153153153153153]
-CV train_score: [0.9943238340452923, 0.9564632219556439, 0.9473345426882791, 0.7161283086585912, 0.9914679756895746]
-Early stopping at epoch 13. Best val loss: 0.060
-Early stopping at epoch 13. Best val loss: 0.065
-Early stopping at epoch 29. Best val loss: 0.050
-Early stopping at epoch 19. Best val loss: 0.045
-Early stopping at epoch 44. Best val loss: 0.052
-CV test_score: [0.4883512544802867, 0.5734767025089605, 0.6370967741935484, 0.6451612903225806, 0.7252252252252254]
-CV train_score: [0.6843583591784188, 0.7187079407806191, 0.6934870384457839, 0.7923396141767608, 0.9963183730715288]
-Early stopping at epoch 69. Best val loss: 0.056
-Early stopping at epoch 53. Best val loss: 0.055
-Early stopping at epoch 128. Best val loss: 0.045
-Early stopping at epoch 30. Best val loss: 0.048
-Early stopping at epoch 92. Best val loss: 0.055
-CV test_score: [0.771505376344086, 0.628136200716846, 0.888888888888889, 0.7021505376344086, 0.6855855855855856]
-CV train_score: [0.9972496927848324, 0.8332260518462169, 0.9998829656504183, 0.9300695379093764, 0.9835203366058906]
-Early stopping at epoch 37. Best val loss: 0.061
-Early stopping at epoch 63. Best val loss: 0.063
-Early stopping at epoch 60. Best val loss: 0.049
-Early stopping at epoch 74. Best val loss: 0.044
-Early stopping at epoch 114. Best val loss: 0.053
-CV test_score: [0.5241935483870968, 0.6308243727598567, 0.8853046594982079, 0.764516129032258, 0.6936936936936937]
-CV train_score: [0.7386622973842822, 0.8035578442272807, 0.9587453917724852, 0.9377523553162854, 0.9873188405797102]
-Num of CV-repeat:3 - Model:Dense - Data inclusion type:all_days - Period:160 
-
-Processing:   0%|          | 0/6 [00:00<?, ?parameter_set/s][A
-Processing:  17%|█▋        | 1/6 [00:21<01:47, 21.58s/parameter_set][A
-Processing:  33%|███▎      | 2/6 [00:42<01:25, 21.45s/parameter_set][A
-Processing:  50%|█████     | 3/6 [01:10<01:13, 24.42s/parameter_set][A
-Processing:  67%|██████▋   | 4/6 [01:38<00:51, 25.55s/parameter_set][A
-Processing:  83%|████████▎ | 5/6 [02:51<00:42, 42.79s/parameter_set][A
-Processing: 100%|██████████| 6/6 [04:13<00:00, 55.97s/parameter_set][AProcessing: 100%|██████████| 6/6 [04:13<00:00, 42.18s/parameter_set]
-Early stopping at epoch 17. Best val loss: 0.055
-Early stopping at epoch 16. Best val loss: 0.057
-Early stopping at epoch 27. Best val loss: 0.036
-Early stopping at epoch 15. Best val loss: 0.056
-Early stopping at epoch 15. Best val loss: 0.055
-CV test_score: [0.7965949820788529, 0.6747311827956989, 0.8849462365591398, 0.7855855855855856, 0.46126126126126116]
-CV train_score: [0.9800187507324505, 0.9439235907652643, 0.9998876909254267, 0.7737140850839721, 0.6425770963777868]
-Early stopping at epoch 32. Best val loss: 0.052
-Early stopping at epoch 23. Best val loss: 0.074
-Early stopping at epoch 33. Best val loss: 0.034
-Early stopping at epoch 15. Best val loss: 0.058
-Early stopping at epoch 16. Best val loss: 0.049
-CV test_score: [0.746415770609319, 0.6827956989247312, 0.8881720430107527, 0.6324324324324324, 0.6594594594594595]
-CV train_score: [0.9881050041017228, 0.899683581389898, 0.9998315363881402, 0.844051729182515, 0.8111065597752941]
-Early stopping at epoch 28. Best val loss: 0.052
-Early stopping at epoch 17. Best val loss: 0.056
-Early stopping at epoch 39. Best val loss: 0.036
-Early stopping at epoch 12. Best val loss: 0.056
-Early stopping at epoch 23. Best val loss: 0.055
-CV test_score: [0.796594982078853, 0.6648745519713262, 0.8709677419354839, 0.7684684684684684, 0.5738738738738739]
-CV train_score: [0.9963084495488105, 0.9009140982069612, 1.0, 0.679618468020364, 0.7609573409795776]
-Early stopping at epoch 33. Best val loss: 0.053
-Early stopping at epoch 21. Best val loss: 0.073
-Early stopping at epoch 64. Best val loss: 0.034
-Early stopping at epoch 18. Best val loss: 0.056
-Early stopping at epoch 21. Best val loss: 0.050
-CV test_score: [0.7965949820788532, 0.7096774193548387, 0.875268817204301, 0.7432432432432432, 0.6306306306306306]
-CV train_score: [0.9960740653931794, 0.9852337981952419, 0.9987646001796946, 0.8054303938205863, 0.8690385628181871]
-Early stopping at epoch 93. Best val loss: 0.055
-Early stopping at epoch 37. Best val loss: 0.055
-Early stopping at epoch 122. Best val loss: 0.037
-Early stopping at epoch 37. Best val loss: 0.056
-Early stopping at epoch 37. Best val loss: 0.056
-CV test_score: [0.7374551971326165, 0.6326164874551972, 0.8666666666666667, 0.7693693693693694, 0.6351351351351351]
-CV train_score: [0.996191257470995, 0.9113441931325443, 1.0, 0.827900988940254, 0.9388495523436129]
-Early stopping at epoch 169. Best val loss: 0.049
-Early stopping at epoch 56. Best val loss: 0.070
-Early stopping at epoch 192. Best val loss: 0.036
-Early stopping at epoch 29. Best val loss: 0.056
-Early stopping at epoch 67. Best val loss: 0.050
-CV test_score: [0.7840501792114696, 0.6308243727598566, 0.8118279569892473, 0.7387387387387387, 0.5882882882882883]
-CV train_score: [0.9947849525372086, 0.8356381108637057, 0.9973607367475291, 0.7867634150623207, 0.8625431564164081]
-Num of CV-repeat:4 - Model:Dense - Data inclusion type:all_days - Period:160 
-
-Processing:   0%|          | 0/6 [00:00<?, ?parameter_set/s][A
-Processing:  17%|█▋        | 1/6 [00:19<01:36, 19.35s/parameter_set][A
-Processing:  33%|███▎      | 2/6 [00:36<01:12, 18.01s/parameter_set][A
-Processing:  50%|█████     | 3/6 [00:57<00:58, 19.60s/parameter_set][A
-Processing:  67%|██████▋   | 4/6 [01:19<00:40, 20.40s/parameter_set][A
-Processing:  83%|████████▎ | 5/6 [02:15<00:33, 33.29s/parameter_set][A
-Processing: 100%|██████████| 6/6 [03:20<00:00, 44.15s/parameter_set][AProcessing: 100%|██████████| 6/6 [03:20<00:00, 33.49s/parameter_set]
-Early stopping at epoch 12. Best val loss: 0.061
-Early stopping at epoch 17. Best val loss: 0.063
-Early stopping at epoch 28. Best val loss: 0.030
-Early stopping at epoch 14. Best val loss: 0.056
-Early stopping at epoch 13. Best val loss: 0.056
-CV test_score: [0.5689964157706093, 0.7186379928315413, 0.9666666666666666, 0.6891891891891893, 0.6738738738738739]
-CV train_score: [0.8825735380288292, 0.9677721786007266, 0.9964622641509434, 0.9097079992977939, 0.8410088360933934]
-Early stopping at epoch 12. Best val loss: 0.056
-Early stopping at epoch 18. Best val loss: 0.070
-Early stopping at epoch 29. Best val loss: 0.026
-Early stopping at epoch 16. Best val loss: 0.064
-Early stopping at epoch 23. Best val loss: 0.056
-CV test_score: [0.553763440860215, 0.7697132616487455, 0.9408602150537634, 0.5342342342342342, 0.6828828828828829]
-CV train_score: [0.7538966365873666, 0.9266377592874722, 0.9976976639712489, 0.624027151969103, 0.9901105974603546]
-Early stopping at epoch 12. Best val loss: 0.058
-Early stopping at epoch 14. Best val loss: 0.063
-Early stopping at epoch 36. Best val loss: 0.030
-Early stopping at epoch 15. Best val loss: 0.057
-Early stopping at epoch 17. Best val loss: 0.056
-CV test_score: [0.6146953405017921, 0.5734767025089605, 0.9247311827956989, 0.6675675675675675, 0.6486486486486486]
-CV train_score: [0.7018633540372671, 0.8096214695886558, 1.0, 0.8600854350751945, 0.8983556673883785]
-Early stopping at epoch 13. Best val loss: 0.053
-Early stopping at epoch 13. Best val loss: 0.075
-Early stopping at epoch 43. Best val loss: 0.026
-Early stopping at epoch 22. Best val loss: 0.063
-Early stopping at epoch 38. Best val loss: 0.055
-CV test_score: [0.5627240143369175, 0.6066308243727598, 0.9612903225806452, 0.7063063063063063, 0.6621621621621621]
-CV train_score: [0.6425641626626041, 0.689909762100082, 0.999550763701707, 0.8384925975773889, 0.990286148984727]
-Early stopping at epoch 33. Best val loss: 0.058
-Early stopping at epoch 40. Best val loss: 0.059
-Early stopping at epoch 103. Best val loss: 0.030
-Early stopping at epoch 36. Best val loss: 0.057
-Early stopping at epoch 47. Best val loss: 0.056
-CV test_score: [0.5152329749103943, 0.6657706093189965, 0.9612903225806452, 0.7063063063063063, 0.6585585585585585]
-CV train_score: [0.8025899449197235, 0.9038439001523497, 0.9997753818508536, 0.8269647141436011, 0.9082450699280239]
-Early stopping at epoch 52. Best val loss: 0.053
-Early stopping at epoch 66. Best val loss: 0.071
-Early stopping at epoch 149. Best val loss: 0.026
-Early stopping at epoch 44. Best val loss: 0.064
-Early stopping at epoch 99. Best val loss: 0.055
-CV test_score: [0.5098566308243728, 0.6496415770609318, 0.964516129032258, 0.6927927927927928, 0.6567567567567567]
-CV train_score: [0.8334700574241182, 0.9254658385093167, 0.9998315363881402, 0.8286617122125344, 0.9095324477734215]
-Num of CV-repeat:5 - Model:Dense - Data inclusion type:all_days - Period:160 
-
-Processing:   0%|          | 0/6 [00:00<?, ?parameter_set/s][A
-Processing:  17%|█▋        | 1/6 [00:18<01:31, 18.37s/parameter_set][A
-Processing:  33%|███▎      | 2/6 [00:35<01:09, 17.42s/parameter_set][A
-Processing:  50%|█████     | 3/6 [00:56<00:57, 19.01s/parameter_set][A
-Processing:  67%|██████▋   | 4/6 [01:14<00:37, 18.93s/parameter_set][A
-Processing:  83%|████████▎ | 5/6 [01:59<00:28, 28.04s/parameter_set][A
-Processing: 100%|██████████| 6/6 [02:56<00:00, 37.89s/parameter_set][AProcessing: 100%|██████████| 6/6 [02:56<00:00, 29.34s/parameter_set]
-Early stopping at epoch 11. Best val loss: 0.063
-Early stopping at epoch 11. Best val loss: 0.060
-Early stopping at epoch 18. Best val loss: 0.050
-Early stopping at epoch 14. Best val loss: 0.048
-Early stopping at epoch 21. Best val loss: 0.054
-CV test_score: [0.5161290322580645, 0.6227598566308243, 0.8163082437275986, 0.7978494623655914, 0.6342342342342342]
-CV train_score: [0.6911463514541518, 0.6432207853004857, 0.9684592427877582, 0.9002916105877075, 0.9786699392239364]
-Early stopping at epoch 12. Best val loss: 0.065
-Early stopping at epoch 16. Best val loss: 0.073
-Early stopping at epoch 23. Best val loss: 0.052
-Early stopping at epoch 15. Best val loss: 0.044
-Early stopping at epoch 24. Best val loss: 0.050
-CV test_score: [0.48118279569892475, 0.568100358422939, 0.6469534050179211, 0.7634408602150538, 0.7657657657657657]
-CV train_score: [0.7120955000292586, 0.5337351512668967, 0.731991339458131, 0.6020637056976222, 0.9947405329593269]
-Early stopping at epoch 12. Best val loss: 0.066
-Early stopping at epoch 14. Best val loss: 0.059
-Early stopping at epoch 25. Best val loss: 0.051
-Early stopping at epoch 12. Best val loss: 0.047
-Early stopping at epoch 23. Best val loss: 0.053
-CV test_score: [0.3870967741935484, 0.5869175627240143, 0.6541218637992832, 0.7806451612903227, 0.7882882882882882]
-CV train_score: [0.7179472175083387, 0.766692024109076, 0.8543507519456961, 0.7742261103633917, 0.9846891070593735]
-Early stopping at epoch 13. Best val loss: 0.063
-Early stopping at epoch 16. Best val loss: 0.066
-Early stopping at epoch 24. Best val loss: 0.053
-Early stopping at epoch 16. Best val loss: 0.044
-Early stopping at epoch 35. Best val loss: 0.054
-CV test_score: [0.44175627240143367, 0.6353046594982079, 0.7051971326164874, 0.7989247311827957, 0.6972972972972973]
-CV train_score: [0.7158405992158698, 0.6976417578559307, 0.9772953361811691, 0.6592642440556303, 0.9794296400187004]
-Early stopping at epoch 23. Best val loss: 0.064
-Early stopping at epoch 20. Best val loss: 0.059
-Early stopping at epoch 68. Best val loss: 0.050
-Early stopping at epoch 18. Best val loss: 0.048
-Early stopping at epoch 63. Best val loss: 0.053
-CV test_score: [0.4157706093189964, 0.628136200716846, 0.739247311827957, 0.7483870967741935, 0.44054054054054054]
-CV train_score: [0.7645854058166072, 0.860553572473521, 0.8116917315232021, 0.8163414087034545, 0.2830177653108929]
-Early stopping at epoch 37. Best val loss: 0.063
-Early stopping at epoch 31. Best val loss: 0.066
-Early stopping at epoch 79. Best val loss: 0.052
-Early stopping at epoch 79. Best val loss: 0.044
-Early stopping at epoch 113. Best val loss: 0.053
-CV test_score: [0.3960573476702509, 0.6263440860215054, 0.7840501792114695, 0.7408602150537635, 0.6846846846846847]
-CV train_score: [0.8444613494060507, 0.8348645327403592, 0.986775118497279, 0.9090399282189322, 0.9647615708274895]
-Num of CV-repeat:6 - Model:Dense - Data inclusion type:all_days - Period:160 
-
-Processing:   0%|          | 0/6 [00:00<?, ?parameter_set/s][A
-Processing:  17%|█▋        | 1/6 [00:18<01:34, 18.91s/parameter_set][A
-Processing:  33%|███▎      | 2/6 [00:35<01:10, 17.66s/parameter_set][A
-Processing:  50%|█████     | 3/6 [00:59<01:00, 20.27s/parameter_set][A
-Processing:  67%|██████▋   | 4/6 [01:23<00:43, 21.87s/parameter_set][A
-Processing:  83%|████████▎ | 5/6 [02:05<00:29, 29.09s/parameter_set][A
-Processing: 100%|██████████| 6/6 [02:54<00:00, 36.00s/parameter_set][AProcessing: 100%|██████████| 6/6 [02:54<00:00, 29.12s/parameter_set]
-Early stopping at epoch 13. Best val loss: 0.061
-Early stopping at epoch 17. Best val loss: 0.057
-Early stopping at epoch 25. Best val loss: 0.038
-Early stopping at epoch 12. Best val loss: 0.059
-Early stopping at epoch 11. Best val loss: 0.062
-CV test_score: [0.5232974910394266, 0.6774193548387097, 0.7430107526881722, 0.48108108108108105, 0.46306306306306305]
-CV train_score: [0.7554787296378765, 0.9530645728348763, 0.9994384546271339, 0.5876879864240154, 0.5579027444554977]
-Early stopping at epoch 12. Best val loss: 0.054
-Early stopping at epoch 16. Best val loss: 0.073
-Early stopping at epoch 32. Best val loss: 0.029
-Early stopping at epoch 12. Best val loss: 0.067
-Early stopping at epoch 20. Best val loss: 0.059
-CV test_score: [0.5905017921146953, 0.6729390681003584, 0.8473118279569892, 0.7207207207207207, 0.5099099099099099]
-CV train_score: [0.6324270479315599, 0.8844486112738779, 0.9953391734052112, 0.6448592661946281, 0.8574521622096085]
-Early stopping at epoch 19. Best val loss: 0.060
-Early stopping at epoch 15. Best val loss: 0.060
-Early stopping at epoch 33. Best val loss: 0.039
-Early stopping at epoch 12. Best val loss: 0.060
-Early stopping at epoch 19. Best val loss: 0.061
-CV test_score: [0.5672043010752689, 0.6281362007168458, 0.7838709677419355, 0.5297297297297296, 0.563963963963964]
-CV train_score: [0.96636587366694, 0.9148599554670104, 0.9997753818508536, 0.6064719995318626, 0.9436479606764585]
-Early stopping at epoch 14. Best val loss: 0.054
-Early stopping at epoch 19. Best val loss: 0.072
-Early stopping at epoch 55. Best val loss: 0.032
-Early stopping at epoch 16. Best val loss: 0.068
-Early stopping at epoch 34. Best val loss: 0.059
-CV test_score: [0.5179211469534051, 0.6003584229390682, 0.5526881720430108, 0.6126126126126126, 0.5153153153153153]
-CV train_score: [0.7730575413102074, 0.8122582913395054, 0.8765723270440252, 0.6184680203639769, 0.9944408683948739]
-Early stopping at epoch 30. Best val loss: 0.059
-Early stopping at epoch 35. Best val loss: 0.058
-Early stopping at epoch 80. Best val loss: 0.040
-Early stopping at epoch 18. Best val loss: 0.058
-Early stopping at epoch 19. Best val loss: 0.060
-CV test_score: [0.5376344086021505, 0.6514336917562724, 0.896774193548387, 0.6990990990990991, 0.5783783783783784]
-CV train_score: [0.7009258174147427, 0.9475565451775461, 0.9983715184186882, 0.7810872491076131, 0.8181286207501901]
-Early stopping at epoch 32. Best val loss: 0.054
-Early stopping at epoch 56. Best val loss: 0.072
-Early stopping at epoch 105. Best val loss: 0.029
-Early stopping at epoch 26. Best val loss: 0.065
-Early stopping at epoch 72. Best val loss: 0.055
-CV test_score: [0.5053763440860215, 0.6370967741935484, 0.8978494623655913, 0.6189189189189188, 0.5009009009009009]
-CV train_score: [0.7400093753662252, 0.8427282315715456, 0.9974730458221025, 0.6816665691380421, 0.9465153022412077]
-Num of CV-repeat:7 - Model:Dense - Data inclusion type:all_days - Period:160 
-
-Processing:   0%|          | 0/6 [00:00<?, ?parameter_set/s][A
-Processing:  17%|█▋        | 1/6 [00:22<01:50, 22.14s/parameter_set][A
-Processing:  33%|███▎      | 2/6 [00:42<01:24, 21.06s/parameter_set][A
-Processing:  50%|█████     | 3/6 [01:10<01:12, 24.03s/parameter_set][A
-Processing:  67%|██████▋   | 4/6 [01:35<00:48, 24.45s/parameter_set][A
-Processing:  83%|████████▎ | 5/6 [02:39<00:38, 38.76s/parameter_set][A
-Processing: 100%|██████████| 6/6 [03:46<00:00, 48.55s/parameter_set][AProcessing: 100%|██████████| 6/6 [03:46<00:00, 37.80s/parameter_set]
-Early stopping at epoch 14. Best val loss: 0.054
-Early stopping at epoch 11. Best val loss: 0.062
-Early stopping at epoch 30. Best val loss: 0.034
-Early stopping at epoch 13. Best val loss: 0.060
-Early stopping at epoch 24. Best val loss: 0.052
-CV test_score: [0.7410394265232976, 0.47043010752688175, 0.9204301075268817, 0.6765765765765765, 0.6765765765765765]
-CV train_score: [0.8978671041837571, 0.6965897105355678, 0.9713611859838275, 0.8141494528644158, 0.9816256071156886]
-Early stopping at epoch 18. Best val loss: 0.053
-Early stopping at epoch 12. Best val loss: 0.082
-Early stopping at epoch 44. Best val loss: 0.029
-Early stopping at epoch 15. Best val loss: 0.059
-Early stopping at epoch 28. Best val loss: 0.053
-CV test_score: [0.75, 0.47311827956989244, 0.870967741935484, 0.6882882882882883, 0.6522522522522523]
-CV train_score: [0.9169694128676901, 0.7834290401968826, 0.9887690925426774, 0.8956053601732108, 0.9947334542688279]
-Early stopping at epoch 16. Best val loss: 0.054
-Early stopping at epoch 13. Best val loss: 0.063
-Early stopping at epoch 48. Best val loss: 0.034
-Early stopping at epoch 16. Best val loss: 0.060
-Early stopping at epoch 24. Best val loss: 0.054
-CV test_score: [0.7517921146953405, 0.575268817204301, 0.9505376344086022, 0.5972972972972973, 0.6531531531531531]
-CV train_score: [0.9635532637993671, 0.7837806164303293, 1.0, 0.7134413950494469, 0.9771197846567967]
-Early stopping at epoch 23. Best val loss: 0.053
-Early stopping at epoch 14. Best val loss: 0.077
-Early stopping at epoch 65. Best val loss: 0.032
-Early stopping at epoch 13. Best val loss: 0.059
-Early stopping at epoch 30. Best val loss: 0.053
-CV test_score: [0.746415770609319, 0.553763440860215, 0.9344086021505377, 0.5387387387387388, 0.6828828828828829]
-CV train_score: [0.9409937888198757, 0.7422946208836282, 0.9997753818508536, 0.6558604950552986, 0.9845514658552285]
-Early stopping at epoch 63. Best val loss: 0.053
-Early stopping at epoch 19. Best val loss: 0.061
-Early stopping at epoch 119. Best val loss: 0.034
-Early stopping at epoch 22. Best val loss: 0.059
-Early stopping at epoch 73. Best val loss: 0.054
-CV test_score: [0.7455197132616488, 0.5295698924731183, 0.9387096774193548, 0.5927927927927927, 0.6594594594594595]
-CV train_score: [0.9598031173092699, 0.8228641743818118, 1.0, 0.7506583182163965, 0.9904031833343085]
-Early stopping at epoch 63. Best val loss: 0.054
-Early stopping at epoch 39. Best val loss: 0.074
-Early stopping at epoch 155. Best val loss: 0.033
-Early stopping at epoch 40. Best val loss: 0.059
-Early stopping at epoch 114. Best val loss: 0.050
-CV test_score: [0.7688172043010753, 0.5206093189964158, 0.9526881720430107, 0.49369369369369365, 0.572972972972973]
-CV train_score: [0.9462674323215752, 0.7356146724481425, 1.0, 0.653461290888876, 0.9684592427877582]
-Num of CV-repeat:8 - Model:Dense - Data inclusion type:all_days - Period:160 
-
-Processing:   0%|          | 0/6 [00:00<?, ?parameter_set/s][A
-Processing:  17%|█▋        | 1/6 [00:18<01:34, 19.00s/parameter_set][A
-Processing:  33%|███▎      | 2/6 [00:37<01:15, 18.87s/parameter_set][A
-Processing:  50%|█████     | 3/6 [01:02<01:04, 21.65s/parameter_set][A
-Processing:  67%|██████▋   | 4/6 [01:28<00:46, 23.08s/parameter_set][A
-Processing:  83%|████████▎ | 5/6 [02:32<00:38, 38.01s/parameter_set][A
-Processing: 100%|██████████| 6/6 [03:35<00:00, 46.45s/parameter_set][AProcessing: 100%|██████████| 6/6 [03:35<00:00, 35.89s/parameter_set]
-Early stopping at epoch 18. Best val loss: 0.055
-Early stopping at epoch 12. Best val loss: 0.061
-Early stopping at epoch 22. Best val loss: 0.044
-Early stopping at epoch 13. Best val loss: 0.056
-Early stopping at epoch 13. Best val loss: 0.055
-CV test_score: [0.7562724014336917, 0.5331541218637993, 0.7483870967741935, 0.6756756756756755, 0.7774774774774775]
-CV train_score: [0.9981249267549513, 0.6973514590413689, 0.996237646001797, 0.8268476797940195, 0.8167827257300018]
-Early stopping at epoch 26. Best val loss: 0.056
-Early stopping at epoch 12. Best val loss: 0.068
-Early stopping at epoch 33. Best val loss: 0.037
-Early stopping at epoch 18. Best val loss: 0.054
-Early stopping at epoch 14. Best val loss: 0.052
-CV test_score: [0.8019713261648745, 0.5887096774193549, 0.843010752688172, 0.6072072072072072, 0.8234234234234235]
-CV train_score: [0.9796085784600961, 0.7180358607758116, 0.9988207547169812, 0.6651062086722452, 0.8690385628181871]
-Early stopping at epoch 26. Best val loss: 0.054
-Early stopping at epoch 13. Best val loss: 0.060
-Early stopping at epoch 27. Best val loss: 0.042
-Early stopping at epoch 22. Best val loss: 0.056
-Early stopping at epoch 17. Best val loss: 0.051
-CV test_score: [0.685483870967742, 0.6370967741935484, 0.8397849462365592, 0.6279279279279278, 0.8216216216216217]
-CV train_score: [0.9912105941638346, 0.7905777569436305, 0.9992138364779874, 0.7799754227865878, 0.9758324068113992]
-Early stopping at epoch 34. Best val loss: 0.056
-Early stopping at epoch 14. Best val loss: 0.066
-Early stopping at epoch 54. Best val loss: 0.039
-Early stopping at epoch 20. Best val loss: 0.054
-Early stopping at epoch 22. Best val loss: 0.051
-CV test_score: [0.7365591397849462, 0.6836917562724014, 0.7913978494623657, 0.6945945945945946, 0.8180180180180181]
-CV train_score: [0.9784952537208484, 0.7286417438181179, 1.0, 0.8240388554040612, 0.9593305635203933]
-Early stopping at epoch 79. Best val loss: 0.053
-Early stopping at epoch 20. Best val loss: 0.060
-Early stopping at epoch 66. Best val loss: 0.044
-Early stopping at epoch 72. Best val loss: 0.054
-Early stopping at epoch 48. Best val loss: 0.052
-CV test_score: [0.6487455197132617, 0.5779569892473118, 0.7946236559139785, 0.663963963963964, 0.8297297297297298]
-CV train_score: [0.9440407828430798, 0.8374545880698464, 0.9724281221922731, 0.987067704371233, 0.9620808707355608]
-Early stopping at epoch 89. Best val loss: 0.056
-Early stopping at epoch 25. Best val loss: 0.065
-Early stopping at epoch 124. Best val loss: 0.039
-Early stopping at epoch 66. Best val loss: 0.055
-Early stopping at epoch 69. Best val loss: 0.049
-CV test_score: [0.7114695340501792, 0.5654121863799283, 0.8268817204301075, 0.6837837837837838, 0.7594594594594595]
-CV train_score: [0.9806047111215281, 0.7384858783546233, 0.9998876909254267, 0.9283749780560594, 0.9239276727719586]
-Num of CV-repeat:9 - Model:Dense - Data inclusion type:all_days - Period:160 
-
-Processing:   0%|          | 0/6 [00:00<?, ?parameter_set/s][A
-Processing:  17%|█▋        | 1/6 [00:17<01:29, 17.92s/parameter_set][A
-Processing:  33%|███▎      | 2/6 [00:33<01:06, 16.50s/parameter_set][A
-Processing:  50%|█████     | 3/6 [00:53<00:54, 18.14s/parameter_set][A
-Processing:  67%|██████▋   | 4/6 [01:12<00:36, 18.38s/parameter_set][A
-Processing:  83%|████████▎ | 5/6 [02:09<00:32, 32.33s/parameter_set][A
-Processing: 100%|██████████| 6/6 [03:04<00:00, 40.17s/parameter_set][AProcessing: 100%|██████████| 6/6 [03:04<00:00, 30.79s/parameter_set]
-Early stopping at epoch 20. Best val loss: 0.053
-Early stopping at epoch 14. Best val loss: 0.063
-Early stopping at epoch 11. Best val loss: 0.050
-Early stopping at epoch 13. Best val loss: 0.057
-Early stopping at epoch 15. Best val loss: 0.058
-CV test_score: [0.8019713261648745, 0.5976702508960574, 0.6107526881720431, 0.6801801801801801, 0.7009009009009008]
-CV train_score: [0.9957224891597328, 0.9038439001523497, 0.641116352201258, 0.7748259114049973, 0.9227573292761426]
-Early stopping at epoch 27. Best val loss: 0.055
-Early stopping at epoch 12. Best val loss: 0.074
-Early stopping at epoch 13. Best val loss: 0.047
-Early stopping at epoch 15. Best val loss: 0.058
-Early stopping at epoch 16. Best val loss: 0.057
-CV test_score: [0.8118279569892474, 0.5672043010752688, 0.7096774193548387, 0.663963963963964, 0.7072072072072072]
-CV train_score: [0.9997070198054611, 0.6739130434782609, 0.5891172506738545, 0.849376792088478, 0.9726139621979052]
-Early stopping at epoch 30. Best val loss: 0.052
-Early stopping at epoch 12. Best val loss: 0.062
-Early stopping at epoch 12. Best val loss: 0.051
-Early stopping at epoch 12. Best val loss: 0.057
-Early stopping at epoch 17. Best val loss: 0.057
-CV test_score: [0.7768817204301075, 0.5528673835125448, 0.5365591397849463, 0.6486486486486486, 0.7018018018018017]
-CV train_score: [0.9992968475331068, 0.48259697644439237, 0.7284366576819408, 0.6039557610158581, 0.9650652466498917]
-Early stopping at epoch 38. Best val loss: 0.057
-Early stopping at epoch 13. Best val loss: 0.074
-Early stopping at epoch 12. Best val loss: 0.046
-Early stopping at epoch 19. Best val loss: 0.056
-Early stopping at epoch 25. Best val loss: 0.056
-CV test_score: [0.8189964157706093, 0.5071684587813621, 0.6430107526881721, 0.6198198198198198, 0.6063063063063063]
-CV train_score: [0.9981835227938591, 0.5981483651705144, 0.6775044923629829, 0.6856457370238165, 0.7169524255368951]
-Early stopping at epoch 106. Best val loss: 0.053
-Early stopping at epoch 40. Best val loss: 0.061
-Early stopping at epoch 53. Best val loss: 0.050
-Early stopping at epoch 22. Best val loss: 0.057
-Early stopping at epoch 41. Best val loss: 0.056
-CV test_score: [0.8001792114695341, 0.5940860215053763, 0.6419354838709677, 0.7153153153153153, 0.7027027027027027]
-CV train_score: [0.9993554435720146, 0.8467713582561819, 0.9609725965858041, 0.7768740125226753, 0.8985897360875417]
-Early stopping at epoch 145. Best val loss: 0.055
-Early stopping at epoch 31. Best val loss: 0.072
-Early stopping at epoch 45. Best val loss: 0.047
-Early stopping at epoch 38. Best val loss: 0.057
-Early stopping at epoch 86. Best val loss: 0.055
-CV test_score: [0.7894265232974911, 0.5681003584229392, 0.5172043010752688, 0.6252252252252253, 0.7243243243243244]
-CV train_score: [0.9977733505215047, 0.7860658619477323, 0.7605570530098832, 0.7561589326467317, 0.9044999707414126]
-Num of CV-repeat:10 - Model:Dense - Data inclusion type:all_days - Period:160 
-
-Processing:   0%|          | 0/6 [00:00<?, ?parameter_set/s][A
-Processing:  17%|█▋        | 1/6 [00:17<01:27, 17.53s/parameter_set][A
-Processing:  33%|███▎      | 2/6 [00:32<01:05, 16.31s/parameter_set][A
-Processing:  50%|█████     | 3/6 [00:54<00:55, 18.52s/parameter_set][A
-Processing:  67%|██████▋   | 4/6 [01:12<00:36, 18.32s/parameter_set][A
-Processing:  83%|████████▎ | 5/6 [01:54<00:26, 27.00s/parameter_set][A
-Processing: 100%|██████████| 6/6 [02:46<00:00, 35.65s/parameter_set][AProcessing: 100%|██████████| 6/6 [02:46<00:00, 27.83s/parameter_set]
-Early stopping at epoch 11. Best val loss: 0.065
-Early stopping at epoch 22. Best val loss: 0.054
-Early stopping at epoch 12. Best val loss: 0.049
-Early stopping at epoch 13. Best val loss: 0.056
-Early stopping at epoch 17. Best val loss: 0.056
-CV test_score: [0.5985663082437276, 0.6254480286738351, 0.6849462365591398, 0.7081081081081082, 0.718918918918919]
-CV train_score: [0.7554201335989688, 0.9043126684636118, 0.8828616352201257, 0.7594358944350167, 0.9762420270349348]
-Early stopping at epoch 14. Best val loss: 0.059
-Early stopping at epoch 18. Best val loss: 0.063
-Early stopping at epoch 16. Best val loss: 0.046
-Early stopping at epoch 15. Best val loss: 0.055
-Early stopping at epoch 25. Best val loss: 0.050
-CV test_score: [0.6621863799283154, 0.681899641577061, 0.6655913978494624, 0.7207207207207207, 0.7252252252252253]
-CV train_score: [0.6374663072776281, 0.8739599203093871, 0.8386680143755616, 0.8568669904617005, 0.9693370004096202]
-Early stopping at epoch 12. Best val loss: 0.060
-Early stopping at epoch 25. Best val loss: 0.056
-Early stopping at epoch 18. Best val loss: 0.049
-Early stopping at epoch 15. Best val loss: 0.056
-Early stopping at epoch 21. Best val loss: 0.057
-CV test_score: [0.6146953405017921, 0.6111111111111112, 0.6720430107526881, 0.7144144144144144, 0.7054054054054053]
-CV train_score: [0.672858314777921, 0.9947849525372084, 0.8622529200359389, 0.8477968283691264, 0.9700977236819006]
-Early stopping at epoch 12. Best val loss: 0.057
-Early stopping at epoch 21. Best val loss: 0.063
-Early stopping at epoch 20. Best val loss: 0.045
-Early stopping at epoch 18. Best val loss: 0.056
-Early stopping at epoch 34. Best val loss: 0.050
-CV test_score: [0.6532258064516129, 0.6191756272401434, 0.6720430107526881, 0.708108108108108, 0.7072072072072072]
-CV train_score: [0.6671744990038673, 0.8855619360131255, 0.788578167115903, 0.7898648253262331, 0.9982444847562759]
-Early stopping at epoch 23. Best val loss: 0.059
-Early stopping at epoch 45. Best val loss: 0.056
-Early stopping at epoch 42. Best val loss: 0.049
-Early stopping at epoch 41. Best val loss: 0.056
-Early stopping at epoch 42. Best val loss: 0.058
-CV test_score: [0.6057347670250897, 0.6765232974910395, 0.6193548387096773, 0.69009009009009, 0.6747747747747748]
-CV train_score: [0.6212352045001757, 0.9971287940935193, 0.9286275831087152, 0.9384399321200773, 0.8371467025572005]
-Early stopping at epoch 40. Best val loss: 0.058
-Early stopping at epoch 58. Best val loss: 0.063
-Early stopping at epoch 36. Best val loss: 0.046
-Early stopping at epoch 47. Best val loss: 0.056
-Early stopping at epoch 140. Best val loss: 0.050
-CV test_score: [0.6433691756272402, 0.6335125448028673, 0.632258064516129, 0.6918918918918919, 0.6702702702702703]
-CV train_score: [0.6868041720379703, 0.9723426696355326, 0.8824123989218329, 0.8175434490022822, 0.9510211247000995]
-Num of CV-repeat:11 - Model:Dense - Data inclusion type:all_days - Period:160 
-
-Processing:   0%|          | 0/6 [00:00<?, ?parameter_set/s][A
-Processing:  17%|█▋        | 1/6 [00:21<01:49, 21.83s/parameter_set][A
-Processing:  33%|███▎      | 2/6 [00:40<01:19, 19.84s/parameter_set][A
-Processing:  50%|█████     | 3/6 [01:04<01:05, 21.94s/parameter_set][A
-Processing:  67%|██████▋   | 4/6 [01:27<00:44, 22.19s/parameter_set][A
-Processing:  83%|████████▎ | 5/6 [02:45<00:42, 42.25s/parameter_set][A
-Processing: 100%|██████████| 6/6 [03:49<00:00, 49.89s/parameter_set][AProcessing: 100%|██████████| 6/6 [03:49<00:00, 38.30s/parameter_set]
-Early stopping at epoch 23. Best val loss: 0.048
-Early stopping at epoch 11. Best val loss: 0.062
-Early stopping at epoch 29. Best val loss: 0.037
-Early stopping at epoch 11. Best val loss: 0.063
-Early stopping at epoch 19. Best val loss: 0.057
-CV test_score: [0.7741935483870968, 0.5062724014336917, 0.8591397849462366, 0.49369369369369365, 0.6117117117117117]
-CV train_score: [1.0, 0.6352396577991327, 1.0, 0.651354672596407, 0.9850781204283457]
-Early stopping at epoch 28. Best val loss: 0.051
-Early stopping at epoch 12. Best val loss: 0.067
-Early stopping at epoch 33. Best val loss: 0.033
-Early stopping at epoch 13. Best val loss: 0.065
-Early stopping at epoch 22. Best val loss: 0.048
-CV test_score: [0.8566308243727598, 0.5286738351254481, 0.8473118279569892, 0.4783783783783784, 0.6693693693693694]
-CV train_score: [0.9931442634477909, 0.6936599085901792, 1.0, 0.7603136520568787, 0.9966060038621336]
-Early stopping at epoch 31. Best val loss: 0.045
-Early stopping at epoch 13. Best val loss: 0.058
-Early stopping at epoch 31. Best val loss: 0.037
-Early stopping at epoch 12. Best val loss: 0.064
-Early stopping at epoch 20. Best val loss: 0.056
-CV test_score: [0.8127240143369175, 0.6084229390681004, 0.8666666666666667, 0.5207207207207207, 0.5945945945945946]
-CV train_score: [0.9991796554552912, 0.7254189616781905, 0.9998876909254268, 0.6749956112118907, 0.9803967464450817]
-Early stopping at epoch 18. Best val loss: 0.053
-Early stopping at epoch 17. Best val loss: 0.068
-Early stopping at epoch 58. Best val loss: 0.033
-Early stopping at epoch 16. Best val loss: 0.065
-Early stopping at epoch 24. Best val loss: 0.048
-CV test_score: [0.7661290322580645, 0.43548387096774194, 0.864516129032258, 0.5045045045045045, 0.6207207207207207]
-CV train_score: [0.8469471463729052, 0.5855502168053439, 1.0, 0.7819064895546842, 0.9550588097606647]
-Early stopping at epoch 132. Best val loss: 0.046
-Early stopping at epoch 18. Best val loss: 0.059
-Early stopping at epoch 145. Best val loss: 0.035
-Early stopping at epoch 24. Best val loss: 0.061
-Early stopping at epoch 39. Best val loss: 0.058
-CV test_score: [0.8494623655913979, 0.5179211469534051, 0.896774193548387, 0.5396396396396397, 0.5765765765765766]
-CV train_score: [0.9991210594163834, 0.8267315129497246, 1.0, 0.7568611387442215, 0.9638949031540758]
-Early stopping at epoch 102. Best val loss: 0.050
-Early stopping at epoch 33. Best val loss: 0.065
-Early stopping at epoch 132. Best val loss: 0.035
-Early stopping at epoch 79. Best val loss: 0.062
-Early stopping at epoch 61. Best val loss: 0.047
-CV test_score: [0.8646953405017921, 0.5905017921146953, 0.79247311827957, 0.4855855855855855, 0.6576576576576576]
-CV train_score: [0.9975389663658737, 0.7374897456931911, 0.9976415094339622, 0.801685294633975, 0.9893498741880742]
-Num of CV-repeat:12 - Model:Dense - Data inclusion type:all_days - Period:160 
-
-Processing:   0%|          | 0/6 [00:00<?, ?parameter_set/s][A
-Processing:  17%|█▋        | 1/6 [00:20<01:40, 20.07s/parameter_set][A
-Processing:  33%|███▎      | 2/6 [00:40<01:20, 20.10s/parameter_set][A
-Processing:  50%|█████     | 3/6 [01:01<01:02, 20.86s/parameter_set][A
-Processing:  67%|██████▋   | 4/6 [01:21<00:40, 20.39s/parameter_set][A
-Processing:  83%|████████▎ | 5/6 [02:17<00:33, 33.11s/parameter_set][A
-Processing: 100%|██████████| 6/6 [03:23<00:00, 44.29s/parameter_set][AProcessing: 100%|██████████| 6/6 [03:23<00:00, 33.88s/parameter_set]
-Early stopping at epoch 17. Best val loss: 0.058
-Early stopping at epoch 23. Best val loss: 0.050
-Early stopping at epoch 19. Best val loss: 0.043
-Early stopping at epoch 12. Best val loss: 0.067
-Early stopping at epoch 14. Best val loss: 0.049
-CV test_score: [0.7571684587813621, 0.7123655913978494, 0.7731182795698925, 0.454054054054054, 0.818018018018018]
-CV train_score: [0.9812492675495137, 0.9183757178014766, 0.9881513926325247, 0.7284803089706829, 0.855872198490257]
-Early stopping at epoch 15. Best val loss: 0.053
-Early stopping at epoch 22. Best val loss: 0.054
-Early stopping at epoch 16. Best val loss: 0.041
-Early stopping at epoch 12. Best val loss: 0.066
-Early stopping at epoch 51. Best val loss: 0.035
-CV test_score: [0.43637992831541217, 0.8001792114695341, 0.7548387096774194, 0.5135135135135136, 0.5873873873873874]
-CV train_score: [0.6638931208250323, 0.9908590179303879, 0.8332771787960467, 0.6905611797062438, 0.7099888817367898]
-Early stopping at epoch 12. Best val loss: 0.058
-Early stopping at epoch 31. Best val loss: 0.052
-Early stopping at epoch 28. Best val loss: 0.042
-Early stopping at epoch 11. Best val loss: 0.062
-Early stopping at epoch 14. Best val loss: 0.050
-CV test_score: [0.6863799283154122, 0.7732974910394266, 0.721505376344086, 0.49279279279279276, 0.7603603603603603]
-CV train_score: [0.6883276690495723, 0.9855853744286887, 0.9994946091644205, 0.6694364796067646, 0.8954298086488384]
-Early stopping at epoch 24. Best val loss: 0.049
-Early stopping at epoch 30. Best val loss: 0.062
-Early stopping at epoch 24. Best val loss: 0.039
-Early stopping at epoch 14. Best val loss: 0.065
-Early stopping at epoch 29. Best val loss: 0.038
-CV test_score: [0.7329749103942652, 0.6917562724014337, 0.7720430107526881, 0.45045045045045046, 0.6747747747747748]
-CV train_score: [0.9836517051447322, 0.9570491034806048, 0.9091419586702605, 0.7943121306103341, 0.9118731347650535]
-Early stopping at epoch 32. Best val loss: 0.059
-Early stopping at epoch 76. Best val loss: 0.052
-Early stopping at epoch 51. Best val loss: 0.043
-Early stopping at epoch 22. Best val loss: 0.062
-Early stopping at epoch 80. Best val loss: 0.047
-CV test_score: [0.5573476702508959, 0.7894265232974911, 0.7118279569892474, 0.518018018018018, 0.7351351351351351]
-CV train_score: [0.7391890308215164, 0.9872846595570139, 0.903414195867026, 0.8041430159751887, 0.9928609046755222]
-Early stopping at epoch 76. Best val loss: 0.054
-Early stopping at epoch 132. Best val loss: 0.050
-Early stopping at epoch 115. Best val loss: 0.040
-Early stopping at epoch 36. Best val loss: 0.065
-Early stopping at epoch 74. Best val loss: 0.039
-CV test_score: [0.6935483870967742, 0.7302867383512545, 0.8354838709677419, 0.47477477477477475, 0.7477477477477478]
-CV train_score: [0.9042540724247041, 0.943982186804172, 0.4572663971248877, 0.8245655099771781, 0.9992977939025104]
-Num of CV-repeat:13 - Model:Dense - Data inclusion type:all_days - Period:160 
-
-Processing:   0%|          | 0/6 [00:00<?, ?parameter_set/s][A
-Processing:  17%|█▋        | 1/6 [00:18<01:33, 18.70s/parameter_set][A
-Processing:  33%|███▎      | 2/6 [00:35<01:09, 17.37s/parameter_set][A
-Processing:  50%|█████     | 3/6 [00:57<00:59, 19.67s/parameter_set][A
-Processing:  67%|██████▋   | 4/6 [01:18<00:40, 20.20s/parameter_set][A
-Processing:  83%|████████▎ | 5/6 [02:12<00:32, 32.40s/parameter_set][A
-Processing: 100%|██████████| 6/6 [03:15<00:00, 42.93s/parameter_set][AProcessing: 100%|██████████| 6/6 [03:15<00:00, 32.66s/parameter_set]
-Early stopping at epoch 25. Best val loss: 0.051
-Early stopping at epoch 11. Best val loss: 0.061
-Early stopping at epoch 20. Best val loss: 0.044
-Early stopping at epoch 11. Best val loss: 0.057
-Early stopping at epoch 15. Best val loss: 0.061
-CV test_score: [0.8172043010752689, 0.5062724014336918, 0.6516129032258063, 0.7459459459459459, 0.5423423423423424]
-CV train_score: [0.9987694831829369, 0.692722371967655, 0.9918014375561546, 0.6487799169056118, 0.9647141436011469]
-Early stopping at epoch 29. Best val loss: 0.050
-Early stopping at epoch 12. Best val loss: 0.079
-Early stopping at epoch 28. Best val loss: 0.037
-Early stopping at epoch 13. Best val loss: 0.062
-Early stopping at epoch 16. Best val loss: 0.060
-CV test_score: [0.7275985663082437, 0.48566308243727596, 0.596774193548387, 0.5324324324324324, 0.5261261261261261]
-CV train_score: [0.9758584319699989, 0.6459041368803469, 0.9439016172506739, 0.4423898414184563, 0.9156182339516648]
-Early stopping at epoch 35. Best val loss: 0.051
-Early stopping at epoch 15. Best val loss: 0.061
-Early stopping at epoch 13. Best val loss: 0.047
-Early stopping at epoch 21. Best val loss: 0.058
-Early stopping at epoch 16. Best val loss: 0.060
-CV test_score: [0.7043010752688172, 0.5528673835125448, 0.5268817204301075, 0.5801801801801801, 0.6387387387387388]
-CV train_score: [0.9439235907652643, 0.886968240946912, 0.6864330637915543, 0.9169056117970624, 0.48733103165779157]
-Early stopping at epoch 32. Best val loss: 0.047
-Early stopping at epoch 13. Best val loss: 0.077
-Early stopping at epoch 36. Best val loss: 0.035
-Early stopping at epoch 16. Best val loss: 0.063
-Early stopping at epoch 26. Best val loss: 0.059
-CV test_score: [0.8396057347670252, 0.5053763440860215, 0.6064516129032259, 0.6297297297297297, 0.536036036036036]
-CV train_score: [0.9990624633774756, 0.6749677721786007, 0.9954514824797844, 0.6239101176195214, 0.8988823219614956]
-Early stopping at epoch 123. Best val loss: 0.051
-Early stopping at epoch 26. Best val loss: 0.061
-Early stopping at epoch 54. Best val loss: 0.045
-Early stopping at epoch 20. Best val loss: 0.058
-Early stopping at epoch 21. Best val loss: 0.059
-CV test_score: [0.6075268817204301, 0.5134408602150538, 0.6333333333333333, 0.6828828828828829, 0.5765765765765766]
-CV train_score: [0.6897339739833588, 0.744638462439939, 0.9991576819407009, 0.7479665281760196, 0.8237462695301071]
-Early stopping at epoch 140. Best val loss: 0.047
-Early stopping at epoch 27. Best val loss: 0.074
-Early stopping at epoch 146. Best val loss: 0.035
-Early stopping at epoch 32. Best val loss: 0.064
-Early stopping at epoch 57. Best val loss: 0.057
-CV test_score: [0.8172043010752689, 0.5197132616487455, 0.6193548387096774, 0.645945945945946, 0.5936936936936936]
-CV train_score: [0.9856439704675964, 0.7313371616078753, 0.9974168912848158, 0.7213412136462052, 0.9806308151442449]
-Num of CV-repeat:14 - Model:Dense - Data inclusion type:all_days - Period:160 
-
-Processing:   0%|          | 0/6 [00:00<?, ?parameter_set/s][A
-Processing:  17%|█▋        | 1/6 [00:21<01:46, 21.23s/parameter_set][A
-Processing:  33%|███▎      | 2/6 [00:43<01:27, 21.92s/parameter_set][A
-Processing:  50%|█████     | 3/6 [01:13<01:16, 25.61s/parameter_set][A
-Processing:  67%|██████▋   | 4/6 [01:36<00:49, 24.61s/parameter_set][A
-Processing:  83%|████████▎ | 5/6 [02:48<00:41, 41.54s/parameter_set][A
-Processing: 100%|██████████| 6/6 [04:02<00:00, 52.50s/parameter_set][AProcessing: 100%|██████████| 6/6 [04:02<00:00, 40.34s/parameter_set]
-Early stopping at epoch 20. Best val loss: 0.051
-Early stopping at epoch 20. Best val loss: 0.054
-Early stopping at epoch 25. Best val loss: 0.035
-Early stopping at epoch 14. Best val loss: 0.063
-Early stopping at epoch 15. Best val loss: 0.058
-CV test_score: [0.7517921146953406, 0.7571684587813621, 0.9236559139784947, 0.5135135135135135, 0.6630630630630631]
-CV train_score: [0.9661314895113091, 0.9954881050041017, 0.9971361185983827, 0.6374861021709871, 0.9534788460413132]
-Early stopping at epoch 18. Best val loss: 0.055
-Early stopping at epoch 29. Best val loss: 0.063
-Early stopping at epoch 38. Best val loss: 0.034
-Early stopping at epoch 24. Best val loss: 0.060
-Early stopping at epoch 29. Best val loss: 0.049
-CV test_score: [0.6756272401433692, 0.6621863799283154, 0.932258064516129, 0.581081081081081, 0.6108108108108108]
-CV train_score: [0.8034102894644322, 0.9535333411461385, 0.9983715184186882, 0.6112118906899175, 0.9856632921762538]
-Early stopping at epoch 25. Best val loss: 0.050
-Early stopping at epoch 27. Best val loss: 0.051
-Early stopping at epoch 41. Best val loss: 0.033
-Early stopping at epoch 15. Best val loss: 0.063
-Early stopping at epoch 28. Best val loss: 0.058
-CV test_score: [0.7939068100358423, 0.7338709677419355, 0.9279569892473118, 0.6441441441441441, 0.6657657657657657]
-CV train_score: [0.945271299660143, 0.8600140630493379, 0.9884883198562444, 0.8419451108900462, 0.9654748668734273]
-Early stopping at epoch 26. Best val loss: 0.054
-Early stopping at epoch 36. Best val loss: 0.061
-Early stopping at epoch 39. Best val loss: 0.036
-Early stopping at epoch 13. Best val loss: 0.063
-Early stopping at epoch 29. Best val loss: 0.051
-CV test_score: [0.46505376344086025, 0.7679211469534051, 0.9064516129032258, 0.5099099099099098, 0.6693693693693694]
-CV train_score: [0.648423766553381, 0.9942575881870385, 1.0, 0.7266077593773773, 0.9975422786587863]
-Early stopping at epoch 56. Best val loss: 0.052
-Early stopping at epoch 65. Best val loss: 0.053
-Early stopping at epoch 109. Best val loss: 0.034
-Early stopping at epoch 23. Best val loss: 0.060
-Early stopping at epoch 84. Best val loss: 0.057
-CV test_score: [0.7795698924731183, 0.724910394265233, 0.9354838709677419, 0.5990990990990991, 0.47657657657657654]
-CV train_score: [0.9968944099378882, 0.9967186218211649, 1.0, 0.8534144771490432, 0.799637193516297]
-Early stopping at epoch 75. Best val loss: 0.053
-Early stopping at epoch 92. Best val loss: 0.062
-Early stopping at epoch 143. Best val loss: 0.036
-Early stopping at epoch 28. Best val loss: 0.061
-Early stopping at epoch 146. Best val loss: 0.050
-CV test_score: [0.7885304659498208, 0.7706093189964158, 0.9204301075268817, 0.5063063063063062, 0.6405405405405404]
-CV train_score: [0.9777335052150475, 0.9962498535099027, 0.9997753818508536, 0.8335186377201709, 0.9963719351629703]
-Num of CV-repeat:15 - Model:Dense - Data inclusion type:all_days - Period:160 
-
-Processing:   0%|          | 0/6 [00:00<?, ?parameter_set/s][A
-Processing:  17%|█▋        | 1/6 [00:21<01:48, 21.74s/parameter_set][A
-Processing:  33%|███▎      | 2/6 [00:45<01:31, 22.78s/parameter_set][A
-Processing:  50%|█████     | 3/6 [01:15<01:17, 25.98s/parameter_set][A
-Processing:  67%|██████▋   | 4/6 [01:43<00:53, 26.94s/parameter_set][A
-Processing:  83%|████████▎ | 5/6 [02:55<00:43, 43.12s/parameter_set][A
-Processing: 100%|██████████| 6/6 [04:16<00:00, 56.17s/parameter_set][AProcessing: 100%|██████████| 6/6 [04:16<00:00, 42.79s/parameter_set]
-Early stopping at epoch 19. Best val loss: 0.050
-Early stopping at epoch 17. Best val loss: 0.058
-Early stopping at epoch 32. Best val loss: 0.032
-Early stopping at epoch 14. Best val loss: 0.056
-Early stopping at epoch 14. Best val loss: 0.058
-CV test_score: [0.8127240143369177, 0.589605734767025, 0.964516129032258, 0.5954954954954954, 0.6765765765765765]
-CV train_score: [0.9967772178600727, 0.9278096800656276, 1.0, 0.872022938732518, 0.8161390368073029]
-Early stopping at epoch 28. Best val loss: 0.055
-Early stopping at epoch 21. Best val loss: 0.070
-Early stopping at epoch 45. Best val loss: 0.033
-Early stopping at epoch 20. Best val loss: 0.061
-Early stopping at epoch 24. Best val loss: 0.051
-CV test_score: [0.7831541218637993, 0.6021505376344086, 0.9397849462365591, 0.645045045045045, 0.6702702702702703]
-CV train_score: [0.9956052970819173, 0.9659557013945858, 1.0, 0.8184797237989351, 0.8241558897536427]
-Early stopping at epoch 33. Best val loss: 0.046
-Early stopping at epoch 22. Best val loss: 0.054
-Early stopping at epoch 43. Best val loss: 0.033
-Early stopping at epoch 15. Best val loss: 0.058
-Early stopping at epoch 16. Best val loss: 0.059
-CV test_score: [0.8387096774193548, 0.6586021505376345, 0.9473118279569892, 0.5459459459459459, 0.5459459459459459]
-CV train_score: [0.9998242118832766, 0.9210125395523262, 1.0, 0.7309380303118966, 0.7522967991105389]
-Early stopping at epoch 51. Best val loss: 0.055
-Early stopping at epoch 35. Best val loss: 0.071
-Early stopping at epoch 44. Best val loss: 0.036
-Early stopping at epoch 18. Best val loss: 0.059
-Early stopping at epoch 22. Best val loss: 0.052
-CV test_score: [0.7777777777777777, 0.6137992831541219, 0.9387096774193548, 0.6513513513513514, 0.6738738738738739]
-CV train_score: [0.9987694831829368, 0.9414039610922302, 0.9997753818508536, 0.7950728538826145, 0.8525367195271811]
-Early stopping at epoch 65. Best val loss: 0.054
-Early stopping at epoch 53. Best val loss: 0.055
-Early stopping at epoch 134. Best val loss: 0.037
-Early stopping at epoch 34. Best val loss: 0.056
-Early stopping at epoch 36. Best val loss: 0.058
-CV test_score: [0.7885304659498208, 0.7293906810035843, 0.9344086021505377, 0.6144144144144145, 0.6711711711711712]
-CV train_score: [0.9951365287706551, 0.9858783546232275, 1.0, 0.8205863420914038, 0.8209959623149394]
-Early stopping at epoch 111. Best val loss: 0.057
-Early stopping at epoch 72. Best val loss: 0.070
-Early stopping at epoch 214. Best val loss: 0.038
-Early stopping at epoch 70. Best val loss: 0.057
-Early stopping at epoch 43. Best val loss: 0.053
-CV test_score: [0.7625448028673836, 0.6621863799283154, 0.9150537634408602, 0.6459459459459459, 0.6252252252252253]
-CV train_score: [0.9975389663658736, 0.9790226180710184, 0.9935983827493262, 0.7690912282754989, 0.8857159576335655]
-Num of CV-repeat:16 - Model:Dense - Data inclusion type:all_days - Period:160 
-
-Processing:   0%|          | 0/6 [00:00<?, ?parameter_set/s][A
-Processing:  17%|█▋        | 1/6 [00:20<01:44, 20.91s/parameter_set][A
-Processing:  33%|███▎      | 2/6 [00:37<01:13, 18.37s/parameter_set][A
-Processing:  50%|█████     | 3/6 [01:00<01:01, 20.64s/parameter_set][A
-Processing:  67%|██████▋   | 4/6 [01:25<00:44, 22.22s/parameter_set][A
-Processing:  83%|████████▎ | 5/6 [02:28<00:36, 36.89s/parameter_set][A
-Processing: 100%|██████████| 6/6 [03:42<00:00, 49.65s/parameter_set][AProcessing: 100%|██████████| 6/6 [03:42<00:00, 37.13s/parameter_set]
-Early stopping at epoch 17. Best val loss: 0.058
-Early stopping at epoch 24. Best val loss: 0.052
-Early stopping at epoch 19. Best val loss: 0.049
-Early stopping at epoch 14. Best val loss: 0.052
-Early stopping at epoch 19. Best val loss: 0.054
-CV test_score: [0.6657706093189963, 0.7732974910394266, 0.7021505376344086, 0.5099099099099099, 0.8126126126126126]
-CV train_score: [0.9117543654048986, 0.9977147544825969, 0.8218216531895777, 0.64134823570718, 0.9916905611797063]
-Early stopping at epoch 11. Best val loss: 0.058
-Early stopping at epoch 18. Best val loss: 0.064
-Early stopping at epoch 21. Best val loss: 0.044
-Early stopping at epoch 15. Best val loss: 0.051
-Early stopping at epoch 33. Best val loss: 0.042
-CV test_score: [0.5887096774193549, 0.6559139784946236, 0.7043010752688172, 0.7846846846846847, 0.7531531531531531]
-CV train_score: [0.6195945154107583, 0.9355443572014532, 0.9970799640610962, 0.8047867048978875, 0.9463982678916262]
-Early stopping at epoch 13. Best val loss: 0.057
-Early stopping at epoch 30. Best val loss: 0.052
-Early stopping at epoch 31. Best val loss: 0.048
-Early stopping at epoch 14. Best val loss: 0.053
-Early stopping at epoch 16. Best val loss: 0.054
-CV test_score: [0.564516129032258, 0.7939068100358423, 0.7688172043010753, 0.8684684684684685, 0.7738738738738739]
-CV train_score: [0.6400445329895699, 0.9992968475331068, 1.0, 0.865820118204693, 0.964421557727193]
-Early stopping at epoch 17. Best val loss: 0.057
-Early stopping at epoch 30. Best val loss: 0.061
-Early stopping at epoch 46. Best val loss: 0.041
-Early stopping at epoch 19. Best val loss: 0.052
-Early stopping at epoch 40. Best val loss: 0.041
-CV test_score: [0.6066308243727598, 0.7616487455197133, 0.7548387096774194, 0.8054054054054054, 0.7657657657657657]
-CV train_score: [0.5785772881753194, 0.9791398101488339, 0.9993823000898472, 0.9248639475686113, 0.994733454268828]
-Early stopping at epoch 24. Best val loss: 0.057
-Early stopping at epoch 81. Best val loss: 0.051
-Early stopping at epoch 89. Best val loss: 0.049
-Early stopping at epoch 36. Best val loss: 0.054
-Early stopping at epoch 63. Best val loss: 0.053
-CV test_score: [0.6317204301075269, 0.7275985663082437, 0.710752688172043, 0.7855855855855857, 0.8216216216216217]
-CV train_score: [0.732157506152584, 0.9517168639399975, 0.9994946091644205, 0.9667037275440342, 0.9977763473579495]
-Early stopping at epoch 48. Best val loss: 0.058
-Early stopping at epoch 75. Best val loss: 0.060
-Early stopping at epoch 139. Best val loss: 0.043
-Early stopping at epoch 64. Best val loss: 0.053
-Early stopping at epoch 144. Best val loss: 0.045
-CV test_score: [0.6639784946236559, 0.7132616487455197, 0.7440860215053763, 0.8027027027027027, 0.781981981981982]
-CV train_score: [0.7781553966951834, 0.9899214813078636, 0.9985399820305481, 0.9635438001053309, 0.9994148282520919]
-Num of CV-repeat:17 - Model:Dense - Data inclusion type:all_days - Period:160 
-
-Processing:   0%|          | 0/6 [00:00<?, ?parameter_set/s][A
-Processing:  17%|█▋        | 1/6 [00:19<01:37, 19.43s/parameter_set][A
-Processing:  33%|███▎      | 2/6 [00:38<01:16, 19.04s/parameter_set][A
-Processing:  50%|█████     | 3/6 [01:02<01:04, 21.52s/parameter_set][A
-Processing:  67%|██████▋   | 4/6 [01:22<00:41, 20.67s/parameter_set][A
-Processing:  83%|████████▎ | 5/6 [02:23<00:35, 35.29s/parameter_set][A
-Processing: 100%|██████████| 6/6 [03:39<00:00, 49.09s/parameter_set][AProcessing: 100%|██████████| 6/6 [03:39<00:00, 36.52s/parameter_set]
-Early stopping at epoch 22. Best val loss: 0.053
-Early stopping at epoch 11. Best val loss: 0.063
-Early stopping at epoch 22. Best val loss: 0.044
-Early stopping at epoch 13. Best val loss: 0.058
-Early stopping at epoch 17. Best val loss: 0.058
-CV test_score: [0.6953405017921146, 0.4121863799283154, 0.8182795698924732, 0.5963963963963964, 0.6225225225225225]
-CV train_score: [0.9815422477440525, 0.6982889956638931, 0.9280098831985625, 0.7017379600912867, 0.9201240564105565]
-Early stopping at epoch 39. Best val loss: 0.057
-Early stopping at epoch 12. Best val loss: 0.076
-Early stopping at epoch 28. Best val loss: 0.040
-Early stopping at epoch 15. Best val loss: 0.058
-Early stopping at epoch 20. Best val loss: 0.059
-CV test_score: [0.8584229390681003, 0.4516129032258064, 0.8720430107526882, 0.5981981981981981, 0.6486486486486487]
-CV train_score: [0.9981249267549513, 0.7109457400679714, 0.9999438454627134, 0.7456258411843877, 0.9479782316109778]
-Early stopping at epoch 29. Best val loss: 0.049
-Early stopping at epoch 12. Best val loss: 0.064
-Early stopping at epoch 25. Best val loss: 0.044
-Early stopping at epoch 17. Best val loss: 0.056
-Early stopping at epoch 22. Best val loss: 0.058
-CV test_score: [0.7598566308243728, 0.4838709677419355, 0.8591397849462366, 0.6108108108108108, 0.6207207207207207]
-CV train_score: [0.9951365287706551, 0.6207664361889136, 0.9987084456424079, 0.660483351863772, 0.8936157762303236]
-Early stopping at epoch 34. Best val loss: 0.060
-Early stopping at epoch 14. Best val loss: 0.078
-Early stopping at epoch 28. Best val loss: 0.040
-Early stopping at epoch 16. Best val loss: 0.056
-Early stopping at epoch 22. Best val loss: 0.057
-CV test_score: [0.7876344086021505, 0.3817204301075269, 0.8881720430107527, 0.47027027027027024, 0.636936936936937]
-CV train_score: [0.9797257705379117, 0.578928864408766, 0.9993261455525607, 0.5043010123471239, 0.9344607642343028]
-Early stopping at epoch 88. Best val loss: 0.048
-Early stopping at epoch 21. Best val loss: 0.062
-Early stopping at epoch 90. Best val loss: 0.042
-Early stopping at epoch 20. Best val loss: 0.057
-Early stopping at epoch 56. Best val loss: 0.057
-CV test_score: [0.8279569892473118, 0.492831541218638, 0.9258064516129032, 0.7378378378378379, 0.6783783783783783]
-CV train_score: [0.9967186218211649, 0.6986405718973397, 0.9989892183288409, 0.8530048569255076, 0.9873017730703961]
-Early stopping at epoch 179. Best val loss: 0.056
-Early stopping at epoch 42. Best val loss: 0.074
-Early stopping at epoch 169. Best val loss: 0.042
-Early stopping at epoch 29. Best val loss: 0.057
-Early stopping at epoch 55. Best val loss: 0.057
-CV test_score: [0.8440860215053764, 0.4802867383512545, 0.8301075268817204, 0.6603603603603604, 0.6405405405405405]
-CV train_score: [0.9944333763037618, 0.6872729403492324, 0.9947214734950584, 0.8648838434080401, 0.9857218093510446]
-Num of CV-repeat:18 - Model:Dense - Data inclusion type:all_days - Period:160 
-
-Processing:   0%|          | 0/6 [00:00<?, ?parameter_set/s][A
-Processing:  17%|█▋        | 1/6 [00:21<01:46, 21.23s/parameter_set][A
-Processing:  33%|███▎      | 2/6 [00:40<01:19, 19.83s/parameter_set][A
-Processing:  50%|█████     | 3/6 [01:07<01:09, 23.17s/parameter_set][A
-Processing:  67%|██████▋   | 4/6 [01:32<00:47, 23.82s/parameter_set][A
-Processing:  83%|████████▎ | 5/6 [02:48<00:42, 42.95s/parameter_set][A
-Processing: 100%|██████████| 6/6 [03:50<00:00, 49.45s/parameter_set][AProcessing: 100%|██████████| 6/6 [03:50<00:00, 38.50s/parameter_set]
-Early stopping at epoch 25. Best val loss: 0.050
-Early stopping at epoch 18. Best val loss: 0.062
-Early stopping at epoch 27. Best val loss: 0.037
-Early stopping at epoch 11. Best val loss: 0.058
-Early stopping at epoch 13. Best val loss: 0.060
-CV test_score: [0.7768817204301075, 0.6559139784946236, 0.8913978494623657, 0.5891891891891892, 0.5846846846846847]
-CV train_score: [0.9964256416266261, 0.8902496191257471, 1.0, 0.5995084557317573, 0.9210603312072094]
-Early stopping at epoch 33. Best val loss: 0.058
-Early stopping at epoch 12. Best val loss: 0.078
-Early stopping at epoch 37. Best val loss: 0.032
-Early stopping at epoch 13. Best val loss: 0.058
-Early stopping at epoch 18. Best val loss: 0.052
-CV test_score: [0.8091397849462365, 0.5376344086021505, 0.9440860215053762, 0.7198198198198198, 0.6306306306306306]
-CV train_score: [0.9942575881870386, 0.6487753427868277, 1.0, 0.6419334074550881, 0.8929720873076248]
-Early stopping at epoch 27. Best val loss: 0.048
-Early stopping at epoch 26. Best val loss: 0.060
-Early stopping at epoch 35. Best val loss: 0.037
-Early stopping at epoch 12. Best val loss: 0.058
-Early stopping at epoch 22. Best val loss: 0.059
-CV test_score: [0.8189964157706093, 0.5474910394265233, 0.903225806451613, 0.6180180180180179, 0.6144144144144145]
-CV train_score: [0.9992968475331068, 0.9825969764443924, 1.0, 0.651354672596407, 0.9598572180935104]
-Early stopping at epoch 41. Best val loss: 0.056
-Early stopping at epoch 13. Best val loss: 0.072
-Early stopping at epoch 51. Best val loss: 0.032
-Early stopping at epoch 19. Best val loss: 0.058
-Early stopping at epoch 30. Best val loss: 0.051
-CV test_score: [0.7956989247311829, 0.5797491039426523, 0.9483870967741935, 0.6189189189189189, 0.636036036036036]
-CV train_score: [0.9985350990273059, 0.6585608812844252, 1.0, 0.676692609280824, 0.8613728129205922]
-Early stopping at epoch 109. Best val loss: 0.047
-Early stopping at epoch 63. Best val loss: 0.058
-Early stopping at epoch 129. Best val loss: 0.035
-Early stopping at epoch 25. Best val loss: 0.059
-Early stopping at epoch 37. Best val loss: 0.058
-CV test_score: [0.8216845878136201, 0.578853046594982, 0.9473118279569892, 0.5756756756756757, 0.5540540540540541]
-CV train_score: [0.9997070198054612, 0.9748622993085668, 1.0, 0.7644098542922347, 0.7548130376265434]
-Early stopping at epoch 101. Best val loss: 0.057
-Early stopping at epoch 41. Best val loss: 0.073
-Early stopping at epoch 184. Best val loss: 0.037
-Early stopping at epoch 48. Best val loss: 0.059
-Early stopping at epoch 30. Best val loss: 0.052
-CV test_score: [0.8100358422939068, 0.514336917562724, 0.9440860215053763, 0.5882882882882883, 0.6333333333333333]
-CV train_score: [0.9981249267549515, 0.5987929215985, 1.0, 0.7886359646556264, 0.8604365381239394]
-Num of CV-repeat:19 - Model:Dense - Data inclusion type:all_days - Period:160 
-
-Processing:   0%|          | 0/6 [00:00<?, ?parameter_set/s][A
-Processing:  17%|█▋        | 1/6 [00:19<01:35, 19.17s/parameter_set][A
-Processing:  33%|███▎      | 2/6 [00:36<01:13, 18.26s/parameter_set][A
-Processing:  50%|█████     | 3/6 [01:00<01:02, 20.68s/parameter_set][A
-Processing:  67%|██████▋   | 4/6 [01:23<00:43, 21.70s/parameter_set][A
-Processing:  83%|████████▎ | 5/6 [02:41<00:42, 42.05s/parameter_set][A
-Processing: 100%|██████████| 6/6 [03:46<00:00, 49.72s/parameter_set][AProcessing: 100%|██████████| 6/6 [03:46<00:00, 37.73s/parameter_set]
-Early stopping at epoch 12. Best val loss: 0.067
-Early stopping at epoch 17. Best val loss: 0.050
-Early stopping at epoch 18. Best val loss: 0.034
-Early stopping at epoch 13. Best val loss: 0.060
-Early stopping at epoch 24. Best val loss: 0.048
-CV test_score: [0.4722222222222222, 0.8189964157706093, 0.9161290322580644, 0.6099099099099099, 0.8396396396396396]
-CV train_score: [0.7665533809914451, 0.9859955467010431, 0.9914645103324349, 0.855521095441512, 0.9890572883141202]
-Early stopping at epoch 12. Best val loss: 0.064
-Early stopping at epoch 21. Best val loss: 0.061
-Early stopping at epoch 31. Best val loss: 0.032
-Early stopping at epoch 12. Best val loss: 0.064
-Early stopping at epoch 30. Best val loss: 0.046
-CV test_score: [0.4507168458781362, 0.778673835125448, 0.9204301075268817, 0.6279279279279278, 0.827027027027027]
-CV train_score: [0.6487753427868277, 0.9976561584436893, 0.9943845462713388, 0.8381414945286442, 0.9905787348586811]
-Early stopping at epoch 11. Best val loss: 0.064
-Early stopping at epoch 25. Best val loss: 0.046
-Early stopping at epoch 30. Best val loss: 0.033
-Early stopping at epoch 14. Best val loss: 0.059
-Early stopping at epoch 25. Best val loss: 0.049
-CV test_score: [0.5116487455197133, 0.7768817204301075, 0.9311827956989247, 0.5981981981981981, 0.8504504504504504]
-CV train_score: [0.8051095745927574, 0.980370326965897, 0.9835467205750226, 0.7315232020598045, 0.9988881736789749]
-Early stopping at epoch 18. Best val loss: 0.060
-Early stopping at epoch 38. Best val loss: 0.054
-Early stopping at epoch 39. Best val loss: 0.032
-Early stopping at epoch 14. Best val loss: 0.059
-Early stopping at epoch 35. Best val loss: 0.047
-CV test_score: [0.6379928315412187, 0.7849462365591398, 0.9150537634408602, 0.6864864864864864, 0.8648648648648649]
-CV train_score: [0.6299074182585257, 0.9947849525372084, 0.9998315363881402, 0.8276084030663, 0.991456492480543]
-Early stopping at epoch 28. Best val loss: 0.063
-Early stopping at epoch 146. Best val loss: 0.048
-Early stopping at epoch 115. Best val loss: 0.035
-Early stopping at epoch 23. Best val loss: 0.058
-Early stopping at epoch 58. Best val loss: 0.050
-CV test_score: [0.5663082437275986, 0.6093189964157706, 0.9064516129032258, 0.5711711711711711, 0.8576576576576576]
-CV train_score: [0.8147779210125395, 0.6990507441696941, 0.9960691823899371, 0.7468547018549945, 0.994089765346129]
-Early stopping at epoch 33. Best val loss: 0.062
-Early stopping at epoch 157. Best val loss: 0.055
-Early stopping at epoch 98. Best val loss: 0.036
-Early stopping at epoch 46. Best val loss: 0.060
-Early stopping at epoch 87. Best val loss: 0.047
-CV test_score: [0.46863799283154123, 0.7867383512544803, 0.9279569892473118, 0.6468468468468469, 0.8576576576576577]
-CV train_score: [0.7266494784952537, 0.9966600257822571, 0.9978661275831088, 0.8633038796886887, 0.9973667271344139]
-Num of CV-repeat:20 - Model:Dense - Data inclusion type:all_days - Period:160 
-
-Processing:   0%|          | 0/6 [00:00<?, ?parameter_set/s][A
-Processing:  17%|█▋        | 1/6 [00:18<01:33, 18.64s/parameter_set][A
-Processing:  33%|███▎      | 2/6 [00:36<01:13, 18.36s/parameter_set][A
-Processing:  50%|█████     | 3/6 [00:57<00:58, 19.41s/parameter_set][A
-Processing:  67%|██████▋   | 4/6 [01:19<00:40, 20.27s/parameter_set][A
-Processing:  83%|████████▎ | 5/6 [02:07<00:30, 30.49s/parameter_set][A
-Processing: 100%|██████████| 6/6 [03:01<00:00, 38.59s/parameter_set][AProcessing: 100%|██████████| 6/6 [03:01<00:00, 30.33s/parameter_set]
-Early stopping at epoch 11. Best val loss: 0.060
-Early stopping at epoch 18. Best val loss: 0.058
-Early stopping at epoch 21. Best val loss: 0.045
-Early stopping at epoch 16. Best val loss: 0.050
-Early stopping at epoch 15. Best val loss: 0.061
-CV test_score: [0.467741935483871, 0.706989247311828, 0.6376344086021506, 0.8081081081081081, 0.45135135135135135]
-CV train_score: [0.7069026133833353, 0.9916793624750967, 0.9887129380053908, 0.9911053894317983, 0.6535198080636667]
-Early stopping at epoch 12. Best val loss: 0.058
-Early stopping at epoch 17. Best val loss: 0.077
-Early stopping at epoch 24. Best val loss: 0.044
-Early stopping at epoch 42. Best val loss: 0.049
-Early stopping at epoch 15. Best val loss: 0.058
-CV test_score: [0.5734767025089605, 0.6120071684587813, 0.6655913978494624, 0.8198198198198199, 0.6468468468468468]
-CV train_score: [0.6233446619008555, 0.7258877299894527, 0.979559748427673, 0.989993563110773, 0.8654104979811575]
-Early stopping at epoch 13. Best val loss: 0.060
-Early stopping at epoch 16. Best val loss: 0.061
-Early stopping at epoch 21. Best val loss: 0.047
-Early stopping at epoch 22. Best val loss: 0.048
-Early stopping at epoch 18. Best val loss: 0.061
-CV test_score: [0.4910394265232975, 0.553763440860215, 0.7193548387096774, 0.8, 0.5873873873873874]
-CV train_score: [0.6966483065744756, 0.665475213875542, 0.9966868823000898, 0.9360992451284453, 0.9678740710398501]
-Early stopping at epoch 15. Best val loss: 0.058
-Early stopping at epoch 18. Best val loss: 0.078
-Early stopping at epoch 37. Best val loss: 0.043
-Early stopping at epoch 36. Best val loss: 0.052
-Early stopping at epoch 26. Best val loss: 0.060
-CV test_score: [0.5412186379928315, 0.7311827956989247, 0.6860215053763441, 0.654054054054054, 0.5747747747747748]
-CV train_score: [0.6571545763506388, 0.9029063635298253, 0.9782681940700808, 0.9026859383228978, 0.9123997893381708]
-Early stopping at epoch 21. Best val loss: 0.060
-Early stopping at epoch 42. Best val loss: 0.057
-Early stopping at epoch 75. Best val loss: 0.045
-Early stopping at epoch 40. Best val loss: 0.050
-Early stopping at epoch 47. Best val loss: 0.060
-CV test_score: [0.49641577060931896, 0.6836917562724014, 0.7010752688172043, 0.8396396396396395, 0.5855855855855856]
-CV train_score: [0.6743818117895231, 0.9712879409351928, 0.9909029649595688, 0.9886476680905847, 0.9754227865878635]
-Early stopping at epoch 21. Best val loss: 0.059
-Early stopping at epoch 37. Best val loss: 0.078
-Early stopping at epoch 106. Best val loss: 0.044
-Early stopping at epoch 67. Best val loss: 0.052
-Early stopping at epoch 120. Best val loss: 0.060
-CV test_score: [0.5439068100358423, 0.6326164874551972, 0.6193548387096773, 0.7882882882882882, 0.4783783783783784]
-CV train_score: [0.7580569553498184, 0.9116957693659908, 0.984052111410602, 0.9376206916730061, 0.33577154894961675]
-Num of CV-repeat:21 - Model:Dense - Data inclusion type:all_days - Period:160 
-
-Processing:   0%|          | 0/6 [00:00<?, ?parameter_set/s][A
-Processing:  17%|█▋        | 1/6 [00:18<01:34, 18.91s/parameter_set][A
-Processing:  33%|███▎      | 2/6 [00:34<01:07, 16.80s/parameter_set][A
-Processing:  50%|█████     | 3/6 [01:00<01:02, 20.92s/parameter_set][A
-Processing:  67%|██████▋   | 4/6 [01:21<00:41, 20.93s/parameter_set][A
-Processing:  83%|████████▎ | 5/6 [02:11<00:31, 31.68s/parameter_set][A
-Processing: 100%|██████████| 6/6 [03:06<00:00, 39.59s/parameter_set][AProcessing: 100%|██████████| 6/6 [03:06<00:00, 31.12s/parameter_set]
-Early stopping at epoch 19. Best val loss: 0.055
-Early stopping at epoch 11. Best val loss: 0.061
-Early stopping at epoch 20. Best val loss: 0.046
-Early stopping at epoch 13. Best val loss: 0.057
-Early stopping at epoch 19. Best val loss: 0.051
-CV test_score: [0.6496415770609318, 0.5716845878136201, 0.6903225806451613, 0.6198198198198198, 0.6765765765765765]
-CV train_score: [0.9759756240478143, 0.7363764209539436, 0.938510781671159, 0.8128035578442272, 0.9864240154485341]
-Early stopping at epoch 22. Best val loss: 0.055
-Early stopping at epoch 11. Best val loss: 0.078
-Early stopping at epoch 17. Best val loss: 0.043
-Early stopping at epoch 14. Best val loss: 0.054
-Early stopping at epoch 27. Best val loss: 0.048
-CV test_score: [0.7652329749103943, 0.5277777777777778, 0.6559139784946236, 0.6882882882882883, 0.727027027027027]
-CV train_score: [0.9632602836048283, 0.6576819407008087, 0.7055256064690026, 0.7965943004271754, 0.9980689332319035]
-Early stopping at epoch 32. Best val loss: 0.051
-Early stopping at epoch 14. Best val loss: 0.062
-Early stopping at epoch 20. Best val loss: 0.047
-Early stopping at epoch 22. Best val loss: 0.054
-Early stopping at epoch 27. Best val loss: 0.050
-CV test_score: [0.8870967741935484, 0.5716845878136201, 0.667741935483871, 0.6954954954954955, 0.7612612612612613]
-CV train_score: [0.9930856674088832, 0.7877651470760576, 0.7299528301886792, 0.9062554859851366, 0.9974837614839955]
-Early stopping at epoch 29. Best val loss: 0.052
-Early stopping at epoch 13. Best val loss: 0.074
-Early stopping at epoch 18. Best val loss: 0.043
-Early stopping at epoch 23. Best val loss: 0.056
-Early stopping at epoch 41. Best val loss: 0.048
-CV test_score: [0.6792114695340502, 0.5483870967741935, 0.6913978494623656, 0.727927927927928, 0.7252252252252253]
-CV train_score: [0.960564865815071, 0.6595570139458572, 0.8384433962264152, 0.882614547369653, 0.9893498741880742]
-Early stopping at epoch 72. Best val loss: 0.053
-Early stopping at epoch 22. Best val loss: 0.061
-Early stopping at epoch 36. Best val loss: 0.047
-Early stopping at epoch 39. Best val loss: 0.055
-Early stopping at epoch 64. Best val loss: 0.051
-CV test_score: [0.6227598566308243, 0.45788530465949817, 0.6935483870967742, 0.7153153153153153, 0.6990990990990991]
-CV train_score: [0.8628266729169107, 0.8297785069729284, 0.9365453728661276, 0.9669377962431974, 0.9613201474632804]
-Early stopping at epoch 102. Best val loss: 0.053
-Early stopping at epoch 32. Best val loss: 0.074
-Early stopping at epoch 56. Best val loss: 0.044
-Early stopping at epoch 45. Best val loss: 0.056
-Early stopping at epoch 122. Best val loss: 0.048
-CV test_score: [0.7849462365591398, 0.5232974910394266, 0.7064516129032258, 0.6414414414414414, 0.6900900900900901]
-CV train_score: [0.9446267432321576, 0.8382163365756475, 0.9320530098831986, 0.9808063666686173, 0.9789338170753117]
-Num of CV-repeat:22 - Model:Dense - Data inclusion type:all_days - Period:160 
-
-Processing:   0%|          | 0/6 [00:00<?, ?parameter_set/s][A
-Processing:  17%|█▋        | 1/6 [00:16<01:21, 16.22s/parameter_set][A
-Processing:  33%|███▎      | 2/6 [00:30<00:59, 14.94s/parameter_set][A
-Processing:  50%|█████     | 3/6 [00:50<00:52, 17.58s/parameter_set][A
-Processing:  67%|██████▋   | 4/6 [01:08<00:35, 17.68s/parameter_set][A
-Processing:  83%|████████▎ | 5/6 [01:52<00:26, 26.99s/parameter_set][A
-Processing: 100%|██████████| 6/6 [02:39<00:00, 33.70s/parameter_set][AProcessing: 100%|██████████| 6/6 [02:39<00:00, 26.51s/parameter_set]
-Early stopping at epoch 11. Best val loss: 0.066
-Early stopping at epoch 17. Best val loss: 0.061
-Early stopping at epoch 17. Best val loss: 0.049
-Early stopping at epoch 13. Best val loss: 0.058
-Early stopping at epoch 11. Best val loss: 0.057
-CV test_score: [0.4345878136200717, 0.5654121863799283, 0.6086021505376344, 0.681081081081081, 0.8126126126126125]
-CV train_score: [0.6709832415328725, 0.9298019453884918, 0.9201482479784366, 0.764643922991398, 0.6342676575574931]
-Early stopping at epoch 11. Best val loss: 0.062
-Early stopping at epoch 12. Best val loss: 0.073
-Early stopping at epoch 22. Best val loss: 0.043
-Early stopping at epoch 14. Best val loss: 0.060
-Early stopping at epoch 19. Best val loss: 0.057
-CV test_score: [0.4345878136200717, 0.5259856630824372, 0.7279569892473119, 0.36666666666666664, 0.5927927927927927]
-CV train_score: [0.6737372553615375, 0.5727762803234502, 0.997248427672956, 0.4278775820703376, 0.5548598513663761]
-Early stopping at epoch 12. Best val loss: 0.062
-Early stopping at epoch 15. Best val loss: 0.059
-Early stopping at epoch 23. Best val loss: 0.047
-Early stopping at epoch 16. Best val loss: 0.058
-Early stopping at epoch 21. Best val loss: 0.057
-CV test_score: [0.45878136200716846, 0.6173835125448028, 0.7849462365591399, 0.6225225225225225, 0.7279279279279279]
-CV train_score: [0.7217860072659089, 0.699871088714403, 0.9996630727762803, 0.6617707297091697, 0.9351629703317924]
-Early stopping at epoch 13. Best val loss: 0.063
-Early stopping at epoch 17. Best val loss: 0.072
-Early stopping at epoch 38. Best val loss: 0.044
-Early stopping at epoch 19. Best val loss: 0.060
-Early stopping at epoch 14. Best val loss: 0.058
-CV test_score: [0.4740143369175627, 0.578853046594982, 0.8053763440860215, 0.6612612612612613, 0.781981981981982]
-CV train_score: [0.6506504160318762, 0.5943396226415094, 0.9932614555256065, 0.7216337995201592, 0.6804377084674351]
-Early stopping at epoch 22. Best val loss: 0.064
-Early stopping at epoch 21. Best val loss: 0.060
-Early stopping at epoch 64. Best val loss: 0.050
-Early stopping at epoch 44. Best val loss: 0.056
-Early stopping at epoch 41. Best val loss: 0.057
-CV test_score: [0.37992831541218636, 0.5161290322580645, 0.6806451612903226, 0.6720720720720721, 0.6891891891891891]
-CV train_score: [0.6656510019922653, 0.6764326731512948, 0.8888140161725067, 0.9429457545789689, 0.9619053192111885]
-Early stopping at epoch 37. Best val loss: 0.063
-Early stopping at epoch 32. Best val loss: 0.071
-Early stopping at epoch 104. Best val loss: 0.045
-Early stopping at epoch 53. Best val loss: 0.060
-Early stopping at epoch 64. Best val loss: 0.058
-CV test_score: [0.3996415770609319, 0.5259856630824373, 0.48817204301075273, 0.6396396396396397, 0.6603603603603603]
-CV train_score: [0.7559474979491386, 0.6862768076878003, 0.7003032345013476, 0.608403066299959, 0.696939551758441]
-Num of CV-repeat:23 - Model:Dense - Data inclusion type:all_days - Period:160 
-
-Processing:   0%|          | 0/6 [00:00<?, ?parameter_set/s][A
-Processing:  17%|█▋        | 1/6 [00:21<01:45, 21.18s/parameter_set][A
-Processing:  33%|███▎      | 2/6 [00:40<01:19, 19.85s/parameter_set][A
-Processing:  50%|█████     | 3/6 [01:03<01:03, 21.29s/parameter_set][A
-Processing:  67%|██████▋   | 4/6 [01:29<00:46, 23.25s/parameter_set][A
-Processing:  83%|████████▎ | 5/6 [02:41<00:40, 40.83s/parameter_set][A
-Processing: 100%|██████████| 6/6 [03:44<00:00, 48.44s/parameter_set][AProcessing: 100%|██████████| 6/6 [03:44<00:00, 37.43s/parameter_set]
-Early stopping at epoch 22. Best val loss: 0.051
-Early stopping at epoch 15. Best val loss: 0.055
-Early stopping at epoch 29. Best val loss: 0.044
-Early stopping at epoch 15. Best val loss: 0.059
-Early stopping at epoch 11. Best val loss: 0.060
-CV test_score: [0.7204301075268817, 0.7016129032258064, 0.7806451612903226, 0.7405405405405405, 0.5405405405405406]
-CV train_score: [0.9985936950662135, 0.9599789054259932, 0.9973045822102425, 0.971736204576043, 0.654865703083855]
-Early stopping at epoch 30. Best val loss: 0.046
-Early stopping at epoch 22. Best val loss: 0.059
-Early stopping at epoch 29. Best val loss: 0.042
-Early stopping at epoch 16. Best val loss: 0.060
-Early stopping at epoch 15. Best val loss: 0.049
-CV test_score: [0.739247311827957, 0.7491039426523297, 0.7419354838709677, 0.7144144144144144, 0.49189189189189186]
-CV train_score: [0.9830071487167467, 0.9739247626860424, 0.995507637017071, 0.9256831880156826, 0.7597284803089706]
-Early stopping at epoch 31. Best val loss: 0.050
-Early stopping at epoch 16. Best val loss: 0.055
-Early stopping at epoch 29. Best val loss: 0.042
-Early stopping at epoch 14. Best val loss: 0.058
-Early stopping at epoch 12. Best val loss: 0.061
-CV test_score: [0.764336917562724, 0.6433691756272402, 0.7440860215053763, 0.7198198198198198, 0.5675675675675675]
-CV train_score: [1.0, 0.9541193015352162, 0.9951145552560647, 0.852302650828018, 0.7082918836678566]
-Early stopping at epoch 42. Best val loss: 0.046
-Early stopping at epoch 22. Best val loss: 0.060
-Early stopping at epoch 51. Best val loss: 0.039
-Early stopping at epoch 27. Best val loss: 0.059
-Early stopping at epoch 21. Best val loss: 0.048
-CV test_score: [0.7535842293906809, 0.7034050179211468, 0.7817204301075269, 0.4846846846846847, 0.5378378378378378]
-CV train_score: [0.9982421188327669, 0.9794327903433728, 1.0, 0.39411317221604536, 0.48481479314178716]
-Early stopping at epoch 77. Best val loss: 0.052
-Early stopping at epoch 50. Best val loss: 0.054
-Early stopping at epoch 104. Best val loss: 0.044
-Early stopping at epoch 88. Best val loss: 0.056
-Early stopping at epoch 19. Best val loss: 0.061
-CV test_score: [0.75, 0.7114695340501792, 0.7827956989247311, 0.6819819819819819, 0.5495495495495495]
-CV train_score: [0.9980663307160436, 0.9736317824915036, 1.0, 0.9763005442097255, 0.8308268476797941]
-Early stopping at epoch 157. Best val loss: 0.045
-Early stopping at epoch 60. Best val loss: 0.059
-Early stopping at epoch 96. Best val loss: 0.043
-Early stopping at epoch 38. Best val loss: 0.058
-Early stopping at epoch 41. Best val loss: 0.048
-CV test_score: [0.782258064516129, 0.7114695340501791, 0.7053763440860215, 0.7135135135135134, 0.5189189189189188]
-CV train_score: [0.9995898277276457, 0.9851166061174265, 0.97214734950584, 0.8916847094622272, 0.8388437006261338]
-Num of CV-repeat:24 - Model:Dense - Data inclusion type:all_days - Period:160 
-
-Processing:   0%|          | 0/6 [00:00<?, ?parameter_set/s][A
-Processing:  17%|█▋        | 1/6 [00:17<01:28, 17.77s/parameter_set][A
-Processing:  33%|███▎      | 2/6 [00:34<01:07, 16.91s/parameter_set][A
-Processing:  50%|█████     | 3/6 [00:55<00:56, 18.89s/parameter_set][A
-Processing:  67%|██████▋   | 4/6 [01:16<00:39, 19.85s/parameter_set][A
-Processing:  83%|████████▎ | 5/6 [02:02<00:29, 29.23s/parameter_set][A
-Processing: 100%|██████████| 6/6 [03:02<00:00, 39.80s/parameter_set][AProcessing: 100%|██████████| 6/6 [03:02<00:00, 30.47s/parameter_set]
-Early stopping at epoch 13. Best val loss: 0.055
-Early stopping at epoch 14. Best val loss: 0.060
-Early stopping at epoch 16. Best val loss: 0.043
-Early stopping at epoch 12. Best val loss: 0.061
-Early stopping at epoch 19. Best val loss: 0.049
-CV test_score: [0.6568100358422939, 0.6469534050179211, 0.7860215053763441, 0.6522522522522523, 0.7216216216216216]
-CV train_score: [0.9380639868744873, 0.8951716863939998, 0.9856244384546271, 0.7473228392533209, 0.9871262215460237]
-Early stopping at epoch 17. Best val loss: 0.050
-Early stopping at epoch 18. Best val loss: 0.072
-Early stopping at epoch 19. Best val loss: 0.033
-Early stopping at epoch 12. Best val loss: 0.067
-Early stopping at epoch 26. Best val loss: 0.046
-CV test_score: [0.7589605734767024, 0.3960573476702509, 0.7817204301075269, 0.7126126126126126, 0.7621621621621623]
-CV train_score: [0.8412047345599438, 0.49033165358021796, 0.9922506738544475, 0.7439288431154543, 0.9818596758148517]
-Early stopping at epoch 22. Best val loss: 0.053
-Early stopping at epoch 14. Best val loss: 0.059
-Early stopping at epoch 21. Best val loss: 0.042
-Early stopping at epoch 12. Best val loss: 0.059
-Early stopping at epoch 24. Best val loss: 0.048
-CV test_score: [0.7921146953405018, 0.5618279569892474, 0.7763440860215054, 0.6864864864864865, 0.6981981981981982]
-CV train_score: [0.9326145552560647, 0.8373959920309387, 0.9760781671159029, 0.7388378489086548, 0.9774708877055416]
-Early stopping at epoch 19. Best val loss: 0.051
-Early stopping at epoch 12. Best val loss: 0.071
-Early stopping at epoch 42. Best val loss: 0.032
-Early stopping at epoch 13. Best val loss: 0.065
-Early stopping at epoch 46. Best val loss: 0.047
-CV test_score: [0.7096774193548387, 0.5134408602150538, 0.7645161290322581, 0.5477477477477477, 0.7576576576576576]
-CV train_score: [0.8472987226063519, 0.7255947497949139, 0.9968553459119497, 0.721399730820996, 0.9967815553865059]
-Early stopping at epoch 40. Best val loss: 0.054
-Early stopping at epoch 32. Best val loss: 0.057
-Early stopping at epoch 49. Best val loss: 0.043
-Early stopping at epoch 21. Best val loss: 0.059
-Early stopping at epoch 70. Best val loss: 0.049
-CV test_score: [0.7383512544802868, 0.6514336917562724, 0.7645161290322581, 0.6756756756756757, 0.6063063063063063]
-CV train_score: [0.9158560881284425, 0.859193718504629, 0.9755727762803235, 0.7637076481947451, 0.9785827140265667]
-Early stopping at epoch 70. Best val loss: 0.050
-Early stopping at epoch 51. Best val loss: 0.071
-Early stopping at epoch 92. Best val loss: 0.033
-Early stopping at epoch 29. Best val loss: 0.065
-Early stopping at epoch 149. Best val loss: 0.046
-CV test_score: [0.6953405017921147, 0.5976702508960573, 0.7774193548387097, 0.572972972972973, 0.6738738738738739]
-CV train_score: [0.8809328489394116, 0.8577288175319349, 0.9875336927223719, 0.6886301129381474, 0.9943823512200831]
-Num of CV-repeat:25 - Model:Dense - Data inclusion type:all_days - Period:160 
-
-Processing:   0%|          | 0/6 [00:00<?, ?parameter_set/s][A
-Processing:  17%|█▋        | 1/6 [00:21<01:46, 21.27s/parameter_set][A
-Processing:  33%|███▎      | 2/6 [00:39<01:18, 19.55s/parameter_set][A
-Processing:  50%|█████     | 3/6 [01:04<01:05, 21.95s/parameter_set][A
-Processing:  67%|██████▋   | 4/6 [01:23<00:41, 20.94s/parameter_set][A
-Processing:  83%|████████▎ | 5/6 [02:29<00:37, 37.22s/parameter_set][A
-Processing: 100%|██████████| 6/6 [03:51<00:00, 52.42s/parameter_set][AProcessing: 100%|██████████| 6/6 [03:51<00:00, 38.64s/parameter_set]
-100%|██████████| 1/1 [1:27:12<00:00, 5232.22s/model]100%|██████████| 1/1 [1:27:12<00:00, 5232.22s/model]
-Early stopping at epoch 24. Best val loss: 0.051
-Early stopping at epoch 18. Best val loss: 0.051
-Early stopping at epoch 24. Best val loss: 0.032
-Early stopping at epoch 14. Best val loss: 0.057
-Early stopping at epoch 14. Best val loss: 0.064
-CV test_score: [0.6496415770609318, 0.6227598566308243, 0.8903225806451613, 0.5576576576576577, 0.5099099099099099]
-CV train_score: [0.7487987812023906, 0.8723192312199695, 1.0, 0.6988121013517468, 0.8836093393410966]
-Early stopping at epoch 12. Best val loss: 0.052
-Early stopping at epoch 21. Best val loss: 0.064
-Early stopping at epoch 44. Best val loss: 0.024
-Early stopping at epoch 12. Best val loss: 0.065
-Early stopping at epoch 21. Best val loss: 0.055
-CV test_score: [0.6433691756272402, 0.8046594982078853, 0.8838709677419354, 0.654054054054054, 0.5189189189189188]
-CV train_score: [0.6637759287472167, 0.9087659674206023, 1.0, 0.6686757563344841, 0.9751302007139095]
-Early stopping at epoch 26. Best val loss: 0.051
-Early stopping at epoch 27. Best val loss: 0.053
-Early stopping at epoch 31. Best val loss: 0.029
-Early stopping at epoch 15. Best val loss: 0.057
-Early stopping at epoch 12. Best val loss: 0.062
-CV test_score: [0.7338709677419355, 0.7732974910394266, 0.9408602150537635, 0.6018018018018019, 0.436036036036036]
-CV train_score: [0.9878120239071839, 0.9913277862416501, 0.9968553459119497, 0.8132716952425537, 0.699923927672772]
-Early stopping at epoch 14. Best val loss: 0.051
-Early stopping at epoch 22. Best val loss: 0.064
-Early stopping at epoch 55. Best val loss: 0.027
-Early stopping at epoch 12. Best val loss: 0.063
-Early stopping at epoch 15. Best val loss: 0.055
-CV test_score: [0.6424731182795699, 0.8566308243727598, 0.875268817204301, 0.745045045045045, 0.463963963963964]
-CV train_score: [0.7067854213055198, 0.9861127387788585, 1.0, 0.7415296389490316, 0.7305284100883609]
-Early stopping at epoch 78. Best val loss: 0.053
-Early stopping at epoch 75. Best val loss: 0.049
-Early stopping at epoch 106. Best val loss: 0.031
-Early stopping at epoch 22. Best val loss: 0.058
-Early stopping at epoch 22. Best val loss: 0.061
-CV test_score: [0.8055555555555556, 0.8700716845878136, 0.9139784946236559, 0.709009009009009, 0.4153153153153153]
-CV train_score: [0.9865229110512128, 0.9988280792218446, 1.0, 0.8444613494060508, 0.652232430218269]
-Early stopping at epoch 127. Best val loss: 0.048
-Early stopping at epoch 91. Best val loss: 0.063
-Early stopping at epoch 206. Best val loss: 0.024
-Early stopping at epoch 49. Best val loss: 0.064
-Early stopping at epoch 40. Best val loss: 0.055
-CV test_score: [0.746415770609319, 0.7670250896057348, 0.9, 0.6477477477477478, 0.4783783783783784]
-CV train_score: [0.9902730575413102, 0.9922653228641743, 1.0, 0.7556907952484054, 0.8727836620047984]
-Training duration:
-Elapsed time:1 hours:27 minutes seconds:32

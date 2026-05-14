@@ -26,6 +26,8 @@ conda activate scarches
 # Specify the path to the config file
 config="raw_data_train_param_combinations.tsv"
 
+#SLURM_ARRAY_TASK_ID=1
+
 # Extract the parameters from the parameter configuration dataframe
 period_end_day=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$5==ArrayTaskID {print $3}' $config)
 training_data_type=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$5==ArrayTaskID {print $4}' $config)
@@ -43,9 +45,9 @@ echo ${model}
 
 
 
-python s9_3_baseline_ML_models_training.py \
-                    --dataset_name $dataset_name\
-                    --training_data_type $training_data_type \
-                    --model $model \
-                    --period_end_day $period_end_day 
+/data/gpfs/projects/punim2121/anaconda3/envs/scarches/bin/python  s9_3_baseline_ML_models_training.py \
+                                                                    --dataset_name $dataset_name\
+                                                                    --training_data_type $training_data_type \
+                                                                    --model $model \
+                                                                    --period_end_day $period_end_day 
       

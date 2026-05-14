@@ -1,0 +1,721 @@
+Loading anaconda
+Activate conda env
+tb21_22_2984_pats_22_vars_relapse
+all_days
+all
+LogisticHazard
+mean_pooling
+6-month
+EOT
+data_inclusion_type_ ['all_days'] model_names_ ['LogisticHazard'] period_end_day_ ['all']
+Loading embeddings:   0%|          | 0/1 [00:00<?, ?set/s]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.92s/set]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.93s/set]
+
+→ Loading: tb21_22_2984_pats_22_vars_relapse | BioMistral-7B_base | all | all_days | autoenc=False | mean_pooling 
+Loaded in 2.85 seconds.
+tb21_22_2984_pats_22_vars_relapse
+Training on all days of data
+Loading embeddings of tb21_22_2984_pats_22_vars_relapse data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling model
+Extracting relapse information...
+  0%|          | 0/1 [00:00<?, ?model/s]
++++++++ Num of CV-repeat:1 - tb21_22_2984_pats_22_vars_relapse data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling / 6-month cohort - LogisticHazard
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:19<07:37, 19.88s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:38<06:57, 18.99s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:56<06:34, 18.80s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [01:16<06:21, 19.07s/parameter_set][A
+Processing:  21%|██        | 5/24 [01:35<06:05, 19.22s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:58<06:07, 20.40s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [02:21<06:01, 21.26s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [02:55<06:44, 25.27s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [03:20<06:18, 25.22s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [03:57<06:45, 28.97s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [04:29<06:27, 29.80s/parameter_set][A
+Processing:  50%|█████     | 12/24 [05:13<06:47, 33.96s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [05:22<04:52, 26.58s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [05:31<03:31, 21.17s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [05:46<02:53, 19.29s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [05:59<02:19, 17.41s/parameter_set][A
+Processing:  71%|███████   | 17/24 [06:21<02:12, 18.95s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [06:41<01:55, 19.22s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [07:06<01:44, 20.81s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [07:32<01:29, 22.49s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [07:58<01:10, 23.55s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [08:31<00:52, 26.46s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [08:59<00:26, 26.73s/parameter_set][A
+Processing: 100%|██████████| 24/24 [09:40<00:00, 31.16s/parameter_set][AProcessing: 100%|██████████| 24/24 [09:40<00:00, 24.20s/parameter_set]
+
++++++++ Num of CV-repeat:2 - tb21_22_2984_pats_22_vars_relapse data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling / 6-month cohort - LogisticHazard
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:14<05:40, 14.81s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:34<06:31, 17.80s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:52<06:16, 17.95s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [01:12<06:16, 18.82s/parameter_set][A
+Processing:  21%|██        | 5/24 [01:33<06:05, 19.26s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:56<06:11, 20.65s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [02:16<05:48, 20.50s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [02:49<06:30, 24.39s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [03:16<06:17, 25.18s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [03:50<06:32, 28.01s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [04:19<06:09, 28.41s/parameter_set][A
+Processing:  50%|█████     | 12/24 [05:02<06:31, 32.65s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [05:14<04:52, 26.57s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [05:24<03:33, 21.37s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [05:41<03:01, 20.12s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [05:53<02:22, 17.83s/parameter_set][A
+Processing:  71%|███████   | 17/24 [06:13<02:07, 18.22s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [06:22<01:34, 15.71s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [06:45<01:28, 17.68s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [07:09<01:18, 19.73s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [07:34<01:03, 21.17s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [08:04<00:47, 23.90s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [08:31<00:24, 24.87s/parameter_set][A
+Processing: 100%|██████████| 24/24 [09:09<00:00, 28.91s/parameter_set][AProcessing: 100%|██████████| 24/24 [09:09<00:00, 22.91s/parameter_set]
+
++++++++ Num of CV-repeat:3 - tb21_22_2984_pats_22_vars_relapse data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling / 6-month cohort - LogisticHazard
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:15<05:59, 15.65s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:33<06:16, 17.13s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:52<06:14, 17.84s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [01:12<06:12, 18.62s/parameter_set][A
+Processing:  21%|██        | 5/24 [01:32<06:03, 19.16s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [02:02<06:54, 23.02s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [02:25<06:29, 22.91s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [03:02<07:16, 27.28s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [03:27<06:41, 26.77s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [04:01<06:44, 28.89s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [04:32<06:24, 29.59s/parameter_set][A
+Processing:  50%|█████     | 12/24 [05:11<06:27, 32.26s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [05:21<04:41, 25.62s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [05:29<03:23, 20.40s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [05:43<02:46, 18.52s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [05:56<02:12, 16.58s/parameter_set][A
+Processing:  71%|███████   | 17/24 [06:18<02:08, 18.30s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [06:33<01:44, 17.36s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [06:56<01:34, 18.94s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [07:26<01:29, 22.26s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [07:52<01:10, 23.62s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [08:24<00:51, 25.92s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [08:51<00:26, 26.40s/parameter_set][A
+Processing: 100%|██████████| 24/24 [09:31<00:00, 30.46s/parameter_set][AProcessing: 100%|██████████| 24/24 [09:31<00:00, 23.82s/parameter_set]
+
++++++++ Num of CV-repeat:4 - tb21_22_2984_pats_22_vars_relapse data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling / 6-month cohort - LogisticHazard
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:14<05:33, 14.49s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:34<06:28, 17.65s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:51<06:07, 17.52s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [01:15<06:40, 20.05s/parameter_set][A
+Processing:  21%|██        | 5/24 [01:37<06:34, 20.77s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:56<06:04, 20.27s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [02:20<06:03, 21.40s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [02:52<06:36, 24.75s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [03:20<06:24, 25.62s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [03:56<06:43, 28.84s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [04:31<06:38, 30.66s/parameter_set][A
+Processing:  50%|█████     | 12/24 [05:17<07:04, 35.38s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [05:25<04:57, 27.04s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [05:30<03:25, 20.54s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [05:38<02:30, 16.76s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [05:48<01:56, 14.59s/parameter_set][A
+Processing:  71%|███████   | 17/24 [06:06<01:49, 15.63s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [06:21<01:33, 15.65s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [06:45<01:30, 18.03s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [07:13<01:24, 21.10s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [07:36<01:04, 21.65s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [08:06<00:48, 24.06s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [08:32<00:24, 24.73s/parameter_set][A
+Processing: 100%|██████████| 24/24 [09:12<00:00, 29.18s/parameter_set][AProcessing: 100%|██████████| 24/24 [09:12<00:00, 23.01s/parameter_set]
+
++++++++ Num of CV-repeat:5 - tb21_22_2984_pats_22_vars_relapse data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling / 6-month cohort - LogisticHazard
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:14<05:40, 14.81s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:32<06:05, 16.62s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:49<05:51, 16.73s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [01:09<06:00, 18.03s/parameter_set][A
+Processing:  21%|██        | 5/24 [01:29<05:55, 18.73s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [02:01<06:56, 23.14s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [02:24<06:36, 23.31s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [02:56<06:56, 26.04s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [03:21<06:26, 25.74s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [03:55<06:34, 28.15s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [04:24<06:11, 28.56s/parameter_set][A
+Processing:  50%|█████     | 12/24 [05:07<06:32, 32.72s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [05:21<04:58, 27.17s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [05:27<03:26, 20.69s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [05:45<02:59, 19.96s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [06:01<02:29, 18.64s/parameter_set][A
+Processing:  71%|███████   | 17/24 [06:21<02:13, 19.13s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [06:48<02:08, 21.45s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [07:12<01:52, 22.44s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [07:39<01:34, 23.53s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [08:01<01:09, 23.07s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [08:42<00:56, 28.45s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [09:09<00:28, 28.02s/parameter_set][A
+Processing: 100%|██████████| 24/24 [09:46<00:00, 30.98s/parameter_set][AProcessing: 100%|██████████| 24/24 [09:46<00:00, 24.46s/parameter_set]
+
++++++++ Num of CV-repeat:6 - tb21_22_2984_pats_22_vars_relapse data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling / 6-month cohort - LogisticHazard
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:14<05:44, 14.99s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:32<06:07, 16.69s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:49<05:53, 16.82s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [01:12<06:24, 19.22s/parameter_set][A
+Processing:  21%|██        | 5/24 [01:36<06:32, 20.68s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [02:03<06:51, 22.85s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [02:27<06:38, 23.44s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [03:00<07:02, 26.40s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [03:24<06:26, 25.77s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [03:58<06:35, 28.28s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [04:32<06:27, 29.82s/parameter_set][A
+Processing:  50%|█████     | 12/24 [05:12<06:37, 33.12s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [05:29<05:09, 28.15s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [05:35<03:34, 21.41s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [05:51<02:59, 19.93s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [06:08<02:30, 18.85s/parameter_set][A
+Processing:  71%|███████   | 17/24 [06:25<02:08, 18.33s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [06:34<01:33, 15.62s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [06:58<01:30, 18.04s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [07:32<01:31, 22.89s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [07:58<01:11, 23.82s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [08:34<00:54, 27.41s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [09:00<00:27, 27.21s/parameter_set][A
+Processing: 100%|██████████| 24/24 [09:38<00:00, 30.42s/parameter_set][AProcessing: 100%|██████████| 24/24 [09:38<00:00, 24.12s/parameter_set]
+
++++++++ Num of CV-repeat:7 - tb21_22_2984_pats_22_vars_relapse data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling / 6-month cohort - LogisticHazard
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:15<05:50, 15.26s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:35<06:43, 18.32s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:52<06:10, 17.62s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [01:11<06:03, 18.17s/parameter_set][A
+Processing:  21%|██        | 5/24 [01:33<06:10, 19.48s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:59<06:33, 21.83s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [02:24<06:24, 22.64s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [02:57<06:55, 25.97s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [03:26<06:44, 26.95s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [04:03<07:01, 30.12s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [04:34<06:36, 30.50s/parameter_set][A
+Processing:  50%|█████     | 12/24 [05:19<06:57, 34.81s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [05:31<05:05, 27.78s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [05:36<03:31, 21.11s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [05:54<03:00, 20.04s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [06:08<02:25, 18.22s/parameter_set][A
+Processing:  71%|███████   | 17/24 [06:29<02:13, 19.03s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [06:43<01:45, 17.56s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [07:04<01:32, 18.50s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [07:39<01:33, 23.49s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [08:04<01:11, 23.96s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [08:39<00:54, 27.35s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [09:07<00:27, 27.51s/parameter_set][A
+Processing: 100%|██████████| 24/24 [09:47<00:00, 31.17s/parameter_set][AProcessing: 100%|██████████| 24/24 [09:47<00:00, 24.46s/parameter_set]
+
++++++++ Num of CV-repeat:8 - tb21_22_2984_pats_22_vars_relapse data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling / 6-month cohort - LogisticHazard
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:14<05:26, 14.18s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:35<06:37, 18.09s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:52<06:11, 17.70s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [01:13<06:20, 19.04s/parameter_set][A
+Processing:  21%|██        | 5/24 [01:34<06:16, 19.80s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [02:05<07:03, 23.55s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [02:29<06:45, 23.87s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [03:02<07:04, 26.56s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [03:24<06:18, 25.23s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [03:55<06:19, 27.12s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [04:28<06:14, 28.82s/parameter_set][A
+Processing:  50%|█████     | 12/24 [05:11<06:38, 33.22s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [05:24<04:57, 27.05s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [05:33<03:34, 21.46s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [05:48<02:56, 19.61s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [05:54<02:03, 15.47s/parameter_set][A
+Processing:  71%|███████   | 17/24 [06:11<01:51, 15.89s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [06:21<01:24, 14.12s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [06:43<01:23, 16.68s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [07:18<01:28, 22.12s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [07:42<01:07, 22.52s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [08:16<00:52, 26.18s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [08:44<00:26, 26.63s/parameter_set][A
+Processing: 100%|██████████| 24/24 [09:16<00:00, 28.30s/parameter_set][AProcessing: 100%|██████████| 24/24 [09:16<00:00, 23.20s/parameter_set]
+
++++++++ Num of CV-repeat:9 - tb21_22_2984_pats_22_vars_relapse data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling / 6-month cohort - LogisticHazard
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:14<05:34, 14.54s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:32<06:07, 16.71s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:49<05:47, 16.57s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [01:13<06:30, 19.55s/parameter_set][A
+Processing:  21%|██        | 5/24 [01:34<06:23, 20.20s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:58<06:24, 21.39s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [02:19<06:03, 21.36s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [02:51<06:36, 24.80s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [03:17<06:18, 25.23s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [03:54<06:42, 28.78s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [04:25<06:23, 29.48s/parameter_set][A
+Processing:  50%|█████     | 12/24 [05:11<06:51, 34.33s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [05:23<05:04, 27.67s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [05:29<03:29, 21.00s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [05:44<02:52, 19.17s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [05:54<02:11, 16.45s/parameter_set][A
+Processing:  71%|███████   | 17/24 [06:11<01:56, 16.64s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [06:30<01:45, 17.51s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [06:53<01:34, 18.97s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [07:25<01:31, 22.99s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [07:48<01:09, 23.08s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [08:23<00:53, 26.58s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [08:52<00:27, 27.37s/parameter_set][A
+Processing: 100%|██████████| 24/24 [09:33<00:00, 31.43s/parameter_set][AProcessing: 100%|██████████| 24/24 [09:33<00:00, 23.90s/parameter_set]
+
++++++++ Num of CV-repeat:10 - tb21_22_2984_pats_22_vars_relapse data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling / 6-month cohort - LogisticHazard
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:16<06:19, 16.48s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:34<06:24, 17.47s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:52<06:08, 17.56s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [01:12<06:15, 18.76s/parameter_set][A
+Processing:  21%|██        | 5/24 [01:34<06:18, 19.91s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:59<06:26, 21.47s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [02:24<06:25, 22.67s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [02:56<06:52, 25.79s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [03:23<06:32, 26.17s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [03:56<06:33, 28.13s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [04:28<06:19, 29.21s/parameter_set][A
+Processing:  50%|█████     | 12/24 [05:10<06:39, 33.33s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [05:22<04:53, 26.71s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [05:28<03:23, 20.40s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [05:41<02:43, 18.19s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [05:59<02:25, 18.15s/parameter_set][A
+Processing:  71%|███████   | 17/24 [06:21<02:16, 19.46s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [06:32<01:40, 16.82s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [06:54<01:31, 18.26s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [07:18<01:19, 20.00s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [07:42<01:04, 21.37s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [08:14<00:48, 24.33s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [08:47<00:27, 27.10s/parameter_set][A
+Processing: 100%|██████████| 24/24 [09:28<00:00, 31.12s/parameter_set][AProcessing: 100%|██████████| 24/24 [09:28<00:00, 23.67s/parameter_set]
+
++++++++ Num of CV-repeat:11 - tb21_22_2984_pats_22_vars_relapse data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling / 6-month cohort - LogisticHazard
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:16<06:15, 16.31s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:36<06:49, 18.62s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:55<06:30, 18.60s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [01:16<06:32, 19.61s/parameter_set][A
+Processing:  21%|██        | 5/24 [01:38<06:32, 20.65s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [02:07<07:00, 23.34s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [02:31<06:40, 23.58s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [03:04<07:03, 26.49s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [03:28<06:29, 25.95s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [04:06<06:52, 29.44s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [04:37<06:31, 30.11s/parameter_set][A
+Processing:  50%|█████     | 12/24 [05:19<06:43, 33.65s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [05:34<05:07, 27.99s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [05:43<03:42, 22.22s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [05:59<03:02, 20.31s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [06:11<02:23, 18.00s/parameter_set][A
+Processing:  71%|███████   | 17/24 [06:34<02:16, 19.49s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [06:45<01:40, 16.79s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [07:08<01:32, 18.58s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [07:35<01:24, 21.20s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [08:01<01:08, 22.67s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [08:35<00:52, 26.08s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [09:03<00:26, 26.71s/parameter_set][A
+Processing: 100%|██████████| 24/24 [09:43<00:00, 30.62s/parameter_set][AProcessing: 100%|██████████| 24/24 [09:43<00:00, 24.31s/parameter_set]
+
++++++++ Num of CV-repeat:12 - tb21_22_2984_pats_22_vars_relapse data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling / 6-month cohort - LogisticHazard
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:14<05:39, 14.77s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:37<07:08, 19.47s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:54<06:26, 18.43s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [01:15<06:28, 19.42s/parameter_set][A
+Processing:  21%|██        | 5/24 [01:36<06:18, 19.91s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [02:01<06:27, 21.54s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [02:25<06:22, 22.50s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [03:00<07:03, 26.49s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [03:27<06:38, 26.55s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [04:02<06:49, 29.27s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [04:32<06:21, 29.31s/parameter_set][A
+Processing:  50%|█████     | 12/24 [05:11<06:27, 32.33s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [05:22<04:46, 26.05s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [05:32<03:30, 21.06s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [05:48<02:57, 19.68s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [06:07<02:33, 19.23s/parameter_set][A
+Processing:  71%|███████   | 17/24 [06:17<01:55, 16.54s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [06:27<01:27, 14.63s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [06:50<01:25, 17.13s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [07:16<01:19, 19.83s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [07:41<01:04, 21.34s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [08:19<00:52, 26.18s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [08:45<00:26, 26.41s/parameter_set][A
+Processing: 100%|██████████| 24/24 [09:21<00:00, 29.21s/parameter_set][AProcessing: 100%|██████████| 24/24 [09:21<00:00, 23.40s/parameter_set]
+
++++++++ Num of CV-repeat:13 - tb21_22_2984_pats_22_vars_relapse data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling / 6-month cohort - LogisticHazard
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:15<06:00, 15.67s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:32<05:55, 16.14s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:49<05:45, 16.48s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [01:03<05:16, 15.83s/parameter_set][A
+Processing:  21%|██        | 5/24 [01:24<05:32, 17.49s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:53<06:27, 21.52s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [02:15<06:05, 21.51s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [02:47<06:37, 24.86s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [03:13<06:20, 25.34s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [03:47<06:29, 27.85s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [04:18<06:14, 28.84s/parameter_set][A
+Processing:  50%|█████     | 12/24 [04:57<06:22, 31.90s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [05:04<04:29, 24.53s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [05:10<03:09, 18.90s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [05:27<02:44, 18.29s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [05:40<02:14, 16.78s/parameter_set][A
+Processing:  71%|███████   | 17/24 [05:59<02:02, 17.53s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [06:18<01:47, 17.85s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [06:41<01:37, 19.41s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [07:16<01:36, 24.10s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [07:43<01:14, 24.86s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [08:14<00:53, 26.70s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [08:41<00:26, 26.96s/parameter_set][A
+Processing: 100%|██████████| 24/24 [09:14<00:00, 28.59s/parameter_set][AProcessing: 100%|██████████| 24/24 [09:14<00:00, 23.09s/parameter_set]
+
++++++++ Num of CV-repeat:14 - tb21_22_2984_pats_22_vars_relapse data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling / 6-month cohort - LogisticHazard
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:14<05:25, 14.15s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:25<04:33, 12.43s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:42<05:02, 14.39s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [00:58<05:05, 15.25s/parameter_set][A
+Processing:  21%|██        | 5/24 [01:17<05:10, 16.36s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:32<04:52, 16.24s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [01:54<05:03, 17.87s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [02:26<06:00, 22.52s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [02:57<06:17, 25.18s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [03:31<06:28, 27.72s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [04:01<06:11, 28.58s/parameter_set][A
+Processing:  50%|█████     | 12/24 [04:45<06:37, 33.16s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [04:57<04:56, 26.94s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [05:03<03:25, 20.59s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [05:18<02:48, 18.68s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [05:28<02:09, 16.20s/parameter_set][A
+Processing:  71%|███████   | 17/24 [05:45<01:55, 16.50s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [05:59<01:34, 15.77s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [06:23<01:31, 18.26s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [06:51<01:24, 21.18s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [07:17<01:07, 22.42s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [07:54<00:53, 26.77s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [08:22<00:27, 27.25s/parameter_set][A
+Processing: 100%|██████████| 24/24 [09:01<00:00, 30.66s/parameter_set][AProcessing: 100%|██████████| 24/24 [09:01<00:00, 22.54s/parameter_set]
+
++++++++ Num of CV-repeat:15 - tb21_22_2984_pats_22_vars_relapse data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling / 6-month cohort - LogisticHazard
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:14<05:43, 14.93s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:35<06:37, 18.07s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:53<06:17, 17.98s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [01:18<06:57, 20.88s/parameter_set][A
+Processing:  21%|██        | 5/24 [01:40<06:48, 21.48s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [02:09<07:11, 24.00s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [02:34<06:51, 24.18s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [03:11<07:32, 28.27s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [03:38<06:58, 27.88s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [04:11<06:54, 29.57s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [04:41<06:25, 29.66s/parameter_set][A
+Processing:  50%|█████     | 12/24 [05:30<07:04, 35.36s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [05:40<05:04, 27.68s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [05:45<03:30, 21.10s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [05:58<02:45, 18.43s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [06:04<01:59, 14.88s/parameter_set][A
+Processing:  71%|███████   | 17/24 [06:21<01:48, 15.43s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [06:37<01:33, 15.53s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [06:57<01:25, 17.02s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [07:37<01:35, 23.87s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [08:02<01:12, 24.24s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [08:38<00:55, 27.69s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [09:07<00:28, 28.02s/parameter_set][A
+Processing: 100%|██████████| 24/24 [09:42<00:00, 30.27s/parameter_set][AProcessing: 100%|██████████| 24/24 [09:42<00:00, 24.28s/parameter_set]
+
++++++++ Num of CV-repeat:16 - tb21_22_2984_pats_22_vars_relapse data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling / 6-month cohort - LogisticHazard
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:14<05:25, 14.16s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:31<05:54, 16.13s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:47<05:39, 16.18s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [01:08<05:54, 17.73s/parameter_set][A
+Processing:  21%|██        | 5/24 [01:28<05:57, 18.80s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:58<06:46, 22.61s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [02:19<06:11, 21.87s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [02:50<06:37, 24.87s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [03:18<06:30, 26.02s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [03:55<06:49, 29.24s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [04:25<06:25, 29.64s/parameter_set][A
+Processing:  50%|█████     | 12/24 [05:08<06:43, 33.60s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [05:23<05:06, 27.84s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [05:28<03:31, 21.18s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [05:45<02:58, 19.83s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [06:07<02:42, 20.33s/parameter_set][A
+Processing:  71%|███████   | 17/24 [06:29<02:26, 20.87s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [06:43<01:53, 18.96s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [07:05<01:39, 19.82s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [07:37<01:34, 23.51s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [08:03<01:12, 24.16s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [08:43<00:58, 29.00s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [09:13<00:29, 29.31s/parameter_set][A
+Processing: 100%|██████████| 24/24 [09:51<00:00, 31.84s/parameter_set][AProcessing: 100%|██████████| 24/24 [09:51<00:00, 24.64s/parameter_set]
+
++++++++ Num of CV-repeat:17 - tb21_22_2984_pats_22_vars_relapse data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling / 6-month cohort - LogisticHazard
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:15<05:57, 15.56s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:37<07:02, 19.21s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:55<06:29, 18.57s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [01:19<06:56, 20.83s/parameter_set][A
+Processing:  21%|██        | 5/24 [01:41<06:41, 21.14s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [02:06<06:46, 22.60s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [02:28<06:20, 22.36s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [03:05<07:11, 26.96s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [03:31<06:42, 26.85s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [04:09<07:03, 30.25s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [04:38<06:26, 29.72s/parameter_set][A
+Processing:  50%|█████     | 12/24 [05:21<06:45, 33.78s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [05:33<05:00, 27.33s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [05:39<03:27, 20.75s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [05:53<02:48, 18.72s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [06:07<02:18, 17.30s/parameter_set][A
+Processing:  71%|███████   | 17/24 [06:23<01:57, 16.82s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [06:29<01:21, 13.64s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [06:54<01:25, 17.08s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [07:21<01:20, 20.17s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [07:43<01:01, 20.50s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [08:14<00:47, 23.81s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [08:41<00:24, 24.75s/parameter_set][A
+Processing: 100%|██████████| 24/24 [09:12<00:00, 26.75s/parameter_set][AProcessing: 100%|██████████| 24/24 [09:12<00:00, 23.04s/parameter_set]
+
++++++++ Num of CV-repeat:18 - tb21_22_2984_pats_22_vars_relapse data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling / 6-month cohort - LogisticHazard
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:13<05:05, 13.28s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:31<05:53, 16.08s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:47<05:42, 16.30s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [01:09<06:04, 18.24s/parameter_set][A
+Processing:  21%|██        | 5/24 [01:27<05:49, 18.40s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:49<05:54, 19.69s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [02:09<05:33, 19.59s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [02:41<06:17, 23.59s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [03:05<05:53, 23.59s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [03:40<06:19, 27.14s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [04:08<05:57, 27.48s/parameter_set][A
+Processing:  50%|█████     | 12/24 [04:49<06:19, 31.60s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [04:58<04:34, 24.91s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [05:04<03:10, 19.03s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [05:17<02:34, 17.18s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [05:35<02:20, 17.51s/parameter_set][A
+Processing:  71%|███████   | 17/24 [05:53<02:02, 17.50s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [06:12<01:47, 17.97s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [06:35<01:37, 19.57s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [06:56<01:19, 19.95s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [07:19<01:02, 20.94s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [07:52<00:49, 24.55s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [08:19<00:25, 25.36s/parameter_set][A
+Processing: 100%|██████████| 24/24 [08:58<00:00, 29.37s/parameter_set][AProcessing: 100%|██████████| 24/24 [08:58<00:00, 22.44s/parameter_set]
+
++++++++ Num of CV-repeat:19 - tb21_22_2984_pats_22_vars_relapse data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling / 6-month cohort - LogisticHazard
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:15<05:47, 15.09s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:35<06:39, 18.17s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:54<06:28, 18.52s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [01:19<07:05, 21.30s/parameter_set][A
+Processing:  21%|██        | 5/24 [01:41<06:48, 21.49s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [02:08<07:01, 23.43s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [02:30<06:30, 22.96s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [03:02<06:50, 25.66s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [03:29<06:32, 26.15s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [04:01<06:29, 27.85s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [04:30<06:09, 28.41s/parameter_set][A
+Processing:  50%|█████     | 12/24 [05:15<06:38, 33.20s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [05:26<04:53, 26.72s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [05:35<03:33, 21.40s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [05:50<02:53, 19.27s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [05:59<02:09, 16.17s/parameter_set][A
+Processing:  71%|███████   | 17/24 [06:13<01:48, 15.49s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [06:19<01:16, 12.69s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [06:42<01:18, 15.80s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [07:16<01:25, 21.43s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [07:42<01:07, 22.52s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [08:20<00:54, 27.41s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [08:52<00:28, 28.61s/parameter_set][A
+Processing: 100%|██████████| 24/24 [09:32<00:00, 31.99s/parameter_set][AProcessing: 100%|██████████| 24/24 [09:32<00:00, 23.84s/parameter_set]
+
++++++++ Num of CV-repeat:20 - tb21_22_2984_pats_22_vars_relapse data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling / 6-month cohort - LogisticHazard
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:16<06:20, 16.52s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:36<06:41, 18.27s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:53<06:15, 17.90s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [01:15<06:31, 19.58s/parameter_set][A
+Processing:  21%|██        | 5/24 [01:40<06:45, 21.34s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [02:13<07:40, 25.56s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [02:35<06:53, 24.33s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [03:05<06:57, 26.10s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [03:29<06:19, 25.31s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [04:04<06:37, 28.38s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [04:38<06:33, 30.26s/parameter_set][A
+Processing:  50%|█████     | 12/24 [05:23<06:56, 34.68s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [05:37<05:13, 28.47s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [05:47<03:47, 22.79s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [06:00<02:58, 19.79s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [06:06<02:04, 15.60s/parameter_set][A
+Processing:  71%|███████   | 17/24 [06:23<01:53, 16.25s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [06:34<01:27, 14.66s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [06:58<01:27, 17.42s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [07:32<01:29, 22.45s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [07:58<01:09, 23.27s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [08:34<00:54, 27.13s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [09:02<00:27, 27.34s/parameter_set][A
+Processing: 100%|██████████| 24/24 [09:38<00:00, 30.13s/parameter_set][AProcessing: 100%|██████████| 24/24 [09:38<00:00, 24.11s/parameter_set]
+
++++++++ Num of CV-repeat:21 - tb21_22_2984_pats_22_vars_relapse data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling / 6-month cohort - LogisticHazard
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:15<05:45, 15.02s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:34<06:30, 17.73s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:53<06:26, 18.39s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [01:11<05:59, 18.00s/parameter_set][A
+Processing:  21%|██        | 5/24 [01:32<06:02, 19.09s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [02:03<07:00, 23.39s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [02:27<06:37, 23.40s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [03:00<07:03, 26.46s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [03:27<06:39, 26.60s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [04:07<07:10, 30.75s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [04:40<06:50, 31.57s/parameter_set][A
+Processing:  50%|█████     | 12/24 [05:24<07:01, 35.16s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [05:34<05:03, 27.55s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [05:42<03:37, 21.74s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [05:56<02:53, 19.32s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [06:09<02:18, 17.37s/parameter_set][A
+Processing:  71%|███████   | 17/24 [06:23<01:55, 16.46s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [06:43<01:44, 17.44s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [07:08<01:39, 19.96s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [07:42<01:35, 23.91s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [08:08<01:13, 24.62s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [08:43<00:55, 27.79s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [09:12<00:28, 28.27s/parameter_set][A
+Processing: 100%|██████████| 24/24 [09:52<00:00, 31.61s/parameter_set][AProcessing: 100%|██████████| 24/24 [09:52<00:00, 24.68s/parameter_set]
+
++++++++ Num of CV-repeat:22 - tb21_22_2984_pats_22_vars_relapse data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling / 6-month cohort - LogisticHazard
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:15<05:45, 15.03s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:26<04:44, 12.95s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:43<05:14, 14.99s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [01:06<05:57, 17.89s/parameter_set][A
+Processing:  21%|██        | 5/24 [01:27<06:05, 19.24s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [02:00<07:08, 23.78s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [02:23<06:37, 23.41s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [02:50<06:35, 24.73s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [03:16<06:17, 25.16s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [03:50<06:31, 27.93s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [04:22<06:17, 29.01s/parameter_set][A
+Processing:  50%|█████     | 12/24 [05:02<06:28, 32.35s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [05:15<04:50, 26.43s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [05:24<03:31, 21.15s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [05:37<02:48, 18.77s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [05:50<02:16, 17.09s/parameter_set][A
+Processing:  71%|███████   | 17/24 [06:10<02:05, 17.95s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [06:32<01:55, 19.22s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [06:55<01:41, 20.29s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [07:23<01:30, 22.66s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [07:47<01:09, 23.11s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [08:20<00:52, 26.08s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [08:48<00:26, 26.67s/parameter_set][A
+Processing: 100%|██████████| 24/24 [09:20<00:00, 28.24s/parameter_set][AProcessing: 100%|██████████| 24/24 [09:20<00:00, 23.37s/parameter_set]
+
++++++++ Num of CV-repeat:23 - tb21_22_2984_pats_22_vars_relapse data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling / 6-month cohort - LogisticHazard
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:15<05:52, 15.32s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:35<06:40, 18.21s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:52<06:08, 17.53s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [01:12<06:13, 18.70s/parameter_set][A
+Processing:  21%|██        | 5/24 [01:33<06:09, 19.43s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:56<06:10, 20.59s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [02:18<05:57, 21.03s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [02:51<06:40, 25.06s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [03:16<06:15, 25.05s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [03:53<06:40, 28.59s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [04:25<06:26, 29.75s/parameter_set][A
+Processing:  50%|█████     | 12/24 [05:09<06:48, 34.08s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [05:23<05:06, 27.89s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [05:33<03:44, 22.41s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [05:45<02:53, 19.27s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [05:59<02:21, 17.67s/parameter_set][A
+Processing:  71%|███████   | 17/24 [06:17<02:04, 17.82s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [06:32<01:41, 16.96s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [06:54<01:33, 18.65s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [07:21<01:24, 21.10s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [07:45<01:06, 22.03s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [08:18<00:50, 25.09s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [08:46<00:26, 26.20s/parameter_set][A
+Processing: 100%|██████████| 24/24 [09:28<00:00, 30.72s/parameter_set][AProcessing: 100%|██████████| 24/24 [09:28<00:00, 23.67s/parameter_set]
+
++++++++ Num of CV-repeat:24 - tb21_22_2984_pats_22_vars_relapse data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling / 6-month cohort - LogisticHazard
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:15<06:01, 15.71s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:34<06:31, 17.80s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:52<06:09, 17.58s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [01:07<05:34, 16.73s/parameter_set][A
+Processing:  21%|██        | 5/24 [01:28<05:46, 18.23s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:58<06:39, 22.19s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [02:23<06:33, 23.12s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [02:58<07:11, 26.95s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [03:22<06:31, 26.12s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [03:59<06:51, 29.41s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [04:30<06:26, 29.72s/parameter_set][A
+Processing:  50%|█████     | 12/24 [05:17<07:00, 35.04s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [05:30<05:11, 28.27s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [05:35<03:34, 21.45s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [05:52<03:01, 20.16s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [06:07<02:27, 18.38s/parameter_set][A
+Processing:  71%|███████   | 17/24 [06:25<02:08, 18.41s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [06:35<01:35, 15.97s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [06:59<01:31, 18.33s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [07:30<01:28, 22.10s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [07:57<01:10, 23.42s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [08:26<00:50, 25.34s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [08:55<00:26, 26.39s/parameter_set][A
+Processing: 100%|██████████| 24/24 [09:37<00:00, 31.01s/parameter_set][AProcessing: 100%|██████████| 24/24 [09:37<00:00, 24.07s/parameter_set]
+
++++++++ Num of CV-repeat:25 - tb21_22_2984_pats_22_vars_relapse data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling / 6-month cohort - LogisticHazard
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:15<05:51, 15.29s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:33<06:19, 17.25s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:51<06:06, 17.47s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [01:06<05:28, 16.43s/parameter_set][A
+Processing:  21%|██        | 5/24 [01:27<05:44, 18.13s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:51<06:03, 20.22s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [02:14<05:56, 21.00s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [02:49<06:45, 25.35s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [03:14<06:19, 25.33s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [03:49<06:38, 28.44s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [04:18<06:11, 28.58s/parameter_set][A
+Processing:  50%|█████     | 12/24 [05:03<06:42, 33.51s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [05:15<04:57, 27.08s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [05:21<03:26, 20.65s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [05:33<02:42, 18.08s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [05:47<02:14, 16.84s/parameter_set][A
+Processing:  71%|███████   | 17/24 [06:02<01:54, 16.30s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [06:18<01:36, 16.10s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [06:41<01:31, 18.22s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [07:14<01:31, 22.77s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [07:39<01:09, 23.16s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [08:11<00:52, 26.06s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [08:39<00:26, 26.69s/parameter_set][A
+Processing: 100%|██████████| 24/24 [09:16<00:00, 29.60s/parameter_set][AProcessing: 100%|██████████| 24/24 [09:16<00:00, 23.18s/parameter_set]
+100%|██████████| 1/1 [3:57:14<00:00, 14234.88s/model]100%|██████████| 1/1 [3:57:14<00:00, 14234.88s/model]
+Training duration:
+Elapsed time:3 hours:58 minutes seconds:3

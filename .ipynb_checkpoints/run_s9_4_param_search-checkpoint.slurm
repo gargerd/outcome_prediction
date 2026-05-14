@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --array=1-42%42
+#SBATCH --array=22-42%42
 ##SBATCH --array=46,48,49,50,51,52,56,57
 #SBATCH --job-name=s_9_4_ML_LLM_param_search
 #SBATCH -o slurm_llm_param_search_logs/s_9_4_ML_LLM_param_search_%A_%a.log
@@ -9,7 +9,7 @@
 #SBATCH --partition=sapphire #bigmem
 ##SBATCH --qos=cpu_normal
 ##SBATCH --gres=gpu:2
-#SBATCH --time=1-00:00:00
+#SBATCH --time=2-00:00:00
 #SBATCH --nice=10000
 
 set -euo pipefail
@@ -26,6 +26,8 @@ conda activate scarches
 
 # Specify the path to the config file
 config="train_param_combinations.tsv"
+
+#SLURM_ARRAY_TASK_ID=1
 
 # Extract the parameters from the parameter configuration dataframe
 period_end_day=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$6==ArrayTaskID {print $3}' $config)
@@ -46,11 +48,11 @@ echo ${pool_method}
 
 
 
-python s9_4_ML_on_LLM_embeddings_param_search.py \
-                    --dataset_name $dataset_name\
-                    --data_inclusion_type $data_inclusion_type \
-                    --model $model \
-                    --period_end_day $period_end_day \
-                    --overwrite_existing_params $overwrite_existing_params \
-                    --pool_method $pool_method
-                    #--cpu_cores 0-3
+/data/gpfs/projects/punim2121/anaconda3/envs/scarches/bin/python s9_4_ML_on_LLM_embeddings_param_search.py \
+                                                                --dataset_name $dataset_name\
+                                                                --data_inclusion_type $data_inclusion_type \
+                                                                --model $model \
+                                                                --period_end_day $period_end_day \
+                                                                --overwrite_existing_params $overwrite_existing_params \
+                                                                --pool_method $pool_method
+                                                                #--cpu_cores 0-3

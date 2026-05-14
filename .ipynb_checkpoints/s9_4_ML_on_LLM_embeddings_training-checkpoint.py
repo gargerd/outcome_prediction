@@ -75,7 +75,25 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'num_of_common_vars':22,
                             'training_days':120}, 
 
+                        'tb21_22_2984_pats_22_vars_relapse_ext_pats':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'}, 
+
+                         
+                          'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats':{
+                            'fn':'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats',
+                              'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
+                            'result_cat':'RELAPSE'},
+
+
+
                         'tb20_21_22_2908_pats_7_vars_relapse':{
+                            'result_cat':'RELAPSE',
+                            'fn':'tb20_21_22_2908_pats_7_vars_relapse',
+                           'include_rifaquin':True},
+
+                        'tb20_21_22_2908_pats_7_vars_relapse_ext_pats':{
                             'result_cat':'RELAPSE',
                             'fn':'tb20_21_22_2908_pats_7_vars_relapse',
                            'include_rifaquin':True},
@@ -535,6 +553,13 @@ for data_param_key in dataset_name_:
                                         
                                         #if model_name=='LogisticRegression':
                                         X_train, X_test = scale_by_training_data(X_train, X_test)
+
+
+                                        final_pat_ids_for_anal=X_train.index.unique().tolist() + X_test.index.unique().tolist()
+
+                                        print(pd.crosstab(df_.loc[df_['USUBJID'].isin(final_pat_ids_for_anal),'STUDYID'],\
+                                                          df_.loc[df_['USUBJID'].isin(final_pat_ids_for_anal),outcome_label]))
+    
     
                                         
                                         ## SAVE PARAMETERRS OF CV-SPLIT

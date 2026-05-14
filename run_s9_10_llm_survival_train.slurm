@@ -9,7 +9,7 @@
 #SBATCH --partition=sapphire #bigmem
 ##SBATCH --qos=cpu_normal
 ##SBATCH --gres=gpu:2
-#SBATCH --time=2-00:00:00
+#SBATCH --time=1-00:00:00
 #SBATCH --nice=10000
 
 set -euo pipefail
@@ -30,12 +30,13 @@ config="llm_survival_train_param_combinations.tsv"
 #SLURM_ARRAY_TASK_ID=1
 
 # Extract the parameters from the parameter configuration dataframe
-period_end_day=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$7==ArrayTaskID {print $3}' $config)
-data_inclusion_type=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$7==ArrayTaskID {print $4}' $config)
-model=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$7==ArrayTaskID {print $2}' $config)
-dataset_name=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$7==ArrayTaskID {print $1}' $config)
-pool_method=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$7==ArrayTaskID {print $5}' $config)
-ther_arm_duration=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$7==ArrayTaskID {print $6}' $config)
+period_end_day=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$8==ArrayTaskID {print $3}' $config)
+data_inclusion_type=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$8==ArrayTaskID {print $4}' $config)
+model=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$8==ArrayTaskID {print $2}' $config)
+dataset_name=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$8==ArrayTaskID {print $1}' $config)
+pool_method=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$8==ArrayTaskID {print $5}' $config)
+ther_arm_duration=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$8==ArrayTaskID {print $6}' $config)
+time_origin=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$8==ArrayTaskID {print $7}' $config)
 
 ## Set string if to overwrite existing parameter search results
 overwrite_existing_params='True'
@@ -47,6 +48,7 @@ echo ${period_end_day}
 echo ${model}
 echo ${pool_method}
 echo ${ther_arm_duration}
+echo ${time_origin}
 
 
 
@@ -56,5 +58,6 @@ echo ${ther_arm_duration}
                                                             --model $model \
                                                             --period_end_day $period_end_day \
                                                             --pool_method $pool_method \
-                                                            --ther_arm_duration $ther_arm_duration
+                                                            --ther_arm_duration $ther_arm_duration \
+                                                            --time_origin $time_origin
                                                      

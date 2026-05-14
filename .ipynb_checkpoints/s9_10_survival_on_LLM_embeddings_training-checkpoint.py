@@ -33,6 +33,7 @@ parser.add_argument("--model", help="One of the 2 models: ['XGBoost','LogisticRe
 parser.add_argument("--period_end_day", help="One of the 6 periods: [baseline,31,62,93,125,160,'all']")
 parser.add_argument("--pool_method",help="Pooling methods: ['mean_pooling','attention_pooling']")
 parser.add_argument("--ther_arm_duration", help="One of the ther_arm_durationsa: ['4-month','6-month']")
+parser.add_argument("--time_origin", help="Time origin, start or end of therapy: ['SOT','EOT']")
 
 
 args = parser.parse_args()
@@ -42,6 +43,7 @@ model_names_ = [args.model]
 period_end_day_=[args.period_end_day if args.period_end_day in ['baseline','all'] else int(args.period_end_day)]
 pool_methods_=[args.pool_method]
 ther_arm_durations_ = [args.ther_arm_duration]
+time_origin_ = [args.time_origin]
 
 '''
 if args.cpu_cores is not None:
@@ -72,6 +74,12 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'survival':True,
                             'result_cat':'RELAPSE'},
+
+                        'tb20_21_22_2908_pats_7_vars_relapse':{
+                            'result_cat':'RELAPSE',
+                            'fn':'tb20_21_22_2908_pats_7_vars_relapse',
+                             'survival':True,
+                           'include_rifaquin':True},
 
                          'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
                             'fn':'tb21_22_2984_pats_22_vars_relapse_without_dr_reg',#_wo_dr_reg',
@@ -349,8 +357,9 @@ llm_model_names=['BioMistral/BioMistral-7B',"epfl-llm/meditron-70b","epfl-llm/me
                 'text-embedding-3-small']
 
 fine_tuned_tags=['base','fine_tuned']
-model_names=['XGBoost','CoxnetSurvival'][:]
+model_names=['XGBoost','CoxnetSurvival','LogisticHazard'][:]
 ther_arm_durations=['4-month','6-month']
+time_origins=['SOT','EOT']
 
 #model_names=['LogisticRegression','XGBoost'][:]
 training_data_types=['full','pca']
@@ -367,13 +376,16 @@ therapy_day_thr=80
 period_end_days=['baseline',31,62,93,125,160,'all']
 
 train_params={'num_cv_repeats':25,
-              'k_folds':5,              
+                'k_folds':5,             
               'weight_by_label_freq':True,
+               'label_weights':[1,1],## [index_0: weight for label 0 (negative),index_1: weight for label 1 (positive)], only
+                                     ## only considered if weight_by_label_freq=False !
               'random_state':42,
               'test_size_ratio':0.2,
-              'pca_comp':512,
-              'label_weights':[1,1], ## [index_0: weight for label 0 (negative),index_1: weight for label 1 (positive)], only
-                                     ## only considered if weight_by_label_freq=False !
+              'early_stopping': True,
+                'patience': 10,
+                'min_delta': 0.0,
+                'val_fraction': 0.2,
               'label2id':label2id}
 
 
@@ -476,194 +488,207 @@ for data_param_key in dataset_name_:
                             else:
                                 fn='../data/'+parameters_for_analysis[data_param_key]['fn']+'_all_data_concat.csv.gz'
                             X=pd.read_csv(fn,index_col=0,low_memory=False)
-    
-                            ## Return dataframe with the outcome label
-                            pat_ids,y,target_df,outcome_label = return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
-                                                                                          outcome_df,outcome_label,model_names)
-                           
-                            ## Drop patients who have their last therapy day before therapy_day_thr ==> these patient probably dropped out
-                            #last_day_per_pat_df=X.sort_values(by=['DAY']).groupby('USUBJID').apply(lambda x: x.loc[x.index[-1],:])
-                            #pat_ids=last_day_per_pat_df[last_day_per_pat_df['DAY']>therapy_day_thr]['USUBJID'].tolist()
-    
-                            ## Subset initial therapy last day dataframe to all patient considered in analysis
-                            #init_ther_df=last_initial_therapy_day_df.loc[pat_ids,:]
-                            last_init_ther_days = extract_last_init_therapy_day_from_drug_regimen(pat_ids)
-    
-                            ## SUBSET TO PATIENTS WHO WERE TAKING DRUGS DURING THE PERIOD
-                            #pat_ids_ = subset_pats_with_therapy_in_period(period_num,period_end_days,data_param_key,last_init_ther_days)
-                            #pat_ids_= final_pat_ids_for_analysis[period_end_day]['X_train_ids'] + final_pat_ids_for_analysis[period_end_day]['X_test_ids']
-                            
-                           # df=df.loc[list(set(df.index) & set(pat_ids_)),:]
-                            #df=df.loc[(pat_ids_),:]
-            
-            
-                            ## Standardise data + calculate PCA 
-                            #scaled_data,df_pca=return_std_data_and_pca(df,train_params['pca_comp'])
-                            #df_pca=(scaled_data.loc[:,sign_diff_cols['Column'][:20]])
-                            df_pca = return_pca(df,train_params['pca_comp'])
-                            X_dict={'full':df,'pca':df_pca}
-            
-            
-                            df_=y.reset_index()#
-                            df_['STUDYID']=df_['USUBJID'].str.split('/',expand=True)[0].values
-                            #print(pd.crosstab(df_.loc[df_['USUBJID'].isin(pat_ids_),'STUDYID'],df_.loc[df_['USUBJID'].isin(pat_ids_),outcome_label]))
-                            
-                            for training_data_type in training_data_types[:1]:
-            
-            
-                                ## Define X and y dataframes for training
-                                X=X_dict[training_data_type].copy()
-                                #y=y.loc[y.index.get_level_values('USUBJID').isin(pat_ids_)]
-                                #y=y.loc[pat_ids_]
 
-                                for ther_arm_dur in ther_arm_durations_:
-
-                                    if '4-month' in ther_arm_dur and period_end_day in [160,'all']:
-                                        print(f'Skipping {ther_arm_dur} - cohort at timepoint {period_end_day}')
-                                        continue
+                            for time_origin in time_origin_:
+    
+                                ## Return dataframe with the outcome label
+                                pat_ids,y,target_df,outcome_label = return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
+                                                                                              outcome_df,outcome_label,model_names,time_origin)
+                               
+                                ## Drop patients who have their last therapy day before therapy_day_thr ==> these patient probably dropped out
+                                #last_day_per_pat_df=X.sort_values(by=['DAY']).groupby('USUBJID').apply(lambda x: x.loc[x.index[-1],:])
+                                #pat_ids=last_day_per_pat_df[last_day_per_pat_df['DAY']>therapy_day_thr]['USUBJID'].tolist()
+        
+                                ## Subset initial therapy last day dataframe to all patient considered in analysis
+                                #init_ther_df=last_initial_therapy_day_df.loc[pat_ids,:]
+                                last_init_ther_days = extract_last_init_therapy_day_from_drug_regimen(pat_ids)
+        
+                                ## SUBSET TO PATIENTS WHO WERE TAKING DRUGS DURING THE PERIOD
+                                #pat_ids_ = subset_pats_with_therapy_in_period(period_num,period_end_days,data_param_key,last_init_ther_days)
+                                #pat_ids_= final_pat_ids_for_analysis[period_end_day]['X_train_ids'] + final_pat_ids_for_analysis[period_end_day]['X_test_ids']
                                 
+                               # df=df.loc[list(set(df.index) & set(pat_ids_)),:]
+                                #df=df.loc[(pat_ids_),:]
+                
+                
+                                ## Standardise data + calculate PCA 
+                                #scaled_data,df_pca=return_std_data_and_pca(df,train_params['pca_comp'])
+                                #df_pca=(scaled_data.loc[:,sign_diff_cols['Column'][:20]])
+                                #df_pca = return_pca(df,train_params['pca_comp'])
+                                X_dict={'full':df}#,'pca':df_pca}
+                
+                
+                                df_=y.reset_index()#
+                                df_['STUDYID']=df_['USUBJID'].str.split('/',expand=True)[0].values
+                                #print(pd.crosstab(df_.loc[df_['USUBJID'].isin(pat_ids_),'STUDYID'],df_.loc[df_['USUBJID'].isin(pat_ids_),outcome_label]))
                                 
-
+                                for training_data_type in training_data_types[:1]:
                 
-                                    #for model_name in model_names[:]:
-                                    for n, model_name in enumerate(tqdm(model_names_, desc="Processing", unit="model")):
-                                        #print('\n=====================')
-                                        #print(model_name)
-
-                                        print(f'\n+++++++\{data_param_key} data / {llm_model_name_with_tag} /{period_end_day} /{data_inclusion_type} /autoenc {autoencoder_merged} / {pool_method} / {ther_arm_dur} cohort - {model_name}')
                 
-                                        training_results={}
-                                        training_results['train_params']=train_params
-                                        training_results['cv_results']={}
-        
-                                        ## Take the mean of the best parameteres selected for each CV-split as best parameters for the final model
-                                        metric_func=np.mean
-                                        #num_of_top_models_per_cv=5
-                                        num_of_top_models_per_cv=1
-        
-                                        #if model_name=='XGBoost':
-        
-                                        ## LOAD RESULTS OF PARAMETER SEARCH AND EXTRACT THE PARAMETERS OF THE BEST MODEL
-                                        #fn=f'../data/{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_vars_param_search_results.pickle'
-                                        fn=os.path.join(survival_anal_dir_,
-                                                        f"{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_{ther_arm_dur}_vars_param_search_results.pickle")
-                                        with open(fn, 'rb') as handle:
-                                            param_search_results=pickle.load(handle)
-                                        
-                                        best_model_params_across_cvs=extract_best_model_params(param_search_results=param_search_results,
-                                                                                               metric_func=metric_func,
-                                                                                               num_of_top_models_per_cv=num_of_top_models_per_cv,
-                                                                                               model_name=model_name,
-                                                                                               average_models_across_splits=False)
-        
-                                        #if model_name=='LogisticRegression':
-                                        #    num_of_top_models_per_cv = min(1,len(param_search_dict[model_name]['l1_ratio']))
-                                        
-                                        for cv_repeat_num in tqdm(range(train_params['num_cv_repeats']),desc="Processing", unit="cv_repeat"):
-                                            rand_state=train_params['random_state'] + cv_repeat_num
-        
-                                            '''
-                                            ## STRATIFY ON OUTCOME LABEL & STUDYID 
-                                            ##. ==> WITHIN STUDY ROC-AUC CLAUCLATION IS POSSIBLE, AS THERE ALWAYS WILL BE AT LEAST ONE UNFAVOUR. LABEL FROM BOTH STUDIES IN THE TEST SET
-                                            y_for_strat=y[outcome_label].astype(str) + "_" + y.index.get_level_values('STUDYID')#.astype(str)
-                                            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=train_params['test_size_ratio'], 
-                                                                                                stratify=y_for_strat,random_state=rand_state)
-                                            '''
-                                            #X_train_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num]['X_train_ids']
-                                            #X_test_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num]['X_test_ids']
-                                            X_train_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num][ther_arm_dur]['X_train_ids']
-                                            X_test_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num][ther_arm_dur]['X_test_ids']
+                                    ## Define X and y dataframes for training
+                                    X=X_dict[training_data_type].copy()
+                                    #y=y.loc[y.index.get_level_values('USUBJID').isin(pat_ids_)]
+                                    #y=y.loc[pat_ids_]
+    
+                                    for ther_arm_dur in ther_arm_durations_:
+    
+                                        if '4-month' in ther_arm_dur and period_end_day in [160,'all']:
+                                            print(f'Skipping {ther_arm_dur} - cohort at timepoint {period_end_day}')
+                                            continue
+                                    
+                                    
+    
+                    
+                                        #for model_name in model_names[:]:
+                                        for n, model_name in enumerate(tqdm(model_names_, desc="Processing", unit="model")):
+                                            #print('\n=====================')
+                                            #print(model_name)
+    
+                                            print(f'\n+++++++\{data_param_key} data / {llm_model_name_with_tag} /{period_end_day} /{data_inclusion_type} /autoenc {autoencoder_merged} / {pool_method} / {ther_arm_dur} cohort - {time_origin} - {model_name}')
+                    
+                                            training_results={}
+                                            training_results['train_params']=train_params
+                                            training_results['cv_results']={}
+            
+                                            ## Take the mean of the best parameteres selected for each CV-split as best parameters for the final model
+                                            metric_func=np.mean
+                                            #num_of_top_models_per_cv=5
+                                            num_of_top_models_per_cv=1
+            
+                                            #if model_name=='XGBoost':
+            
+                                            ## LOAD RESULTS OF PARAMETER SEARCH AND EXTRACT THE PARAMETERS OF THE BEST MODEL
+                                            #fn=f'../data/{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_vars_param_search_results.pickle'
+                                            fn=os.path.join(survival_anal_dir_,
+                                                            f"{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_{ther_arm_dur}_{time_origin}_vars_param_search_results.pickle")
+                                            with open(fn, 'rb') as handle:
+                                                param_search_results=pickle.load(handle)
                                             
-                                            X_train=X.loc[list(set(X.index)&set(X_train_ids)),:]
-                                            X_test=X.loc[list(set(X.index)&set(X_test_ids)),:]
-        
-                                            y_train=y.loc[list(set(X.index)&set(X_train_ids)),:]
-                                            y_test=y.loc[list(set(X.index)&set(X_test_ids)),:]
-                                            
+                                            best_model_params_across_cvs=extract_best_model_params(param_search_results=param_search_results,
+                                                                                                   metric_func=metric_func,
+                                                                                                   num_of_top_models_per_cv=num_of_top_models_per_cv,
+                                                                                                   model_name=model_name,
+                                                                                                   average_models_across_splits=False)
+            
                                             #if model_name=='LogisticRegression':
-                                            X_train, X_test = scale_by_training_data(X_train, X_test)
-        
+                                            #    num_of_top_models_per_cv = min(1,len(param_search_dict[model_name]['l1_ratio']))
                                             
-                                            ## SAVE PARAMETERRS OF CV-SPLIT
-                                            print(f"Num of CV-repeat:{cv_repeat_num+1}")
-                                            training_results['cv_results'][f'cv_rep_{cv_repeat_num}']={}
-        
-                                            training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['X_train_indices']=X_train.index.tolist()
-                                            training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['X_test_indices']=X_test.index.tolist()
-                                            training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['y_train_indices']=y_train.index.tolist()
-                                            training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['y_test_indices']=y_test.index.tolist()
-                                            training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['rand_state']=rand_state
-        
-                                            ## LOOP OVER THE PARAMETERS WITH THE TOP N ROC-AUC VALUES DURING PARAMETER SEARCH AND TRAIN MODELS ON WHOLE TRAINING DATA
-                                            #top_model_params_in_cv = best_model_params_across_cvs[f'cv_rep_{cv_repeat_num}']
-        
-                                            training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['model']={}
-                                            #training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['test_conf_metrics']={}
-                                            #training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['inner_CV_conf_metrics']={}
-                                            
-                                            #print(best_model_params)
-                                            train_param_comb=f'{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_{ther_arm_dur}'
-        
-                                            print(f'\n+++++++ Num of CV-repeat:{cv_repeat_num+1} - {data_param_key} data / {llm_model_name_with_tag} /{period_end_day} /{data_inclusion_type} /autoenc {autoencoder_merged} / {pool_method} / {ther_arm_dur} cohort - {model_name}')
-        
-                                            ## If LR, set l1_ratio to 1 to run L1-penalisation , if XGBoost, extract best performing parameter configuration
-                                            for n in tqdm(range(num_of_top_models_per_cv),unit="model"):
-                                                #if model_name=='LogisticRegression':
-                                                #    best_model_params={'l1_ratio':1.0}
-                                                
-                                                #if model_name!='LogisticRegression':
-                                                #    best_model_params=best_model_params_across_cvs[f'cv_rep_{cv_repeat_num}'][n]
-                                                
-                                                best_model_params=best_model_params_across_cvs[f'cv_rep_{cv_repeat_num}'][n]
-                                                calibrate_model=True
-                                                
+                                            for cv_repeat_num in tqdm(range(train_params['num_cv_repeats']),desc="Processing", unit="cv_repeat"):
+                                                rand_state=train_params['random_state'] + cv_repeat_num
+            
                                                 '''
-                                                model,cv_roc_auc_scores,label_weights_dict = calc_roc_auc_score_of_model(model_name,
-                                                                                                                         X_train,
-                                                                                                                         y_train,
-                                                                                                                         train_params['k_folds'],
-                                                                                                                         train_params['random_state'],
-                                                                                                                         outcome_label,
-                                                                                                                         best_model_params,
-                                                                                                                         train_params['weight_by_label_freq'],
-                                                                                                                         train_params,
-                                                                                                                         dense_network_params,
-                                                                                                                         train_param_comb,
-                                                                                                                         calibrate_model)
-                                                '''                                                                                                                                 
-
-                                                model, cv_c_index_scores = calc_c_index_score_of_model(model_name=model_name,
-                                                                                                    X_train=X_train,
-                                                                                                    y_train_data=y_train,
-                                                                                                    k_folds=train_params['k_folds'],
-                                                                                                    random_state=train_params['random_state'],
-                                                                                                    outcome_label=outcome_label,
-                                                                                                    model_params=best_model_params,
-                                                                                                    #weight_by_label_freq,
-                                                                                                    train_params=train_params,
-                                                                                                    #calibrate_model
-                                                                                                     )
-    
+                                                ## STRATIFY ON OUTCOME LABEL & STUDYID 
+                                                ##. ==> WITHIN STUDY ROC-AUC CLAUCLATION IS POSSIBLE, AS THERE ALWAYS WILL BE AT LEAST ONE UNFAVOUR. LABEL FROM BOTH STUDIES IN THE TEST SET
+                                                y_for_strat=y[outcome_label].astype(str) + "_" + y.index.get_level_values('STUDYID')#.astype(str)
+                                                X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=train_params['test_size_ratio'], 
+                                                                                                    stratify=y_for_strat,random_state=rand_state)
+                                                '''
+                                                #X_train_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num]['X_train_ids']
+                                                #X_test_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num]['X_test_ids']
+                                                X_train_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num][ther_arm_dur]['X_train_ids']
+                                                X_test_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num][ther_arm_dur]['X_test_ids']
                                                 
-        
-                                                ## Save the best model's ROC-AUC scores as CV validation ROC-AUC
-                                                #. + Savel 'label_weights_dict' ==> it depends on the train-test split, so label_weights_dict is the same for all
-                                                #. num_of_top_models_per_cv models
-                                                if n==0:
-                                                    training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['cv_c_index_scores']=cv_c_index_scores 
+                                                X_train=X.loc[list(set(X.index)&set(X_train_ids)),:]
+                                                X_test=X.loc[list(set(X.index)&set(X_test_ids)),:]
+            
+                                                y_train=y.loc[list(set(X.index)&set(X_train_ids)),:]
+                                                y_test=y.loc[list(set(X.index)&set(X_test_ids)),:]
+                                                
+                                                #if model_name=='LogisticRegression':
+                                                X_train, X_test = scale_by_training_data(X_train, X_test)
+            
+                                                
+                                                ## SAVE PARAMETERRS OF CV-SPLIT
+                                                print(f"Num of CV-repeat:{cv_repeat_num+1}")
+                                                training_results['cv_results'][f'cv_rep_{cv_repeat_num}']={}
+            
+                                                training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['X_train_indices']=X_train.index.tolist()
+                                                training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['X_test_indices']=X_test.index.tolist()
+                                                training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['y_train_indices']=y_train.index.tolist()
+                                                training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['y_test_indices']=y_test.index.tolist()
+                                                training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['rand_state']=rand_state
+            
+                                                ## LOOP OVER THE PARAMETERS WITH THE TOP N ROC-AUC VALUES DURING PARAMETER SEARCH AND TRAIN MODELS ON WHOLE TRAINING DATA
+                                                #top_model_params_in_cv = best_model_params_across_cvs[f'cv_rep_{cv_repeat_num}']
+            
+                                                training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['model']={}
+                                                #training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['test_conf_metrics']={}
+                                                #training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['inner_CV_conf_metrics']={}
+                                                
+                                                #print(best_model_params)
+                                                train_param_comb=f'{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_{ther_arm_dur}'
+            
+                                                print(f'\n+++++++ Num of CV-repeat:{cv_repeat_num+1} - {data_param_key} data / {llm_model_name_with_tag} /{period_end_day} /{data_inclusion_type} /autoenc {autoencoder_merged} / {pool_method} / {ther_arm_dur} cohort - {model_name}')
+            
+                                                ## If LR, set l1_ratio to 1 to run L1-penalisation , if XGBoost, extract best performing parameter configuration
+                                                for n in tqdm(range(num_of_top_models_per_cv),unit="model"):
+                                                    #if model_name=='LogisticRegression':
+                                                    #    best_model_params={'l1_ratio':1.0}
                                                     
-                                                
-                                                training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['model'][n]=model
-                                                
-                        
-                                      
-                
-                                        ## Save training results
-                                        #fn=f'../data/{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_vars_training_results.pickle'      
-                                        fn=os.path.join(survival_anal_dir_,
-                                                        f"{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_{ther_arm_dur}_vars_training_results.pickle")
-                                        with open(fn, 'wb') as handle:
-                                            pickle.dump(training_results, handle)
+                                                    #if model_name!='LogisticRegression':
+                                                    #    best_model_params=best_model_params_across_cvs[f'cv_rep_{cv_repeat_num}'][n]
+                                                    
+                                                    best_model_params=best_model_params_across_cvs[f'cv_rep_{cv_repeat_num}'][n]
+                                                    calibrate_model=True
+                                                    
+                                                    '''
+                                                    model,cv_roc_auc_scores,label_weights_dict = calc_roc_auc_score_of_model(model_name,
+                                                                                                                             X_train,
+                                                                                                                             y_train,
+                                                                                                                             train_params['k_folds'],
+                                                                                                                             train_params['random_state'],
+                                                                                                                             outcome_label,
+                                                                                                                             best_model_params,
+                                                                                                                             train_params['weight_by_label_freq'],
+                                                                                                                             train_params,
+                                                                                                                             dense_network_params,
+                                                                                                                             train_param_comb,
+                                                                                                                             calibrate_model)
+                                                    '''                                                                                                                                 
+    
+                                                    model, cv_c_index_scores = calc_c_index_score_of_model(model_name=model_name,
+                                                                                                        X_train=X_train,
+                                                                                                        y_train_data=y_train,
+                                                                                                        k_folds=train_params['k_folds'],
+                                                                                                        random_state=train_params['random_state'],
+                                                                                                        outcome_label=outcome_label,
+                                                                                                        model_params=best_model_params,
+                                                                                                        #weight_by_label_freq,
+                                                                                                        train_params=train_params,
+                                                                                                        #calibrate_model
+                                                                                                         )
+        
+                                                    
+            
+                                                    ## Save the best model's ROC-AUC scores as CV validation ROC-AUC
+                                                    #. + Savel 'label_weights_dict' ==> it depends on the train-test split, so label_weights_dict is the same for all
+                                                    #. num_of_top_models_per_cv models
+                                                    if n==0:
+                                                        training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['cv_c_index_scores']=cv_c_index_scores 
+                                                        
+                                                    
+                                                    if is_pycox_model(model_name)==True:
+                                                        training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['model'][n]={
+                                                                                                                    "model_name": model_name,
+                                                                                                                    "model_params": best_model_params,
+                                                                                                                    "train_params": train_params,
+                                                                                                                    "input_dim": X_train.shape[1],
+                                                                                                                    "labtrans": model['labtrans'],
+                                                                                                                    "state_dict": model['model'].net.state_dict()
+                                                                                                                }
+                    
+                                                    if is_pycox_model(model_name)==False:
+                                                        training_results['cv_results'][f'cv_rep_{cv_repeat_num}']['model'][n]=model
+                                                    
+                            
+                                          
+                    
+                                            ## Save training results
+                                            #fn=f'../data/{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_vars_training_results.pickle'      
+                                            fn=os.path.join(survival_anal_dir_,
+                                                            f"{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_{ther_arm_dur}_{time_origin}_vars_training_results.pickle")
+                                            with open(fn, 'wb') as handle:
+                                                pickle.dump(training_results, handle)
         
 loop_time=time.time()
 print('Training duration:')

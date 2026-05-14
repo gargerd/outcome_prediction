@@ -25,6 +25,15 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'}, 
 
+                         'tb21_22_2984_pats_22_vars_relapse_ext_pats':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'}, 
+
+                          'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
+                            'result_cat':'RELAPSE'},
+
                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_dr_reg_per_arm':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                              'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
@@ -34,6 +43,19 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
                             'result_cat':'RELAPSE'}, 
+
+                         
+                        'tb20_21_22_2905_pats_8_vars_relapse_ext_pats':{
+                              'result_cat':'RELAPSE',
+                            'fn':'tb20_21_22_2905_pats_8_vars_relapse',
+                           'include_rifaquin':True},
+
+                         'tb20_21_22_2905_pats_8_vars_relapse_ext_pats_no_rifaquin':{
+                              'result_cat':'RELAPSE',
+                            'fn':'tb20_21_22_2905_pats_8_vars_relapse',
+                             #'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
+                           'include_rifaquin':False},
+
 
                          
                          'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_with_arm':{
@@ -312,6 +334,7 @@ def backward_fill_and_extract_vars_at_baseline(X_subset,columns_to_drop):
 ## SPLIT TRAINING AND TESTING DATA IN A STRATIFIED MANNER
 #  - Standardise non-binary numerical columns with a standard scaler trained on the training dataset
 #  - If training_data_type=='last_therapy_day', just keep the information from the last therapy day
+'''
                                                                                      
 def create_std_training_testing_data(X,y,pat_ids_,test_size_ratio,rand_state,
                                      training_data_type,columns_to_drop,period_end_day,outcome_label,
@@ -476,6 +499,202 @@ def create_std_training_testing_data(X,y,pat_ids_,test_size_ratio,rand_state,
     X_train=X_train.drop(columns=final_cols_to_drop)
     X_test=X_test.drop(columns=final_cols_to_drop)
 
+
+    
+    ## Add STUDYID information to index for y_test and y_train
+    y_test_=y_test.reset_index()
+    #print('X_test_pat_ids',X_test_pat_ids)
+    y_test_['STUDYID']=y_test_['USUBJID'].str.split('/',expand=True)[0].values
+    y_test_=y_test_.set_index(['USUBJID','STUDYID'])
+    
+    y_train_=y_train.reset_index()
+    y_train_['STUDYID']=y_train_['USUBJID'].str.split('/',expand=True)[0].values
+    y_train_=y_train_.set_index(['USUBJID','STUDYID'])
+
+    
+    return X_train,X_test,y_train_,y_test_,X_train_pat_ids,X_test_pat_ids
+
+'''
+
+
+def create_std_training_testing_data(X,
+                                     y,
+                                     pat_ids_,
+                                     test_size_ratio,
+                                     rand_state,
+                                     training_data_type,
+                                     columns_to_drop,
+                                     period_end_day,
+                                     outcome_label,
+                                     cv_repeat_num=None,
+                                     final_pat_ids_for_analysis=None,
+                                     return_full_dataset=None):
+
+
+    ## STRATIFY ON OUTCOME LABEL & STUDYID 
+    ## IF STRATIFIED PATIENT IDS WERE ALREADY CALCULATED, LOAD THEM 
+    if final_pat_ids_for_analysis is not None and cv_repeat_num is not None:
+
+        X_train_pat_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num]['X_train_ids']
+        X_test_pat_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num]['X_test_ids']
+    
+    ## IF STRATIFIED PATIENT IDS WERE NOT CALCULATED YET, PERFORM TRAIN-TEST SPLITTING
+    else:   
+        ##. ==> WITHIN STUDY ROC-AUC CALCULATION IS POSSIBLE, AS THERE ALWAYS WILL BE AT LEAST ONE UNFAVOUR. LABEL FROM BOTH STUDIES IN THE TEST SET
+        pat_ids_=X['USUBJID'].unique().tolist()
+        df_=y.loc[pat_ids_].reset_index()#
+        df_['STUDYID']=df_['USUBJID'].str.split('/',expand=True)[0].values
+        y_for_strat=df_[outcome_label].astype(str) + "_" + df_['STUDYID']#.astype(str)
+        
+        X_train_pat_ids, X_test_pat_ids, _, _ = train_test_split(pat_ids_, y_for_strat, test_size=test_size_ratio, stratify=y_for_strat,random_state=rand_state)
+
+    
+    #print('original num of patients',len(pat_ids_))
+    #print('train-test split: train:',len(X_train_pat_ids),'test:',len(X_test_pat_ids))
+
+    period_end_ind=period_end_days.index(period_end_day)
+
+    if training_data_type=='last_therapy_day':
+        periods_for_anal=period_end_days[period_end_ind:(period_end_ind+1)]
+
+    if training_data_type=='all_days_in_period':
+        periods_for_anal=period_end_days[:(period_end_ind+1)]
+
+    
+    x_train_l,x_test_l,full_l=[],[],[]
+
+    for period_end_day_ in periods_for_anal:
+        #print('period_end_day_',period_end_day_)
+    
+        if period_end_day_=='baseline':
+            
+            X_=backward_fill_and_extract_vars_at_baseline(X,columns_to_drop)
+    
+        if period_end_day_!='baseline':
+            ## Drop columns that are not necessary for training 
+            if len(columns_to_drop)>0:
+                if 'DAY' in columns_to_drop:
+                    columns_to_drop_wo_day=[x for x in columns_to_drop if x!='DAY']
+                else:
+                    columns_to_drop_wo_day=columns_to_drop
+        
+                X_=X.drop(columns=columns_to_drop_wo_day)   
+
+        ## Ad the period name as a prefix for tha columns
+        if training_data_type=='all_days_in_period':
+            X_.columns=[f'{period_end_day_}_{col}' if col not in ['DAY','USUBJID','AGE','SEX','RACE'] else col for col in X_.columns ]
+
+            ## Subset dataset to the period
+            if isinstance(period_end_day_,int):
+                X_=X_[(X_['DAY']<=period_end_day_)].copy()
+
+            #print(X_['DAY'].max())
+        
+        ## Extract the last visit values in period
+        #print(f'Num of patients at ==={period_end_day_}===:',X_['USUBJID'].unique().shape[0])
+
+        X__ = X_.sort_values(by=['DAY']).groupby('USUBJID').apply(lambda x: x.loc[x.index[-1],:])
+
+        ## Split last visit valies into training-testing data        
+        X_train=X__.loc[X__.index.isin(X_train_pat_ids),:]
+        X_test=X__.loc[X__.index.isin(X_test_pat_ids),:]
+        X_full=X__.loc[X__.index.isin(pat_ids_),:]
+        
+        
+        x_train_l.append(X_train)
+        x_test_l.append(X_test)
+        full_l.append(X_full)
+
+    ## Concat dataeets of periods into one dataframe
+    X_train=pd.concat(x_train_l,axis=1)
+    X_test=pd.concat(x_test_l,axis=1)
+    X_full=pd.concat(full_l,axis=1)
+
+
+    #print('X_train shape after concatenation',X_train.shape)
+   # print('X_test shape after concatenation',X_test.shape)
+   
+
+    ## Check number of visits with missing values per patient for each variable
+    nan_visits_per_pat_per_var=(X_full.drop(columns=['USUBJID']).reset_index().groupby('USUBJID',as_index=False).apply(lambda x:x.isna().sum(axis=0)))
+
+    ## Normalise by the number of patients, and select variables with a lower missing rate then a threshold to include in analysis
+    #rel_missingness_of_vars=(nan_visits_per_pat_per_var.sum(axis=0).sort_values()/nan_visits_per_pat_per_var.shape[0])
+    rel_missingness_of_vars=(nan_visits_per_pat_per_var.sum(axis=0)/nan_visits_per_pat_per_var.shape[0])
+    non_sparse_vars = rel_missingness_of_vars[rel_missingness_of_vars<=0.05].index.tolist()
+
+    #print(rel_missingness_of_vars[rel_missingness_of_vars<=0.05].sort_values())
+    #print(non_sparse_vars)
+    
+    
+    ## Drop rows (visits) with NaNs in the non-sparse-variables
+    #X_train=X_train.dropna(how='any',axis=0)
+    X_train=X_train[non_sparse_vars].dropna(how='any',axis=0)
+    X_test=X_test[non_sparse_vars].dropna(how='any',axis=0)
+
+    #print('X_train shape after dropping nan columns',X_train.shape)
+    #print('X_test shape after dropping nan columns',X_test.shape)
+    #print(np.sort(list(set(X_train.columns)))==np.sort(list(set(non_sparse_vars))))
+
+    
+    ## There will bb duplicated columns (USUBJID, DAY, ...) ==> drop them
+    X_train = X_train.loc[:,~X_train.columns.duplicated()]
+    X_test = X_test.loc[:,~X_test.columns.duplicated()]
+
+    #print('after X_train.columns.duplicated()',X_train.shape)
+    #print('after X_test.columns.duplicated()',X_test.shape)
+    
+
+    ## Some static variables have the same values at every period (i.e.m age, race, ...)
+    ## ==> keep onlt the first instance of these columns
+    static_cols_train=X_train.T.duplicated(keep='first')[X_train.T.duplicated(keep='first')].index.tolist()
+    static_cols_test=X_test.T.duplicated(keep='first')[X_test.T.duplicated(keep='first')].index.tolist()
+
+    ## Some drugs were stopped after a given period ==> their cumulative dose doesn't change in later periods, they get flagged as a static column
+    #  ==> keep these drug regimen columns despite possibly having same values as their earlier period counterparts
+    static_cols_train = [col for col in static_cols_train if 'dr_reg' not in col]
+    static_cols_test = [col for col in static_cols_test if 'dr_reg' not in col]
+    
+    X_train=X_train.drop(columns=static_cols_train)
+    X_test=X_test.drop(columns=static_cols_train)
+    
+    #print('static_cols_train to drop',static_cols_train)
+    #print('X_train after dropping static_cols',X_train.shape)
+
+    #X_train, X_test=scale_by_training_data(X_train, X_test)
+
+    ## Subset y to training and testing set 
+    # - If training_data_type=='last_therapy_day', this means one label per patient (i.e. Each patient has one row input)
+    # - If training_data_type=='full', this means num_of_input_rows label per patient (i.e. Each patient has 'n' rows of input)
+    #X_train_pat_ids=X_train['USUBJID'].values.tolist()
+    #X_test_pat_ids=X_test['USUBJID'].values.tolist()
+    X_train_pat_ids=X_train.index.tolist()
+    X_test_pat_ids=X_test.index.tolist()
+
+    #print(X_test)
+
+    #print('X_train_pat_ids',X_train_pat_ids)
+    #print('X_test_pat_ids',X_test_pat_ids)
+    
+    y_train=y.loc[X_train_pat_ids]
+    y_test=y.loc[X_test_pat_ids]
+
+
+    ## Drop 'DAY'  and USUBJID if still in columns
+    if 'USUBJID' in X_train.columns:
+        final_cols_to_drop=['DAY','USUBJID']
+    else:
+        final_cols_to_drop=['DAY']
+    
+    X_train=X_train.drop(columns=final_cols_to_drop)
+    X_test=X_test.drop(columns=final_cols_to_drop)
+
+    #print('after X_train.columns.duplicated()',X_train.shape)
+    #print('after X_test.columns.duplicated()',X_test.shape)
+    
+    if return_full_dataset is not None:
+        X_full_ = pd.concat([X_train,X_test],axis=0)
+        return X_full_
 
     
     ## Add STUDYID information to index for y_test and y_train
@@ -1472,7 +1691,218 @@ def ffill_dr_reg_cumul_cols(X_subset):
 ### 2. COLLECT PATIENTS, WHO HAVE FAVOURABLE OUTCOME AT END OF TREATMENT, BUT HAVE AT LEAST ONE UNFAVOURABLE OUTCOME AT ANY OF THE FOLLOW-UP TIMEPOINTS 
     #. ==>TB-1021: 12 & 18 MONTHS, TB-1022: 18 & 24 MONTHS
 
-def extract_21_22_relapse_pats():
+def extract_rifaquin_relapse():
+    
+    data=load_merged_data_of_lab_vars()
+    arm_df=data.drop_duplicates('USUBJID')[['USUBJID','ARM']].set_index('USUBJID')
+    del data
+    
+    
+    de=pd.read_csv('../../C-Path_data/preprocessing/disposition_events.csv',low_memory=True)
+    de = de.set_index('USUBJID')
+
+
+    
+    outcome_tb1020 = pd.read_csv('../data/tb_1020_outcome.csv.gz')
+    tb_1020_pat_df = outcome_tb1020[outcome_tb1020['UNFAVOURABLE_OUTCOME_CATEGORY_AT_18_MONTHS'].isin(['FAVOURABLE','RELAPSE'])]
+    tb_1020_pat_df = tb_1020_pat_df.rename(columns={'Unnamed: 0':'USUBJID',})
+
+    #df_tb_20 = data[data['USUBJID'].isin(tb_1020_pat_df['USUBJID'].tolist())]
+
+
+
+    tb_1020_pat_df = tb_1020_pat_df.set_index('USUBJID')
+    tb_1020_pat_df['last_therapy_day'] = de.loc[tb_1020_pat_df.index,'COMPLETION CONTINUATION PHASE'].values
+    
+    tb_1020_pat_df['RELAPSE']=tb_1020_pat_df['UNFAVOURABLE_OUTCOME_CATEGORY_AT_18_MONTHS'].replace({'FAVOURABLE':0,'RELAPSE':1})
+    tb_1020_pat_df['RELAPSE_DAY']= tb_1020_pat_df['TIME_TO_EVENT'].values
+    
+    
+    tb_1020_pat_df['DAYS_BETWEEEN_THERAPY_END_AND_RELAPSE'] = (tb_1020_pat_df['RELAPSE_DAY'] - tb_1020_pat_df['last_therapy_day']).values
+    tb_1020_pat_df.loc[tb_1020_pat_df['RELAPSE']==0,['DAYS_BETWEEEN_THERAPY_END_AND_RELAPSE','RELAPSE_DAY']]=np.nan
+
+    #df_tb_20 = data[data['USUBJID'].isin(tb_1020_pat_df.reset_index()['USUBJID'].tolist())]
+   
+    tb_1020_pat_df['ARM'] = arm_df.loc[tb_1020_pat_df.reset_index()['USUBJID'],'ARM'].values
+    tb_1020_pat_df['STUDYID'] = 'Rifaquin'
+
+    
+    return tb_1020_pat_df
+###===========================
+
+def return_fav_unfav_pats_tb_1021(X_subset=None):
+
+    if X_subset is None:
+        fn='../data/tb21_22_2984_pats_22_vars_result_at_end_of_treatment_preproc_data_with_imp.csv.gz'
+        X_subset=pd.read_csv(fn,index_col=0)
+        X_subset=X_subset.rename(columns=lambda x: x.replace('<', 'lower than'))
+        X_subset=X_subset.rename(columns=lambda x: x.replace('>', 'higher than'))
+    
+    de=pd.read_csv('../../C-Path_data/preprocessing/disposition_events.csv',low_memory=True) 
+    de=de.set_index('USUBJID')
+    
+    outcome_tb1021 =pd.read_csv('../data/tb_1021_outcome.csv.gz',index_col=0)
+    outcome_tb1021 = outcome_tb1021.loc[X_subset[X_subset['STUDYID']=='TB-1021']['USUBJID'].unique(),:]
+    oc_1021 = outcome_tb1021[outcome_tb1021['RESULT_AT_END_OF_TREATMENT']=='FAVOURABLE'].replace('UNASSESSABLE',np.nan)
+    
+    
+    ## TAKE THE LIQUID MEDIUM RESULTS AT MONTH18 AS FINAL RESULTS ==> IF LIQUID MEDIUM IS MISSING, TAKE THE SOLID MEDIUM INSTEAD (CA. 53 PATIENTS)
+    oc_1021['RESULT_AT_18_MONTHS'] = oc_1021['RESULT_LIQUID_MEDIUM_AT_18_MONTHS'].values
+    oc_1021.loc[oc_1021['RESULT_AT_18_MONTHS'].isna(),'RESULT_AT_18_MONTHS'] = oc_1021.loc[oc_1021['RESULT_AT_18_MONTHS'].isna(),'RESULT_SOLID_MEDIUM_AT_18_MONTHS'].values
+    
+    
+    ## TAKE PATIENTS AS FAVOURABLE WHO HAVE FAVOURABLE LABEL AT ENDO-F-THERAPY + ALL 2 FOLLOW-UP TIMEPOINTS
+    out_cols=['RESULT_AT_END_OF_TREATMENT','RESULT_AT_12_MONTHS','RESULT_AT_18_MONTHS']#,'RESULT_AT_24_MONTHS']
+    p_1021_fav = (oc_1021.loc[(oc_1021[out_cols]=='FAVOURABLE').all(axis=1),:].index.tolist())
+
+        
+    ## ALSO EXTRACT PATIENTS WITHOUT MGIT AT MONTH 18 ==> SOME EARLIER MODELS EXCLUDED THESE PATIENTS
+    out_cols=['RESULT_AT_END_OF_TREATMENT','RESULT_AT_12_MONTHS','RESULT_LIQUID_MEDIUM_AT_18_MONTHS']#,'RESULT_AT_24_MONTHS']
+    p_1021_fav_ = (oc_1021.loc[(oc_1021[out_cols]=='FAVOURABLE').all(axis=1),:].index.tolist())
+    
+    pats_wo_mgit_at_18 = (list(set(p_1021_fav) - set(p_1021_fav_)))
+    
+    ## TAKE PATIENTS AS UNFAVOURABLE WHO HAVE FAVOURABLE LABEL AT END-OF-THERAPY , BUT HAVE AN UNFAVOURABLE OUTCOME AT ANY OF THE 2 FU TIMEPOINTS
+    out_cols=['RESULT_AT_12_MONTHS','RESULT_AT_18_MONTHS']#,'RESULT_AT_24_MONTHS']
+    p_1021_unfav=oc_1021.loc[(oc_1021['RESULT_AT_END_OF_TREATMENT']=='FAVOURABLE')&\
+                             (oc_1021[out_cols]=='UNFAVOURABLE').any(axis=1),:].index.tolist()
+    
+    
+    ## FOR SOME PATIENTS, THE RESULT AT MONTH 12 IS MISSING, BUT THEY HAVE LABELS AT 18 MONTHS 
+    ## THESE PATIENTS WERE NOT RETREATED, AND ONLY ONE PATIENTS HAD A DEFAULT 
+    p_not_incl=oc_1021.loc[~(oc_1021.index.isin(p_1021_fav+p_1021_unfav))&\
+                (oc_1021['RESULT_AT_18_MONTHS']=='FAVOURABLE'),:].index
+    
+    ## DROP PATIENTS WHO DON'T HAVE COMPLETION DATE OF FOLLOW-UP PHASE
+    de_not_incl = de.loc[p_not_incl,:].dropna(how='all',axis=1)
+    tb21_no_12_mont_res_but_fav_at_18 = de_not_incl[~de_not_incl['COMPLETION FOLLOW-UP PHASE'].isna()].index.tolist()
+    
+    ## ADD THESE PATIENTS TO THE FAVOURABLE PATIENT COHORT
+    p_1021_fav = p_1021_fav + tb21_no_12_mont_res_but_fav_at_18
+
+
+    del de
+
+    d={'pats_wo_mgit_at_18':pats_wo_mgit_at_18,
+       'tb21_no_12_mont_res_but_fav_at_18':tb21_no_12_mont_res_but_fav_at_18}
+    
+    return p_1021_fav,p_1021_unfav,d
+
+
+###===========================
+def return_fav_unfav_pats_tb_1022(X_subset):
+
+    if X_subset is None:
+        fn='../data/tb21_22_2984_pats_22_vars_result_at_end_of_treatment_preproc_data_with_imp.csv.gz'
+        X_subset=pd.read_csv(fn,index_col=0)
+        X_subset=X_subset.rename(columns=lambda x: x.replace('<', 'lower than'))
+        X_subset=X_subset.rename(columns=lambda x: x.replace('>', 'higher than'))
+
+    outcome_tb1022 = pd.read_csv('../data/tb_1022_outcome.csv.gz',index_col=0)
+    outcome_tb1022 = outcome_tb1022.loc[X_subset[X_subset['STUDYID']=='TB-1022']['USUBJID'].unique(),:]
+    outcome_tb1022['RESULT_AT_END_OF_TREATMENT']#.value_counts(dropna=False)
+    oc_1022 = outcome_tb1022[outcome_tb1022['RESULT_AT_END_OF_TREATMENT']=='FAVOURABLE'].replace('UNASSESSABLE',np.nan)
+    
+    oc_1022 = oc_1022.replace('NOT ASSESSABLE',np.nan)
+
+    ds=pd.read_csv('../../C-Path_data/fullExportDb-1025-Member-CSV/ds.csv',low_memory=False)
+    ds=ds.loc[ds['USUBJID'].isin(X_subset['USUBJID'].unique())]
+    
+    de=pd.read_csv('../../C-Path_data/preprocessing/disposition_events.csv',low_memory=True) 
+    de=de.set_index('USUBJID')
+    
+    
+    
+    p_1022_fav=[]
+    out_cols=['RESULT_AT_END_OF_TREATMENT','RESULT_AT_18_MONTHS','RESULT_AT_24_MONTHS','UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS']
+    p_1022_fav.extend(oc_1022.loc[(oc_1022[out_cols]=='FAVOURABLE').all(axis=1),:].index.tolist())
+    
+    
+    out_cols=['RESULT_AT_18_MONTHS','RESULT_AT_24_MONTHS']#,'UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS']
+    
+    p_1022_unfav=[]
+    pats_=oc_1022.loc[(oc_1022['RESULT_AT_END_OF_TREATMENT']=='FAVOURABLE')&\
+          (oc_1022[out_cols]=='UNFAVOURABLE').any(axis=1)&\
+          #(d['UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS']!='FAVOURABLE')&\
+          #(~d['UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS'].isna())\
+          (oc_1022['UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS'].isin(['RELAPSE','FAILURE']))\
+    
+            ,:].index.tolist()
+    
+    p_1022_unfav.extend(pats_)
+    
+    
+    
+    pat_not_incl=oc_1022.loc[~oc_1022.index.isin(p_1022_fav+p_1022_unfav)].index.tolist()
+    
+    ## RELAPSE
+    pats_with_relapse = ds.loc[ds['USUBJID'].isin(pat_not_incl)&\
+                               ds['DSTERM'].str.contains('RELAPSE'),:].dropna(how='all',axis=1)
+    
+    
+    pats_with_relapse_with_fav_at_24_month = oc_1022.loc[oc_1022.index.isin(pats_with_relapse['USUBJID'].tolist())&\
+                                                        (oc_1022['UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS']=='RELAPSE'),:].index.tolist()
+    
+    relapse_miss_at_18_and_24 = ds.loc[ds['USUBJID'].isin(pat_not_incl)&\
+                                       ds['DSTERM'].str.contains('BASED ON CLINICAL AND RADIOLOGIC'),'USUBJID'].tolist()
+    
+    p_1022_unfav.extend(pats_with_relapse_with_fav_at_24_month)
+    p_1022_unfav.extend(relapse_miss_at_18_and_24)
+    
+    
+    
+    
+    ## DiED
+    pats_died = ds.loc[ds['USUBJID'].isin(pat_not_incl)&\
+                ds['DSTERM'].str.contains('DEATH|DIED|DECEASED|DCD'),:].dropna(how='all',axis=1)
+    
+    pats_died_due_to_adverse_event = pats_died.loc[pats_died['DSDECOD'].str.contains('ADVERSE'),['USUBJID','DSSTDY']]
+    pats_died_due_to_adverse_event.loc[pats_died_due_to_adverse_event['DSSTDY'].isna(),'DSSTDY']=int(365*16/12)
+    pats_died_due_to_other_cause = pats_died.loc[pats_died['DSDECOD'].str.contains('OTHER'),['USUBJID','DSSTDY']]
+    
+    #pats_died_due_to_adverse_event = pats_died_due_to_adverse_event['USUBJID'].tolist()
+    #pats_died_due_to_other_cause = pats_died_due_to_other_cause['USUBJID'].tolist()
+    
+    
+    ## REPROCESSING
+    reprocessing = ds.loc[ds['USUBJID'].isin(pat_not_incl)&\
+                          ds['DSTERM'].str.contains('REPROCESSING'),['USUBJID','DSSTDY']]
+    
+    
+    ## LOST TO FOLLOW-UP
+    str_ = 'CONSENTEMENT RETIRE|LOST|ADVERSE EVENT|CONSENT WITHDRAWN|TRAVEL|WRONGLY EXCLUDED|OTHER'
+    pats_lost_to_follow_up = ds.loc[ds['USUBJID'].isin(pat_not_incl)&\
+                                    ds['DSTERM'].str.contains(str_),:].dropna(how='all',axis=1)#['USUBJID'].unique().tolist()
+    
+    
+    ## UNKOWN OUTCOME AT 24 MONTHS (SOME OF THEM HAVE UNFAVOURABLE, BUT THE EXACT CATEGORY IS MISSING)
+    ## THEY ARE ALL FAVOURABLE AT EOT AND MONTH 18
+    unk_outcome_at_24 = ds.loc[ds['USUBJID'].isin(pat_not_incl)&\
+                                       ds['DSTERM'].str.contains('COMPLETED'),:].dropna(how='all',axis=1) #'USUBJID'].tolist()
+    
+    ## RESISTANCE
+    pats_with_res = ds.loc[ds['USUBJID'].isin(pat_not_incl)&\
+                               ds['DSTERM'].str.contains('MGIT|MDR'),:].dropna(how='all',axis=1)#'USUBJID'].tolist()
+    
+    
+    ## CREATE DICT CONTAINING ALL PATIENTS WHO WERE NOT INCLUDED IN ANALYSIS + REASON WHY
+    d={'pats_died_due_to_adverse_event':pats_died_due_to_adverse_event,
+       'pats_died_due_to_other_cause':pats_died_due_to_other_cause,
+       'pats_lost_to_follow_up':pats_lost_to_follow_up,
+       'pats_died_due_to_adverse_event':pats_died_due_to_adverse_event,
+      'unk_outcome_at_24':unk_outcome_at_24,
+       'pats_with_res':pats_with_res
+      }
+    
+    del de, ds
+
+    return p_1022_fav,p_1022_unfav, d
+
+
+
+###====================
+def extract_21_22_relapse_pats(include_rifaquin=False,
+                              extended_pats=False):
 
     print('Extracting relapse information...')
     
@@ -1483,55 +1913,85 @@ def extract_21_22_relapse_pats():
     X_subset=X_subset.rename(columns=lambda x: x.replace('>', 'higher than'))
     
     
-    #### ================================ FAVOURABLE PATIENTS ========== ############
-    
-    ### COLLECT PATIENTS, WHO ONLY HAVE FAVOURABLE OUTCOMES AT END OF TREATMENT & AT ALL FOLLOW-UP TIMEPOINTS 
-    #. ==>TB-1021: 12 & 18 MONTHS, TB-1022: 18 & 24 MONTHS
 
-   
+
+    outcome_df=pd.read_csv('../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
+    outcome_df=outcome_df.set_index('USUBJID',drop=True)
+    outcome_df=outcome_df.rename(columns={'UNFAVOURABLE_OUTCOME_CATEGORY_AT_18_MONTHS':'UNFAVOUR_CAT_AT_18_MONTHS'})
     
     df_=outcome_df.reset_index()#
     df_['STUDYID']=df_['USUBJID'].str.split('/',expand=True)[0].values
     df_=df_.set_index('USUBJID')
     df_=df_.loc[X_subset['USUBJID'].unique()]
+
+
+
+
+    if extended_pats==False:
+
+        #### ================================ FAVOURABLE PATIENTS ========== ############
     
-    pats_with_fav=[]
-    for study,d in df_[df_['STUDYID'].isin(['TB-1022','TB-1021'])].groupby('STUDYID'):
-        if study=='TB-1021':
-            out_cols=['RESULT_AT_END_OF_TREATMENT','RESULT_AT_12_MONTHS','RESULT_AT_18_MONTHS']#,'RESULT_AT_24_MONTHS']
-            pats_with_fav.extend(d.loc[(d[out_cols]=='FAVOURABLE').all(axis=1),:].index.tolist())
+        ### COLLECT PATIENTS, WHO ONLY HAVE FAVOURABLE OUTCOMES AT END OF TREATMENT & AT ALL FOLLOW-UP TIMEPOINTS 
+        #. ==>TB-1021: 12 & 18 MONTHS, TB-1022: 18 & 24 MONTHS
+
+        pats_with_fav=[]
+        
+        for study,d in df_[df_['STUDYID'].isin(['TB-1022','TB-1021'])].groupby('STUDYID'):
+            if study=='TB-1021':
+                out_cols=['RESULT_AT_END_OF_TREATMENT','RESULT_AT_12_MONTHS','RESULT_AT_18_MONTHS']#,'RESULT_AT_24_MONTHS']
+                pats_with_fav.extend(d.loc[(d[out_cols]=='FAVOURABLE').all(axis=1),:].index.tolist())
+                
+            if study=='TB-1022':
+                out_cols=['RESULT_AT_END_OF_TREATMENT','RESULT_AT_18_MONTHS','RESULT_AT_24_MONTHS','UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS']
+                pats_with_fav.extend(d.loc[(d[out_cols]=='FAVOURABLE').all(axis=1),:].index.tolist())
+
             
-        if study=='TB-1022':
-            out_cols=['RESULT_AT_END_OF_TREATMENT','RESULT_AT_18_MONTHS','RESULT_AT_24_MONTHS','UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS']
-            pats_with_fav.extend(d.loc[(d[out_cols]=='FAVOURABLE').all(axis=1),:].index.tolist())
+        #### ================================ UNFAVOURABLE PATIENTS ========== ############
+        
+        ### COLLECT PATIENTS, WHO HAVE FAVOURABLE OUTCOME AT END OF TREATMENT, BUT HAVE AT LEAST ONE UNFAVOURABLE OUTCOME AT ANY OF THE FOLLOW-UP TIMEPOINTS 
+        #. ==>TB-1021: 12 & 18 MONTHS, TB-1022: 18 & 24 MONTHS
+        
+        pats_with_unfav=[]
     
-    len(pats_with_fav)
-    
-    
-    #### ================================ UNFAVOURABLE PATIENTS ========== ############
-    
-    ### COLLECT PATIENTS, WHO HAVE FAVOURABLE OUTCOME AT END OF TREATMENT, BUT HAVE AT LEAST ONE UNFAVOURABLE OUTCOME AT ANY OF THE FOLLOW-UP TIMEPOINTS 
-    #. ==>TB-1021: 12 & 18 MONTHS, TB-1022: 18 & 24 MONTHS
-    
-    pats_with_unfav=[]
-    
-    for study,d in df_[df_['STUDYID'].isin(['TB-1022','TB-1021'])].groupby('STUDYID'):
-        if study=='TB-1021':
-            out_cols=['RESULT_AT_12_MONTHS','RESULT_AT_18_MONTHS']#,'RESULT_AT_24_MONTHS']
-    
-            pats_=d.loc[(d['RESULT_AT_END_OF_TREATMENT']=='FAVOURABLE')&(d[out_cols]=='UNFAVOURABLE').any(axis=1),:].index.tolist()
-            pats_with_unfav.extend(pats_)
-            
-        if study=='TB-1022':
-            out_cols=['RESULT_AT_18_MONTHS','RESULT_AT_24_MONTHS']#,'UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS']
-            
-            pats_=d.loc[(d['RESULT_AT_END_OF_TREATMENT']=='FAVOURABLE')&\
-                  (d[out_cols]=='UNFAVOURABLE').any(axis=1)&\
-                  (d['UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS']!='FAVOURABLE')&\
-                  (~d['UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS'].isna())\
-                    ,:].index.tolist()
-            
-            pats_with_unfav.extend(pats_)
+        for study,d in df_[df_['STUDYID'].isin(['TB-1022','TB-1021'])].groupby('STUDYID'):
+            if study=='TB-1021':
+                out_cols=['RESULT_AT_12_MONTHS','RESULT_AT_18_MONTHS']#,'RESULT_AT_24_MONTHS']
+        
+                pats_=d.loc[(d['RESULT_AT_END_OF_TREATMENT']=='FAVOURABLE')&(d[out_cols]=='UNFAVOURABLE').any(axis=1),:].index.tolist()
+                pats_with_unfav.extend(pats_)
+                
+            if study=='TB-1022':
+                out_cols=['RESULT_AT_18_MONTHS','RESULT_AT_24_MONTHS']#,'UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS']
+                
+                pats_=d.loc[(d['RESULT_AT_END_OF_TREATMENT']=='FAVOURABLE')&\
+                      (d[out_cols]=='UNFAVOURABLE').any(axis=1)&\
+                      (d['UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS']!='FAVOURABLE')&\
+                      (~d['UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS'].isna())\
+                        ,:].index.tolist()
+                
+                pats_with_unfav.extend(pats_)
+                
+           
+    ## EXTENDED PATS: 
+    ###. TB-1021:
+    ##.  - INCLUDE TB-1021 PATIENTS WHO HAVE MISSING LABEL AT MONTH 12 BUT ARE FAVOURABLE AT MONTH 18 (NO RETREATMENT)
+    ##.  - WHERE LIQUID MEDIUM IS MISING AT MONTH 18, USE THE LABEL DERIVED ON SOLID MEDIUM
+    ###  TB-1022:
+    ##.  - INCLUDE PATIENTS WHO HAVE FAVOURABLE AT MONTH 24 ERRONEOUSLY, BECUASE IN THE DS DATAFRAME, THEY HAVE RELAPSE
+    ##.  - EXTRACT PATIENTS WHO HAVE FAVOURABLE EOT OUTCOME, BUT WERE EXCLUDED DUE TO MISSING LABELS DURING FOLLOW-UP
+    #.    (I.E. DEATH (DUE TO ADVERSE EVENTS OR OTHER CAUSE), LOST TO FOLLOW-UP, REPROCESSING, REINFECTION, RESISTANCE, UNK. OUTCOME AT MONTH 24 
+
+    if extended_pats==True:
+        #pats_with_fav=[]
+        p_1021_fav,p_1021_unfav,_ = return_fav_unfav_pats_tb_1021(X_subset)
+        p_1022_fav,p_1022_unfav,_ = return_fav_unfav_pats_tb_1022(X_subset)
+
+        pats_with_unfav = p_1021_unfav + p_1022_unfav
+        pats_with_fav = p_1021_fav + p_1022_fav
+             
+    #print('pats_with_fav',len(pats_with_fav))
+    #print('pats_with_unfav',len(pats_with_unfav))
+    #print(len(pats_with_unfav) + len(pats_with_fav))
     
     
     ## USING THE RAW DISPOSITION EVENTS DATAFRAME (ds) &  PREPROCESSED de DATAFRAME (day of disposition events extracted/patient),
@@ -1724,6 +2184,11 @@ def extract_21_22_relapse_pats():
 
     pats_relapse_df['DAYS_BETWEEEN_THERAPY_END_AND_RELAPSE']=(pats_relapse_df['RELAPSE_DAY'] - pats_relapse_df['last_therapy_day']).values
 
+    if include_rifaquin==True:
+        ## ADD RIFAQUIN RELAPSE PATIENTS
+        rif_rel = extract_rifaquin_relapse()
+        pats_relapse_df = pd.concat([pats_relapse_df,rif_rel[pats_relapse_df.columns]],axis=0)
+
     return pats_relapse_df#,relapse_during_obs_period,relapse_after_obs_period,pats_with_sparse_relapse_data,max_days
 
 def extract_last_init_therapy_day_from_drug_regimen(pat_ids):
@@ -1829,7 +2294,7 @@ def subset_pats_with_therapy_in_period(period_num,period_end_days,last_init_ther
     #. => IF PERIOD IS 4 MONTHS OR LESS, KEEP ALL PATIENTS
     #. => IF PERIOD IS OVER 4 MONTHS KEEP ONLY PATIENTS IN ARMS WITH 6 MONTHS OF TB DRUG APPLICATION    
 
-    month_4_arms=['Gatifloxacin','2MHRZ/2MHR', '2EMRZ/2MR']
+    month_4_arms=['Gatifloxacin','2MHRZ/2MHR', '2EMRZ/2MR','2EMRZ/2MP','2EMRZ/4MP']
     month_6_arms=['Control','2EHRZ/4HR']
 
     if outcome_label=='RESULT_AT_END_OF_TREATMENT':
@@ -2048,19 +2513,24 @@ def load_and_modify_preprocessed_data(data_param_key):
 
     X=X.drop(columns=['mb_ZN-smear_STD_RESULT'])
 
-    
-    X['vs_BMI_STD_NUM_RESULT'] = (X['vs_Weight_STD_NUM_RESULT']/(X['vs_Height_STD_NUM_RESULT']/100)**2).values
+    if 'vs_Weight_STD_NUM_RESULT' in X.columns and  'vs_Height_STD_NUM_RESULT' in X.columns:
+        X['vs_BMI_STD_NUM_RESULT'] = (X['vs_Weight_STD_NUM_RESULT']/(X['vs_Height_STD_NUM_RESULT']/100)**2).values
+        
     X['ARM']=X['ARM'].replace({'Gati-arm regimen (4 month regimen)':'Gatifloxacin',
-                             'Control-arm regimen (6 month regimen)':'Control'},regex=False)
+                             'Control-arm regimen (6 month regimen)':'Control',
+                              'Control Regimen : 2 months of daily ethambutol, isoniazid, rifampicin, and pyrazinamide followed by 4 months of daily isoniazid and rifampicin.':'2EHRZ/4HR',
+                            'Study Regimen 2: 2 months of daily ethambutol, moxifloxacin, rifampicin, and pyrazinamide followed by 4 months of once weekly moxifloxacin and rifapentine.':'2EMRZ/4MP',
+                             'Study Regimen 1: 2 months of daily ethambutol, moxifloxacin, rifampicin, and pyrazinamide followed by 2 months of twice weekly moxifloxacin and rifapentine.':'2EMRZ/2MP'},regex=False)
 
     ## One-hot encode 'ARM'
-    if 'with_arm' in data_param_key:
+    if 'with_arm' in data_param_key:# and period_end_day!='baseline':
         X = pd.concat([X,pd.get_dummies(X['ARM'],dtype=int,prefix='ARM')],axis=1)
 
 
     ## Replace extreme Hyperkalemia values with mean (probably false measurements)
-    mean_K=X.loc[X['lb_Blood Potassium_STD_NUM_RESULT']<=12,'lb_Blood Potassium_STD_NUM_RESULT'].mean()
-    X.loc[X['lb_Blood Potassium_STD_NUM_RESULT']>12,'lb_Blood Potassium_STD_NUM_RESULT']=mean_K
+    if 'lb_Blood Potassium_STD_NUM_RESULT' in X.columns:
+        mean_K=X.loc[X['lb_Blood Potassium_STD_NUM_RESULT']<=12,'lb_Blood Potassium_STD_NUM_RESULT'].mean()
+        X.loc[X['lb_Blood Potassium_STD_NUM_RESULT']>12,'lb_Blood Potassium_STD_NUM_RESULT']=mean_K
 
     ## Replace absolute cumulative doses with weight-normalised cumulative doses
     if 'weight_norm' in data_param_key:
@@ -2083,6 +2553,7 @@ def load_and_modify_preprocessed_data(data_param_key):
         X = replace_cumul_day_of_appl_with_adherence(X)
     
 
+    
     ## SPLIT THE CUMULATIVE DOSES OF THE PATIENTS BETWEEN THE ARMS ==> CONTROLLING FOR THE DIFFERENT NUMBER OF SCHEDULED DOSES BETWEEN ARMS
     if 'dr_reg_per_arm' in data_param_key:
         
@@ -2104,6 +2575,11 @@ def load_and_modify_preprocessed_data(data_param_key):
         cols_to_drop = dr_cumul_colnames + regs_with_no_appl
         
         X=X_.drop(columns=cols_to_drop)
+
+    ## If no_rifaquin, drop rifaquin patients, to use them later as validation set
+    if 'no_rifaquin' in data_param_key:
+        X=X.loc[~X['STUDYID'].str.contains('TB-1020'),:].copy()
+
 
     ## SPLIT THE CUMULATIVE DOSES OF THE PATIENTS BETWEEN THE ARMS ==> CONTROLLING FOR THE DIFFERENT NUMBER OF SCHEDULED DOSES BETWEEN ARMS
     if 'basic_vars' in data_param_key:
@@ -2147,6 +2623,7 @@ def load_and_modify_preprocessed_data(data_param_key):
         vars_to_keep = necerssary_vars + basic_vars
         
         X = X[vars_to_keep].copy()
+        
 
     return X,race_colnames
 
@@ -2242,7 +2719,14 @@ def return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
         
     if parameters_for_analysis[data_param_key]['result_cat']=='RELAPSE':
         #outcome_label='RELAPSE'
-        pats_with_relapse_df=extract_21_22_relapse_pats()
+        
+        include_rifaquin = parameters_for_analysis[data_param_key].get('include_rifaquin',False)
+        extended_pats = True if 'ext_pats' in data_param_key else False
+
+        print('include_rifaquin',include_rifaquin,'extended_pats',extended_pats)
+            
+        pats_with_relapse_df=extract_21_22_relapse_pats(include_rifaquin=include_rifaquin,
+                                                       extended_pats=extended_pats)
 
         pats_with_relapse_df = pats_with_relapse_df.loc[list(set(X['USUBJID'].unique())&set(pats_with_relapse_df.index))]
 

@@ -177,6 +177,7 @@ therapy_day_thr=80
 period_end_days=['baseline',31,62,93,125,160,'all']
 
 ## Define training parameters
+## Define training parameters
 train_params={'num_cv_repeats':25,
                 'k_folds':5,             
               'weight_by_label_freq':True,
@@ -184,7 +185,12 @@ train_params={'num_cv_repeats':25,
                                      ## only considered if weight_by_label_freq=False !
               'random_state':42,
               'test_size_ratio':0.2,
+              'early_stopping': True,
+                'patience': 10,
+                'min_delta': 0.0,
+                'val_fraction': 0.2,
               'label2id':label2id}
+
 
 
 ## Load dataframe containing the last day of drug regimen for each patient
@@ -239,8 +245,10 @@ param_search_dict={'RandomForest':{'n_estimators':[300,500,700],
                                      },
 
                     'LogisticHazard': {
-                        'num_durations': [3,6,12],
-                        'hidden_nodes': [[64, 32], [128, 64]],
+                        'epochs':[300],
+                        'batch_size':[64,128],
+                        'num_durations': [6],
+                        'hidden_nodes': [[64, 32,], [128, 64]],
                         'dropout': [0.0, 0.1, 0.3],
                         'lr': [1e-3, 5e-4],
                         'batch_norm': [True]

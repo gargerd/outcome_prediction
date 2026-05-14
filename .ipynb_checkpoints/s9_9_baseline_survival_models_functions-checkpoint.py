@@ -1308,6 +1308,10 @@ def fit_pycox_model(model_name,
     # ----------------------------
     # fit
     # ----------------------------
+    n_fit = len(X_fit)
+    if batch_size > 1 and n_fit % batch_size == 1:
+        batch_size = batch_size - 1
+        
     log = model.fit(
         X_fit,
         y_fit,
@@ -1774,6 +1778,25 @@ def extract_best_model_params(param_search_results,metric_func,num_of_top_models
             return True
         except ValueError:
             return False
+
+
+    import ast
+
+    def is_list_string(s):
+        try:
+            parsed = ast.literal_eval(s)
+            return isinstance(parsed, list)
+        except (ValueError, SyntaxError):
+            return False
+    
+    def string_to_list(s):
+        if is_list_string(s):
+            return ast.literal_eval(s)
+        else:
+            raise ValueError("Input is not a valid list string")
+    
+    
+
     
     
     ## Init dictionary to hold the best results for each CV-repetition
@@ -1849,6 +1872,10 @@ def extract_best_model_params(param_search_results,metric_func,num_of_top_models
                     if is_float(best_model_params[param_name])==True and float(best_model_params[param_name])<=1:
                         best_model_params[param_name]=float(best_model_params[param_name])
 
+                    if is_list_string(best_model_params[param_name])==True:
+                        best_model_params[param_name]=string_to_list(best_model_params[param_name])
+                            
+
                 best_cv_rep_results[cv_rep_num][n]=best_model_params
         
         return best_cv_rep_results
@@ -1912,6 +1939,67 @@ def calc_roc_auc_score_of_model(model_name,
 '''
 ##=========================================
 ## RUN CV OF GIVEN MODEL & TRAIN FINAL MODEL AFTERWARDS
+'''
+##=========================================
+## RUN CV OF GIVEN MODEL & TRAIN FINAL MODEL AFTERWARDS
+def calc_roc_auc_score_of_model(model_name,
+                                X_train,
+                                y_train_data,
+                                k_folds,
+                                random_state,
+                                outcome_label,
+                                model_params,
+                                weight_by_label_freq,
+                                train_params,
+                                calibrate_model):
+        
+    ### RUN CV & TRAIN MODEL AFTERWARDS
+    if model_name in ['XGBoost','GradientBoost']:
+        
+        ## CALCULATE CV-SCORES
+        cv_roc_auc_scores=run_cv(X_train,y_train_data,k_folds,
+                                 model_name,weight_by_label_freq,
+                                 random_state,outcome_label,
+                                 model_params,
+                                 train_params,
+                                 calibrate_model)
+        
+        ## INITIALIZE MODEL & TRAIN 
+        model,label_weights,label_weights_dict=init_model(model_name,X_train,y_train_data,
+                                                          k_folds,random_state,outcome_label,
+                                                          model_params,
+                                                          weight_by_label_freq,
+                                                          train_params) 
+        
+        #X_train,_ = scale_by_training_data(X_train, X_train)
+        model.fit(X_train, y_train_data,sample_weight=label_weights)
+        
+    else:
+        
+        ## CALCULATE CV-SCORES
+        cv_roc_auc_scores=run_cv(X_train,y_train_data,k_folds,
+                                 model_name,weight_by_label_freq,
+                                 random_state,outcome_label,
+                                 model_params,
+                                 train_params,
+                                 calibrate_model)
+        
+        ## INITIALIZE MODEL & TRAIN 
+        model,label_weights,label_weights_dict=init_model(model_name,X_train,y_train_data,
+                                                          k_folds,random_state,outcome_label,
+                                                          model_params,
+                                                          weight_by_label_freq,
+                                                          train_params) 
+
+        #X_train,_ = scale_by_training_data(X_train, X_train)
+        model.fit(X_train, y_train_data)
+        
+    return model,cv_roc_auc_scores,label_weights_dict
+
+'''
+
+##=========================================
+## RUN CV OF GIVEN MODEL & TRAIN FINAL MODEL AFTERWARDS
 def calc_c_index_score_of_model(model_name,
                                 X_train,
                                 y_train_data,
@@ -1924,18 +2012,38 @@ def calc_c_index_score_of_model(model_name,
                                 #calibrate_model
                                ):
     from sksurv.util import Surv
+
+    
+    is_xgb = 'XGBoost' in model_name
+    is_pycox = model_name in ['LogisticHazard', 'DeepHit', 'DeepHitSingle']
+
+
+    ## CALCULATE C-INDEX -SCORES 
+    cv_c_index_scores = run_cv_survival(X = X_train,
+                                        y_df=y_train_data,          # dataframe with RELAPSE and RELAPSE_DAY columns
+                                        k_folds=k_folds,
+                                        model_name=model_name,
+                                        random_state=random_state,
+                                        model_params=model_params,
+                                        train_params=train_params)
         
     ### RUN CV & TRAIN MODEL AFTERWARDS
-    if model_name in ['XGBoost','GradientBoost']:
-        
-        ## CALCULATE C-INDEX -SCORES 
-        cv_c_index_scores = run_cv_survival(X = X_train,
-                                            y_df=y_train_data,          # dataframe with RELAPSE and RELAPSE_DAY columns
-                                            k_folds=k_folds,
-                                            model_name=model_name,
-                                            random_state=random_state,
-                                            model_params=model_params,
-                                            train_params=train_params)
+
+    if is_pycox:
+        durations_train = y_train_data['RELAPSE_DAY'].astype(float).values
+        events_train = y_train_data['RELAPSE'].astype(int).values
+
+        model = fit_pycox_model(
+            model_name=model_name,
+            model_params=model_params,
+            random_state=random_state,
+            X_train=X_train.values if hasattr(X_train, "values") else X_train,
+            durations_train=durations_train,
+            events_train=events_train,
+            train_params=train_params
+        )
+         
+    elif is_xgb:
         
 
         # XGBoost format: censored = negative time, event = positive time
@@ -1948,15 +2056,6 @@ def calc_c_index_score_of_model(model_name,
         model.fit(X_train,y_xgb, verbose=False)
 
     else:
-                
-        ## CALCULATE C-INDEX -SCORES
-        cv_c_index_scores = run_cv_survival(X = X_train,
-                                            y_df=y_train_data,          # dataframe with RELAPSE and RELAPSE_DAY columns
-                                            k_folds=k_folds,
-                                            model_name=model_name,
-                                            random_state=random_state,
-                                            model_params=model_params,
-                                            train_params=train_params)
 
         ## INITIALIZE MODEL & TRAIN 
         model = init_survival_model(model_name, model_params, random_state)

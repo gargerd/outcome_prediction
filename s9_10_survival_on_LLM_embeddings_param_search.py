@@ -35,6 +35,7 @@ parser.add_argument("--overwrite_existing_params", help="If set to True, overwri
 parser.add_argument("--cpu_cores", help="List of integers, setting which CPU cores to be used. i.e. for the first 4 CPU cores: 0-3")
 parser.add_argument("--pool_method",help="Pooling methods: ['mean_pooling','attention_pooling']")
 parser.add_argument("--ther_arm_duration", help="One of the ther_arm_durationsa: ['4-month','6-month']")
+parser.add_argument("--time_origin", help="Time origin, start or end of therapy: ['SOT','EOT']")
 
 
 
@@ -46,6 +47,7 @@ period_end_day_=[args.period_end_day if args.period_end_day in ['baseline','all'
 overwrite_existing_params=args.overwrite_existing_params
 pool_methods_=[args.pool_method]
 ther_arm_durations_ = [args.ther_arm_duration]
+time_origin_ = [args.time_origin]
 #print(overwrite_existing_params)
 
 
@@ -71,6 +73,12 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'survival':True,
                             'result_cat':'RELAPSE'},
+
+                        'tb20_21_22_2908_pats_7_vars_relapse':{
+                            'result_cat':'RELAPSE',
+                            'fn':'tb20_21_22_2908_pats_7_vars_relapse',
+                             'survival':True,
+                           'include_rifaquin':True},
 
                          
                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_dr_reg_per_arm':{
@@ -312,8 +320,9 @@ llm_model_names=['BioMistral/BioMistral-7B',"epfl-llm/meditron-70b","epfl-llm/me
                 'text-embedding-3-small']
 
 fine_tuned_tags=['base','fine_tuned']
-model_names=['XGBoost','CoxnetSurvival'][:]
+model_names=['XGBoost','CoxnetSurvival','LogisticHazard'][:]
 ther_arm_durations=['4-month','6-month']
+time_origins=['SOT','EOT']
 
 #model_names=['LogisticRegression','XGBoost'][:]
 training_data_types=['full','pca']
@@ -331,13 +340,16 @@ period_end_days=['baseline',31,62,93,125,160,'all']
 
 ## Define training parameters
 train_params={'num_cv_repeats':25,
-              'k_folds':5,              
+                'k_folds':5,             
               'weight_by_label_freq':True,
+               'label_weights':[1,1],## [index_0: weight for label 0 (negative),index_1: weight for label 1 (positive)], only
+                                     ## only considered if weight_by_label_freq=False !
               'random_state':42,
               'test_size_ratio':0.2,
-              'pca_comp':512,
-              'label_weights':[1,1], ## [index_0: weight for label 0 (negative),index_1: weight for label 1 (positive)], only
-                                     ## only considered if weight_by_label_freq=False !
+              'early_stopping': True,
+                'patience': 10,
+                'min_delta': 0.0,
+                'val_fraction': 0.2,
               'label2id':label2id}
 
 
@@ -438,13 +450,31 @@ param_search_dict={'RandomForest':{'n_estimators':[300,500,700],
                                       #'alphas':    [np.logspace(-3, 0, 20)],  # single path, 20 points                                  
                                      },
 
-                   
+                    'LogisticHazard': {
+                        'epochs':[300],
+                        'batch_size':[64,128],
+                        'num_durations': [6],
+                        'hidden_nodes': [[128,64], [256,64]],
+                        'dropout': [0.0, 0.1, 0.3],
+                        'lr': [1e-3, 5e-4],
+                        'batch_norm': [True]
+                    },
+                    'DeepHitSingle': {
+                        'num_durations': [10, 20, 40],
+                        'hidden_nodes': [[64, 32], [128, 64]],
+                        'dropout': [0.0, 0.1, 0.3],
+                        'lr': [1e-3, 5e-4],
+                        'batch_norm': [True],
+                        'alpha': [0.2, 0.5],
+                        'sigma': [0.1, 0.2]
+                    },
+
                    
                   'SVC':{'C':[1e-3,1e-2,1e-1,1e0,1e1,1e2],
                         'kernel':['rbf','poly']},
                    
                   'KNN':{'n_neighbors':[2,5,10,25,50,100]},
-                  }   
+                  }       
 
 
 
@@ -517,160 +547,161 @@ for data_param_key in dataset_name_:
                             X=pd.read_csv(fn,index_col=0,low_memory=False)
     
                   
-                            
-                            ## Return dataframe with the outcome label
-                            pat_ids,y,target_df,outcome_label = return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
-                                                                                          outcome_df,outcome_label,model_names)
-    
-                                                     
-                            
-                            ## Drop patients who have their last therapy day before therapy_day_thr ==> these patient probably dropped out
-                            #last_day_per_pat_df=X.sort_values(by=['DAY']).groupby('USUBJID').apply(lambda x: x.loc[x.index[-1],:])
-                            #pat_ids=last_day_per_pat_df[last_day_per_pat_df['DAY']>therapy_day_thr]['USUBJID'].tolist()
-    
-                            ## Subset initial therapy last day dataframe to all patient considered in analysis
-                            #init_ther_df=last_initial_therapy_day_df.loc[pat_ids,:]
-                            last_init_ther_days = extract_last_init_therapy_day_from_drug_regimen(pat_ids)
-    
-                            ## SUBSET TO PATIENTS WHO WERE TAKING DRUGS DURING THE PERIOD
-                            #pat_ids_ = subset_pats_with_therapy_in_period(period_num,period_end_days,data_param_key,last_init_ther_days)
-                            #pat_ids_= final_pat_ids_for_analysis[period_end_day]['X_train_ids'] + final_pat_ids_for_analysis[period_end_day]['X_test_ids']
-                            
-                            #df=df.loc[list(set(df.index) & set(pat_ids_)),:]
-                            #df=df.loc[(pat_ids_),:]
-            
-            
-                            ## Standardise data + calculate PCA 
-                            #scaled_data,df_pca=return_std_data_and_pca(df,train_params['pca_comp'])
-                            #df_pca=(scaled_data.loc[:,sign_diff_cols['Column'][:20]])
-                            df_pca = return_pca(df,train_params['pca_comp'])
-                            X_dict={'full':df,'pca':df_pca}
-            
-            
-                            df_=y.reset_index()#
-                            df_['STUDYID']=df_['USUBJID'].str.split('/',expand=True)[0].values
-                            #print(pd.crosstab(df_.loc[df_['USUBJID'].isin(pat_ids_),'STUDYID'],df_.loc[df_['USUBJID'].isin(pat_ids_),outcome_label]))
-                            
-                            for training_data_type in training_data_types[:1]:
-
-                                ## Define X and y dataframes for training
-                                X=X_dict[training_data_type].copy()
-                                #y=y.loc[y.index.get_level_values('USUBJID').isin(pat_ids_)]
-                                #y=y.loc[pat_ids_]
+                            for time_origin in time_origin_:
                                 
-
-                                for ther_arm_dur in ther_arm_durations_:
-
-                                    if '4-month' in ther_arm_dur and period_end_day in [160,'all']:
-                                        print(f'Skipping {ther_arm_dur} - cohort at timepoint {period_end_day}')
-                                        continue
-                                                                                 
-                                   # print(f'+++++++\nRunning training with {training_data_type} model: {X.shape[1]} vars\n+++++++')
-                
-                                    #for model_name in model_names[:]:
-                                    for n, model_name in enumerate(tqdm(model_names_, unit="model")):
-                                        
+                                ## Return dataframe with the outcome label
+                                pat_ids,y,target_df,outcome_label = return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
+                                                                                              outcome_df,outcome_label,model_names,time_origin)
         
+                                                         
+                                
+                                ## Drop patients who have their last therapy day before therapy_day_thr ==> these patient probably dropped out
+                                #last_day_per_pat_df=X.sort_values(by=['DAY']).groupby('USUBJID').apply(lambda x: x.loc[x.index[-1],:])
+                                #pat_ids=last_day_per_pat_df[last_day_per_pat_df['DAY']>therapy_day_thr]['USUBJID'].tolist()
         
-                                        #fn=f'../data/{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_vars_param_search_results.pickle'
-                                        fn=os.path.join(survival_anal_dir_,
-                                                        f"{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_{ther_arm_dur}_vars_param_search_results.pickle")
-                                                        
-                                        if os.path.exists(fn):
-                                            print('Parameters search results exist! load')
-                                            with open(fn, 'rb') as handle:
-                                                training_results = pickle.load(handle)
-                                        
-                                        if not os.path.exists(fn):    
-                                            training_results={}
-                                            training_results['train_params']=train_params
-                                            training_results['param_search_results']={}
+                                ## Subset initial therapy last day dataframe to all patient considered in analysis
+                                #init_ther_df=last_initial_therapy_day_df.loc[pat_ids,:]
+                                last_init_ther_days = extract_last_init_therapy_day_from_drug_regimen(pat_ids)
+        
+                                ## SUBSET TO PATIENTS WHO WERE TAKING DRUGS DURING THE PERIOD
+                                #pat_ids_ = subset_pats_with_therapy_in_period(period_num,period_end_days,data_param_key,last_init_ther_days)
+                                #pat_ids_= final_pat_ids_for_analysis[period_end_day]['X_train_ids'] + final_pat_ids_for_analysis[period_end_day]['X_test_ids']
+                                
+                                #df=df.loc[list(set(df.index) & set(pat_ids_)),:]
+                                #df=df.loc[(pat_ids_),:]
                 
                 
-                                        for cv_repeat_num in range(train_params['num_cv_repeats']):
-        
-                                            if overwrite_existing_params!='True':
-                                                
-                                                ## Check if parameter search was already performed for given CV-split If yes, skip to next one!
-                                                if f'cv_rep_{cv_repeat_num}' in training_results['param_search_results'].keys():
-                                                    print(f'Params for CV-split {cv_repeat_num+1} exist! Skipping to next CV-split\n')
-                                                    continue
-                                                    
-                                            
-                                            rand_state=train_params['random_state'] + cv_repeat_num
-                                            '''
-                                            ## STRATIFY ON OUTCOME LABEL & STUDYID 
-                                            ##. ==> WITHIN STUDY ROC-AUC CLAUCLATION IS POSSIBLE, AS THERE ALWAYS WILL BE AT LEAST ONE UNFAVOUR. LABEL FROM BOTH STUDIES IN THE TEST SET
-                                            y_for_strat=y[outcome_label].astype(str) + "_" + y.index.get_level_values('STUDYID')#.astype(str)
-                                            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=train_params['test_size_ratio'], 
-                                                                                                stratify=y_for_strat,random_state=rand_state)
-        
-                                            '''
-                                            #X_train_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num]['X_train_ids']
-                                            #X_test_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num]['X_test_ids']
-                                            X_train_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num][ther_arm_dur]['X_train_ids']
-                                            X_test_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num][ther_arm_dur]['X_test_ids']
-                                            
-                                            X_train=X.loc[list(set(X.index)&set(X_train_ids)),:]
-                                            X_test=X.loc[list(set(X.index)&set(X_test_ids)),:]
-        
-                                            y_train=y.loc[list(set(X.index)&set(X_train_ids)),:]
-                                            y_test=y.loc[list(set(X.index)&set(X_test_ids)),:]
-        
-        
-                                            #if model_name=='LogisticRegression':
-                                            X_train, X_test = scale_by_training_data(X_train, X_test)
+                                ## Standardise data + calculate PCA 
+                                #scaled_data,df_pca=return_std_data_and_pca(df,train_params['pca_comp'])
+                                #df_pca=(scaled_data.loc[:,sign_diff_cols['Column'][:20]])
+                                #df_pca = return_pca(df,train_params['pca_comp'])
+                                X_dict={'full':df}#'pca':df_pca}
                 
-                                            #print(f"Num of CV-repeat:{cv_repeat_num+1} - Model:{model_name} - Data inclusion type:{data_inclusion_type} - Period:{period_end_day} ")
-                                            print(f'\n+++++++ Num of CV-repeat:{cv_repeat_num+1} - {data_param_key} data / {llm_model_name_with_tag} /{period_end_day} /{data_inclusion_type} /autoenc {autoencoder_merged} / {pool_method} / {ther_arm_dur} cohort - {model_name}')
-                                            training_results['param_search_results'][f'cv_rep_{cv_repeat_num}']={}
-                                            
-                                            calibrate_model=False
-                                            
-                                            train_param_comb=f'{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_{ther_arm_dur}'
-
-                                            '''
-                                            param_search_results = run_parameter_search(model_name,
-                                                                                X_train,
-                                                                                y_train,
-                                                                                train_params['k_folds'],
-                                                                                train_params['random_state'],
-                                                                                outcome_label,
-                                                                                param_search_dict,
-                                                                                train_params['weight_by_label_freq'],
-                                                                                train_params,
-                                                                                dense_network_params,
-                                                                                train_param_comb,
-                                                                                calibrate_model)
-                                            '''                                                                                
-
-                                            param_search_results =run_parameter_search(model_name=model_name,
-                                                                     X_train=X_train,
-                                                                     y_train_data=y_train,
-                                                                     k_folds=train_params['k_folds'],
-                                                                     random_state=train_params['random_state'],
-                                                                     outcome_label=outcome_label,
-                                                                     param_search_dict=param_search_dict,
-                                                                     #weight_by_label_freq,
-                                                                     train_params=train_params,
-                                                                     #calibrate_model,
-                                                                     #survival_anal,
-                                                                    )
+                
+                                df_=y.reset_index()#
+                                df_['STUDYID']=df_['USUBJID'].str.split('/',expand=True)[0].values
+                                #print(pd.crosstab(df_.loc[df_['USUBJID'].isin(pat_ids_),'STUDYID'],df_.loc[df_['USUBJID'].isin(pat_ids_),outcome_label]))
+                                
+                                for training_data_type in training_data_types[:1]:
+    
+                                    ## Define X and y dataframes for training
+                                    X=X_dict[training_data_type].copy()
+                                    #y=y.loc[y.index.get_level_values('USUBJID').isin(pat_ids_)]
+                                    #y=y.loc[pat_ids_]
                                     
-                                    
-                                    
-                
-                                            training_results['param_search_results'][f'cv_rep_{cv_repeat_num}']=param_search_results
-                                    
-                                      
-                
-                                            ## Save training results
+    
+                                    for ther_arm_dur in ther_arm_durations_:
+    
+                                        if '4-month' in ther_arm_dur and period_end_day in [160,'all']:
+                                            print(f'Skipping {ther_arm_dur} - cohort at timepoint {period_end_day}')
+                                            continue
+                                                                                     
+                                       # print(f'+++++++\nRunning training with {training_data_type} model: {X.shape[1]} vars\n+++++++')
+                    
+                                        #for model_name in model_names[:]:
+                                        for n, model_name in enumerate(tqdm(model_names_, unit="model")):
+                                            
+            
+            
                                             #fn=f'../data/{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_vars_param_search_results.pickle'
                                             fn=os.path.join(survival_anal_dir_,
                                                             f"{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_{ther_arm_dur}_vars_param_search_results.pickle")
                                                             
-                                            with open(fn, 'wb') as handle:
-                                                pickle.dump(training_results, handle)
+                                            if os.path.exists(fn):
+                                                print('Parameters search results exist! load')
+                                                with open(fn, 'rb') as handle:
+                                                    training_results = pickle.load(handle)
+                                            
+                                            if not os.path.exists(fn):    
+                                                training_results={}
+                                                training_results['train_params']=train_params
+                                                training_results['param_search_results']={}
+                    
+                    
+                                            for cv_repeat_num in range(train_params['num_cv_repeats']):
+            
+                                                if overwrite_existing_params!='True':
+                                                    
+                                                    ## Check if parameter search was already performed for given CV-split If yes, skip to next one!
+                                                    if f'cv_rep_{cv_repeat_num}' in training_results['param_search_results'].keys():
+                                                        print(f'Params for CV-split {cv_repeat_num+1} exist! Skipping to next CV-split\n')
+                                                        continue
+                                                        
+                                                
+                                                rand_state=train_params['random_state'] + cv_repeat_num
+                                                '''
+                                                ## STRATIFY ON OUTCOME LABEL & STUDYID 
+                                                ##. ==> WITHIN STUDY ROC-AUC CLAUCLATION IS POSSIBLE, AS THERE ALWAYS WILL BE AT LEAST ONE UNFAVOUR. LABEL FROM BOTH STUDIES IN THE TEST SET
+                                                y_for_strat=y[outcome_label].astype(str) + "_" + y.index.get_level_values('STUDYID')#.astype(str)
+                                                X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=train_params['test_size_ratio'], 
+                                                                                                    stratify=y_for_strat,random_state=rand_state)
+            
+                                                '''
+                                                #X_train_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num]['X_train_ids']
+                                                #X_test_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num]['X_test_ids']
+                                                X_train_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num][ther_arm_dur]['X_train_ids']
+                                                X_test_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num][ther_arm_dur]['X_test_ids']
+                                                
+                                                X_train=X.loc[list(set(X.index)&set(X_train_ids)),:]
+                                                X_test=X.loc[list(set(X.index)&set(X_test_ids)),:]
+            
+                                                y_train=y.loc[list(set(X.index)&set(X_train_ids)),:]
+                                                y_test=y.loc[list(set(X.index)&set(X_test_ids)),:]
+            
+            
+                                                #if model_name=='LogisticRegression':
+                                                X_train, X_test = scale_by_training_data(X_train, X_test)
+                    
+                                                #print(f"Num of CV-repeat:{cv_repeat_num+1} - Model:{model_name} - Data inclusion type:{data_inclusion_type} - Period:{period_end_day} ")
+                                                print(f'\n+++++++ Num of CV-repeat:{cv_repeat_num+1} - {data_param_key} data / {llm_model_name_with_tag} /{period_end_day} /{data_inclusion_type} /autoenc {autoencoder_merged} / {pool_method} / {ther_arm_dur} cohort - {model_name}')
+                                                training_results['param_search_results'][f'cv_rep_{cv_repeat_num}']={}
+                                                
+                                                calibrate_model=False
+                                                
+                                                train_param_comb=f'{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_{ther_arm_dur}'
+    
+                                                '''
+                                                param_search_results = run_parameter_search(model_name,
+                                                                                    X_train,
+                                                                                    y_train,
+                                                                                    train_params['k_folds'],
+                                                                                    train_params['random_state'],
+                                                                                    outcome_label,
+                                                                                    param_search_dict,
+                                                                                    train_params['weight_by_label_freq'],
+                                                                                    train_params,
+                                                                                    dense_network_params,
+                                                                                    train_param_comb,
+                                                                                    calibrate_model)
+                                                '''                                                                                
+    
+                                                param_search_results =run_parameter_search(model_name=model_name,
+                                                                         X_train=X_train,
+                                                                         y_train_data=y_train,
+                                                                         k_folds=train_params['k_folds'],
+                                                                         random_state=train_params['random_state'],
+                                                                         outcome_label=outcome_label,
+                                                                         param_search_dict=param_search_dict,
+                                                                         #weight_by_label_freq,
+                                                                         train_params=train_params,
+                                                                         #calibrate_model,
+                                                                         #survival_anal,
+                                                                        )
+                                        
+                                        
+                                        
+                    
+                                                training_results['param_search_results'][f'cv_rep_{cv_repeat_num}']=param_search_results
+                                        
+                                          
+                    
+                                                ## Save training results
+                                                #fn=f'../data/{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_vars_param_search_results.pickle'
+                                                fn=os.path.join(survival_anal_dir_,
+                                                                f"{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_{ther_arm_dur}_{time_origin}_vars_param_search_results.pickle")
+                                                                
+                                                with open(fn, 'wb') as handle:
+                                                    pickle.dump(training_results, handle)
             
 loop_time=time.time()
 print('Training duration:')

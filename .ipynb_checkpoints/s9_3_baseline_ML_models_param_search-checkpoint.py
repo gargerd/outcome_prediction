@@ -49,6 +49,28 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'}, 
 
+                         'tb21_22_2984_pats_22_vars_relapse_ext_pats':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'}, 
+
+                         'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
+                            'result_cat':'RELAPSE'},
+
+                         
+                        'tb20_21_22_2905_pats_8_vars_relapse_ext_pats':{
+                              'result_cat':'RELAPSE',
+                            'fn':'tb20_21_22_2905_pats_8_vars_relapse',
+                           'include_rifaquin':True},
+
+                         'tb20_21_22_2905_pats_8_vars_relapse_ext_pats_no_rifaquin':{
+                              'result_cat':'RELAPSE',
+                            'fn':'tb20_21_22_2905_pats_8_vars_relapse',
+                             #'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
+                           'include_rifaquin':False},
+
+
                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_dr_reg_per_arm':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                              'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
@@ -188,7 +210,10 @@ last_initial_therapy_day_df=pd.read_csv('../data/out_last_initial_therapy_day_li
 last_initial_therapy_day_df=last_initial_therapy_day_df.set_index('USUBJID')
 
 ## Laod pats with relapse df
-pats_with_relapse_df=extract_21_22_relapse_pats()
+#pats_with_relapse_df=extract_21_22_relapse_pats()
+pats_with_relapse_df=extract_21_22_relapse_pats(include_rifaquin=True,
+                                               extended_pats=True)
+
 
 
 
@@ -260,7 +285,8 @@ for data_param_key in dataset_name_:
     pat_ids,y,target_df,outcome_label = return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
                                                                   outcome_df,outcome_label,model_names)
         
-       
+    #print('pat_ids',len(pat_ids))
+    
     df_=target_df.reset_index()#
     df_['STUDYID']=df_['USUBJID'].str.split('/',expand=True)[0].values
     

@@ -31,6 +31,11 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'survival':True,
                             'result_cat':'RELAPSE'}, 
 
+                         'tb20_21_22_2908_pats_7_vars_relapse':{
+                            'result_cat':'RELAPSE',
+                            'fn':'tb20_21_22_2908_pats_7_vars_relapse',
+                           'include_rifaquin':True},
+
 
                          
                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_dr_reg_per_arm':{
@@ -917,7 +922,7 @@ def init_model(model_name,X_train,y_train_data,
 
 
 
-def init_survival_model(model_name, model_params, random_state):
+def init_survival_model(model_name, model_params, random_state,input_dim=None):
     
     from sksurv.ensemble import GradientBoostingSurvivalAnalysis
     from sksurv.linear_model import CoxnetSurvivalAnalysis
@@ -943,7 +948,7 @@ def init_survival_model(model_name, model_params, random_state):
         ])
     '''
     if 'GradientBoost' in model_name:
-        model = GradientBoostingSurvivalAnalysis(**model_param,random_state=random_state)
+        model = GradientBoostingSurvivalAnalysis(**model_params,random_state=random_state)
         return model
 
     elif 'CoxnetSurvival' in model_name:
@@ -956,6 +961,11 @@ def init_survival_model(model_name, model_params, random_state):
                              random_state=random_state,
                              **model_params)
         return model
+
+    
+    elif model_name in ['LogisticHazard', 'DeepHit', 'DeepHitSingle']:
+        # return marker only; actual model is built in fit_pycox_model
+        return None
         
     else:
     
@@ -993,110 +1003,6 @@ def scale_by_training_data(X_train, X_test):
 
 
 
-
-######====================================
-## 1. Calibrate model with best hyperparams + extract calibrated prediction probs
-## 2. Calculate confidence statistice from calirbated prediction probs.
-
-def calibrate_model_and_extract_confidence_metrics(model,
-                                                   X_train,
-                                                   X_test,
-                                                   y_train,
-                                                   outcome_label,
-                                                   label_weights_dict,
-                                                   cv_roc_auc_scores=None,
-                                                   cv_splitter=None):
-    import copy
-
-    ## Calculate calibrated probabilities of trained best model
-    from sklearn.calibration import CalibratedClassifierCV
-
-    if cv_splitter is None and cv_roc_auc_scores is not None:
-        ## Extract train and validation ids to perform calibration on the same train-test sets as the hyperparam search
-        cv_splits=zip(cv_roc_auc_scores['inner_train_val_splits']['train_ids'],
-                      cv_roc_auc_scores['inner_train_val_splits']['test_ids'])
-    
-    if cv_splitter is None and cv_roc_auc_scores is None:
-        raise('Please provide either a CV-splitter object for the internal CV or cv_roc_auc_scores dictionary of the trained model!')
-        
-    if cv_splitter is not None:
-        
-        ## STRATIFY ON OUTCOME LABEL & STUDYID 
-        ##. ==> WITHIN STUDY ROC-AUC CLAUCLATION IS POSSIBLE, AS THERE ALWAYS WILL BE AT LEAST ONE UNFAVOUR. LABEL FROM BOTH STUDIES IN THE TEST SET
-        df_=y_train.reset_index().drop_duplicates(subset='USUBJID')#.set_index('USUBJID',drop=True)
-        df_['STUDYID']=df_['USUBJID'].str.split('/',expand=True)[0].values
-        df_=df_.set_index('USUBJID')
-        y_for_strat=df_[outcome_label].astype(str) + "_" + df_['STUDYID']#.astype(str)
-    
-        pat_ids=df_.index
-        n_of_classes=len(y_train[outcome_label].unique())
-        cv_splits=cv_splitter.split(pat_ids, y_for_strat.loc[pat_ids])
-
-    
-        
-    sample_weights=y_train[outcome_label].map(label_weights_dict).values
-
-    ## Fit calibrated model
-    calibrated_model = CalibratedClassifierCV(estimator=model,
-                                               cv=cv_splits,
-                                               #n_jobs=-1,                                        
-                                               method="isotonic")
-    calibrated_model.fit(X_train.values, 
-                         y_train.values,
-                         sample_weight=sample_weights)
-
-    ## Extract calibrated pred probs
-    probs_calibrated = calibrated_model.predict_proba(X_test)[:, 1]
-    probs_uncalibrated = model.predict_proba(X_test)[:, 1]
-
-    
-    """
-    Compute per-model confidence statistics from probabilities.
-    """
-    eps = 1e-12
-    p_cal = np.clip(probs_calibrated, eps, 1 - eps)
-    p_uncal = np.clip(probs_uncalibrated, eps, 1 - eps)
-    margin = np.abs(p_cal - 0.5)
-    entropy = -(p_cal * np.log(p_cal) + (1 - p_cal) * np.log(1 - p_cal))
-    conf_entropy = 1 - entropy / np.log(2)
-    conf_metrics = pd.DataFrame({
-        'prob_calibrated': p_cal,
-        'prob_uncalibrated':p_uncal,
-        'margin': margin,
-        'entropy_conf': conf_entropy
-    })
-    if probs_uncalibrated is not None:
-        conf_metrics['delta_calib'] = p_cal - p_uncal
-    else:
-        conf_metrics['delta_calib'] = 0.0
-
-    conf_metrics.index=X_test.index
-
-    ## Add out-of-distribution confidence variables (Mahalanobis and KNN confidence)
-    #ood_conf_df=cv_roc_auc_scores['ood_conf']
-    #conf_metrics.loc[ood_conf_df.index,ood_conf_df.columns.tolist()] = ood_conf_df.values
-    
-    return conf_metrics#,calibrated_model
-
-
-
-##=========================================
-def return_ood_metrics(X_train,X_test,use_pca):
-     
-    # CAlculate Mahalanobis confidence value: Sigmoid(Mahal. distance to mean of training distribution)
-    ood_mahal = OODMahalanobis(use_pca=use_pca, standardize=False).fit(X_train)
-    mahal_conf_val = ood_mahal.confidence(X_test)  # shape (n_val,)
-
-    # Calculate KNN confidence value: Sigmoid((1/average distance) to its k nearest neighbours in the training data)
-    ood_kbb = OODKNN(use_pca=use_pca, standardize=False).fit(X_train)
-    knn_conf_val = ood_kbb.confidence(X_test)  # shape (n_val,)
-
-    ## Aggregate the OOD confidence values into one dataframe
-    ood_df=pd.DataFrame({'knn_conf_val':knn_conf_val,
-                              'mahal_conf_val':mahal_conf_val},
-                               index=X_test.index)
-
-    return ood_df
 
 
 ##=========================================
@@ -1328,7 +1234,464 @@ def run_cv(X,
 
 
 
-###=========================
+##=========================================
+def is_pycox_model(model_name):
+    return model_name in ['LogisticHazard', 'DeepHit', 'DeepHitSingle']
+
+
+
+##=========================================
+def fit_pycox_model(model_name,
+                    model_params,
+                    random_state,
+                    X_train,
+                    durations_train,
+                    events_train,
+                    train_params=None,
+                    y_train_df=None,
+                    X_val=None,
+                    durations_val=None,
+                    events_val=None):
+    """
+    Fit a pycox LogisticHazard or DeepHitSingle model with optional early stopping.
+
+    Behavior
+    --------
+    1. If explicit validation data are provided, use them for early stopping.
+    2. Otherwise, if early stopping is enabled, create an internal validation split
+       from the provided training data.
+    3. If early stopping is disabled, fit on all provided training data.
+
+      If y_train_df is provided, the internal validation split is done:
+    - at the patient level
+    - stratified by RELAPSE + STUDYID
+
+    Returns
+    -------
+    dict with keys:
+        - 'model': fitted pycox model
+        - 'labtrans': fitted label transform
+        - 'train_idx': row indices used for fitting within provided training data
+        - 'val_idx': row indices used for validation within provided training data
+        - 'early_stopped': bool
+        - 'n_trained_epochs': int
+        - 'max_epochs': int
+        - 'history_df': pandas DataFrame
+    """
+    import numpy as np
+    import torch
+    import torchtuples as tt
+
+    from sklearn.model_selection import train_test_split
+    from torchtuples.practical import MLPVanilla
+    from pycox.models import LogisticHazard, DeepHitSingle
+
+    if train_params is None:
+        train_params = {}
+
+    # ----------------------------
+    # reproducibility
+    # ----------------------------
+    torch.manual_seed(random_state)
+    np.random.seed(random_state)
+
+    # ----------------------------
+    # inputs
+    # ----------------------------
+    X_all = np.asarray(X_train, dtype=np.float32)
+    durations_all = np.asarray(durations_train, dtype=np.float64)
+    events_all = np.asarray(events_train, dtype=np.int64)
+
+    if X_all.ndim != 2:
+        raise ValueError(f"X_train must be 2D, got shape {X_all.shape}")
+    if len(X_all) != len(durations_all) or len(X_all) != len(events_all):
+        raise ValueError("X_train, durations_train, and events_train must have same length")
+    if np.isnan(durations_all).any() or np.isinf(durations_all).any():
+        raise ValueError("durations_train contains NaN or inf")
+    if (durations_all < 0).any():
+        raise ValueError(
+            "durations_train contains negative values. "
+            "Pycox expects original non-negative durations, not XGBoost-style signed times."
+        )
+    if not np.isin(events_all, [0, 1]).all():
+        raise ValueError("events_train must contain only 0/1 values")
+
+    input_dim = X_all.shape[1]
+
+    # ----------------------------
+    # training hyperparameters
+    # ----------------------------
+    num_durations = model_params.get('num_durations', 6)
+    hidden_nodes = model_params.get('hidden_nodes', [64, 32])
+    dropout = model_params.get('dropout', 0.1)
+    batch_norm = model_params.get('batch_norm', True)
+    lr = model_params.get('lr', 1e-3)
+
+    batch_size = model_params.get('batch_size', 256)
+    epochs = model_params.get('epochs', 200)
+  
+
+    # Early stopping controls
+    use_early_stopping = train_params.get('early_stopping', True)
+    patience = train_params.get('patience', 10)
+    min_delta = train_params.get('min_delta', 0.0)
+    val_fraction = train_params.get('val_fraction', 0.2)
+
+    verbose = train_params.get('verbose', False)
+
+    # ----------------------------
+    # validation split for early stopping
+    # ----------------------------
+    internal_train_idx = np.arange(len(X_all))
+    internal_val_idx = None
+
+    if X_val is not None and durations_val is not None and events_val is not None:
+        # explicit validation data passed in
+        X_fit = X_all
+        durations_fit = durations_all
+        events_fit = events_all
+
+        X_val_np = np.asarray(X_val, dtype=np.float32)
+        durations_val_np = np.asarray(durations_val, dtype=np.float64)
+        events_val_np = np.asarray(events_val, dtype=np.int64)
+
+        if np.isnan(durations_val_np).any() or np.isinf(durations_val_np).any():
+            raise ValueError("durations_val contains NaN or inf")
+        if (durations_val_np < 0).any():
+            raise ValueError("durations_val contains negative values")
+        if not np.isin(events_val_np, [0, 1]).all():
+            raise ValueError("events_val must contain only 0/1 values")
+
+    elif use_early_stopping and val_fraction > 0:
+        if y_train_df is not None:
+            # -----------------------------------------
+            # PATIENT-LEVEL STRATIFIED SPLIT
+            # -----------------------------------------
+            y_df_ = y_train_df.copy()
+
+            # STUDYID from USUBJID prefix
+            y_df_['STUDYID'] = (
+                y_df_.index.get_level_values('USUBJID')
+                .str.split('/')
+                .str[0]
+            )
+
+            # patient-level unique ids
+            pat_ids = y_df_.index.get_level_values('USUBJID').unique()
+
+            # patient-level relapse and study labels
+            # assumes one label per patient across rows
+            pat_df = (
+                y_df_
+                #.reset_index()
+                .groupby('USUBJID')
+                .agg({
+                    'RELAPSE': 'first',
+                    'STUDYID': 'first'
+                })
+            )
+
+            y_for_strat = pat_df['RELAPSE'].astype(str) + "_" + pat_df['STUDYID'].astype(str)
+
+            train_pat_ids, val_pat_ids = train_test_split(
+                pat_ids,
+                test_size=val_fraction,
+                random_state=random_state,
+                stratify=y_for_strat.loc[pat_ids]
+            )
+
+            train_mask = y_df_.index.get_level_values('USUBJID').isin(train_pat_ids)
+            val_mask = y_df_.index.get_level_values('USUBJID').isin(val_pat_ids)
+
+            internal_train_idx = np.where(train_mask)[0]
+            internal_val_idx = np.where(val_mask)[0]
+
+        else:
+            # -----------------------------------------
+            # FALLBACK: ROW-LEVEL STRATIFICATION
+            # -----------------------------------------
+            idx = np.arange(len(X_all))
+            stratify = events_all if np.unique(events_all).size > 1 else None
+
+            train_idx, val_idx = train_test_split(
+                idx,
+                test_size=val_fraction,
+                random_state=random_state,
+                stratify=stratify
+            )
+
+            internal_train_idx = train_idx
+            internal_val_idx = val_idx
+
+    
+
+        X_fit = X_all[internal_train_idx]
+        durations_fit = durations_all[internal_train_idx]
+        events_fit = events_all[internal_train_idx]
+
+        X_val_np = X_all[internal_val_idx]
+        durations_val_np = durations_all[internal_val_idx]
+        events_val_np = events_all[internal_val_idx]
+
+    else:
+        # no validation split, train on all data
+        X_fit = X_all
+        durations_fit = durations_all
+        events_fit = events_all
+
+        X_val_np = None
+        durations_val_np = None
+        events_val_np = None
+
+    # ----------------------------
+    # label transform
+    # IMPORTANT: fit on fit/train subset only
+    # ----------------------------
+    if model_name == 'LogisticHazard':
+        labtrans = LogisticHazard.label_transform(num_durations)
+    elif model_name in ['DeepHit', 'DeepHitSingle']:
+        labtrans = DeepHitSingle.label_transform(num_durations)
+    else:
+        raise ValueError(f"Unsupported pycox model_name: {model_name}")
+
+    y_fit = labtrans.fit_transform(durations_fit, events_fit)
+
+    # validation labels transformed with cuts learned on fit/train subset
+    val_data = None
+    if X_val_np is not None:
+        y_val = labtrans.transform(durations_val_np, events_val_np)
+        val_data = (X_val_np, y_val)
+
+    # ----------------------------
+    # network
+    # ----------------------------
+    net = MLPVanilla(
+        in_features=input_dim,
+        num_nodes=hidden_nodes,
+        out_features=labtrans.out_features,
+        batch_norm=batch_norm,
+        dropout=dropout,
+        output_bias=False
+    )
+
+    # ----------------------------
+    # model
+    # ----------------------------
+    if model_name == 'LogisticHazard':
+        model = LogisticHazard(net, tt.optim.Adam(lr=lr))
+    else:
+        alpha = model_params.get('alpha', 0.2)
+        sigma = model_params.get('sigma', 0.1)
+        model = DeepHitSingle(
+            net,
+            tt.optim.Adam(lr=lr),
+            alpha=alpha,
+            sigma=sigma
+        )
+
+    # ----------------------------
+    # callbacks
+    # torchtuples early stopping monitors validation loss by default
+    # ----------------------------
+    callbacks = None
+    if use_early_stopping and val_data is not None:
+        callbacks = [
+            tt.callbacks.EarlyStopping(
+                patience=patience,
+                min_delta=min_delta
+            )
+        ]
+
+    # ----------------------------
+    # fit
+    # ----------------------------
+    n_fit = len(X_fit)
+    if batch_size > 1 and n_fit % batch_size == 1:
+        batch_size = batch_size - 1
+        
+    log = model.fit(
+        X_fit,
+        y_fit,
+        batch_size=batch_size,
+        epochs=epochs,
+        verbose=verbose,
+        val_data=val_data,
+        callbacks=callbacks
+    )
+
+    if verbose==True:
+        n_trained_epochs = len(log.to_pandas())
+        early_stopped = n_trained_epochs < epochs
+        print(f"Trained for {n_trained_epochs}/{epochs} epochs")
+        print(f"Early stopping happened: {early_stopped}")
+
+    history_df = log.to_pandas()
+    n_trained_epochs = len(history_df)
+    early_stopped = n_trained_epochs < epochs
+
+    return {
+        'model': model,
+        'labtrans': labtrans,
+        'train_idx': internal_train_idx,
+        'val_idx': internal_val_idx,
+        'log': log,
+        'history_df': history_df,
+        'n_trained_epochs': n_trained_epochs,
+        'max_epochs': epochs,
+        'early_stopped': early_stopped,
+    }
+
+
+
+
+##=========================================
+def pycox_surv_df_to_risk(surv_df):
+    """
+    Convert a predicted survival DataFrame into a scalar risk score.
+
+    surv_df:
+        rows = time grid
+        columns = samples
+    """
+    import numpy as np
+
+    times = surv_df.index.values.astype(float)
+    surv = surv_df.values  # shape: (n_times, n_samples)
+
+    if len(times) < 2:
+        # fallback if only one time point exists
+        expected_survival = surv[0, :]
+    else:
+        # trapezoidal integration of S(t) dt
+        expected_survival = np.trapz(surv, times, axis=0)
+
+    risk = -expected_survival
+    return risk
+
+##=========================================
+def predict_pycox_risk(model_bundle, X):
+    """
+    Produce scalar risk scores for C-index calculation.
+    """
+    import numpy as np
+
+    model = model_bundle['model']
+    X_np = np.asarray(X, dtype=np.float32)
+    surv_df = model.predict_surv_df(X_np)
+    return pycox_surv_df_to_risk(surv_df)
+
+##=========================================
+def get_valid_ibs_times(y_train_df, y_test_df, n_times=100, time_col="RELAPSE_DAY"):
+    from sksurv.metrics import integrated_brier_score
+    
+    train_times = y_train_df[time_col].to_numpy(dtype=float)
+    test_times = y_test_df[time_col].to_numpy(dtype=float)
+
+    # Must be inside test follow-up range
+    lower = test_times.min()
+    upper = test_times.max()
+
+    # Also must not exceed training follow-up range for IPCW
+    upper = min(upper, train_times.max())
+
+    # upper must be strictly smaller than max follow-up
+    upper = np.nextafter(upper, lower)
+
+    if not np.isfinite(lower) or not np.isfinite(upper) or lower >= upper:
+        return None
+
+    times = np.linspace(lower, upper, n_times)
+    return np.unique(times)
+
+
+
+###=======================================
+def calc_pycox_ibs_scores(model_bundle, X_train, y_train_df, X_eval, y_eval_df):
+    """
+    Calculate IBS and 1-IBS for a fitted pycox model on evaluation data.
+
+    Returns
+    -------
+    ibs : float
+    one_minus_ibs : float
+    """
+    import numpy as np
+    from sksurv.util import Surv
+    from sksurv.metrics import integrated_brier_score
+
+    # structured arrays for censoring-adjusted IBS
+    y_train_surv = Surv.from_arrays(
+        event=y_train_df['RELAPSE'].astype(bool).values,
+        time=y_train_df['RELAPSE_DAY'].astype(float).values
+    )
+    y_eval_surv = Surv.from_arrays(
+        event=y_eval_df['RELAPSE'].astype(bool).values,
+        time=y_eval_df['RELAPSE_DAY'].astype(float).values
+    )
+
+
+    '''
+    pred_times = surv_df.index.values.astype(float)
+
+    # IBS requires times within the valid follow-up range.
+    # To stay safe, restrict to times strictly below the smallest of:
+    # - max observed train time
+    # - max observed eval time
+    max_train_time = float(y_train_df['RELAPSE_DAY'].astype(float).max())
+    max_eval_time = float(y_eval_df['RELAPSE_DAY'].astype(float).max())
+    upper_time = min(max_train_time, max_eval_time)
+
+    # strict upper bound for scikit-survival
+    upper_time = np.nextafter(upper_time, -np.inf)
+
+    times = pred_times[(pred_times > 0) & (pred_times <= upper_time)]
+    times = np.unique(times)
+
+    if len(times) < 2:
+        return np.nan, np.nan
+    '''
+
+    def surv_df_to_array(surv_df, times):
+        surv_times = surv_df.index.to_numpy(dtype=float)
+        surv_mat = surv_df.to_numpy()  # shape: n_model_times x n_samples
+    
+        out = np.empty((surv_mat.shape[1], len(times)))
+        for j in range(surv_mat.shape[1]):
+            out[j, :] = np.interp(times, surv_times, surv_mat[:, j])
+        return out
+
+    
+    times = get_valid_ibs_times(
+        y_train_df=y_train_df,
+        y_test_df=y_eval_df,
+        n_times=100,
+        time_col="RELAPSE_DAY"
+    )
+    if times is None or len(times) < 2:
+        return np.nan, np.nan
+
+     # pycox survival predictions: rows = times, cols = samples
+    surv_df = model_bundle['model'].predict_surv_df(
+        X_eval.values.astype('float32') if hasattr(X_eval, "values") else X_eval.astype('float32')
+    )
+    #surv_df = model_bundle["model"].predict_surv_df(X_eval.values)
+
+    # estimate must be shape (n_samples, n_times)
+    #surv_probs = surv_df.loc[times].T.values
+    surv_probs = surv_df_to_array(surv_df, times)
+
+    ibs = integrated_brier_score(
+        survival_train=y_train_surv,
+        survival_test=y_eval_surv,
+        estimate=surv_probs,
+        times=times
+    )
+
+    return ibs, 1.0 - ibs
+
+
+
+
 ##=========================================
 def run_cv_survival(X,
                     y_df,          # dataframe with RELAPSE and RELAPSE_DAY columns
@@ -1348,6 +1711,8 @@ def run_cv_survival(X,
     pd.options.mode.chained_assignment = None
 
     is_xgb = 'XGBoost' in model_name
+    is_pycox = model_name in ['LogisticHazard', 'DeepHit', 'DeepHitSingle']
+
 
     # Build structured survival array — used for model fitting and scoring
     y_surv = Surv.from_arrays(
@@ -1371,8 +1736,11 @@ def run_cv_survival(X,
 
     skf = StratifiedKFold(n_splits=k_folds, shuffle=True, random_state=random_state)
 
+
     train_c_index_all, test_c_index_all = [], []
-    train_c_index_per_study, test_c_index_per_study = [], []
+    train_one_minus_ibs_all, test_one_minus_ibs_all = [], []
+    train_ibs_all, test_ibs_all = [], []
+    test_c_index_per_study = []
 
     for n_, (train_index, test_index) in enumerate(
             skf.split(pat_ids, y_for_strat.loc[pat_ids])):
@@ -1386,6 +1754,8 @@ def run_cv_survival(X,
         X_train_fold = X.loc[train_mask, :]
         X_test_fold = X.loc[test_mask, :]
 
+        X_train_fold, X_test_fold=scale_by_training_data(X_train_fold, X_test_fold)
+
         y_test_events  = y_df_.loc[test_mask,  'RELAPSE'].astype(bool).values
         y_test_times   = y_df_.loc[test_mask,  'RELAPSE_DAY'].astype(float).values
         y_train_events = y_df_.loc[train_mask, 'RELAPSE'].astype(bool).values
@@ -1393,20 +1763,66 @@ def run_cv_survival(X,
         y_train_df  = y_df_.loc[train_mask, :]
         y_test_df  = y_df_.loc[test_mask, :]
 
-        model = init_survival_model(model_name, model_params, random_state)
 
-        # Key fix: branch on model type for both fit and label format
-        if is_xgb:
-            model.fit(
-                X_train_fold,
-                y_xgb[train_mask],  # plain float32 array
-                verbose=False
+        # Build model
+        if is_pycox:
+            model_bundle = fit_pycox_model(
+                                model_name=model_name,
+                                model_params=model_params,
+                                random_state=random_state,
+                                X_train=X_train_fold.values,
+                                y_train_df=y_train_df,
+                                durations_train=y_train_times,
+                                events_train=y_train_events.astype(int),
+                                train_params=train_params
+                            )
+                                    
+
+            train_risk = predict_pycox_risk(model_bundle, X_train_fold.values)
+            test_risk = predict_pycox_risk(model_bundle, X_test_fold.values)
+
+           
+
+            # IBS / 1-IBS
+            train_ibs, train_one_minus_ibs = calc_pycox_ibs_scores(
+                model_bundle=model_bundle,
+                X_train=X_train_fold,
+                y_train_df=y_train_df,
+                X_eval=X_train_fold,
+                y_eval_df=y_train_df
             )
-        else:
-            model.fit(X_train_fold, y_surv[train_mask])
+            test_ibs, test_one_minus_ibs = calc_pycox_ibs_scores(
+                model_bundle=model_bundle,
+                X_train=X_train_fold,
+                y_train_df=y_train_df,
+                X_eval=X_test_fold,
+                y_eval_df=y_test_df
+            )
 
-        train_risk = model.predict(X_train_fold)
-        test_risk  = model.predict(X_test_fold)
+            del model_bundle
+            
+            train_ibs_all.append(train_ibs)
+            test_ibs_all.append(test_ibs)
+            train_one_minus_ibs_all.append(train_one_minus_ibs)
+            test_one_minus_ibs_all.append(test_one_minus_ibs)
+        
+        else:
+            model = init_survival_model(model_name, model_params, random_state)
+
+            # Key fix: branch on model type for both fit and label format
+            if is_xgb:
+                model.fit(
+                    X_train_fold,
+                    y_xgb[train_mask],  # plain float32 array
+                    verbose=False
+                )
+            else:
+                model.fit(X_train_fold, y_surv[train_mask])
+
+            train_risk = model.predict(X_train_fold)
+            test_risk  = model.predict(X_test_fold)
+
+            del model
 
         if y_test_events.sum() == 0 or (~y_test_events).sum() == 0:
             continue
@@ -1445,20 +1861,49 @@ def run_cv_survival(X,
                                 .apply(c_index_for_group))
             test_c_index_per_study.append(test_c_per_study)
 
-    results = {
-        'train_score': train_c_index_all,
-        'test_score': test_c_index_all,
-    }
+    #results = {
+    #    'train_score': train_c_index_all,
+    #    'test_score': test_c_index_all,
+    #}
+
+    # - for pycox models: optimize 1-IBS
+    # - for others: optimize C-index
+    if is_pycox:
+        results = {
+            'train_score': train_one_minus_ibs_all,
+            'test_score': test_one_minus_ibs_all,
+            #'train_1_minus_ibs': train_one_minus_ibs_all,
+            #'test_1_minus_ibs': test_one_minus_ibs_all,
+            #'train_ibs': train_ibs_all,
+            #'test_ibs': test_ibs_all,
+            'train_c_index': train_c_index_all,
+            'test_c_index': test_c_index_all,
+        }
+    else:
+        results = {
+            'train_score': train_c_index_all,
+            'test_score': test_c_index_all,
+            #'train_c_index': train_c_index_all,
+            #'test_c_index': test_c_index_all,
+        }
 
     if test_c_index_per_study:
         results['test_score_per_study'] = pd.concat(
             test_c_index_per_study, axis=1
         )
 
+
+
     return results
 
 
 
+
+def make_xgb_survival_labels(y_df):
+    labels = y_df.copy()#['RELAPSE_DAY'].astype(float).copy()
+    censored_mask = y_df['RELAPSE'].astype(float) == 0
+    labels.loc[censored_mask,'RELAPSE_DAY'] = -1 * labels.loc[censored_mask,'RELAPSE_DAY'].values
+    return labels
 
 
 
@@ -1559,6 +2004,22 @@ def extract_best_model_params(param_search_results,metric_func,num_of_top_models
             return True
         except ValueError:
             return False
+
+    import ast
+
+    def is_list_string(s):
+        try:
+            parsed = ast.literal_eval(s)
+            return isinstance(parsed, list)
+        except (ValueError, SyntaxError):
+            return False
+    
+    def string_to_list(s):
+        if is_list_string(s):
+            return ast.literal_eval(s)
+        else:
+            raise ValueError("Input is not a valid list string")
+    
     
     
     ## Init dictionary to hold the best results for each CV-repetition
@@ -1584,7 +2045,6 @@ def extract_best_model_params(param_search_results,metric_func,num_of_top_models
             
             ## Convert the best parameter-set to a dictionary
             ## Split at points, where '-' is followd by next "parameter_name:"
-
             if model_name=='Dense':
                 pairs = re.split(r'-(?=[A-Za-z_]+:)', best_param_set)
                 best_model_params = {
@@ -1651,12 +2111,23 @@ def extract_best_model_params(param_search_results,metric_func,num_of_top_models
                     if is_float(best_model_params[param_name])==True and float(best_model_params[param_name])<=1:
                         best_model_params[param_name]=float(best_model_params[param_name])
 
+                    
+                    if is_list_string(best_model_params[param_name])==True:
+                        best_model_params[param_name]=string_to_list(best_model_params[param_name])
+
+                    if 'True' == best_model_params[param_name]:
+                        best_model_params[param_name] = True
+
+                    if 'False' == best_model_params[param_name]:
+                            best_model_params[param_name] = False
+                                
+
                 best_cv_rep_results[cv_rep_num][n]=best_model_params
         
         return best_cv_rep_results
 
 
-
+'''
 ##=========================================
 ## RUN CV OF GIVEN MODEL & TRAIN FINAL MODEL AFTERWARDS
 def calc_roc_auc_score_of_model(model_name,
@@ -1778,6 +2249,7 @@ def calc_roc_auc_score_of_model(model_name,
         
     return model,cv_roc_auc_scores,label_weights_dict
 
+'''
 
 
 
@@ -1796,18 +2268,38 @@ def calc_c_index_score_of_model(model_name,
                                 #calibrate_model
                                ):
     from sksurv.util import Surv
+
+    
+    is_xgb = 'XGBoost' in model_name
+    is_pycox = model_name in ['LogisticHazard', 'DeepHit', 'DeepHitSingle']
+
+
+    ## CALCULATE C-INDEX -SCORES 
+    cv_c_index_scores = run_cv_survival(X = X_train,
+                                        y_df=y_train_data,          # dataframe with RELAPSE and RELAPSE_DAY columns
+                                        k_folds=k_folds,
+                                        model_name=model_name,
+                                        random_state=random_state,
+                                        model_params=model_params,
+                                        train_params=train_params)
         
     ### RUN CV & TRAIN MODEL AFTERWARDS
-    if model_name in ['XGBoost','GradientBoost']:
-        
-        ## CALCULATE C-INDEX -SCORES 
-        cv_c_index_scores = run_cv_survival(X = X_train,
-                                            y_df=y_train_data,          # dataframe with RELAPSE and RELAPSE_DAY columns
-                                            k_folds=k_folds,
-                                            model_name=model_name,
-                                            random_state=random_state,
-                                            model_params=model_params,
-                                            train_params=train_params)
+
+    if is_pycox:
+        durations_train = y_train_data['RELAPSE_DAY'].astype(float).values
+        events_train = y_train_data['RELAPSE'].astype(int).values
+
+        model = fit_pycox_model(
+            model_name=model_name,
+            model_params=model_params,
+            random_state=random_state,
+            X_train=X_train.values if hasattr(X_train, "values") else X_train,
+            durations_train=durations_train,
+            events_train=events_train,
+            train_params=train_params
+        )
+         
+    elif is_xgb:
         
 
         # XGBoost format: censored = negative time, event = positive time
@@ -1820,15 +2312,6 @@ def calc_c_index_score_of_model(model_name,
         model.fit(X_train,y_xgb, verbose=False)
 
     else:
-                
-        ## CALCULATE C-INDEX -SCORES
-        cv_c_index_scores = run_cv_survival(X = X_train,
-                                            y_df=y_train_data,          # dataframe with RELAPSE and RELAPSE_DAY columns
-                                            k_folds=k_folds,
-                                            model_name=model_name,
-                                            random_state=random_state,
-                                            model_params=model_params,
-                                            train_params=train_params)
 
         ## INITIALIZE MODEL & TRAIN 
         model = init_survival_model(model_name, model_params, random_state)
@@ -1841,6 +2324,7 @@ def calc_c_index_score_of_model(model_name,
 
         
     return model,cv_c_index_scores
+
 
 
 ##=========================================
@@ -1959,7 +2443,48 @@ def select_temporal_cols_with_suff_pat_data(temp_data_name,X_subset,temp_col_thr
 ### 2. COLLECT PATIENTS, WHO HAVE FAVOURABLE OUTCOME AT END OF TREATMENT, BUT HAVE AT LEAST ONE UNFAVOURABLE OUTCOME AT ANY OF THE FOLLOW-UP TIMEPOINTS 
     #. ==>TB-1021: 12 & 18 MONTHS, TB-1022: 18 & 24 MONTHS
 
-def extract_21_22_relapse_pats():
+def extract_rifaquin_relapse():
+    
+    data=load_merged_data_of_lab_vars()
+    arm_df=data.drop_duplicates('USUBJID')[['USUBJID','ARM']].set_index('USUBJID')
+    del data
+    
+    
+    de=pd.read_csv('../../C-Path_data/preprocessing/disposition_events.csv',low_memory=True)
+    de = de.set_index('USUBJID')
+
+
+    
+    outcome_tb1020 = pd.read_csv('../data/tb_1020_outcome.csv.gz')
+    tb_1020_pat_df = outcome_tb1020[outcome_tb1020['UNFAVOURABLE_OUTCOME_CATEGORY_AT_18_MONTHS'].isin(['FAVOURABLE','RELAPSE'])]
+    tb_1020_pat_df = tb_1020_pat_df.rename(columns={'Unnamed: 0':'USUBJID',})
+
+    #df_tb_20 = data[data['USUBJID'].isin(tb_1020_pat_df['USUBJID'].tolist())]
+
+
+
+    tb_1020_pat_df = tb_1020_pat_df.set_index('USUBJID')
+    tb_1020_pat_df['last_therapy_day'] = de.loc[tb_1020_pat_df.index,'COMPLETION CONTINUATION PHASE'].values
+    
+    tb_1020_pat_df['RELAPSE']=tb_1020_pat_df['UNFAVOURABLE_OUTCOME_CATEGORY_AT_18_MONTHS'].replace({'FAVOURABLE':0,'RELAPSE':1})
+    tb_1020_pat_df['RELAPSE_DAY']= tb_1020_pat_df['TIME_TO_EVENT'].values
+    
+    
+    tb_1020_pat_df['DAYS_BETWEEEN_THERAPY_END_AND_RELAPSE'] = (tb_1020_pat_df['RELAPSE_DAY'] - tb_1020_pat_df['last_therapy_day']).values
+    tb_1020_pat_df.loc[tb_1020_pat_df['RELAPSE']==0,['DAYS_BETWEEEN_THERAPY_END_AND_RELAPSE','RELAPSE_DAY']]=np.nan
+
+    #df_tb_20 = data[data['USUBJID'].isin(tb_1020_pat_df.reset_index()['USUBJID'].tolist())]
+   
+    tb_1020_pat_df['ARM'] = arm_df.loc[tb_1020_pat_df.reset_index()['USUBJID'],'ARM'].values
+    tb_1020_pat_df['STUDYID'] = 'Rifaquin'
+
+    
+    return tb_1020_pat_df
+
+
+
+
+def extract_21_22_relapse_pats(include_rifaquin=False):
 
     print('Extracting relapse information...')
     
@@ -1975,7 +2500,9 @@ def extract_21_22_relapse_pats():
     ### COLLECT PATIENTS, WHO ONLY HAVE FAVOURABLE OUTCOMES AT END OF TREATMENT & AT ALL FOLLOW-UP TIMEPOINTS 
     #. ==>TB-1021: 12 & 18 MONTHS, TB-1022: 18 & 24 MONTHS
 
-   
+    outcome_df=pd.read_csv('../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
+    outcome_df=outcome_df.set_index('USUBJID',drop=True)
+    outcome_df=outcome_df.rename(columns={'UNFAVOURABLE_OUTCOME_CATEGORY_AT_18_MONTHS':'UNFAVOUR_CAT_AT_18_MONTHS'})
     
     df_=outcome_df.reset_index()#
     df_['STUDYID']=df_['USUBJID'].str.split('/',expand=True)[0].values
@@ -2211,6 +2738,24 @@ def extract_21_22_relapse_pats():
 
     pats_relapse_df['DAYS_BETWEEEN_THERAPY_END_AND_RELAPSE']=(pats_relapse_df['RELAPSE_DAY'] - pats_relapse_df['last_therapy_day']).values
 
+    if include_rifaquin==True:
+        ## ADD RIFAQUIN RELAPSE PATIENTS
+        rif_rel = extract_rifaquin_relapse()
+        pats_relapse_df = pd.concat([pats_relapse_df,rif_rel[pats_relapse_df.columns]],axis=0)
+
+
+
+    def replace_arm_names(d):
+    
+        d['ARM'] = d['ARM'].replace({'Gati-arm regimen (4 month regimen)':'Gatifloxacin',
+                                 'Control-arm regimen (6 month regimen)':'Control',
+                                  'Control Regimen : 2 months of daily ethambutol, isoniazid, rifampicin, and pyrazinamide followed by 4 months of daily isoniazid and rifampicin.':'2EHRZ/4HR_RIF',
+                                'Study Regimen 2: 2 months of daily ethambutol, moxifloxacin, rifampicin, and pyrazinamide followed by 4 months of once weekly moxifloxacin and rifapentine.':'2EMRZ/4MP',
+                                 'Study Regimen 1: 2 months of daily ethambutol, moxifloxacin, rifampicin, and pyrazinamide followed by 2 months of twice weekly moxifloxacin and rifapentine.':'2EMRZ/2MP'},regex=False)
+        return d
+    
+    pats_relapse_df = replace_arm_names(pats_relapse_df)
+    
     return pats_relapse_df#,relapse_during_obs_period,relapse_after_obs_period,pats_with_sparse_relapse_data,max_days
 
 ##========================================= 
@@ -2298,7 +2843,7 @@ def subset_pats_with_therapy_in_period(period_num,period_end_days):#,last_init_t
 
 #####================
 def return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
-                                  outcome_df,outcome_label,model_names):
+                                  outcome_df,outcome_label,model_names,time_origin):
 
     import copy
     
@@ -2342,7 +2887,8 @@ def return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
 
         if 'survival' in parameters_for_analysis[data_param_key].keys() and parameters_for_analysis[data_param_key]['survival']==True:
 
-            pats_with_relapse_df=extract_21_22_relapse_pats()
+            include_rifaquin = parameters_for_analysis[data_param_key].get('include_rifaquin',None)
+            pats_with_relapse_df=extract_21_22_relapse_pats(include_rifaquin)
             
             ### LOAD AND EXTRACT REAL COMPLETION DAYS OF PATIENTS RECORDED
             de=pd.read_csv('../../C-Path_data/preprocessing/disposition_events.csv',low_memory=True) 
@@ -2381,27 +2927,46 @@ def return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
             target_df['therapy_arm_duration'] = '4-month'
             target_df.loc[target_df['ARM'].isin(['2EHRZ/4HR','Control']),'therapy_arm_duration'] = '6-month'
 
-            target_df = target_df[['RELAPSE_','RELAPSE_DAY_']]
-
-            target_df.columns=['RELAPSE','RELAPSE_DAY']
-            y=target_df.copy()
-            pat_ids=pats_with_relapse_df.index.tolist()
-            outcome_label_=copy.deepcopy(outcome_label)
+            mask= (target_df['DAYS_BETWEEEN_THERAPY_END_AND_RELAPSE'].isna()).values
+            target_df.loc[mask,'DAYS_BETWEEEN_THERAPY_END_AND_RELAPSE'] = (target_df.loc[mask,'RELAPSE_DAY_'] - target_df.loc[mask,'last_therapy_day']).values
             
+            target_df[['RELAPSE_DAY_SOT','RELAPSE_DAY_EOT']] = target_df[['RELAPSE_DAY_','DAYS_BETWEEEN_THERAPY_END_AND_RELAPSE']].values
+            target_df[['RELAPSE_SOT','RELAPSE_EOT']] = target_df[['RELAPSE_','RELAPSE_']].values
+            
+            
+
             ## SET AMMAXIMAL DAY THRESHOLD
             # => Non-relapsing up until this threshold are getting censored at this timepoint
             #. => Pateints relapsing after this threshold are swithced to no No relapse, & are right-censored
-            '''
-            max_day=730
-            target_df.loc[(target_df['RELAPSE_DAY_'].isna())&\
-                    (target_df['RELAPSE_DAY']>max_day),'RELAPSE_DAY_']=max_day
+
+        
+            for time_origin_,max_day_ in zip(['SOT','EOT'],
+                                            [730,365]):
+                
+                rel_day_coln=f'RELAPSE_DAY_{time_origin_}'
+                rel_ind_coln=f'RELAPSE_{time_origin_}'
+                
+         
+                
+                #df_.loc[(~df_[rel_day_coln].isna())&\
+                #        (df_[rel_day_coln]>max_day),rel_day_coln]=max_day
+                        
+                target_df.loc[(~target_df[rel_day_coln].isna())&\
+                        (target_df[rel_day_coln]>max_day_),rel_ind_coln]=0
+        
+                #max_day=750
+                target_df.loc[#(df['RELAPSE_DAY'].isna())&\
+                        (target_df[rel_day_coln]>max_day_),rel_day_coln]=max_day_
+                
+
             
-            
-            target_df.loc[(~target_df['RELAPSE_DAY_'].isna())&\
-                    (target_df['RELAPSE_DAY_']>max_day),'RELAPSE_DAY_']=max_day
-            target_df.loc[(~target_df['RELAPSE_DAY'].isna())&\
-                        (target_df['RELAPSE_DAY_']>max_day),'RELAPSE_']=0
-            '''
+            #target_df = target_df[['RELAPSE_','RELAPSE_DAY_']]
+            target_df = target_df[[f'RELAPSE_{time_origin}',f'RELAPSE_DAY_{time_origin}']]
+
+            target_df.columns=['RELAPSE','RELAPSE_DAY']
+            pat_ids=target_df.index.tolist()
+            y=target_df.copy()
+            outcome_label_ = copy.deepcopy(outcome_label)
 
 
     if 'pred_prob' in parameters_for_analysis[data_param_key]['result_cat']:

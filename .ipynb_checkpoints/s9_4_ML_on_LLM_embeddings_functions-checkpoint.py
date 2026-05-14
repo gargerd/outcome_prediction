@@ -30,7 +30,22 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'}, 
 
+                        'tb21_22_2984_pats_22_vars_relapse_ext_pats':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'}, 
+
+                        'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats':{
+                            'fn':'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
+                            'result_cat':'RELAPSE'},
+
+
                         'tb20_21_22_2908_pats_7_vars_relapse':{
+                            'result_cat':'RELAPSE',
+                            'fn':'tb20_21_22_2908_pats_7_vars_relapse',
+                           'include_rifaquin':True},
+
+                        'tb20_21_22_2908_pats_7_vars_relapse_ext_pats':{
                             'result_cat':'RELAPSE',
                             'fn':'tb20_21_22_2908_pats_7_vars_relapse',
                            'include_rifaquin':True},
@@ -1899,7 +1914,179 @@ def extract_rifaquin_relapse():
 
 
 
-def extract_21_22_relapse_pats(include_rifaquin=False):
+def return_fav_unfav_pats_tb_1021(X_subset=None):
+
+    if X_subset is None:
+        fn='../data/tb21_22_2984_pats_22_vars_result_at_end_of_treatment_preproc_data_with_imp.csv.gz'
+        X_subset=pd.read_csv(fn,index_col=0)
+        X_subset=X_subset.rename(columns=lambda x: x.replace('<', 'lower than'))
+        X_subset=X_subset.rename(columns=lambda x: x.replace('>', 'higher than'))
+    
+    de=pd.read_csv('../../C-Path_data/preprocessing/disposition_events.csv',low_memory=True) 
+    de=de.set_index('USUBJID')
+    
+    outcome_tb1021 =pd.read_csv('../data/tb_1021_outcome.csv.gz',index_col=0)
+    outcome_tb1021 = outcome_tb1021.loc[X_subset[X_subset['STUDYID']=='TB-1021']['USUBJID'].unique(),:]
+    oc_1021 = outcome_tb1021[outcome_tb1021['RESULT_AT_END_OF_TREATMENT']=='FAVOURABLE'].replace('UNASSESSABLE',np.nan)
+    
+    
+    ## TAKE THE LIQUID MEDIUM RESULTS AT MONTH18 AS FINAL RESULTS ==> IF LIQUID MEDIUM IS MISSING, TAKE THE SOLID MEDIUM INSTEAD (CA. 53 PATIENTS)
+    oc_1021['RESULT_AT_18_MONTHS'] = oc_1021['RESULT_LIQUID_MEDIUM_AT_18_MONTHS'].values
+    oc_1021.loc[oc_1021['RESULT_AT_18_MONTHS'].isna(),'RESULT_AT_18_MONTHS'] = oc_1021.loc[oc_1021['RESULT_AT_18_MONTHS'].isna(),'RESULT_SOLID_MEDIUM_AT_18_MONTHS'].values
+    
+    
+    ## TAKE PATIENTS AS FAVOURABLE WHO HAVE FAVOURABLE LABEL AT ENDO-F-THERAPY + ALL 2 FOLLOW-UP TIMEPOINTS
+    out_cols=['RESULT_AT_END_OF_TREATMENT','RESULT_AT_12_MONTHS','RESULT_AT_18_MONTHS']#,'RESULT_AT_24_MONTHS']
+    p_1021_fav = (oc_1021.loc[(oc_1021[out_cols]=='FAVOURABLE').all(axis=1),:].index.tolist())
+
+        
+    ## ALSO EXTRACT PATIENTS WITHOUT MGIT AT MONTH 18 ==> SOME EARLIER MODELS EXCLUDED THESE PATIENTS
+    out_cols=['RESULT_AT_END_OF_TREATMENT','RESULT_AT_12_MONTHS','RESULT_LIQUID_MEDIUM_AT_18_MONTHS']#,'RESULT_AT_24_MONTHS']
+    p_1021_fav_ = (oc_1021.loc[(oc_1021[out_cols]=='FAVOURABLE').all(axis=1),:].index.tolist())
+    
+    pats_wo_mgit_at_18 = (list(set(p_1021_fav) - set(p_1021_fav_)))
+    
+    ## TAKE PATIENTS AS UNFAVOURABLE WHO HAVE FAVOURABLE LABEL AT END-OF-THERAPY , BUT HAVE AN UNFAVOURABLE OUTCOME AT ANY OF THE 2 FU TIMEPOINTS
+    out_cols=['RESULT_AT_12_MONTHS','RESULT_AT_18_MONTHS']#,'RESULT_AT_24_MONTHS']
+    p_1021_unfav=oc_1021.loc[(oc_1021['RESULT_AT_END_OF_TREATMENT']=='FAVOURABLE')&\
+                             (oc_1021[out_cols]=='UNFAVOURABLE').any(axis=1),:].index.tolist()
+    
+    
+    ## FOR SOME PATIENTS, THE RESULT AT MONTH 12 IS MISSING, BUT THEY HAVE LABELS AT 18 MONTHS 
+    ## THESE PATIENTS WERE NOT RETREATED, AND ONLY ONE PATIENTS HAD A DEFAULT 
+    p_not_incl=oc_1021.loc[~(oc_1021.index.isin(p_1021_fav+p_1021_unfav))&\
+                (oc_1021['RESULT_AT_18_MONTHS']=='FAVOURABLE'),:].index
+    
+    ## DROP PATIENTS WHO DON'T HAVE COMPLETION DATE OF FOLLOW-UP PHASE
+    de_not_incl = de.loc[p_not_incl,:].dropna(how='all',axis=1)
+    tb21_no_12_mont_res_but_fav_at_18 = de_not_incl[~de_not_incl['COMPLETION FOLLOW-UP PHASE'].isna()].index.tolist()
+    
+    ## ADD THESE PATIENTS TO THE FAVOURABLE PATIENT COHORT
+    p_1021_fav = p_1021_fav + tb21_no_12_mont_res_but_fav_at_18
+
+
+    del de
+
+    d={'pats_wo_mgit_at_18':pats_wo_mgit_at_18,
+       'tb21_no_12_mont_res_but_fav_at_18':tb21_no_12_mont_res_but_fav_at_18}
+    
+    return p_1021_fav,p_1021_unfav,d
+
+
+###===========================
+def return_fav_unfav_pats_tb_1022(X_subset):
+
+    if X_subset is None:
+        fn='../data/tb21_22_2984_pats_22_vars_result_at_end_of_treatment_preproc_data_with_imp.csv.gz'
+        X_subset=pd.read_csv(fn,index_col=0)
+        X_subset=X_subset.rename(columns=lambda x: x.replace('<', 'lower than'))
+        X_subset=X_subset.rename(columns=lambda x: x.replace('>', 'higher than'))
+
+    outcome_tb1022 = pd.read_csv('../data/tb_1022_outcome.csv.gz',index_col=0)
+    outcome_tb1022 = outcome_tb1022.loc[X_subset[X_subset['STUDYID']=='TB-1022']['USUBJID'].unique(),:]
+    outcome_tb1022['RESULT_AT_END_OF_TREATMENT']#.value_counts(dropna=False)
+    oc_1022 = outcome_tb1022[outcome_tb1022['RESULT_AT_END_OF_TREATMENT']=='FAVOURABLE'].replace('UNASSESSABLE',np.nan)
+    
+    oc_1022 = oc_1022.replace('NOT ASSESSABLE',np.nan)
+
+    ds=pd.read_csv('../../C-Path_data/fullExportDb-1025-Member-CSV/ds.csv',low_memory=False)
+    ds=ds.loc[ds['USUBJID'].isin(X_subset['USUBJID'].unique())]
+    
+    de=pd.read_csv('../../C-Path_data/preprocessing/disposition_events.csv',low_memory=True) 
+    de=de.set_index('USUBJID')
+    
+    
+    
+    p_1022_fav=[]
+    out_cols=['RESULT_AT_END_OF_TREATMENT','RESULT_AT_18_MONTHS','RESULT_AT_24_MONTHS','UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS']
+    p_1022_fav.extend(oc_1022.loc[(oc_1022[out_cols]=='FAVOURABLE').all(axis=1),:].index.tolist())
+    
+    
+    out_cols=['RESULT_AT_18_MONTHS','RESULT_AT_24_MONTHS']#,'UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS']
+    
+    p_1022_unfav=[]
+    pats_=oc_1022.loc[(oc_1022['RESULT_AT_END_OF_TREATMENT']=='FAVOURABLE')&\
+          (oc_1022[out_cols]=='UNFAVOURABLE').any(axis=1)&\
+          #(d['UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS']!='FAVOURABLE')&\
+          #(~d['UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS'].isna())\
+          (oc_1022['UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS'].isin(['RELAPSE','FAILURE']))\
+    
+            ,:].index.tolist()
+    
+    p_1022_unfav.extend(pats_)
+    
+    
+    
+    pat_not_incl=oc_1022.loc[~oc_1022.index.isin(p_1022_fav+p_1022_unfav)].index.tolist()
+    
+    ## RELAPSE
+    pats_with_relapse = ds.loc[ds['USUBJID'].isin(pat_not_incl)&\
+                               ds['DSTERM'].str.contains('RELAPSE'),:].dropna(how='all',axis=1)
+    
+    
+    pats_with_relapse_with_fav_at_24_month = oc_1022.loc[oc_1022.index.isin(pats_with_relapse['USUBJID'].tolist())&\
+                                                        (oc_1022['UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS']=='RELAPSE'),:].index.tolist()
+    
+    relapse_miss_at_18_and_24 = ds.loc[ds['USUBJID'].isin(pat_not_incl)&\
+                                       ds['DSTERM'].str.contains('BASED ON CLINICAL AND RADIOLOGIC'),'USUBJID'].tolist()
+    
+    p_1022_unfav.extend(pats_with_relapse_with_fav_at_24_month)
+    p_1022_unfav.extend(relapse_miss_at_18_and_24)
+    
+    
+    
+    
+    ## DiED
+    pats_died = ds.loc[ds['USUBJID'].isin(pat_not_incl)&\
+                ds['DSTERM'].str.contains('DEATH|DIED|DECEASED|DCD'),:].dropna(how='all',axis=1)
+    
+    pats_died_due_to_adverse_event = pats_died.loc[pats_died['DSDECOD'].str.contains('ADVERSE'),['USUBJID','DSSTDY']]
+    pats_died_due_to_adverse_event.loc[pats_died_due_to_adverse_event['DSSTDY'].isna(),'DSSTDY']=int(365*16/12)
+    pats_died_due_to_other_cause = pats_died.loc[pats_died['DSDECOD'].str.contains('OTHER'),['USUBJID','DSSTDY']]
+    
+    #pats_died_due_to_adverse_event = pats_died_due_to_adverse_event['USUBJID'].tolist()
+    #pats_died_due_to_other_cause = pats_died_due_to_other_cause['USUBJID'].tolist()
+    
+    
+    ## REPROCESSING
+    reprocessing = ds.loc[ds['USUBJID'].isin(pat_not_incl)&\
+                          ds['DSTERM'].str.contains('REPROCESSING'),['USUBJID','DSSTDY']]
+    
+    
+    ## LOST TO FOLLOW-UP
+    str_ = 'CONSENTEMENT RETIRE|LOST|ADVERSE EVENT|CONSENT WITHDRAWN|TRAVEL|WRONGLY EXCLUDED|OTHER'
+    pats_lost_to_follow_up = ds.loc[ds['USUBJID'].isin(pat_not_incl)&\
+                                    ds['DSTERM'].str.contains(str_),:].dropna(how='all',axis=1)#['USUBJID'].unique().tolist()
+    
+    
+    ## UNKOWN OUTCOME AT 24 MONTHS (SOME OF THEM HAVE UNFAVOURABLE, BUT THE EXACT CATEGORY IS MISSING)
+    ## THEY ARE ALL FAVOURABLE AT EOT AND MONTH 18
+    unk_outcome_at_24 = ds.loc[ds['USUBJID'].isin(pat_not_incl)&\
+                                       ds['DSTERM'].str.contains('COMPLETED'),:].dropna(how='all',axis=1) #'USUBJID'].tolist()
+    
+    ## RESISTANCE
+    pats_with_res = ds.loc[ds['USUBJID'].isin(pat_not_incl)&\
+                               ds['DSTERM'].str.contains('MGIT|MDR'),:].dropna(how='all',axis=1)#'USUBJID'].tolist()
+    
+    
+    ## CREATE DICT CONTAINING ALL PATIENTS WHO WERE NOT INCLUDED IN ANALYSIS + REASON WHY
+    d={'pats_died_due_to_adverse_event':pats_died_due_to_adverse_event,
+       'pats_died_due_to_other_cause':pats_died_due_to_other_cause,
+       'pats_lost_to_follow_up':pats_lost_to_follow_up,
+       'pats_died_due_to_adverse_event':pats_died_due_to_adverse_event,
+      'unk_outcome_at_24':unk_outcome_at_24,
+       'pats_with_res':pats_with_res
+      }
+    
+    del de, ds
+
+    return p_1022_fav,p_1022_unfav, d
+
+
+
+###====================
+def extract_21_22_relapse_pats(include_rifaquin=False,
+                              extended_pats=False):
 
     print('Extracting relapse information...')
     
@@ -1910,10 +2097,7 @@ def extract_21_22_relapse_pats(include_rifaquin=False):
     X_subset=X_subset.rename(columns=lambda x: x.replace('>', 'higher than'))
     
     
-    #### ================================ FAVOURABLE PATIENTS ========== ############
-    
-    ### COLLECT PATIENTS, WHO ONLY HAVE FAVOURABLE OUTCOMES AT END OF TREATMENT & AT ALL FOLLOW-UP TIMEPOINTS 
-    #. ==>TB-1021: 12 & 18 MONTHS, TB-1022: 18 & 24 MONTHS
+
 
     outcome_df=pd.read_csv('../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
     outcome_df=outcome_df.set_index('USUBJID',drop=True)
@@ -1923,44 +2107,75 @@ def extract_21_22_relapse_pats(include_rifaquin=False):
     df_['STUDYID']=df_['USUBJID'].str.split('/',expand=True)[0].values
     df_=df_.set_index('USUBJID')
     df_=df_.loc[X_subset['USUBJID'].unique()]
+
+
+
+
+    if extended_pats==False:
+
+        #### ================================ FAVOURABLE PATIENTS ========== ############
     
-    pats_with_fav=[]
-    for study,d in df_[df_['STUDYID'].isin(['TB-1022','TB-1021'])].groupby('STUDYID'):
-        if study=='TB-1021':
-            out_cols=['RESULT_AT_END_OF_TREATMENT','RESULT_AT_12_MONTHS','RESULT_AT_18_MONTHS']#,'RESULT_AT_24_MONTHS']
-            pats_with_fav.extend(d.loc[(d[out_cols]=='FAVOURABLE').all(axis=1),:].index.tolist())
+        ### COLLECT PATIENTS, WHO ONLY HAVE FAVOURABLE OUTCOMES AT END OF TREATMENT & AT ALL FOLLOW-UP TIMEPOINTS 
+        #. ==>TB-1021: 12 & 18 MONTHS, TB-1022: 18 & 24 MONTHS
+
+        pats_with_fav=[]
+        
+        for study,d in df_[df_['STUDYID'].isin(['TB-1022','TB-1021'])].groupby('STUDYID'):
+            if study=='TB-1021':
+                out_cols=['RESULT_AT_END_OF_TREATMENT','RESULT_AT_12_MONTHS','RESULT_AT_18_MONTHS']#,'RESULT_AT_24_MONTHS']
+                pats_with_fav.extend(d.loc[(d[out_cols]=='FAVOURABLE').all(axis=1),:].index.tolist())
+                
+            if study=='TB-1022':
+                out_cols=['RESULT_AT_END_OF_TREATMENT','RESULT_AT_18_MONTHS','RESULT_AT_24_MONTHS','UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS']
+                pats_with_fav.extend(d.loc[(d[out_cols]=='FAVOURABLE').all(axis=1),:].index.tolist())
+
             
-        if study=='TB-1022':
-            out_cols=['RESULT_AT_END_OF_TREATMENT','RESULT_AT_18_MONTHS','RESULT_AT_24_MONTHS','UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS']
-            pats_with_fav.extend(d.loc[(d[out_cols]=='FAVOURABLE').all(axis=1),:].index.tolist())
+        #### ================================ UNFAVOURABLE PATIENTS ========== ############
+        
+        ### COLLECT PATIENTS, WHO HAVE FAVOURABLE OUTCOME AT END OF TREATMENT, BUT HAVE AT LEAST ONE UNFAVOURABLE OUTCOME AT ANY OF THE FOLLOW-UP TIMEPOINTS 
+        #. ==>TB-1021: 12 & 18 MONTHS, TB-1022: 18 & 24 MONTHS
+        
+        pats_with_unfav=[]
     
-    len(pats_with_fav)
-    
-    
-    #### ================================ UNFAVOURABLE PATIENTS ========== ############
-    
-    ### COLLECT PATIENTS, WHO HAVE FAVOURABLE OUTCOME AT END OF TREATMENT, BUT HAVE AT LEAST ONE UNFAVOURABLE OUTCOME AT ANY OF THE FOLLOW-UP TIMEPOINTS 
-    #. ==>TB-1021: 12 & 18 MONTHS, TB-1022: 18 & 24 MONTHS
-    
-    pats_with_unfav=[]
-    
-    for study,d in df_[df_['STUDYID'].isin(['TB-1022','TB-1021'])].groupby('STUDYID'):
-        if study=='TB-1021':
-            out_cols=['RESULT_AT_12_MONTHS','RESULT_AT_18_MONTHS']#,'RESULT_AT_24_MONTHS']
-    
-            pats_=d.loc[(d['RESULT_AT_END_OF_TREATMENT']=='FAVOURABLE')&(d[out_cols]=='UNFAVOURABLE').any(axis=1),:].index.tolist()
-            pats_with_unfav.extend(pats_)
-            
-        if study=='TB-1022':
-            out_cols=['RESULT_AT_18_MONTHS','RESULT_AT_24_MONTHS']#,'UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS']
-            
-            pats_=d.loc[(d['RESULT_AT_END_OF_TREATMENT']=='FAVOURABLE')&\
-                  (d[out_cols]=='UNFAVOURABLE').any(axis=1)&\
-                  (d['UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS']!='FAVOURABLE')&\
-                  (~d['UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS'].isna())\
-                    ,:].index.tolist()
-            
-            pats_with_unfav.extend(pats_)
+        for study,d in df_[df_['STUDYID'].isin(['TB-1022','TB-1021'])].groupby('STUDYID'):
+            if study=='TB-1021':
+                out_cols=['RESULT_AT_12_MONTHS','RESULT_AT_18_MONTHS']#,'RESULT_AT_24_MONTHS']
+        
+                pats_=d.loc[(d['RESULT_AT_END_OF_TREATMENT']=='FAVOURABLE')&(d[out_cols]=='UNFAVOURABLE').any(axis=1),:].index.tolist()
+                pats_with_unfav.extend(pats_)
+                
+            if study=='TB-1022':
+                out_cols=['RESULT_AT_18_MONTHS','RESULT_AT_24_MONTHS']#,'UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS']
+                
+                pats_=d.loc[(d['RESULT_AT_END_OF_TREATMENT']=='FAVOURABLE')&\
+                      (d[out_cols]=='UNFAVOURABLE').any(axis=1)&\
+                      (d['UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS']!='FAVOURABLE')&\
+                      (~d['UNFAVOURABLE_OUTCOME_CATEGORY_AT_24_MONTHS'].isna())\
+                        ,:].index.tolist()
+                
+                pats_with_unfav.extend(pats_)
+                
+           
+    ## EXTENDED PATS: 
+    ###. TB-1021:
+    ##.  - INCLUDE TB-1021 PATIENTS WHO HAVE MISSING LABEL AT MONTH 12 BUT ARE FAVOURABLE AT MONTH 18 (NO RETREATMENT)
+    ##.  - WHERE LIQUID MEDIUM IS MISING AT MONTH 18, USE THE LABEL DERIVED ON SOLID MEDIUM
+    ###  TB-1022:
+    ##.  - INCLUDE PATIENTS WHO HAVE FAVOURABLE AT MONTH 24 ERRONEOUSLY, BECUASE IN THE DS DATAFRAME, THEY HAVE RELAPSE
+    ##.  - EXTRACT PATIENTS WHO HAVE FAVOURABLE EOT OUTCOME, BUT WERE EXCLUDED DUE TO MISSING LABELS DURING FOLLOW-UP
+    #.    (I.E. DEATH (DUE TO ADVERSE EVENTS OR OTHER CAUSE), LOST TO FOLLOW-UP, REPROCESSING, REINFECTION, RESISTANCE, UNK. OUTCOME AT MONTH 24 
+
+    if extended_pats==True:
+        #pats_with_fav=[]
+        p_1021_fav,p_1021_unfav,_ = return_fav_unfav_pats_tb_1021(X_subset)
+        p_1022_fav,p_1022_unfav,_ = return_fav_unfav_pats_tb_1022(X_subset)
+
+        pats_with_unfav = p_1021_unfav + p_1022_unfav
+        pats_with_fav = p_1021_fav + p_1022_fav
+             
+    print('pats_with_fav',len(pats_with_fav))
+    print('pats_with_unfav',len(pats_with_unfav))
+    print(len(pats_with_unfav) + len(pats_with_fav))
     
     
     ## USING THE RAW DISPOSITION EVENTS DATAFRAME (ds) &  PREPROCESSED de DATAFRAME (day of disposition events extracted/patient),
@@ -2269,8 +2484,14 @@ def return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
         
     if parameters_for_analysis[data_param_key]['result_cat']=='RELAPSE':
         #outcome_label='RELAPSE'
-        include_rifaquin = parameters_for_analysis[data_param_key].get('include_rifaquin',None)
-        pats_with_relapse_df=extract_21_22_relapse_pats(include_rifaquin)
+        
+        include_rifaquin = parameters_for_analysis[data_param_key].get('include_rifaquin',False)
+        extended_pats = True if 'ext_pats' in data_param_key else False
+
+        print('include_rifaquin',include_rifaquin,'extended_pats',extended_pats)
+            
+        pats_with_relapse_df=extract_21_22_relapse_pats(include_rifaquin=include_rifaquin,
+                                                       extended_pats=extended_pats)
         #pats_with_relapse_df=extract_21_22_relapse_pats()
     
         ## IF PEDICTION IS A REGRESSION TASK

@@ -20,7 +20,9 @@ from torch.utils.data import DataLoader, TensorDataset
 ### EXTRACT PARAMETERS FOR PARAMETER SEARCH FROM ARGPARSE
 import argparse
 parser = argparse.ArgumentParser()
-parser.add_argument("--dataset_name", help="One of the dataset names from the keys of parameters_for_analysis dictionar (see below)")
+parser.add_argument("--dataset_name", 
+                    nargs='+',
+                    help="List of the dataset names from the keys of parameters_for_analysis dictionar (see below)")
 parser.add_argument("--data_inclusion_type", 
                     nargs='+',  # ← this makes it accept one or more values
                     help="List of data inclusion types: ['baseline_last_day','baseline_vars','all_days']")
@@ -35,7 +37,7 @@ parser.add_argument("--period_end_day",
 
 
 args = parser.parse_args()
-dataset_name_=[args.dataset_name]
+dataset_name_=[t for t in args.dataset_name]
 data_inclusion_types_ = [t for t in args.data_inclusion_type]
 pool_methods_ = [t for t in args.pool_methods]
 #model_names_ = [args.model]
@@ -61,6 +63,11 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                          'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
                             'result_cat':'RESULT_AT_END_OF_TREATMENT',
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment'},
+
+                          'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats':{
+                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
+                            'result_cat':'RELAPSE'},
                         
                         'tb21_22_18_3079_pats_22_vars_result_at_end_of_treatment':{
                             'result_cat':'RESULT_AT_END_OF_TREATMENT',
@@ -171,8 +178,8 @@ def load_input_texts_and_labels(ds_types_merged,dataset_param_key,target_df,prom
     if ds_types_merged==True:
         
         #fn=f'../data/{dataset_param_key}_input_dict_all_ds_types_merged.json'
-        fn=f'../data/{key}_{period_end_day}_days_input_dict_all_ds_types_merged.json'
-        fn=f'../data/{key}_{period_end_day}_days_{data_inclusion_type}_input_dict_all_ds_types_merged.json'
+        fn=f'../data/{dataset_param_key}_{period_end_day}_days_input_dict_all_ds_types_merged.json'
+        fn=f'../data/{dataset_param_key}_{period_end_day}_days_{data_inclusion_type}_input_dict_all_ds_types_merged.json'
         input_dict=json.load(open(fn))
         
         all_labels=target_df[[*input_dict]].values.tolist() #.astype(int)
@@ -185,8 +192,8 @@ def load_input_texts_and_labels(ds_types_merged,dataset_param_key,target_df,prom
         
     if ds_types_merged==False: 
         #fn=f'../data/{dataset_param_key}_input_dict_ds_types_seperate.json'
-        fn=f'../data/{key}_{period_end_day}_days_input_dict_ds_types_seperate.json'
-        fn=f'../data/{key}_{period_end_day}_days_{data_inclusion_type}_input_dict_ds_types_seperate.json'
+        fn=f'../data/{dataset_param_key}_{period_end_day}_days_input_dict_ds_types_seperate.json'
+        fn=f'../data/{dataset_param_key}_{period_end_day}_days_{data_inclusion_type}_input_dict_ds_types_seperate.json'
         input_dict=json.load(open(fn))
 
   
@@ -292,7 +299,9 @@ if model_type=='AutoModelForSequenceClassification':
 
 ### PARAMETERS FOR SUBSETTING TRAINING DATA
 ds_types_merged=True
-dataset_param_key=key
+#dataset_param_key=key
+
+
 
 
 
@@ -301,16 +310,7 @@ dataset_param_key=key
 ######## ================ LOAD LLM MODEL ================
 
 from peft import LoraConfig, TaskType,get_peft_model
-'''
-#LORA taks types:
 
-#SEQ_CLS = "SEQ_CLS"
-#SEQ_2_SEQ_LM = "SEQ_2_SEQ_LM"
-#CAUSAL_LM = "CAUSAL_LM"
-#TOKEN_CLS = "TOKEN_CLS"
-#QUESTION_ANS = "QUESTION_ANS"
-#FEATURE_EXTRACTION = "FEATURE_EXTRACTION"
-'''
 
 task_type_dict={'AutoModelForCausalLM':'CAUSAL_LM','AutoModelForSequenceClassification':'SEQ_CLS'}
 
@@ -523,7 +523,7 @@ for dataset_param_key in dataset_name_:
                     for pool_method in pool_methods_:
                         
                         
-                        output_dir=f"../data/{key}_{model_id}_{period_end_day}_days_{data_inclusion_type}_{pool_method}"
+                        output_dir=f"../data/{dataset_param_key}_{model_id}_{period_end_day}_days_{data_inclusion_type}_{pool_method}"
                         os.makedirs(output_dir,exist_ok=True)
                         
                         #print(' - '.join([model_id,dataset_param_key,data_inclusion_type,period_end_day,pool_method]))
