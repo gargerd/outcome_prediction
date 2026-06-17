@@ -1,0 +1,40 @@
+Loading anaconda
+Activate conda env
+tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21
+baseline_vars
+baseline
+LogisticRegression
+data_inclusion_type_ ['baseline_vars'] model_names_ ['LogisticRegression'] period_end_day_ ['baseline']
+Loading embeddings:   0%|          | 0/1 [00:00<?, ?set/s]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.53s/set]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.53s/set]
+
+→ Loading: tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21 | BioMistral-7B_base | baseline | baseline_vars | autoenc=False | mean_pooling 
+Loaded in 2.31 seconds.
+tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21
+Training on baseline days of data
+Loading embeddings of tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21 data / BioMistral-7B_base /baseline /baseline_vars /autoenc False / mean_pooling model
++++++++
+Running training with full model: 4096 vars
++++++++
+Processing:   0%|          | 0/1 [00:00<?, ?model/s]
+=====================
+LogisticRegression
+
+Processing:   0%|          | 0/1 [00:00<?, ?cv_repeat/s][ARESULT_AT_END_OF_TREATMENT   0.0  1.0
+STUDYID                              
+TB-1021                     1382   46
+TB-1022                     1392   54
+Num of CV-repeat:1
+Num of CV-repeat:1 - Model:LogisticRegression - Data inclusion type:baseline_vars - Period:baseline - mean_pooling 
+
+
+  0%|          | 0/1 [00:00<?, ?model/s][A[A
+
+100%|██████████| 1/1 [03:11<00:00, 191.10s/model][A[A100%|██████████| 1/1 [03:11<00:00, 191.10s/model]
+
+Processing: 100%|██████████| 1/1 [03:11<00:00, 191.96s/cv_repeat][AProcessing: 100%|██████████| 1/1 [03:11<00:00, 191.96s/cv_repeat]
+Processing: 100%|██████████| 1/1 [03:11<00:00, 191.97s/model]Processing: 100%|██████████| 1/1 [03:11<00:00, 191.97s/model]
+CV test_score: [0.6249498596068993, 0.551544324107501, 0.5855072463768116, 0.49194847020933974, 0.5849436392914653]
+CV train_score: [0.9700868289103584, 0.9324691207044148, 0.9345489250552541, 0.9847514784223645, 0.9297443917697081]
+Calcu;ating conf metrics
+Training duration:
+Elapsed time:0 hours:3 minutes seconds:38

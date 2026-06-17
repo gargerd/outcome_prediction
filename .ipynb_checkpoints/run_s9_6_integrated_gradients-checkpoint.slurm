@@ -27,16 +27,17 @@ conda activate scarches
 ## Specify which model should be run with IG
 #dataset_name='tb21_22_2984_pats_22_vars_relapse'
 #dataset_name='tb21_22_2984_pats_22_vars_relapse_without_dr_reg'
-dataset_name='tb21_22_2984_pats_22_vars_relapse_ext_pats'
+#dataset_name='tb21_22_2984_pats_22_vars_relapse_ext_pats'
+dataset_name='tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats'
 
 data_inclusion_type='all_days'
 model='LogisticRegression'
-period_end_day='baseline'
+period_end_day='160'
 #period_end_day='baseline 31 62 93 125 160 all'
-#data_inclusion_type='baseline_last_day'
 internal_batch_size='1'
 
 #dataset_name='tb21_22_2984_pats_22_vars_result_at_end_of_treatment'
+#dataset_name='tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg'
 #data_inclusion_type='baseline_last_day'
 #model='LogisticRegression'
 #period_end_day='baseline 31 62 93 125 160'

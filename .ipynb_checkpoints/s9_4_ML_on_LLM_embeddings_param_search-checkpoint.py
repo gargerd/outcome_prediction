@@ -71,17 +71,23 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
 
                         'tb21_22_2984_pats_22_vars_relapse_ext_pats':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE'}, 
-
+                            'result_cat':'RELAPSE',
+                            'validate_on_rifaquin':True}, 
                          
-                        
+                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg':{
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT',
+                              'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                         },
+
+
                         'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats':{
-                            'fn':'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats',
                             'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'fn':'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats',
                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
-                            'result_cat':'RELAPSE'},
-
-
+                            'result_cat':'RELAPSE',
+                            'validate_on_rifaquin':True},
 
                          'tb20_21_22_2908_pats_7_vars_relapse':{
                             'result_cat':'RELAPSE',
@@ -92,7 +98,49 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'result_cat':'RELAPSE',
                             'fn':'tb20_21_22_2908_pats_7_vars_relapse',
                            'include_rifaquin':True},
+                        
+                         'tb21_22_2984_pats_22_vars_relapse_basic_vars':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
+                            'result_cat':'RELAPSE'},
 
+                         ### train on one/more studies, validate on completely held out study
+                          'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             #'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'corr_test_for_arm':True,
+                            'training_cohort':['TB-1021'],
+                            'validation_cohort':['TB-1022'],
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+                            
+                            'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb22':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             #'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'corr_test_for_arm':True,
+                            'training_cohort':['TB-1022'],
+                            'validation_cohort':['TB-1021'],
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+                            
+                            'tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb21':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            #'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
+                            'corr_test_for_arm':True,
+                            'training_cohort':['TB-1021'],
+                            #'include_rifaquin':True,
+                            'validation_cohort':['TB-1022'], # ['TB-1022']
+                            'result_cat':'RELAPSE'}, 
+                            
+                            'tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb22':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            #'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
+                            'corr_test_for_arm':True,
+                            'training_cohort':['TB-1022'],
+                            'validation_cohort':['TB-1021'],# ['TB-1021']
+                            #'include_rifaquin':True,
+                            'result_cat':'RELAPSE'}, 
+
+                       
 
 
                          
@@ -106,11 +154,14 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
                             'result_cat':'RELAPSE'}, 
 
+                       
                         'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
-                            'fn':'tb21_22_2984_pats_22_vars_relapse_without_dr_reg',#_wo_dr_reg',
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
                             'result_cat':'RELAPSE'},
+
+ 
 
                           'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_with_arm':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
@@ -411,17 +462,19 @@ param_search_dict={'RandomForest':{'n_estimators':[300,500,700],
                              #'n_jobs':[4]
                   #          },
                   
-                 'XGBoost':{   'n_estimators':     [100, 200, 300],   # 3
-                            'learning_rate':    [0.05, 0.1],        # 2
-                            'max_depth':        [2, 3],             # 2
-                            'min_child_weight': [15, 20, 30],  
+                 'XGBoost':{ 'n_estimators':      [100, 200],        # 2
+                            'learning_rate':     [0.05, 0.1],       # 2
+                            'max_depth':         [2, 3],            # 2
+                            'min_child_weight':  [20, 40],          # 2
+                            'colsample_bytree':  [0.05, 0.1, 0.2], # 3
+                            'subsample':         [0.8],             # fixed
                            },
 
                    'LogisticRegression':{#'l1_ratio':[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1],
                                         #'l1_ratio':[1]
                                        'n_jobs':[4],
-                                        'l1_ratio':[1,0.5,0.1],
-                                         'C': [0.001, 0.01, 0.1, 1, 10][:-1],
+                                        'l1_ratio':[1,0.5,0.1][:1],
+                                         'C': [0.1, 1, 10, 100][:],
                                           },
                    
                   'SVC':{'C':[1e-3,1e-2,1e-1,1e0,1e1,1e2],
@@ -440,12 +493,8 @@ start=time.time()
 for data_param_key in dataset_name_:
 
     ## LOAD FINAL PATIENT IDS FOR ANALYSIS, SAVED DURING PREPROCESSING OF THE BASELINE MODELS IN NOTEBOOK S9_3
-    if 'pat_ids_fn' in parameters_for_analysis[data_param_key].keys():
-        fn=f"../data/{parameters_for_analysis[data_param_key]['pat_ids_fn']}_final_pat_ids_for_analysis.pickle"
-    else:  
-        fn=f'../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
-    with open(fn, 'rb') as handle:
-        final_pat_ids_for_analysis=pickle.load(handle)
+    final_pat_ids_for_analysis = load_final_patient_for_analysis(parameters_for_analysis=parameters_for_analysis,
+                                                                 data_param_key=data_param_key)
 
 
     print(data_param_key)
@@ -556,7 +605,8 @@ for data_param_key in dataset_name_:
                                         training_results['param_search_results']={}
             
             
-                                    for cv_repeat_num in range(train_params['num_cv_repeats']):
+                                    #for cv_repeat_num in range(train_params['num_cv_repeats']):
+                                    for cv_repeat_num in tqdm([*final_pat_ids_for_analysis[period_end_day]],desc="Processing", unit="cv_repeat"):
     
                                         if overwrite_existing_params!='True':
                                             

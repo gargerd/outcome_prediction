@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH --array=1-56%56
+#SBATCH --array=1-196%196
 #SBATCH --job-name=s_9_3_raw_data_param_search
 #SBATCH -o slurm_raw_data_param_search_logs/s_9_3_raw_data_param_search_%A_%a.log
 #SBATCH -e slurm_raw_data_param_search_logs/s_9_3_raw_data_param_search_%A_%a.log
 #SBATCH --cpus-per-task=4
-#SBATCH --mem-per-cpu=24G
+#SBATCH --mem-per-cpu=12G
 #SBATCH --partition=sapphire #bigmem
 ##SBATCH --qos=cpu_normal
 ##SBATCH --gres=gpu:2

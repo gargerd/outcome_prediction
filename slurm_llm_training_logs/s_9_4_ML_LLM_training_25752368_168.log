@@ -1,0 +1,45 @@
+Loading anaconda
+Activate conda env
+tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb22
+all_days
+all
+LogisticRegression
+data_inclusion_type_ ['all_days'] model_names_ ['LogisticRegression'] period_end_day_ ['all']
+Loading embeddings:   0%|          | 0/1 [00:00<?, ?set/s]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.09s/set]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.09s/set]
+
+→ Loading: tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb22 | BioMistral-7B_base | all | all_days | autoenc=False | mean_pooling 
+Loaded in 1.91 seconds.
+tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb22
+Training on all days of data
+Loading embeddings of tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb22 data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling model
+include_rifaquin False extended_pats True
+Extracting relapse information...
+pats_with_fav 2237
+pats_with_unfav 352
+2589
++++++++
+Running training with full model: 4096 vars
++++++++
+Processing:   0%|          | 0/1 [00:00<?, ?model/s]
+=====================
+LogisticRegression
+
+Processing:   0%|          | 0/1 [00:00<?, ?cv_repeat/s][ARELAPSE    0   1
+STUDYID         
+TB-1021  402  15
+TB-1022  535  36
+Num of CV-repeat:1
+Num of CV-repeat:1 - Model:LogisticRegression - Data inclusion type:all_days - Period:all - mean_pooling 
+
+
+  0%|          | 0/1 [00:00<?, ?model/s][A[A
+
+100%|██████████| 1/1 [00:55<00:00, 55.44s/model][A[A100%|██████████| 1/1 [00:55<00:00, 55.44s/model]
+
+Processing: 100%|██████████| 1/1 [00:56<00:00, 56.07s/cv_repeat][AProcessing: 100%|██████████| 1/1 [00:56<00:00, 56.07s/cv_repeat]
+Processing: 100%|██████████| 1/1 [00:56<00:00, 56.08s/model]Processing: 100%|██████████| 1/1 [00:56<00:00, 56.08s/model]
+CV test_score: [0.75, 0.6248331108144192, 0.5006675567423231, 0.7449933244325768, 0.6194926568758343]
+CV train_score: [0.9923230974632844, 0.9928295198195295, 0.9934740573638414, 0.9920238478891396, 0.9952465356106993]
+Calcu;ating conf metrics
+Training duration:
+Elapsed time:0 hours:1 minutes seconds:34

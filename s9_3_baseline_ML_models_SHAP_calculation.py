@@ -49,16 +49,25 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'}, 
 
-                         'tb21_22_2984_pats_22_vars_relapse_ext_pats':{
+                        'tb21_22_2984_pats_22_vars_relapse_ext_pats':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'}, 
 
-                         'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats':{
+                        'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
                             'result_cat':'RELAPSE'},
 
-                         
+                         'tb20_21_22_2908_pats_7_vars_relapse':{
+                            'result_cat':'RELAPSE',
+                            'fn':'tb20_21_22_2908_pats_7_vars_relapse',
+                           'include_rifaquin':True},
+
+                        'tb20_21_22_2908_pats_7_vars_relapse_ext_pats':{
+                            'result_cat':'RELAPSE',
+                            'fn':'tb20_21_22_2908_pats_7_vars_relapse',
+                           'include_rifaquin':True},
+
                         'tb20_21_22_2905_pats_8_vars_relapse_ext_pats':{
                               'result_cat':'RELAPSE',
                             'fn':'tb20_21_22_2905_pats_8_vars_relapse',
@@ -70,6 +79,99 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                              #'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
                            'include_rifaquin':False},
 
+                         'tb20_21_22_2905_pats_8_vars_relapse_without_dr_reg_ext_pats_no_rifaquin':{
+                              'result_cat':'RELAPSE',
+                            'fn':'tb20_21_22_2905_pats_8_vars_relapse',
+                             'pat_ids_fn':'tb20_21_22_2905_pats_8_vars_relapse',
+                           'include_rifaquin':False},
+
+                        'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+
+
+                        'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_with_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'corr_test_for_arm':True,
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+
+                          'tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_with_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
+                            'corr_test_for_arm':True,
+                            'result_cat':'RELAPSE'}, 
+
+                         ### train on one/more studies, validate on completely held out study
+                          'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             #'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'corr_test_for_arm':True,
+                            'training_cohort':['TB-1021'],
+                            'validation_cohort':['TB-1022'],
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+                            
+                            'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb22':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             #'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'corr_test_for_arm':True,
+                            'training_cohort':['TB-1022'],
+                            'validation_cohort':['TB-1021'],
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+                            
+                            'tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb21':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            #'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
+                            'corr_test_for_arm':True,
+                            'training_cohort':['TB-1021'],
+                            #'include_rifaquin':True,
+                            'validation_cohort':['TB-1022'], # ['TB-1022']
+                            'result_cat':'RELAPSE'}, 
+                            
+                            'tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb22':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            #'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
+                            'corr_test_for_arm':True,
+                            'training_cohort':['TB-1022'],
+                            'validation_cohort':['TB-1021'],# ['TB-1021']
+                            #'include_rifaquin':True,
+                            'result_cat':'RELAPSE'}, 
+
+                         'tb20_21_22_2905_pats_8_vars_relapse_without_dr_reg_ext_pats_train_tb21':{
+                              'result_cat':'RELAPSE',
+                            'fn':'tb20_21_22_2905_pats_8_vars_relapse',
+                             'corr_test_for_arm':True,
+                             #'pat_ids_fn':'tb20_21_22_2905_pats_8_vars_relapse_ext_pats',
+                             'training_cohort':['TB-1021'],
+                            'validation_cohort':['TB-1020'],                         
+                           'include_rifaquin':True},
+                         
+                         'tb20_21_22_2905_pats_8_vars_relapse_without_dr_reg_ext_pats_train_tb22':{
+                              'result_cat':'RELAPSE',
+                            'fn':'tb20_21_22_2905_pats_8_vars_relapse',
+                             'corr_test_for_arm':True,
+                             #'pat_ids_fn':'tb20_21_22_2905_pats_8_vars_relapse_ext_pats',
+                             'training_cohort':['TB-1022'],
+                            'validation_cohort':['TB-1020'],                         
+                           'include_rifaquin':True},
+
+                         'tb20_21_22_2905_pats_8_vars_relapse_without_dr_reg_ext_pats_train_tb21_tb22':{
+                              'result_cat':'RELAPSE',
+                            'fn':'tb20_21_22_2905_pats_8_vars_relapse',
+                             'corr_test_for_arm':True,
+                             #'pat_ids_fn':'tb20_21_22_2905_pats_8_vars_relapse_ext_pats',
+                             'training_cohort':['TB-1022','TB-1021'],
+                            'validation_cohort':['TB-1020'],                         
+                           'include_rifaquin':True},
+
+
+
+
+
+
+
+                         
 
                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_dr_reg_per_arm':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
@@ -92,12 +194,9 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
                             'result_cat':'RELAPSE'}, 
 
-                        'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
-                            'result_cat':'RELAPSE'},
-                         
-                          'tb21_22_2984_pats_22_vars_relapse_basic_vars':{
+                   
+
+                         'tb21_22_2984_pats_22_vars_relapse_basic_vars':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
                             'result_cat':'RELAPSE'},
@@ -359,6 +458,7 @@ def return_excluded_pats_data(X,period_end_day,training_data_type,data_param_key
     
     #print('X_full_',X_full_.shape)
     pat_id_name= 'pat_ids_all'
+    #pat_id_name= 'pat_ids_at_period'
     fn=os.path.join(data_dir_,
                    f"{period_end_day}_days_{training_data_type}_{pat_id_name}.pickle")
     #X_full_=pd.read_csv(fn,index_col=0)
@@ -427,13 +527,9 @@ for data_param_key in dataset_name_:
     #outcome_label=data_param_key.split('vars_')[-1].upper()
     outcome_label = parameters_for_analysis[data_param_key]['result_cat']
 
-     ## LOAD FINAL PATIENT IDS FOR ANALYSIS, SAVED DURING PREPROCESSING OF THE BASELINE MODELS IN NOTEBOOK S9_3
-    if 'pat_ids_fn' in parameters_for_analysis[data_param_key].keys():
-        fn=f"../data/{parameters_for_analysis[data_param_key]['pat_ids_fn']}_final_pat_ids_for_analysis.pickle"
-    else:  
-        fn=f'../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
-    with open(fn, 'rb') as handle:
-        final_pat_ids_for_analysis=pickle.load(handle)
+    ## LOAD FINAL PATIENT IDS FOR ANALYSIS, SAVED DURING PREPROCESSING OF THE BASELINE MODELS IN NOTEBOOK S9_3
+    final_pat_ids_for_analysis = load_final_patient_for_analysis(parameters_for_analysis=parameters_for_analysis,
+                                                                 data_param_key=data_param_key)
         
 
     ## Load preprocessed-imputed data, and modify the variables (add or drop) depending on the prediction setup, which is contained at the 
@@ -512,13 +608,17 @@ for data_param_key in dataset_name_:
 
         ## Define baseline columns to keep 
         temp_col_threshold=0.3 # 0.3 
-        temporal_data_names=['re','ae','cm','su','mh'][:] 
+        temporal_data_names=['re','ae','cm','su','mh'][:]
+        
+        if 'corr_test_for_arm' in parameters_for_analysis[data_param_key] or 'without_dr_reg' in data_param_key:
+            temporal_data_names = ['re','ae','cm','su','mh'][:-1]
+            
         temp_cols_to_keep=['dr_reg_study_drugs_cumul','vs_Height_STD_NUM_RESULT',
                            'vs_BMI_STD_NUM_RESULT','mb_LJ-culture_CULTURE_STATUS'][:] \
                             + race_colnames #\
                             #+ ae_cumul_colnames
                             #+ arm_cumul_colnames \
-                            
+                        
         
         for temp_data_name in temporal_data_names:
             cols_to_keep=select_temporal_cols_with_suff_pat_data(temp_data_name,X_subset,temp_col_threshold)
@@ -580,7 +680,8 @@ for data_param_key in dataset_name_:
                 ## If baseline, don't drop these rows, as they are being used to impute some variables at baseline
                 if period_end_day=='baseline':
                     X_subset_=X_subset.copy()
-                    X_subset_ = X_subset_.loc[:,~X_subset_.columns.str.startswith('ARM_')]
+                    if 'corr_test_for_arm' not in parameters_for_analysis[data_param_key]:
+                            X_subset_ = X_subset_.loc[:,~X_subset_.columns.str.startswith('ARM_')]
 
                 ## LOAD DATAFRAME CONTAINING PREPROCESSED DATA FOR  PATIENTS CONSIDERED AT PERIOD
                 #data_dir_ = f'../data/raw_data_for_analysis/{[*parameters_for_analysis][0]}'
@@ -588,17 +689,14 @@ for data_param_key in dataset_name_:
 
                 ## LOAD FINAL PATIENT IDS FOR ANALYSIS, SAVED DURING PREPROCESSING OF THE BASELINE MODELS IN NOTEBOOK S9_3
                 if 'pat_ids_fn' in parameters_for_analysis[data_param_key].keys():
-                    #fn=f"../data/{parameters_for_analysis[data_param_key]['pat_ids_fn']}_final_pat_ids_for_analysis.pickle"
                     data_dir_ = f"../data/raw_data_for_analysis/{parameters_for_analysis[data_param_key]['pat_ids_fn']}"
 
                 else:  
-                    #fn=f'../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
                     data_dir_ = f'../data/raw_data_for_analysis/{data_param_key}'
 
                 
                 #print('X_full_',X_full_.shape)
-                pat_id_name= 'pat_ids_at_period'
-                #pat_id_name= 'pat_ids_all'
+                pat_id_name= 'pat_ids_at_period' #if training_data_type=='last_therapy_day' else 'pat_ids_all'
                 fn=os.path.join(data_dir_,
                                f"{period_end_day}_days_{training_data_type}_{pat_id_name}.pickle")
                 #X_full_=pd.read_csv(fn,index_col=0)
@@ -610,10 +708,17 @@ for data_param_key in dataset_name_:
 
                 ## Drop drug regimen variables, except for drug adherence (dr_cumul_dose)
                 if 'without_dr_reg' in data_param_key:
-                    X_full = X_full.loc[:,~X_full.columns.str.endswith('cumulative_dose')]
+                    X_full = X_full.loc[:,~X_full.columns.str.startswith('dr_reg')]
                     
                         
-                for cv_repeat_num,_ in enumerate(tqdm(range(train_params['num_cv_repeats']),desc="Processing", unit="model")):
+                #for cv_repeat_num,_ in enumerate(tqdm(range(len([*cv_results])),desc="Processing", unit="model")):
+                for cv_repeat_num,_ in enumerate(range(len([*cv_results]))):
+                      
+                    if isinstance(cv_results[f'cv_rep_{cv_repeat_num}']['model'], dict):
+                        model=cv_results[f'cv_rep_{cv_repeat_num}']['model'][0]
+                        train_feat_names = model.feature_names_in_
+
+
                     rand_state=train_params['random_state'] + cv_repeat_num
                     
                     '''
@@ -627,16 +732,19 @@ for data_param_key in dataset_name_:
                                                                                                  period_end_day,
                                                                                                  outcome_label,
                                                                                                  cv_repeat_num=cv_repeat_num,
+                                                                                                 data_param_key=data_param_key,
+                                                                                                 parameters_for_analysis = parameters_for_analysis,
                                                                                                  final_pat_ids_for_analysis=final_pat_ids_for_analysis)
                     
-                        
-                    '''
+                    ''' 
+                    
                     #X_train,X_test = scale_by_training_data(X_train, X_test)
 
                     # print(cv_repeat_num,len(X_train.index),len(X_test.index))
 
                     X_train_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num]['X_train_ids']
                     X_test_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num]['X_test_ids']
+                    print('X_test_ids',len(X_test_ids))
 
                     X_train=X_full.loc[list(set(X_full.index)&set(X_train_ids)),:]
                     #X_train=X_full.loc[X_train_ids,:]
@@ -649,17 +757,20 @@ for data_param_key in dataset_name_:
                     y_test=y.loc[list(set(X_full.index)&set(X_test_ids)),:]
                     
                     all_pats = X_train.index.unique().tolist() + X_test.index.unique().tolist()
-
+                    print('X_train',X_train.index.unique().shape[0],'X_test',X_test.index.unique().shape[0])
+                    print('all pats:',len(all_pats))
+                    
                     #X_train,X_test = scale_by_training_data(X_train, X_test)
                     #all_pats = X_train.index.unique().tolist() + X_test.index.unique().tolist()
 
-                    print('all pats:',len(all_pats))
+      
                     
                     X_train, X_test=scale_by_training_data(X_train, X_test)
 
-                    
-                    if isinstance(cv_results[f'cv_rep_{cv_repeat_num}']['model'], dict):
-                        model=cv_results[f'cv_rep_{cv_repeat_num}']['model'][0]
+                    ## If we include ARM information as well, and  test on held-out studies, the arms of the train and test data are not overlapping completely
+                    ##. ==> keep only the column names used for training for both cohorts
+                    X_train,X_test = X_train[train_feat_names],X_test[train_feat_names]
+
 
                     X_list=[X_train,X_test]
                     y_list=[y_train,y_test]
@@ -667,8 +778,18 @@ for data_param_key in dataset_name_:
                     
                     
                     if outcome_label=='RELAPSE':
-                        X_excluded_ = X_excluded.loc[:,X_train.columns].copy()
-                        _,X_excluded_ = scale_by_training_data(X_full.loc[list(set(X_full.index)&set(X_train_ids)),:],
+                        
+                        ## If we include ARM information as well, and  test on held-out studies, the arms of the train and test data are not overlapping completely
+                        ##. ==> The excluded patient data  doesn't have arm information, add them with 0 values 
+                        X_excluded_ = X_excluded.copy()
+                        miss_cols = list(set(train_feat_names) - set(X_excluded_.columns))
+                        if len(miss_cols)>0:
+                            X_excluded_[miss_cols]=0
+                            print(f'Added missing columns: {miss_cols} with values 0')
+                            
+                        X_excluded_ = X_excluded_.loc[:,X_train.columns].copy()
+                        X_excluded_.columns = X_excluded_.columns.astype(str)
+                        _,X_excluded_ = scale_by_training_data(X_full.loc[list(set(X_full.index)&set(X_train_ids)),X_train.columns.tolist()],
                                                               X_excluded_)
                         
                         X_list.append(X_excluded_)

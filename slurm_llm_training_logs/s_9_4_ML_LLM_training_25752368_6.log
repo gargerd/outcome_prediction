@@ -1,0 +1,40 @@
+Loading anaconda
+Activate conda env
+tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21
+all_days
+31
+XGBoost
+data_inclusion_type_ ['all_days'] model_names_ ['XGBoost'] period_end_day_ [31]
+Loading embeddings:   0%|          | 0/1 [00:00<?, ?set/s]Loading embeddings: 100%|██████████| 1/1 [00:06<00:00,  6.12s/set]Loading embeddings: 100%|██████████| 1/1 [00:06<00:00,  6.12s/set]
+
+→ Loading: tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21 | BioMistral-7B_base | 31 | all_days | autoenc=False | mean_pooling 
+Loaded in 5.95 seconds.
+tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21
+Training on 31 days of data
+Loading embeddings of tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21 data / BioMistral-7B_base /31 /all_days /autoenc False / mean_pooling model
++++++++
+Running training with full model: 4096 vars
++++++++
+Processing:   0%|          | 0/1 [00:00<?, ?model/s]
+=====================
+XGBoost
+
+Processing:   0%|          | 0/1 [00:00<?, ?cv_repeat/s][ARESULT_AT_END_OF_TREATMENT   0.0  1.0
+STUDYID                              
+TB-1021                     1382   46
+TB-1022                     1395   54
+Num of CV-repeat:1
+Num of CV-repeat:1 - Model:XGBoost - Data inclusion type:all_days - Period:31 - mean_pooling 
+
+
+  0%|          | 0/1 [00:00<?, ?model/s][A[A
+
+100%|██████████| 1/1 [02:29<00:00, 149.74s/model][A[A100%|██████████| 1/1 [02:29<00:00, 149.74s/model]
+
+Processing: 100%|██████████| 1/1 [02:30<00:00, 150.40s/cv_repeat][AProcessing: 100%|██████████| 1/1 [02:30<00:00, 150.40s/cv_repeat]
+Processing: 100%|██████████| 1/1 [02:30<00:00, 150.42s/model]Processing: 100%|██████████| 1/1 [02:30<00:00, 150.42s/model]
+CV test_score: [0.667870036101083, 0.6618531889290012, 0.8010869565217391, 0.47665056360708535, 0.7125603864734299]
+CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
+Calcu;ating conf metrics
+Training duration:
+Elapsed time:0 hours:2 minutes seconds:51

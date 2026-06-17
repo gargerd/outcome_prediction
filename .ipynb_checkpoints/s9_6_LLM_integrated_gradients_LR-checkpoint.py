@@ -58,11 +58,20 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'}, 
 
-                         'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
-                            'fn':'tb21_22_2984_pats_22_vars_relapse_without_dr_reg',#_wo_dr_reg',
+                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg':{
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT',
+                              'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                         },
+
+
+                        'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats':{
                             'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
-                            'result_cat':'RELAPSE'},
+                            'fn':'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
+                            'result_cat':'RELAPSE',
+                            'validate_on_rifaquin':True},
 
                          'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_mb_only':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
@@ -418,12 +427,8 @@ n_steps = 24
 for data_param_key in dataset_name_:
 
     ## LOAD FINAL PATIENT IDS FOR ANALYSIS, SAVED DURING PREPROCESSING OF THE BASELINE MODELS IN NOTEBOOK S9_3
-    if 'pat_ids_fn' in parameters_for_analysis[data_param_key].keys():
-        fn=f"../data/{parameters_for_analysis[data_param_key]['pat_ids_fn']}_final_pat_ids_for_analysis.pickle"
-    else:  
-        fn=f'../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
-    with open(fn, 'rb') as handle:
-        final_pat_ids_for_analysis=pickle.load(handle)
+    final_pat_ids_for_analysis = load_final_patient_for_analysis(parameters_for_analysis=parameters_for_analysis,
+                                                                 data_param_key=data_param_key)
     
 
     #print(data_param_key)

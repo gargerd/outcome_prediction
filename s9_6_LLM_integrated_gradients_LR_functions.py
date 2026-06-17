@@ -33,11 +33,20 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'}, 
 
-                         'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
-                            'fn':'tb21_22_2984_pats_22_vars_relapse_without_dr_reg',#_wo_dr_reg',
+                        'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg':{
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT',
+                              'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                         },
+
+
+                        'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats':{
                             'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
-                            'result_cat':'RELAPSE'},
+                            'fn':'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
+                            'result_cat':'RELAPSE',
+                            'validate_on_rifaquin':True},
                          
                          'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_mb_only':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
@@ -322,13 +331,13 @@ def load_input_texts_and_labels(ds_types_merged,dataset_param_key,target_df,prom
     if data_inclusion_type=='baseline_vars_ext':
         data_inclusion_type='all_days'
 
-    key=[*parameters_for_analysis][0]
+    #key=[*parameters_for_analysis][0]
         
     if ds_types_merged==True:
         
         #fn=f'../data/{dataset_param_key}_input_dict_all_ds_types_merged.json'
-        fn=f'../data/{key}_{period_end_day}_days_input_dict_all_ds_types_merged.json'
-        fn=f'../data/{key}_{period_end_day}_days_{data_inclusion_type}_input_dict_all_ds_types_merged.json'
+        fn=f'../data/{dataset_param_key}_{period_end_day}_days_input_dict_all_ds_types_merged.json'
+        fn=f'../data/{dataset_param_key}_{period_end_day}_days_{data_inclusion_type}_input_dict_all_ds_types_merged.json'
         input_dict=json.load(open(fn))
         
         all_labels=target_df[[*input_dict]].values.tolist() #.astype(int)
@@ -694,6 +703,57 @@ def run_lig_on_chunk(input_ids_chunk, model,tokenizer,n_steps,internal_batch_siz
     
     
  
+###======================
+def load_final_patient_for_analysis(parameters_for_analysis,
+                                   data_param_key,
+                                   ):
+    import copy
+
+    
+    ## LOAD FINAL PATIENT IDS FOR ANALYSIS, SAVED DURING PREPROCESSING OF THE BASELINE MODELS IN NOTEBOOK S9_3
+    if 'pat_ids_fn' in parameters_for_analysis[data_param_key].keys():
+        fn=f"../data/{parameters_for_analysis[data_param_key]['pat_ids_fn']}_final_pat_ids_for_analysis.pickle"
+    else:  
+        fn=f'../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
+    with open(fn, 'rb') as handle:
+        final_pat_ids_for_analysis=pickle.load(handle)
+    
+    
+    final_pat_ids_for_analysis_ = {}
+
+    ## IF WE TRAIN ONLY SELECTED STUDIES AND TEST ON A HELD-OUT STUDIES, 
+    #. - LOAD THE PATIENTS CONSIDERED FOR GIVEN TIME PERIOD USING THE BASE EXPERIMENT CASE INDICATED IN "pat_ids_fn"
+    #. - SET 100% OF TRAIN SET PATIENTS AS TRAIN SET
+    #. - SET 100% OF VALIDATION SET PATIENTS AS TEST SET
+    #. - CHANGE THE CV NUMBER TO 1, AS THERE IS NOR SUBSAMPLING OF PATIENTS
+    if 'train' in data_param_key:
+        training_cohort = parameters_for_analysis[data_param_key]['training_cohort']
+        validation_cohort = parameters_for_analysis[data_param_key]['validation_cohort']
+    
+        for period_end_day in [*final_pat_ids_for_analysis][:]:
+            
+            final_pat_ids_for_analysis_[period_end_day] = {}
+            
+            for cv_repeat_num in [*final_pat_ids_for_analysis[period_end_day]][:1]:
+                
+                final_pat_ids_for_analysis_[period_end_day][cv_repeat_num]={}
+                
+                X_train_pat_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num]['X_train_ids']
+                X_test_pat_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num]['X_test_ids']
+    
+                all_pats = X_train_pat_ids + X_test_pat_ids            
+        
+                X_train_pat_ids_ = [id_ for id_ in all_pats if any(sub in id_ for sub in training_cohort)]
+                X_test_pat_ids_ = [id_ for id_ in all_pats if any(sub in id_ for sub in validation_cohort)]
+              
+                
+                final_pat_ids_for_analysis_[period_end_day][cv_repeat_num]['X_train_ids'] = X_train_pat_ids_
+                final_pat_ids_for_analysis_[period_end_day][cv_repeat_num]['X_test_ids'] = X_test_pat_ids_
+                
+    else:
+        final_pat_ids_for_analysis_ = copy.copy(final_pat_ids_for_analysis)
+
+    return final_pat_ids_for_analysis_
 
 
 

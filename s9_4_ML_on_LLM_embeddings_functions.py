@@ -32,16 +32,25 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
 
                         'tb21_22_2984_pats_22_vars_relapse_ext_pats':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'result_cat':'RELAPSE'}, 
+                            'result_cat':'RELAPSE',
+                            'validate_on_rifaquin':True}, 
+                         
+                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg':{
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT',
+                              'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                         },
+
 
                         'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats':{
-                            'fn':'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats',
                             'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'fn':'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats',
                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
-                            'result_cat':'RELAPSE'},
+                            'result_cat':'RELAPSE',
+                            'validate_on_rifaquin':True},
 
-
-                        'tb20_21_22_2908_pats_7_vars_relapse':{
+                         'tb20_21_22_2908_pats_7_vars_relapse':{
                             'result_cat':'RELAPSE',
                             'fn':'tb20_21_22_2908_pats_7_vars_relapse',
                            'include_rifaquin':True},
@@ -50,6 +59,49 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'result_cat':'RELAPSE',
                             'fn':'tb20_21_22_2908_pats_7_vars_relapse',
                            'include_rifaquin':True},
+                        
+                         'tb21_22_2984_pats_22_vars_relapse_basic_vars':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
+                            'result_cat':'RELAPSE'},
+
+                         ### train on one/more studies, validate on completely held out study
+                          'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             #'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'corr_test_for_arm':True,
+                            'training_cohort':['TB-1021'],
+                            'validation_cohort':['TB-1022'],
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+                            
+                            'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb22':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             #'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'corr_test_for_arm':True,
+                            'training_cohort':['TB-1022'],
+                            'validation_cohort':['TB-1021'],
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+                            
+                            'tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb21':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            #'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
+                            'corr_test_for_arm':True,
+                            'training_cohort':['TB-1021'],
+                            #'include_rifaquin':True,
+                            'validation_cohort':['TB-1022'], # ['TB-1022']
+                            'result_cat':'RELAPSE'}, 
+                            
+                            'tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb22':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            #'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
+                            'corr_test_for_arm':True,
+                            'training_cohort':['TB-1022'],
+                            'validation_cohort':['TB-1021'],# ['TB-1021']
+                            #'include_rifaquin':True,
+                            'result_cat':'RELAPSE'}, 
+
+                       
 
 
                          
@@ -63,11 +115,14 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
                             'result_cat':'RELAPSE'}, 
 
+                       
                         'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
-                            'fn':'tb21_22_2984_pats_22_vars_relapse_without_dr_reg',#_wo_dr_reg',
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
                             'result_cat':'RELAPSE'},
+
+ 
 
                           'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_with_arm':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
@@ -1020,7 +1075,7 @@ def init_model(model_name,X_train,y_train_data,
                             eta=grid.best_params_['eta'], subsample=1.0, colsample_bytree=0.8,\
                             random_state=random_state)
         '''
-        model=XGBClassifier(random_state=random_state,**model_params,colsample_bytree=0.8)
+        model=XGBClassifier(random_state=random_state,**model_params,)#colsample_bytree=0.8)
         #model.fit(X_train, y_train_data,sample_weight=label_weights)
         #feature_names=X_train.columns.tolist()
         #feature_importances=model.feature_importances_
@@ -1166,31 +1221,37 @@ def calibrate_model_and_extract_confidence_metrics(model,
                          sample_weight=sample_weights)
 
     ## Extract calibrated pred probs
-    probs_calibrated = calibrated_model.predict_proba(X_test)[:, 1]
-    probs_uncalibrated = model.predict_proba(X_test)[:, 1]
-
+    kk=[]
+    for X_data,data_type in zip([X_train,X_test],['train','test']):
+        probs_calibrated = calibrated_model.predict_proba(X_data)[:, 1]
+        probs_uncalibrated = model.predict_proba(X_data)[:, 1]
     
-    """
-    Compute per-model confidence statistics from probabilities.
-    """
-    eps = 1e-12
-    p_cal = np.clip(probs_calibrated, eps, 1 - eps)
-    p_uncal = np.clip(probs_uncalibrated, eps, 1 - eps)
-    margin = np.abs(p_cal - 0.5)
-    entropy = -(p_cal * np.log(p_cal) + (1 - p_cal) * np.log(1 - p_cal))
-    conf_entropy = 1 - entropy / np.log(2)
-    conf_metrics = pd.DataFrame({
-        'prob_calibrated': p_cal,
-        'prob_uncalibrated':p_uncal,
-        'margin': margin,
-        'entropy_conf': conf_entropy
-    })
-    if probs_uncalibrated is not None:
-        conf_metrics['delta_calib'] = p_cal - p_uncal
-    else:
-        conf_metrics['delta_calib'] = 0.0
+        
+        """
+        Compute per-model confidence statistics from probabilities.
+        """
+        eps = 1e-12
+        p_cal = np.clip(probs_calibrated, eps, 1 - eps)
+        p_uncal = np.clip(probs_uncalibrated, eps, 1 - eps)
+        margin = np.abs(p_cal - 0.5)
+        entropy = -(p_cal * np.log(p_cal) + (1 - p_cal) * np.log(1 - p_cal))
+        conf_entropy = 1 - entropy / np.log(2)
+        conf_metrics = pd.DataFrame({
+            'prob_calibrated': p_cal,
+            'prob_uncalibrated':p_uncal,
+            'margin': margin,
+            'entropy_conf': conf_entropy
+        })
+        if probs_uncalibrated is not None:
+            conf_metrics['delta_calib'] = p_cal - p_uncal
+        else:
+            conf_metrics['delta_calib'] = 0.0
+    
+        conf_metrics.index=X_data.index
+        conf_metrics['data_type'] = data_type
+        kk.append(conf_metrics)
 
-    conf_metrics.index=X_test.index
+    conf_metrics = pd.concat(kk,axis=0)
 
     ## Add out-of-distribution confidence variables (Mahalanobis and KNN confidence)
     #ood_conf_df=cv_roc_auc_scores['ood_conf']
@@ -2635,3 +2696,56 @@ def extract_confidence_and_ood_metrics(model,cv_roc_auc_scores,X_train,y_train,o
     conf_metrics.loc[ood_conf_df.index,ood_conf_df.columns.tolist()] = ood_conf_df.values
     
     return conf_metrics,calibrated_model
+
+
+###======================
+def load_final_patient_for_analysis(parameters_for_analysis,
+                                   data_param_key,
+                                   ):
+    import copy
+
+    
+    ## LOAD FINAL PATIENT IDS FOR ANALYSIS, SAVED DURING PREPROCESSING OF THE BASELINE MODELS IN NOTEBOOK S9_3
+    if 'pat_ids_fn' in parameters_for_analysis[data_param_key].keys():
+        fn=f"../data/{parameters_for_analysis[data_param_key]['pat_ids_fn']}_final_pat_ids_for_analysis.pickle"
+    else:  
+        fn=f'../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
+    with open(fn, 'rb') as handle:
+        final_pat_ids_for_analysis=pickle.load(handle)
+    
+    
+    final_pat_ids_for_analysis_ = {}
+
+    ## IF WE TRAIN ONLY SELECTED STUDIES AND TEST ON A HELD-OUT STUDIES, 
+    #. - LOAD THE PATIENTS CONSIDERED FOR GIVEN TIME PERIOD USING THE BASE EXPERIMENT CASE INDICATED IN "pat_ids_fn"
+    #. - SET 100% OF TRAIN SET PATIENTS AS TRAIN SET
+    #. - SET 100% OF VALIDATION SET PATIENTS AS TEST SET
+    #. - CHANGE THE CV NUMBER TO 1, AS THERE IS NOR SUBSAMPLING OF PATIENTS
+    if 'train' in data_param_key:
+        training_cohort = parameters_for_analysis[data_param_key]['training_cohort']
+        validation_cohort = parameters_for_analysis[data_param_key]['validation_cohort']
+    
+        for period_end_day in [*final_pat_ids_for_analysis][:]:
+            
+            final_pat_ids_for_analysis_[period_end_day] = {}
+            
+            for cv_repeat_num in [*final_pat_ids_for_analysis[period_end_day]][:1]:
+                
+                final_pat_ids_for_analysis_[period_end_day][cv_repeat_num]={}
+                
+                X_train_pat_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num]['X_train_ids']
+                X_test_pat_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num]['X_test_ids']
+    
+                all_pats = X_train_pat_ids + X_test_pat_ids            
+        
+                X_train_pat_ids_ = [id_ for id_ in all_pats if any(sub in id_ for sub in training_cohort)]
+                X_test_pat_ids_ = [id_ for id_ in all_pats if any(sub in id_ for sub in validation_cohort)]
+              
+                
+                final_pat_ids_for_analysis_[period_end_day][cv_repeat_num]['X_train_ids'] = X_train_pat_ids_
+                final_pat_ids_for_analysis_[period_end_day][cv_repeat_num]['X_test_ids'] = X_test_pat_ids_
+                
+    else:
+        final_pat_ids_for_analysis_ = copy.copy(final_pat_ids_for_analysis)
+
+    return final_pat_ids_for_analysis_

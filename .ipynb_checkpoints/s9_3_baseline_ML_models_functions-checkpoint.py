@@ -25,14 +25,129 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'}, 
 
-                         'tb21_22_2984_pats_22_vars_relapse_ext_pats':{
+                        'tb21_22_2984_pats_22_vars_relapse_ext_pats':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'result_cat':'RELAPSE'}, 
 
-                          'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats':{
+                        'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
                             'result_cat':'RELAPSE'},
+
+                         'tb20_21_22_2908_pats_7_vars_relapse':{
+                            'result_cat':'RELAPSE',
+                            'fn':'tb20_21_22_2908_pats_7_vars_relapse',
+                           'include_rifaquin':True},
+
+                        'tb20_21_22_2908_pats_7_vars_relapse_ext_pats':{
+                            'result_cat':'RELAPSE',
+                            'fn':'tb20_21_22_2908_pats_7_vars_relapse',
+                           'include_rifaquin':True},
+
+                        'tb20_21_22_2905_pats_8_vars_relapse_ext_pats':{
+                              'result_cat':'RELAPSE',
+                            'fn':'tb20_21_22_2905_pats_8_vars_relapse',
+                           'include_rifaquin':True},
+
+                         'tb20_21_22_2905_pats_8_vars_relapse_ext_pats_no_rifaquin':{
+                              'result_cat':'RELAPSE',
+                            'fn':'tb20_21_22_2905_pats_8_vars_relapse',
+                             #'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
+                           'include_rifaquin':False},
+
+                         'tb20_21_22_2905_pats_8_vars_relapse_without_dr_reg_ext_pats_no_rifaquin':{
+                              'result_cat':'RELAPSE',
+                            'fn':'tb20_21_22_2905_pats_8_vars_relapse',
+                             'pat_ids_fn':'tb20_21_22_2905_pats_8_vars_relapse',
+                           'include_rifaquin':False},
+
+                        'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+
+
+                        'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_with_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'corr_test_for_arm':True,
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+
+                          'tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_with_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
+                            'corr_test_for_arm':True,
+                            'result_cat':'RELAPSE'}, 
+
+                         ### train on one/more studies, validate on completely held out study
+                          'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             #'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'corr_test_for_arm':True,
+                            'training_cohort':['TB-1021'],
+                            'validation_cohort':['TB-1022'],
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+                            
+                            'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb22':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             #'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'corr_test_for_arm':True,
+                            'training_cohort':['TB-1022'],
+                            'validation_cohort':['TB-1021'],
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+                            
+                            'tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb21':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            #'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
+                            'corr_test_for_arm':True,
+                            'training_cohort':['TB-1021'],
+                            #'include_rifaquin':True,
+                            'validation_cohort':['TB-1022'], # ['TB-1022']
+                            'result_cat':'RELAPSE'}, 
+                            
+                            'tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb22':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            #'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
+                            'corr_test_for_arm':True,
+                            'training_cohort':['TB-1022'],
+                            'validation_cohort':['TB-1021'],# ['TB-1021']
+                            #'include_rifaquin':True,
+                            'result_cat':'RELAPSE'}, 
+
+                         'tb20_21_22_2905_pats_8_vars_relapse_without_dr_reg_ext_pats_train_tb21':{
+                              'result_cat':'RELAPSE',
+                            'fn':'tb20_21_22_2905_pats_8_vars_relapse',
+                             'corr_test_for_arm':True,
+                             #'pat_ids_fn':'tb20_21_22_2905_pats_8_vars_relapse_ext_pats',
+                             'training_cohort':['TB-1021'],
+                            'validation_cohort':['TB-1020'],                         
+                           'include_rifaquin':True},
+                         
+                         'tb20_21_22_2905_pats_8_vars_relapse_without_dr_reg_ext_pats_train_tb22':{
+                              'result_cat':'RELAPSE',
+                            'fn':'tb20_21_22_2905_pats_8_vars_relapse',
+                             'corr_test_for_arm':True,
+                             #'pat_ids_fn':'tb20_21_22_2905_pats_8_vars_relapse_ext_pats',
+                             'training_cohort':['TB-1022'],
+                            'validation_cohort':['TB-1020'],                         
+                           'include_rifaquin':True},
+
+                         'tb20_21_22_2905_pats_8_vars_relapse_without_dr_reg_ext_pats_train_tb21_tb22':{
+                              'result_cat':'RELAPSE',
+                            'fn':'tb20_21_22_2905_pats_8_vars_relapse',
+                             'corr_test_for_arm':True,
+                             #'pat_ids_fn':'tb20_21_22_2905_pats_8_vars_relapse_ext_pats',
+                             'training_cohort':['TB-1022','TB-1021'],
+                            'validation_cohort':['TB-1020'],                         
+                           'include_rifaquin':True},
+
+
+
+
+
+
+
+                         
 
                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_dr_reg_per_arm':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
@@ -45,19 +160,6 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'result_cat':'RELAPSE'}, 
 
                          
-                        'tb20_21_22_2905_pats_8_vars_relapse_ext_pats':{
-                              'result_cat':'RELAPSE',
-                            'fn':'tb20_21_22_2905_pats_8_vars_relapse',
-                           'include_rifaquin':True},
-
-                         'tb20_21_22_2905_pats_8_vars_relapse_ext_pats_no_rifaquin':{
-                              'result_cat':'RELAPSE',
-                            'fn':'tb20_21_22_2905_pats_8_vars_relapse',
-                             #'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
-                           'include_rifaquin':False},
-
-
-                         
                          'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_with_arm':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                              'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
@@ -68,12 +170,9 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
                             'result_cat':'RELAPSE'}, 
 
-                         'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
-                            'result_cat':'RELAPSE'},
-                         
-                          'tb21_22_2984_pats_22_vars_relapse_basic_vars':{
+                   
+
+                         'tb21_22_2984_pats_22_vars_relapse_basic_vars':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
                             'result_cat':'RELAPSE'},
@@ -223,7 +322,7 @@ def scale_by_training_data(X_train, X_test):
 
     for col in numerical_cols.columns:
         unique_values = np.sort(numerical_cols[col].unique())
-        if np.array_equal(unique_values, np.array([0, 1]))==False:
+        if np.array_equal(unique_values, np.array([0, 1]))==False and len(unique_values)>1:
             non_binary_num_cols.append(col)
 
 
@@ -526,6 +625,8 @@ def create_std_training_testing_data(X,
                                      columns_to_drop,
                                      period_end_day,
                                      outcome_label,
+                                     data_param_key=None,
+                                     parameters_for_analysis=None,
                                      cv_repeat_num=None,
                                      final_pat_ids_for_analysis=None,
                                      return_full_dataset=None):
@@ -691,6 +792,12 @@ def create_std_training_testing_data(X,
 
     #print('after X_train.columns.duplicated()',X_train.shape)
     #print('after X_test.columns.duplicated()',X_test.shape)
+
+    ## Set Arm indicator to 0 for test set +  drop mh_variables as they indicate study assignment mostly
+    if 'corr_test_for_arm' in parameters_for_analysis[data_param_key].keys():
+        X_test.loc[:,X_test.columns.str.startswith('ARM_')] = 0
+        X_test = X_test.loc[:,~(X_test.columns.str.startswith('mh_')|X_test.columns.str.contains('_mh_'))]
+        X_train = X_train.loc[:,~(X_train.columns.str.startswith('mh_')|X_train.columns.str.contains('_mh_'))]
     
     if return_full_dataset is not None:
         X_full_ = pd.concat([X_train,X_test],axis=0)
@@ -706,6 +813,8 @@ def create_std_training_testing_data(X,
     y_train_=y_train.reset_index()
     y_train_['STUDYID']=y_train_['USUBJID'].str.split('/',expand=True)[0].values
     y_train_=y_train_.set_index(['USUBJID','STUDYID'])
+
+
 
     
     return X_train,X_test,y_train_,y_test_,X_train_pat_ids,X_test_pat_ids
@@ -955,7 +1064,8 @@ def init_model(model_name,X_train,y_train_data,
         '''                                                 
         
         model=GradientBoostingClassifier(random_state=random_state,**model_params)
-        
+
+                                       
         #model.fit(X_train, y_train_data,label_weights=gb_label_weight)
         #feature_names=model.feature_names_in_
         #feature_importances=model.feature_importances_
@@ -979,7 +1089,11 @@ def init_model(model_name,X_train,y_train_data,
                             eta=grid.best_params_['eta'], subsample=1.0, colsample_bytree=0.8,\
                             random_state=random_state)
         '''
-        model=XGBClassifier(random_state=random_state,**model_params,colsample_bytree=0.8)
+        #model=XGBClassifier(random_state=random_state,**model_params,colsample_bytree=0.8)
+        model=XGBClassifier(random_state=random_state,**model_params,
+                                #min_child_weight=3,
+                                #colsample_bytree=0.8,
+                           )
         #model.fit(X_train, y_train_data,sample_weight=label_weights)
         #feature_names=X_train.columns.tolist()
         #feature_importances=model.feature_importances_
@@ -1115,32 +1229,37 @@ def calibrate_model_and_extract_confidence_metrics(model,
                          sample_weight=sample_weights)
 
     ## Extract calibrated pred probs
-    probs_calibrated = calibrated_model.predict_proba(X_test)[:, 1]
-    probs_uncalibrated = model.predict_proba(X_test)[:, 1]
-
+    kk=[]
+    for X_data,data_type in zip([X_train,X_test],['train','test']):
+        probs_calibrated = calibrated_model.predict_proba(X_data)[:, 1]
+        probs_uncalibrated = model.predict_proba(X_data)[:, 1]
     
-    """
-    Compute per-model confidence statistics from probabilities.
-    """
-    eps = 1e-12
-    p_cal = np.clip(probs_calibrated, eps, 1 - eps)
-    p_uncal = np.clip(probs_uncalibrated, eps, 1 - eps)
-    margin = np.abs(p_cal - 0.5)
-    entropy = -(p_cal * np.log(p_cal) + (1 - p_cal) * np.log(1 - p_cal))
-    conf_entropy = 1 - entropy / np.log(2)
-    conf_metrics = pd.DataFrame({
-        'prob_calibrated': p_cal,
-        'prob_uncalibrated':p_uncal,
-        'margin': margin,
-        'entropy_conf': conf_entropy
-    })
-    if probs_uncalibrated is not None:
-        conf_metrics['delta_calib'] = p_cal - p_uncal
-    else:
-        conf_metrics['delta_calib'] = 0.0
+        
+        """
+        Compute per-model confidence statistics from probabilities.
+        """
+        eps = 1e-12
+        p_cal = np.clip(probs_calibrated, eps, 1 - eps)
+        p_uncal = np.clip(probs_uncalibrated, eps, 1 - eps)
+        margin = np.abs(p_cal - 0.5)
+        entropy = -(p_cal * np.log(p_cal) + (1 - p_cal) * np.log(1 - p_cal))
+        conf_entropy = 1 - entropy / np.log(2)
+        conf_metrics = pd.DataFrame({
+            'prob_calibrated': p_cal,
+            'prob_uncalibrated':p_uncal,
+            'margin': margin,
+            'entropy_conf': conf_entropy
+        })
+        if probs_uncalibrated is not None:
+            conf_metrics['delta_calib'] = p_cal - p_uncal
+        else:
+            conf_metrics['delta_calib'] = 0.0
+    
+        conf_metrics.index=X_data.index
+        conf_metrics['data_type'] = data_type
+        kk.append(conf_metrics)
 
-    conf_metrics.index=X_test.index
-
+    conf_metrics = pd.concat(kk,axis=0)
     ## Add out-of-distribution confidence variables (Mahalanobis and KNN confidence)
     #ood_conf_df=cv_roc_auc_scores['ood_conf']
     #conf_metrics.loc[ood_conf_df.index,ood_conf_df.columns.tolist()] = ood_conf_df.values
@@ -1774,7 +1893,7 @@ def return_fav_unfav_pats_tb_1021(X_subset=None):
                 (oc_1021['RESULT_AT_18_MONTHS']=='FAVOURABLE'),:].index
     
     ## DROP PATIENTS WHO DON'T HAVE COMPLETION DATE OF FOLLOW-UP PHASE
-    de_not_incl = de.loc[p_not_incl,:].dropna(how='all',axis=1)
+    de_not_incl = de.loc[p_not_incl,:]#.dropna(how='all',axis=1)
     tb21_no_12_mont_res_but_fav_at_18 = de_not_incl[~de_not_incl['COMPLETION FOLLOW-UP PHASE'].isna()].index.tolist()
     
     ## ADD THESE PATIENTS TO THE FAVOURABLE PATIENT COHORT
@@ -1837,7 +1956,7 @@ def return_fav_unfav_pats_tb_1022(X_subset):
     
     ## RELAPSE
     pats_with_relapse = ds.loc[ds['USUBJID'].isin(pat_not_incl)&\
-                               ds['DSTERM'].str.contains('RELAPSE'),:].dropna(how='all',axis=1)
+                               ds['DSTERM'].str.contains('RELAPSE'),:]#.dropna(how='all',axis=1)
     
     
     pats_with_relapse_with_fav_at_24_month = oc_1022.loc[oc_1022.index.isin(pats_with_relapse['USUBJID'].tolist())&\
@@ -1854,7 +1973,7 @@ def return_fav_unfav_pats_tb_1022(X_subset):
     
     ## DiED
     pats_died = ds.loc[ds['USUBJID'].isin(pat_not_incl)&\
-                ds['DSTERM'].str.contains('DEATH|DIED|DECEASED|DCD'),:].dropna(how='all',axis=1)
+                ds['DSTERM'].str.contains('DEATH|DIED|DECEASED|DCD'),:]#.dropna(how='all',axis=1)
     
     pats_died_due_to_adverse_event = pats_died.loc[pats_died['DSDECOD'].str.contains('ADVERSE'),['USUBJID','DSSTDY']]
     pats_died_due_to_adverse_event.loc[pats_died_due_to_adverse_event['DSSTDY'].isna(),'DSSTDY']=int(365*16/12)
@@ -1872,17 +1991,17 @@ def return_fav_unfav_pats_tb_1022(X_subset):
     ## LOST TO FOLLOW-UP
     str_ = 'CONSENTEMENT RETIRE|LOST|ADVERSE EVENT|CONSENT WITHDRAWN|TRAVEL|WRONGLY EXCLUDED|OTHER'
     pats_lost_to_follow_up = ds.loc[ds['USUBJID'].isin(pat_not_incl)&\
-                                    ds['DSTERM'].str.contains(str_),:].dropna(how='all',axis=1)#['USUBJID'].unique().tolist()
+                                    ds['DSTERM'].str.contains(str_),:]#.dropna(how='all',axis=1)#['USUBJID'].unique().tolist()
     
     
     ## UNKOWN OUTCOME AT 24 MONTHS (SOME OF THEM HAVE UNFAVOURABLE, BUT THE EXACT CATEGORY IS MISSING)
     ## THEY ARE ALL FAVOURABLE AT EOT AND MONTH 18
     unk_outcome_at_24 = ds.loc[ds['USUBJID'].isin(pat_not_incl)&\
-                                       ds['DSTERM'].str.contains('COMPLETED'),:].dropna(how='all',axis=1) #'USUBJID'].tolist()
+                                       ds['DSTERM'].str.contains('COMPLETED'),:]#.dropna(how='all',axis=1) #'USUBJID'].tolist()
     
     ## RESISTANCE
     pats_with_res = ds.loc[ds['USUBJID'].isin(pat_not_incl)&\
-                               ds['DSTERM'].str.contains('MGIT|MDR'),:].dropna(how='all',axis=1)#'USUBJID'].tolist()
+                               ds['DSTERM'].str.contains('MGIT|MDR'),:]#.dropna(how='all',axis=1)#'USUBJID'].tolist()
     
     
     ## CREATE DICT CONTAINING ALL PATIENTS WHO WERE NOT INCLUDED IN ANALYSIS + REASON WHY
@@ -2294,8 +2413,8 @@ def subset_pats_with_therapy_in_period(period_num,period_end_days,last_init_ther
     #. => IF PERIOD IS 4 MONTHS OR LESS, KEEP ALL PATIENTS
     #. => IF PERIOD IS OVER 4 MONTHS KEEP ONLY PATIENTS IN ARMS WITH 6 MONTHS OF TB DRUG APPLICATION    
 
-    month_4_arms=['Gatifloxacin','2MHRZ/2MHR', '2EMRZ/2MR','2EMRZ/2MP','2EMRZ/4MP']
-    month_6_arms=['Control','2EHRZ/4HR']
+    month_4_arms=['Gatifloxacin','2MHRZ/2MHR', '2EMRZ/2MR','2EMRZ/2MP']
+    month_6_arms=['Control','2EHRZ/4HR','2EMRZ/4MP']
 
     if outcome_label=='RESULT_AT_END_OF_TREATMENT':
         month4_periods=['baseline',31,62,93,125][:-1]
@@ -2546,7 +2665,8 @@ def load_and_modify_preprocessed_data(data_param_key):
     
     ## Drop drug regimen variables, except for drug adherence (dr_cumul_dose)
     if 'without_dr_reg' in data_param_key:
-        X = X.loc[:,~X.columns.str.endswith('cumulative_dose')]
+        #X = X.loc[:,~X.columns.str.endswith('cumulative_dose')]
+        X = X.loc[:,~X.columns.str.startswith('dr_reg')]
 
     ## Divide cumulative days of application with the number of days scheduled ==> approximate drug adherence with a 0-1 number
     if 'with_adherence' in data_param_key:
@@ -2713,9 +2833,11 @@ def return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
         #pat_ids=X['USUBJID'].unique().tolist()
         
         ## Subset outcome dataframe to patient considered
-        target_df=outcome_df.loc[pat_ids,outcome_label]
-        y=target_df.loc[pat_ids].replace(label2id)
+        target_df=outcome_df.loc[pat_ids,[outcome_label]]
+        y=target_df.loc[pat_ids,[outcome_label]].replace(label2id)
         outcome_label_=copy.deepcopy(outcome_label)
+
+
         
     if parameters_for_analysis[data_param_key]['result_cat']=='RELAPSE':
         #outcome_label='RELAPSE'
@@ -2865,3 +2987,57 @@ def extract_confidence_and_ood_metrics(model,cv_roc_auc_scores,X_train,y_train,o
     conf_metrics.loc[ood_conf_df.index,ood_conf_df.columns.tolist()] = ood_conf_df.values
     
     return conf_metrics, calibrated_model
+
+
+
+##=================================
+def load_final_patient_for_analysis(parameters_for_analysis,
+                                   data_param_key,
+                                   ):
+    import copy
+
+    
+    ## LOAD FINAL PATIENT IDS FOR ANALYSIS, SAVED DURING PREPROCESSING OF THE BASELINE MODELS IN NOTEBOOK S9_3
+    if 'pat_ids_fn' in parameters_for_analysis[data_param_key].keys():
+        fn=f"../data/{parameters_for_analysis[data_param_key]['pat_ids_fn']}_final_pat_ids_for_analysis.pickle"
+    else:  
+        fn=f'../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
+    with open(fn, 'rb') as handle:
+        final_pat_ids_for_analysis=pickle.load(handle)
+    
+    
+    final_pat_ids_for_analysis_ = {}
+
+    ## IF WE TRAIN ONLY SELECTED STUDIES AND TEST ON A HELD-OUT STUDIES, 
+    #. - LOAD THE PATIENTS CONSIDERED FOR GIVEN TIME PERIOD USING THE BASE EXPERIMENT CASE INDICATED IN "pat_ids_fn"
+    #. - SET 100% OF TRAIN SET PATIENTS AS TRAIN SET
+    #. - SET 100% OF VALIDATION SET PATIENTS AS TEST SET
+    #. - CHANGE THE CV NUMBER TO 1, AS THERE IS NOR SUBSAMPLING OF PATIENTS
+    if 'train' in data_param_key:
+        training_cohort = parameters_for_analysis[data_param_key]['training_cohort']
+        validation_cohort = parameters_for_analysis[data_param_key]['validation_cohort']
+    
+        for period_end_day in [*final_pat_ids_for_analysis][:]:
+            
+            final_pat_ids_for_analysis_[period_end_day] = {}
+            
+            for cv_repeat_num in [*final_pat_ids_for_analysis[period_end_day]][:1]:
+                
+                final_pat_ids_for_analysis_[period_end_day][cv_repeat_num]={}
+                
+                X_train_pat_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num]['X_train_ids']
+                X_test_pat_ids=final_pat_ids_for_analysis[period_end_day][cv_repeat_num]['X_test_ids']
+    
+                all_pats = X_train_pat_ids + X_test_pat_ids            
+        
+                X_train_pat_ids_ = [id_ for id_ in all_pats if any(sub in id_ for sub in training_cohort)]
+                X_test_pat_ids_ = [id_ for id_ in all_pats if any(sub in id_ for sub in validation_cohort)]
+              
+                
+                final_pat_ids_for_analysis_[period_end_day][cv_repeat_num]['X_train_ids'] = X_train_pat_ids_
+                final_pat_ids_for_analysis_[period_end_day][cv_repeat_num]['X_test_ids'] = X_test_pat_ids_
+                
+    else:
+        final_pat_ids_for_analysis_ = copy.copy(final_pat_ids_for_analysis)
+
+    return final_pat_ids_for_analysis_

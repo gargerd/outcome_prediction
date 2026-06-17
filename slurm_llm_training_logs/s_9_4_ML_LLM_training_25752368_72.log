@@ -1,0 +1,40 @@
+Loading anaconda
+Activate conda env
+tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb22
+all_days
+62
+LogisticRegression
+data_inclusion_type_ ['all_days'] model_names_ ['LogisticRegression'] period_end_day_ [62]
+Loading embeddings:   0%|          | 0/1 [00:00<?, ?set/s]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.10s/set]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.10s/set]
+
+→ Loading: tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb22 | BioMistral-7B_base | 62 | all_days | autoenc=False | mean_pooling 
+Loaded in 1.91 seconds.
+tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb22
+Training on 62 days of data
+Loading embeddings of tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb22 data / BioMistral-7B_base /62 /all_days /autoenc False / mean_pooling model
++++++++
+Running training with full model: 4096 vars
++++++++
+Processing:   0%|          | 0/1 [00:00<?, ?model/s]
+=====================
+LogisticRegression
+
+Processing:   0%|          | 0/1 [00:00<?, ?cv_repeat/s][ARESULT_AT_END_OF_TREATMENT   0.0  1.0
+STUDYID                              
+TB-1021                     1383   46
+TB-1022                     1435   54
+Num of CV-repeat:1
+Num of CV-repeat:1 - Model:LogisticRegression - Data inclusion type:all_days - Period:62 - mean_pooling 
+
+
+  0%|          | 0/1 [00:00<?, ?model/s][A[A
+
+100%|██████████| 1/1 [02:56<00:00, 176.95s/model][A[A100%|██████████| 1/1 [02:56<00:00, 176.95s/model]
+
+Processing: 100%|██████████| 1/1 [02:57<00:00, 177.63s/cv_repeat][AProcessing: 100%|██████████| 1/1 [02:57<00:00, 177.63s/cv_repeat]
+Processing: 100%|██████████| 1/1 [02:57<00:00, 177.64s/model]Processing: 100%|██████████| 1/1 [02:57<00:00, 177.64s/model]
+CV test_score: [0.623059866962306, 0.5882166613873931, 0.6034209692746277, 0.5483053531834019, 0.5181184668989547]
+CV train_score: [1.0, 1.0, 0.9999797423223401, 1.0, 1.0]
+Calcu;ating conf metrics
+Training duration:
+Elapsed time:0 hours:3 minutes seconds:18

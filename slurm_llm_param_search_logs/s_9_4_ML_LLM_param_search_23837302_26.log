@@ -1,31 +1,0 @@
-Loading anaconda
-Activate conda env
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats
-baseline_vars
-31
-LogisticRegression
-mean_pooling
-data_inclusion_type_ ['baseline_vars'] model_names_ ['LogisticRegression'] period_end_day_ [31]
-Loading embeddings:   0%|          | 0/1 [00:00<?, ?set/s]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.32s/set]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.32s/set]
-
-→ Loading: tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats | BioMistral-7B_base | 31 | baseline_vars | autoenc=False | mean_pooling 
-Loaded in 2.08 seconds.
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats
-Training on 31 days of data
-Loading embeddings of tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats data / BioMistral-7B_base /31 /baseline_vars /autoenc False / mean_pooling model
-Traceback (most recent call last):
-  File "/data/gpfs/projects/punim2121/C-Path/outcome_prediction/outcome_prediction/s9_4_ML_on_LLM_embeddings_param_search.py", line 491, in <module>
-    X=pd.read_csv(fn,index_col=0,low_memory=False)
-  File "/data/gpfs/projects/punim2121/anaconda3/envs/scarches/lib/python3.9/site-packages/pandas/io/parsers/readers.py", line 1026, in read_csv
-    return _read(filepath_or_buffer, kwds)
-  File "/data/gpfs/projects/punim2121/anaconda3/envs/scarches/lib/python3.9/site-packages/pandas/io/parsers/readers.py", line 620, in _read
-    parser = TextFileReader(filepath_or_buffer, **kwds)
-  File "/data/gpfs/projects/punim2121/anaconda3/envs/scarches/lib/python3.9/site-packages/pandas/io/parsers/readers.py", line 1620, in __init__
-    self._engine = self._make_engine(f, self.engine)
-  File "/data/gpfs/projects/punim2121/anaconda3/envs/scarches/lib/python3.9/site-packages/pandas/io/parsers/readers.py", line 1880, in _make_engine
-    self.handles = get_handle(
-  File "/data/gpfs/projects/punim2121/anaconda3/envs/scarches/lib/python3.9/site-packages/pandas/io/common.py", line 765, in get_handle
-    handle = gzip.GzipFile(  # type: ignore[assignment]
-  File "/data/gpfs/projects/punim2121/anaconda3/envs/scarches/lib/python3.9/gzip.py", line 173, in __init__
-    fileobj = self.myfileobj = builtins.open(filename, mode or 'rb')
-FileNotFoundError: [Errno 2] No such file or directory: '../data/tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats_all_data_concat.csv.gz'
