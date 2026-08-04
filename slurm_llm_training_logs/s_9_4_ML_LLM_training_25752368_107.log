@@ -1,45 +1,0 @@
-Loading anaconda
-Activate conda env
-tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb21
-baseline_vars
-baseline
-LogisticRegression
-data_inclusion_type_ ['baseline_vars'] model_names_ ['LogisticRegression'] period_end_day_ ['baseline']
-Loading embeddings:   0%|          | 0/1 [00:00<?, ?set/s]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.18s/set]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.18s/set]
-
-→ Loading: tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb21 | BioMistral-7B_base | baseline | baseline_vars | autoenc=False | mean_pooling 
-Loaded in 1.99 seconds.
-tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb21
-Training on baseline days of data
-Loading embeddings of tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb21 data / BioMistral-7B_base /baseline /baseline_vars /autoenc False / mean_pooling model
-include_rifaquin False extended_pats True
-Extracting relapse information...
-pats_with_fav 2237
-pats_with_unfav 352
-2589
-+++++++
-Running training with full model: 4096 vars
-+++++++
-Processing:   0%|          | 0/1 [00:00<?, ?model/s]
-=====================
-LogisticRegression
-
-Processing:   0%|          | 0/1 [00:00<?, ?cv_repeat/s][ARELAPSE     0    1
-STUDYID           
-TB-1021  1150  140
-TB-1022  1048  117
-Num of CV-repeat:1
-Num of CV-repeat:1 - Model:LogisticRegression - Data inclusion type:baseline_vars - Period:baseline - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [02:55<00:00, 175.52s/model][A[A100%|██████████| 1/1 [02:55<00:00, 175.52s/model]
-
-Processing: 100%|██████████| 1/1 [02:56<00:00, 176.30s/cv_repeat][AProcessing: 100%|██████████| 1/1 [02:56<00:00, 176.30s/cv_repeat]
-Processing: 100%|██████████| 1/1 [02:56<00:00, 176.31s/model]Processing: 100%|██████████| 1/1 [02:56<00:00, 176.31s/model]
-CV test_score: [0.6666149068322982, 0.5711180124223603, 0.56972049689441, 0.5891304347826087, 0.6059006211180125]
-CV train_score: [0.881453804347826, 0.8877814440993789, 0.8902659161490682, 0.8976611024844721, 0.8969041149068323]
-Calcu;ating conf metrics
-Training duration:
-Elapsed time:0 hours:3 minutes seconds:39

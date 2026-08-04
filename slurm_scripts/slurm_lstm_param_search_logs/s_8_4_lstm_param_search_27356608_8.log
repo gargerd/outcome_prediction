@@ -1,0 +1,60 @@
+Loading anaconda
+Activate conda env
+tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats
+full
+baseline
+Extracting relapse information...
+++++++++++++++++++
+Model type: full
+
+Loaded ../data/tb21_22_2984_pats_22_vars_relapse_ext_pats_final_pat_ids_for_analysis.pickle
+
+dataset name:  tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats
+Extracting relapse information...
+len(pat_ids) 2498
+Shape of final data:  (37613, 1374)
+
+============= Period_end_day: baseline ===============
+
+2401
+target_df_.shape (2401, 1)
+Loading previously saved training datasets
+Outer-CV-repeat: 0it [00:00, ?it/s]                                   
+====tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats - baseline - cv_rep_1/25 CV repeats===
+
+Elapsed time since start: 0 hours: 0 minutes: 53 seconds
+within kfolds y:
+ USUBJID
+TB-1021/2399699    1_TB-1021
+TB-1021/2378910    0_TB-1021
+TB-1021/1784956    0_TB-1021
+TB-1022/51322      0_TB-1022
+TB-1021/2591155    0_TB-1021
+                     ...    
+TB-1021/1025770    0_TB-1021
+TB-1022/42087      0_TB-1022
+TB-1022/21296      0_TB-1022
+TB-1021/1102346    0_TB-1021
+TB-1022/21063      0_TB-1022
+Length: 2401, dtype: object 
+
+Traceback (most recent call last):
+  File "/data/gpfs/projects/punim2121/C-Path/outcome_prediction/outcome_prediction/s8_4_LSTM_classification_param_search.py", line 401, in <module>
+    train_data_results,test_data_results=train_models(data,
+  File "/data/gpfs/projects/punim2121/C-Path/outcome_prediction/outcome_prediction/s8_4_LSTM_classification_functions.py", line 1423, in train_models
+    cv_training_ids, cv_validation_ids=stratified_train_test_split_with_CV_split(y=y_for_strat.loc[pat_ids_],
+  File "/data/gpfs/projects/punim2121/C-Path/outcome_prediction/outcome_prediction/s8_4_LSTM_classification_functions.py", line 720, in stratified_train_test_split_with_CV_split
+    y_train_array = y.loc[training_ids].values
+  File "/data/gpfs/projects/punim2121/anaconda3/envs/scarches/lib/python3.9/site-packages/pandas/core/indexing.py", line 1191, in __getitem__
+    return self._getitem_axis(maybe_callable, axis=axis)
+  File "/data/gpfs/projects/punim2121/anaconda3/envs/scarches/lib/python3.9/site-packages/pandas/core/indexing.py", line 1420, in _getitem_axis
+    return self._getitem_iterable(key, axis=axis)
+  File "/data/gpfs/projects/punim2121/anaconda3/envs/scarches/lib/python3.9/site-packages/pandas/core/indexing.py", line 1360, in _getitem_iterable
+    keyarr, indexer = self._get_listlike_indexer(key, axis)
+  File "/data/gpfs/projects/punim2121/anaconda3/envs/scarches/lib/python3.9/site-packages/pandas/core/indexing.py", line 1558, in _get_listlike_indexer
+    keyarr, indexer = ax._get_indexer_strict(key, axis_name)
+  File "/data/gpfs/projects/punim2121/anaconda3/envs/scarches/lib/python3.9/site-packages/pandas/core/indexes/base.py", line 6212, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/data/gpfs/projects/punim2121/anaconda3/envs/scarches/lib/python3.9/site-packages/pandas/core/indexes/base.py", line 6264, in _raise_if_missing
+    raise KeyError(f"{not_found} not in index")
+KeyError: "['TB-1021/1018712', 'TB-1021/1024075', 'TB-1021/1042271', 'TB-1021/1051515', 'TB-1021/1064362', 'TB-1021/1064810', 'TB-1021/1067352', 'TB-1021/1067615', 'TB-1021/1079389', 'TB-1021/1091662', 'TB-1021/1093902', 'TB-1021/1109786', 'TB-1021/1113614', 'TB-1021/1120569', 'TB-1021/1517666', 'TB-1021/1518740', 'TB-1021/1520270', 'TB-1021/1545491', 'TB-1021/1553789', 'TB-1021/1555137', 'TB-1021/1555866', 'TB-1021/1559157', 'TB-1021/1571214', 'TB-1021/1580634', 'TB-1021/1627576', 'TB-1021/1635071', 'TB-1021/1642467', 'TB-1021/1678208', 'TB-1021/1723976', 'TB-1021/1728546', 'TB-1021/1765129', 'TB-1021/1779575', 'TB-1021/1806507', 'TB-1021/1816923', 'TB-1021/1845699', 'TB-1021/1855916', 'TB-1021/1866122', 'TB-1021/1917381', 'TB-1021/1917942', 'TB-1021/1920245', 'TB-1021/1944206', 'TB-1021/1974038', 'TB-1021/1987899', 'TB-1021/2012886', 'TB-1021/2049530', 'TB-1021/2109195', 'TB-1021/2164211', 'TB-1021/2249649', 'TB-1021/2251313', 'TB-1021/2279614', 'TB-1021/2292154', 'TB-1021/2295337', 'TB-1021/2317973', 'TB-1021/2320831', 'TB-1021/2328162', 'TB-1021/2346144', 'TB-1021/2395228', 'TB-1021/2450162', 'TB-1021/2514706', 'TB-1021/2542539', 'TB-1021/2557231', 'TB-1021/2577711', 'TB-1021/2690895', 'TB-1021/2717383', 'TB-1021/2738732', 'TB-1021/2749692', 'TB-1021/2763494', 'TB-1021/2811309', 'TB-1021/2851102', 'TB-1021/2864334', 'TB-1021/2942764', 'TB-1022/31021', 'TB-1022/31042', 'TB-1022/51158', 'TB-1022/51464'] not in index"

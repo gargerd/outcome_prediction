@@ -1,45 +1,0 @@
-Loading anaconda
-Activate conda env
-tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb22
-all_days
-all
-XGBoost
-data_inclusion_type_ ['all_days'] model_names_ ['XGBoost'] period_end_day_ ['all']
-Loading embeddings:   0%|          | 0/1 [00:00<?, ?set/s]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.05s/set]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.05s/set]
-
-→ Loading: tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb22 | BioMistral-7B_base | all | all_days | autoenc=False | mean_pooling 
-Loaded in 1.88 seconds.
-tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb22
-Training on all days of data
-Loading embeddings of tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb22 data / BioMistral-7B_base /all /all_days /autoenc False / mean_pooling model
-include_rifaquin False extended_pats True
-Extracting relapse information...
-pats_with_fav 2237
-pats_with_unfav 352
-2589
-+++++++
-Running training with full model: 4096 vars
-+++++++
-Processing:   0%|          | 0/1 [00:00<?, ?model/s]
-=====================
-XGBoost
-
-Processing:   0%|          | 0/1 [00:00<?, ?cv_repeat/s][ARELAPSE    0   1
-STUDYID         
-TB-1021  402  15
-TB-1022  535  36
-Num of CV-repeat:1
-Num of CV-repeat:1 - Model:XGBoost - Data inclusion type:all_days - Period:all - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [01:00<00:00, 60.51s/model][A[A100%|██████████| 1/1 [01:00<00:00, 60.51s/model]
-
-Processing: 100%|██████████| 1/1 [01:01<00:00, 61.14s/cv_repeat][AProcessing: 100%|██████████| 1/1 [01:01<00:00, 61.14s/cv_repeat]
-Processing: 100%|██████████| 1/1 [01:01<00:00, 61.15s/model]Processing: 100%|██████████| 1/1 [01:01<00:00, 61.15s/model]
-CV test_score: [0.7266355140186916, 0.6208277703604808, 0.4098798397863818, 0.5781041388518023, 0.7983978638184246]
-CV train_score: [1.0, 0.999838865613922, 0.9998388656139221, 1.0, 0.999758298420883]
-Calcu;ating conf metrics
-Training duration:
-Elapsed time:0 hours:1 minutes seconds:38

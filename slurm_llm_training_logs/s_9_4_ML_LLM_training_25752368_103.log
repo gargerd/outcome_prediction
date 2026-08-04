@@ -1,45 +1,0 @@
-Loading anaconda
-Activate conda env
-tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb21
-baseline_last_day
-all
-XGBoost
-data_inclusion_type_ ['baseline_last_day'] model_names_ ['XGBoost'] period_end_day_ ['all']
-Loading embeddings:   0%|          | 0/1 [00:00<?, ?set/s]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.23s/set]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.23s/set]
-
-→ Loading: tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb21 | BioMistral-7B_base | all | baseline_last_day | autoenc=False | mean_pooling 
-Loaded in 2.03 seconds.
-tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb21
-Training on all days of data
-Loading embeddings of tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb21 data / BioMistral-7B_base /all /baseline_last_day /autoenc False / mean_pooling model
-include_rifaquin False extended_pats True
-Extracting relapse information...
-pats_with_fav 2237
-pats_with_unfav 352
-2589
-+++++++
-Running training with full model: 4096 vars
-+++++++
-Processing:   0%|          | 0/1 [00:00<?, ?model/s]
-=====================
-XGBoost
-
-Processing:   0%|          | 0/1 [00:00<?, ?cv_repeat/s][ARELAPSE    0   1
-STUDYID         
-TB-1021  402  15
-TB-1022  535  36
-Num of CV-repeat:1
-Num of CV-repeat:1 - Model:XGBoost - Data inclusion type:baseline_last_day - Period:all - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [01:14<00:00, 74.30s/model][A[A100%|██████████| 1/1 [01:14<00:00, 74.30s/model]
-
-Processing: 100%|██████████| 1/1 [01:15<00:00, 75.01s/cv_repeat][AProcessing: 100%|██████████| 1/1 [01:15<00:00, 75.01s/cv_repeat]
-Processing: 100%|██████████| 1/1 [01:15<00:00, 75.02s/model]Processing: 100%|██████████| 1/1 [01:15<00:00, 75.02s/model]
-CV test_score: [0.5432098765432098, 0.5308641975308642, 0.625, 0.6875, 0.5]
-CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
-Calcu;ating conf metrics
-Training duration:
-Elapsed time:0 hours:1 minutes seconds:57
