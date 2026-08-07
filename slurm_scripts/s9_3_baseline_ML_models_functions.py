@@ -2607,6 +2607,8 @@ def load_and_modify_preprocessed_data(data_param_key):
     X=X.rename(columns=lambda x: x.replace('<', 'lower than'))
     X=X.rename(columns=lambda x: x.replace('>', 'higher than'))
 
+    ## Create a column indicating discordant results (yes/no) between MGIT (liquid) and LJ (solid) culture. MGIT is only available for TB-1021 (REmoxTB), TB-1020 
+    #. (Rifaquin) participants
     if 'MGIT_LJ_disc' in data_param_key:
         X['mb_MGIT_LJ_discordant']=0
         X.loc[(X['mb_MGIT_STD_RESULT']==1)&(X['mb_LJ-culture_STD_RESULT']==0),'mb_MGIT_LJ_discordant']=1
@@ -2663,7 +2665,7 @@ def load_and_modify_preprocessed_data(data_param_key):
     if 'without_mb' in data_param_key:
         X = X.loc[:,~X.columns.str.startswith('mb_')]
     
-    ## Drop drug regimen variables, except for drug adherence (dr_cumul_dose)
+    ## Drop drug regimen variables, # DEPRECATED: except for drug adherence (dr_cumul_dose)
     if 'without_dr_reg' in data_param_key:
         #X = X.loc[:,~X.columns.str.endswith('cumulative_dose')]
         X = X.loc[:,~X.columns.str.startswith('dr_reg')]
@@ -2675,6 +2677,8 @@ def load_and_modify_preprocessed_data(data_param_key):
 
     
     ## SPLIT THE CUMULATIVE DOSES OF THE PATIENTS BETWEEN THE ARMS ==> CONTROLLING FOR THE DIFFERENT NUMBER OF SCHEDULED DOSES BETWEEN ARMS
+    #. Concatenate the ARM information with the individual drug doses, (i.e. 2EHRZ/4HR_rifampicin_cumul_dose), thereby controlling 
+    #  for the differences in the effect and number of scheduled doses of individual drugs across arms
     if 'dr_reg_per_arm' in data_param_key:
         
         X_=X.copy()
@@ -2701,7 +2705,7 @@ def load_and_modify_preprocessed_data(data_param_key):
         X=X.loc[~X['STUDYID'].str.contains('TB-1020'),:].copy()
 
 
-    ## SPLIT THE CUMULATIVE DOSES OF THE PATIENTS BETWEEN THE ARMS ==> CONTROLLING FOR THE DIFFERENT NUMBER OF SCHEDULED DOSES BETWEEN ARMS
+    ## Use only a set of "basic" variables for prediction: Age, microbiological variables, race, sex, BMI
     if 'basic_vars' in data_param_key:
 
         basic_vars = ['AGE', 
