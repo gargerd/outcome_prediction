@@ -1,57 +1,0 @@
-Loading anaconda
-Activate conda env
-tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb22
-baseline_vars
-62
-LogisticRegression
-mean_pooling
-data_inclusion_type_ ['baseline_vars'] model_names_ ['LogisticRegression'] period_end_day_ [62]
-Loading embeddings:   0%|          | 0/1 [00:00<?, ?set/s]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.03s/set]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.03s/set]
-
-→ Loading: tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb22 | BioMistral-7B_base | 62 | baseline_vars | autoenc=False | mean_pooling 
-Loaded in 1.85 seconds.
-tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb22
-Training on 62 days of data
-Loading embeddings of tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb22 data / BioMistral-7B_base /62 /baseline_vars /autoenc False / mean_pooling model
-include_rifaquin False extended_pats True
-Extracting relapse information...
-pats_with_fav 2237
-pats_with_unfav 352
-2589
-+++++++
-Running training with full model: 4096 vars
-+++++++
-  0%|          | 0/1 [00:00<?, ?model/s]
-=====================
-LogisticRegression
-Parameters search results exist! load
-
-Processing:   0%|          | 0/1 [00:00<?, ?cv_repeat/s][ARELAPSE     0    1
-STUDYID           
-TB-1021  1151  140
-TB-1022  1080  121
-Num of CV-repeat:1 - Model:LogisticRegression - Data inclusion type:baseline_vars - Period:62 
-
-
-Processing:   0%|          | 0/4 [00:00<?, ?parameter_set/s][A[A
-
-Processing:  25%|██▌       | 1/4 [00:15<00:45, 15.27s/parameter_set][A[A
-
-Processing:  50%|█████     | 2/4 [00:37<00:38, 19.24s/parameter_set][A[A
-
-Processing:  75%|███████▌  | 3/4 [00:55<00:18, 18.63s/parameter_set][A[A
-
-Processing: 100%|██████████| 4/4 [01:14<00:00, 18.87s/parameter_set][A[AProcessing: 100%|██████████| 4/4 [01:14<00:00, 18.61s/parameter_set]
-
-Processing: 100%|██████████| 1/1 [01:15<00:00, 75.11s/cv_repeat][AProcessing: 100%|██████████| 1/1 [01:15<00:00, 75.11s/cv_repeat]
-100%|██████████| 1/1 [01:15<00:00, 75.11s/model]100%|██████████| 1/1 [01:15<00:00, 75.11s/model]
-CV test_score: [0.590925925925926, 0.706983024691358, 0.7297453703703703, 0.595679012345679, 0.6672453703703703]
-CV train_score: [0.9306520061728394, 0.9246730622374952, 0.9389915043909889, 0.9359965635738832, 0.9190172775868652]
-CV test_score: [0.5464814814814816, 0.6167052469135803, 0.6880787037037036, 0.5445601851851851, 0.6496913580246914]
-CV train_score: [0.9928867669753086, 0.9950482054219167, 0.9977806414662085, 0.9937834096983581, 0.9954061664757541]
-CV test_score: [0.535, 0.6008873456790123, 0.6780478395061729, 0.539158950617284, 0.6464120370370371]
-CV train_score: [0.9961299189814815, 0.9974107483772432, 0.9993676021382206, 0.9968380106911034, 0.9977806414662085]
-CV test_score: [0.5322222222222223, 0.5972222222222222, 0.6778549382716049, 0.5366512345679013, 0.6469907407407407]
-CV train_score: [0.9963348765432098, 0.9975658648339061, 0.9994988545246277, 0.9970766513936616, 0.9979476899579992]
-Training duration:
-Elapsed time:0 hours:1 minutes seconds:51

@@ -205,7 +205,7 @@ import warnings
 from tqdm import tqdm
 
 autoenc_merged_bool_list = [False, True]
-outcome_df=pd.read_csv('../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
+outcome_df=pd.read_csv('../../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
 outcome_df=outcome_df.set_index('USUBJID',drop=True)
 
 llm_model_names=['BioMistral/BioMistral-7B',"epfl-llm/meditron-70b","epfl-llm/meditron-7b",
@@ -281,14 +281,14 @@ for data_param_key in dataset_name_:
 
     ## LOAD FINAL PATIENT IDS FOR ANALYSIS, SAVED DURING PREPROCESSING OF THE BASELINE MODELS IN NOTEBOOK S9_3
     if 'pat_ids_fn' in parameters_for_analysis[data_param_key].keys():
-        fn=f"../data/{parameters_for_analysis[data_param_key]['pat_ids_fn']}_final_pat_ids_for_analysis.pickle"
+        fn=f"../../data/{parameters_for_analysis[data_param_key]['pat_ids_fn']}_final_pat_ids_for_analysis.pickle"
     else:  
-        fn=f'../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
+        fn=f'../../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
     with open(fn, 'rb') as handle:
         final_pat_ids_for_analysis=pickle.load(handle)
     
     print(data_param_key)
-    #fn='../data/'+data_param_key+'_all_data_concat.csv.gz'
+    #fn='../../data/'+data_param_key+'_all_data_concat.csv.gz'
     #X=pd.read_csv(fn,index_col=0,low_memory=False)
     
     #outcome_label=data_param_key.split('vars_')[-1].upper()
@@ -314,9 +314,9 @@ for data_param_key in dataset_name_:
 
                     print('data loaded!')
                     if 'X_fn' in parameters_for_analysis[data_param_key].keys():
-                        fn='../data/'+parameters_for_analysis[data_param_key]['X_fn']+'_all_data_concat.csv.gz'
+                        fn='../../data/'+parameters_for_analysis[data_param_key]['X_fn']+'_all_data_concat.csv.gz'
                     else:
-                        fn='../data/'+parameters_for_analysis[data_param_key]['fn']+'_all_data_concat.csv.gz'
+                        fn='../../data/'+parameters_for_analysis[data_param_key]['fn']+'_all_data_concat.csv.gz'
                         
                     X=pd.read_csv(fn,index_col=0,low_memory=False)
 
@@ -530,7 +530,7 @@ for data_param_key in dataset_name_:
                       
 
                         ## Save training results
-                        save_dir=f'../data/LSTM_on_LLM_embeddings'
+                        save_dir=f'../../data/LSTM_on_LLM_embeddings'
                         os.makedirs(save_dir,exist_ok=True)
                         
                         fn=os.path.join(save_dir,

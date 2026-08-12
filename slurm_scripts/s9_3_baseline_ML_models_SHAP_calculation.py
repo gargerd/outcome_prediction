@@ -267,7 +267,7 @@ import warnings
 from tqdm import tqdm
 
 
-outcome_df=pd.read_csv('../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
+outcome_df=pd.read_csv('../../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
 outcome_df=outcome_df.set_index('USUBJID',drop=True)
 outcome_df=outcome_df.rename(columns={'UNFAVOURABLE_OUTCOME_CATEGORY_AT_18_MONTHS':'UNFAVOUR_CAT_AT_18_MONTHS'})
 
@@ -307,7 +307,7 @@ train_params={'num_cv_repeats':25,
 
 
 ## Load dataframe containing the last day of drug regimen for each patient
-last_initial_therapy_day_df=pd.read_csv('../data/out_last_initial_therapy_day_list_1018_20_21_22_30.csv.gz',index_col=0)
+last_initial_therapy_day_df=pd.read_csv('../../data/out_last_initial_therapy_day_list_1018_20_21_22_30.csv.gz',index_col=0)
 last_initial_therapy_day_df=last_initial_therapy_day_df.set_index('USUBJID')
 
 ## Laod pats with relapse df
@@ -378,17 +378,17 @@ def return_additional_exlcuded_pats(parameters_for_analysis,
                                    data_param_key,
                                    d_1022):
 
-    fn='../data/tb21_22_2984_pats_22_vars_result_at_end_of_treatment_preproc_data_with_imp.csv.gz'
+    fn='../../data/tb21_22_2984_pats_22_vars_result_at_end_of_treatment_preproc_data_with_imp.csv.gz'
     X_subset=pd.read_csv(fn,index_col=0)
     X_subset=X_subset.rename(columns=lambda x: x.replace('<', 'lower than'))
     X_subset=X_subset.rename(columns=lambda x: x.replace('>', 'higher than'))
 
-    outcome_tb1021 =pd.read_csv('../data/tb_1021_outcome.csv.gz',index_col=0)
+    outcome_tb1021 =pd.read_csv('../../data/tb_1021_outcome.csv.gz',index_col=0)
     outcome_tb1021 = outcome_tb1021.loc[X_subset[X_subset['STUDYID']=='TB-1021']['USUBJID'].unique(),:]
     oc_1021 = outcome_tb1021[outcome_tb1021['RESULT_AT_END_OF_TREATMENT']=='FAVOURABLE'].replace('UNASSESSABLE',np.nan)
     
     
-    outcome_tb1022 = pd.read_csv('../data/tb_1022_outcome.csv.gz',index_col=0)
+    outcome_tb1022 = pd.read_csv('../../data/tb_1022_outcome.csv.gz',index_col=0)
     outcome_tb1022 = outcome_tb1022.loc[X_subset[X_subset['STUDYID']=='TB-1022']['USUBJID'].unique(),:]
     outcome_tb1022['RESULT_AT_END_OF_TREATMENT']#.value_counts(dropna=False)
     oc_1022 = outcome_tb1022[outcome_tb1022['RESULT_AT_END_OF_TREATMENT']=='FAVOURABLE'].replace('UNASSESSABLE',np.nan)
@@ -402,10 +402,10 @@ def return_additional_exlcuded_pats(parameters_for_analysis,
     #rel = ddd[[*parameters_for_analysis][2]]
     #eot = ddd[[*parameters_for_analysis][0]]
 
-    fn=f'../data/{[*parameters_for_analysis][0]}_max_num_of_pats.csv'
+    fn=f'../../data/{[*parameters_for_analysis][0]}_max_num_of_pats.csv'
     eot = pd.read_csv(fn,index_col=0)
     
-    fn=f'../data/{data_param_key}_max_num_of_pats.csv'
+    fn=f'../../data/{data_param_key}_max_num_of_pats.csv'
     rel = pd.read_csv(fn,index_col=0)
     
     
@@ -469,7 +469,7 @@ def return_additional_exlcuded_pats(parameters_for_analysis,
 def return_excluded_pats_data(X,period_end_day,training_data_type,data_param_key,parameters_for_analysis):
 
     ## LOAD DATAFRAME CONTAINING PREPROCESSED DATA FOR ALL PATIENTS
-    data_dir_ = f'../data/raw_data_for_analysis/{[*parameters_for_analysis][0]}'
+    data_dir_ = f'../../data/raw_data_for_analysis/{[*parameters_for_analysis][0]}'
     os.makedirs(data_dir_,exist_ok=True)
     
     #print('X_full_',X_full_.shape)
@@ -646,7 +646,7 @@ for data_param_key in dataset_name_:
                 print('\n=====================')
                 print(model_name)
     
-                fn=f'../data/{data_param_key}_{model_name}_{period_end_day}_days_{training_data_type}_training_results.pickle'
+                fn=f'../../data/{data_param_key}_{model_name}_{period_end_day}_days_{training_data_type}_training_results.pickle'
                 with open(fn, 'rb') as handle:
                     training_results=pickle.load(handle)
 
@@ -700,15 +700,15 @@ for data_param_key in dataset_name_:
                             X_subset_ = X_subset_.loc[:,~X_subset_.columns.str.startswith('ARM_')]
 
                 ## LOAD DATAFRAME CONTAINING PREPROCESSED DATA FOR  PATIENTS CONSIDERED AT PERIOD
-                #data_dir_ = f'../data/raw_data_for_analysis/{[*parameters_for_analysis][0]}'
-                data_dir_ = f'../data/raw_data_for_analysis/{data_param_key}'
+                #data_dir_ = f'../../data/raw_data_for_analysis/{[*parameters_for_analysis][0]}'
+                data_dir_ = f'../../data/raw_data_for_analysis/{data_param_key}'
 
                 ## LOAD FINAL PATIENT IDS FOR ANALYSIS, SAVED DURING PREPROCESSING OF THE BASELINE MODELS IN NOTEBOOK S9_3
                 if 'pat_ids_fn' in parameters_for_analysis[data_param_key].keys():
-                    data_dir_ = f"../data/raw_data_for_analysis/{parameters_for_analysis[data_param_key]['pat_ids_fn']}"
+                    data_dir_ = f"../../data/raw_data_for_analysis/{parameters_for_analysis[data_param_key]['pat_ids_fn']}"
 
                 else:  
-                    data_dir_ = f'../data/raw_data_for_analysis/{data_param_key}'
+                    data_dir_ = f'../../data/raw_data_for_analysis/{data_param_key}'
 
                 
                 #print('X_full_',X_full_.shape)
@@ -839,7 +839,7 @@ for data_param_key in dataset_name_:
                         
                 training_results['cv_results']=cv_results
         
-                fn=f'../data/{data_param_key}_{model_name}_{period_end_day}_days_{training_data_type}_training_results.pickle'
+                fn=f'../../data/{data_param_key}_{model_name}_{period_end_day}_days_{training_data_type}_training_results.pickle'
                 with open(fn, 'wb') as handle:
                     pickle.dump(training_results, handle)
         

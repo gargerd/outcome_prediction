@@ -104,7 +104,7 @@ ds_type_descriptions={  'dm':'Demographic descriptors',
 ##### ============== HELPER FUNCTIONS ===================
 
 def get_all_var_names():
-    f = open('../data/all_pat_variables_with_reliable_therapy_data_dict',"rb")
+    f = open('../../data/all_pat_variables_with_reliable_therapy_data_dict',"rb")
     d=pickle.load(f)
 
     vars_per_dataset={}
@@ -152,14 +152,14 @@ def print_elapsed_time(start,stop):
 ##### ============== LOAD TARGER DATAFRAME AND RAW TABULAR DATASET ===================
 all_vars_dict,all_vars=get_all_var_names()
 
-outcome_df=pd.read_csv('../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
+outcome_df=pd.read_csv('../../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
 outcome_df=outcome_df.set_index('USUBJID',drop=True)
 
 
 ## LOOP THROUGH THE DIFFERENT DATASETS AND ALL THE DIFFERENT DATA LAYERS, AND CONVERT TABULAR DATA INTO DICTIONARY OF STRINGS
 for key in [*parameters_for_analysis][:1]:
     ## Load data
-    fn='../data/'+key+'_all_data_concat.csv.gz'
+    fn='../../data/'+key+'_all_data_concat.csv.gz'
     data_conc=pd.read_csv(fn,low_memory=False,index_col=0,usecols=range(5))
     pat_ids=data_conc['USUBJID'].unique().tolist()
     #del data_conc
@@ -186,9 +186,9 @@ def load_input_texts_and_labels(ds_types_merged,dataset_param_key,target_df,prom
         
     if ds_types_merged==True:
         
-        #fn=f'../data/{dataset_param_key}_input_dict_all_ds_types_merged.json'
-        fn=f'../data/{dataset_param_key}_{period_end_day}_days_input_dict_all_ds_types_merged.json'
-        fn=f'../data/{dataset_param_key}_{period_end_day}_days_{data_inclusion_type}_input_dict_all_ds_types_merged.json'
+        #fn=f'../../data/{dataset_param_key}_input_dict_all_ds_types_merged.json'
+        fn=f'../../data/{dataset_param_key}_{period_end_day}_days_input_dict_all_ds_types_merged.json'
+        fn=f'../../data/{dataset_param_key}_{period_end_day}_days_{data_inclusion_type}_input_dict_all_ds_types_merged.json'
         input_dict=json.load(open(fn))
         
         all_labels=target_df[[*input_dict]].values.tolist() #.astype(int)
@@ -200,9 +200,9 @@ def load_input_texts_and_labels(ds_types_merged,dataset_param_key,target_df,prom
         return pat_ids,None,all_texts,all_labels
         
     if ds_types_merged==False: 
-        #fn=f'../data/{dataset_param_key}_input_dict_ds_types_seperate.json'
-        fn=f'../data/{dataset_param_key}_{period_end_day}_days_input_dict_ds_types_seperate.json'
-        fn=f'../data/{dataset_param_key}_{period_end_day}_days_{data_inclusion_type}_input_dict_ds_types_seperate.json'
+        #fn=f'../../data/{dataset_param_key}_input_dict_ds_types_seperate.json'
+        fn=f'../../data/{dataset_param_key}_{period_end_day}_days_input_dict_ds_types_seperate.json'
+        fn=f'../../data/{dataset_param_key}_{period_end_day}_days_{data_inclusion_type}_input_dict_ds_types_seperate.json'
         input_dict=json.load(open(fn))
 
   
@@ -409,8 +409,8 @@ for llm_model_name in llm_model_names[:1]:
         print(f'{llm_model_name} base model loaded')
 
         ## IF INFERENCE WISHED BY FINE-TUNED MODEL, ADD & MERGE FINE-TUNED PEFT MODEL ADAPTER
-        #peft_model_path=f"../data/{llm_model_name}_{fine_tuned_tag}_num_of_epochs_{num_of_epochs}_{period_end_day}_days"
-        peft_model_path=f"../data/{llm_model_name}_{fine_tuned_tag}_num_of_epochs_{num_of_epochs}"#_{period_end_day}_days"
+        #peft_model_path=f"../../data/{llm_model_name}_{fine_tuned_tag}_num_of_epochs_{num_of_epochs}_{period_end_day}_days"
+        peft_model_path=f"../../data/{llm_model_name}_{fine_tuned_tag}_num_of_epochs_{num_of_epochs}"#_{period_end_day}_days"
         
         if fine_tuned_tag=='fine_tuned':
             model=PeftModel.from_pretrained(model,peft_model_path)
@@ -514,7 +514,7 @@ for dataset_param_key in dataset_name_:
             
       
                 model_id=f"{llm_model_name}_{fine_tuned_tag}"
-                #output_dir=f"../data/{dataset_param_key}_{model_id}_{period_end_day}_days_{data_inclusion_type}"
+                #output_dir=f"../../data/{dataset_param_key}_{model_id}_{period_end_day}_days_{data_inclusion_type}"
                 #os.makedirs(output_dir,exist_ok=True)
                 
                 ## TOKENIZE DATASET
@@ -532,7 +532,7 @@ for dataset_param_key in dataset_name_:
                     for pool_method in pool_methods_:
                         
                         
-                        output_dir=f"../data/{dataset_param_key}_{model_id}_{period_end_day}_days_{data_inclusion_type}_{pool_method}"
+                        output_dir=f"../../data/{dataset_param_key}_{model_id}_{period_end_day}_days_{data_inclusion_type}_{pool_method}"
                         os.makedirs(output_dir,exist_ok=True)
                         
                         #print(' - '.join([model_id,dataset_param_key,data_inclusion_type,period_end_day,pool_method]))

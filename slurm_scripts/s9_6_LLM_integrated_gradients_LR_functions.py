@@ -172,7 +172,7 @@ def scale_by_training_data(X_train, X_test):
 def load_input_emebddings_of_model(data_param_key,llm_model_name,fine_tuned_tag,period_end_day,llm_model_name_with_tag,data_inclusion_type,autoencoder_merged):
 
     if autoencoder_merged==True:
-        model_dir=f"../data/{'_'.join([parameters_for_analysis[data_param_key]['fn'],llm_model_name,fine_tuned_tag,str(period_end_day),'days',data_inclusion_type,'autoencoder_merged'])}"
+        model_dir=f"../../data/{'_'.join([parameters_for_analysis[data_param_key]['fn'],llm_model_name,fine_tuned_tag,str(period_end_day),'days',data_inclusion_type,'autoencoder_merged'])}"
         fn=f"{model_dir}/latent_embeddings.csv.gz"
         df_pt=pd.read_csv(fn,low_memory=False,index_col=0)
 
@@ -182,7 +182,7 @@ def load_input_emebddings_of_model(data_param_key,llm_model_name,fine_tuned_tag,
     if autoencoder_merged==False:
         
         ## LOAD EMBEDDINGS OF GIVEN MODEL AND DATASET&PREDICTION LABEL (CONTAINED IN 'key' string)
-        model_dir=f"../data/{'_'.join([parameters_for_analysis[data_param_key]['fn'],llm_model_name,fine_tuned_tag,str(period_end_day),'days',data_inclusion_type])}"
+        model_dir=f"../../data/{'_'.join([parameters_for_analysis[data_param_key]['fn'],llm_model_name,fine_tuned_tag,str(period_end_day),'days',data_inclusion_type])}"
         print(model_dir)
     
         #if 'text-embedding' in llm_model_name:
@@ -220,7 +220,7 @@ def load_input_emebddings_of_model(data_param_key,llm_model_name,fine_tuned_tag,
             if 'TB-1018' not in pat:
                 l_pt.append(embed)
             
-            #fn=f"../data/{model_dir}/{pat_ids[0].replace('/','_')}_pca_mean.npy"
+            #fn=f"../../data/{model_dir}/{pat_ids[0].replace('/','_')}_pca_mean.npy"
             #l_npy.append(np.load(fn))
     
         df_pt=pd.DataFrame(data=np.array(l_pt),index=pat_ids)
@@ -257,7 +257,7 @@ def load_input_embeddings_of_model(data_param_key, llm_model_name, fine_tuned_ta
     import torch
     from concurrent.futures import ThreadPoolExecutor, as_completed
     
-    base = "../data"
+    base = "../../data"
     dataset_name = parameters_for_analysis[data_param_key]['fn']
 
     parts = [dataset_name, llm_model_name, fine_tuned_tag, str(period_end_day), 'days', data_inclusion_type,pool_method]
@@ -335,9 +335,9 @@ def load_input_texts_and_labels(ds_types_merged,dataset_param_key,target_df,prom
         
     if ds_types_merged==True:
         
-        #fn=f'../data/{dataset_param_key}_input_dict_all_ds_types_merged.json'
-        fn=f'../data/{dataset_param_key}_{period_end_day}_days_input_dict_all_ds_types_merged.json'
-        fn=f'../data/{dataset_param_key}_{period_end_day}_days_{data_inclusion_type}_input_dict_all_ds_types_merged.json'
+        #fn=f'../../data/{dataset_param_key}_input_dict_all_ds_types_merged.json'
+        fn=f'../../data/{dataset_param_key}_{period_end_day}_days_input_dict_all_ds_types_merged.json'
+        fn=f'../../data/{dataset_param_key}_{period_end_day}_days_{data_inclusion_type}_input_dict_all_ds_types_merged.json'
         input_dict=json.load(open(fn))
         
         all_labels=target_df[[*input_dict]].values.tolist() #.astype(int)
@@ -349,9 +349,9 @@ def load_input_texts_and_labels(ds_types_merged,dataset_param_key,target_df,prom
         return pat_ids,None,all_texts,all_labels
         
     if ds_types_merged==False: 
-        #fn=f'../data/{dataset_param_key}_input_dict_ds_types_seperate.json'
-        fn=f'../data/{dataset_param_key}_{period_end_day}_days_input_dict_ds_types_seperate.json'
-        fn=f'../data/{dataset_param_key}_{period_end_day}_days_{data_inclusion_type}_input_dict_ds_types_seperate.json'
+        #fn=f'../../data/{dataset_param_key}_input_dict_ds_types_seperate.json'
+        fn=f'../../data/{dataset_param_key}_{period_end_day}_days_input_dict_ds_types_seperate.json'
+        fn=f'../../data/{dataset_param_key}_{period_end_day}_days_{data_inclusion_type}_input_dict_ds_types_seperate.json'
         input_dict=json.load(open(fn))
 
         '''
@@ -712,9 +712,9 @@ def load_final_patient_for_analysis(parameters_for_analysis,
     
     ## LOAD FINAL PATIENT IDS FOR ANALYSIS, SAVED DURING PREPROCESSING OF THE BASELINE MODELS IN NOTEBOOK S9_3
     if 'pat_ids_fn' in parameters_for_analysis[data_param_key].keys():
-        fn=f"../data/{parameters_for_analysis[data_param_key]['pat_ids_fn']}_final_pat_ids_for_analysis.pickle"
+        fn=f"../../data/{parameters_for_analysis[data_param_key]['pat_ids_fn']}_final_pat_ids_for_analysis.pickle"
     else:  
-        fn=f'../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
+        fn=f'../../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
     with open(fn, 'rb') as handle:
         final_pat_ids_for_analysis=pickle.load(handle)
     

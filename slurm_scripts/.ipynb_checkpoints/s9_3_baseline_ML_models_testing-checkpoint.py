@@ -280,7 +280,7 @@ import warnings
 from tqdm import tqdm
 
 
-outcome_df=pd.read_csv('../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
+outcome_df=pd.read_csv('../../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
 outcome_df=outcome_df.set_index('USUBJID',drop=True)
 outcome_df=outcome_df.rename(columns={'UNFAVOURABLE_OUTCOME_CATEGORY_AT_18_MONTHS':'UNFAVOUR_CAT_AT_18_MONTHS'})
 
@@ -320,7 +320,7 @@ train_params={'num_cv_repeats':25,
 
 
 ## Load dataframe containing the last day of drug regimen for each patient
-last_initial_therapy_day_df=pd.read_csv('../data/out_last_initial_therapy_day_list_1018_20_21_22_30.csv.gz',index_col=0)
+last_initial_therapy_day_df=pd.read_csv('../../data/out_last_initial_therapy_day_list_1018_20_21_22_30.csv.gz',index_col=0)
 last_initial_therapy_day_df=last_initial_therapy_day_df.set_index('USUBJID')
 
 ## Laod pats with relapse df
@@ -533,7 +533,7 @@ for data_param_key in dataset_name_:
             for model_name in model_names_:
                 print(model_name)
 
-                fn=f'../data/{data_param_key}_{model_name}_{period_end_day}_days_{training_data_type}_training_results.pickle'
+                fn=f'../../data/{data_param_key}_{model_name}_{period_end_day}_days_{training_data_type}_training_results.pickle'
                 with open(fn, 'rb') as handle:
                     training_results=pickle.load(handle)
 
@@ -771,12 +771,12 @@ for data_param_key in dataset_name_:
              cv_res_acros_time_df)
     
         ## SAVE TEST DATFRAME FOR LATER COMPARISON
-        fn=f'../data/test_roc_auc_values/baseline/{data_param_key}_days_{training_data_type}_test_ROC_AUC_across_time_all_studies.csv'
+        fn=f'../../data/test_roc_auc_values/baseline/{data_param_key}_days_{training_data_type}_test_ROC_AUC_across_time_all_studies.csv'
         cv_res_acros_time_df.to_csv(fn)
 
         ## SAVE PREDICTION RESULTS 
-        #fn=f'../data/test_roc_auc_values/LLM/{data_param_key}_{llm_model_name_with_tag}_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_test_pred_results_all_studies.pickle'                                                    
-        fn=f'../data/test_roc_auc_values/baseline/{data_param_key}_days_{training_data_type}_test_pred_results_all_studies.pickle'
+        #fn=f'../../data/test_roc_auc_values/LLM/{data_param_key}_{llm_model_name_with_tag}_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_test_pred_results_all_studies.pickle'                                                    
+        fn=f'../../data/test_roc_auc_values/baseline/{data_param_key}_days_{training_data_type}_test_pred_results_all_studies.pickle'
         with open(fn, 'wb') as handle:
             pickle.dump(pred_results_dict, handle)
         
@@ -787,12 +787,12 @@ for data_param_key in dataset_name_:
         cv_res_per_study_df=pd.concat(cv_res_df_per_study_list,axis=0)
             
         ## SAVE TEST DATFRAME FOR LATER COMPARISON
-        #fn=f'../data/{data_param_key}_{model_name}_{period_end_day}_days_{training_data_type}_test_ROC_AUC_across_time_per_study.csv' 
-        fn=f'../data/test_roc_auc_values/baseline/{data_param_key}_days_{training_data_type}_test_ROC_AUC_across_time_per_study..csv'
+        #fn=f'../../data/{data_param_key}_{model_name}_{period_end_day}_days_{training_data_type}_test_ROC_AUC_across_time_per_study.csv' 
+        fn=f'../../data/test_roc_auc_values/baseline/{data_param_key}_days_{training_data_type}_test_ROC_AUC_across_time_per_study..csv'
         cv_res_per_study_df.to_csv(fn)
 
         ## SAVE PREDICTION RESULTS 
-        fn=f'../data/test_roc_auc_values/baseline/{data_param_key}_days_{training_data_type}_test_pred_results_per_study.pickle  '                                                  
+        fn=f'../../data/test_roc_auc_values/baseline/{data_param_key}_days_{training_data_type}_test_pred_results_per_study.pickle  '                                                  
         with open(fn, 'wb') as handle:
             pickle.dump(pred_results_dict_per_study, handle)
 

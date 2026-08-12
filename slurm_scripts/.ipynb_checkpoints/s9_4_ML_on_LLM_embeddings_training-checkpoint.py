@@ -73,8 +73,7 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'result_cat':'RESULT_AT_END_OF_TREATMENT',
                               'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg',
-                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                         },
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment'},
 
 
                         'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats':{
@@ -82,7 +81,7 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'fn':'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats',
                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
                             'result_cat':'RELAPSE',
-                            'validate_on_rifaquin':True},
+                            'validate_on_rifaquin':False},
 
                          'tb20_21_22_2908_pats_7_vars_relapse':{
                             'result_cat':'RELAPSE',
@@ -94,15 +93,16 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'fn':'tb20_21_22_2908_pats_7_vars_relapse',
                            'include_rifaquin':True},
                         
-                         'tb21_22_2984_pats_22_vars_relapse_basic_vars':{
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
-                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
-                            'result_cat':'RELAPSE'},
+                         #'tb21_22_2984_pats_22_vars_relapse_basic_vars':{
+                         #   'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                         #   'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                         #   'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
+                         #   'result_cat':'RELAPSE'},
 
                          ### train on one/more studies, validate on completely held out study
                           'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21':{
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg',
+                              'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                              #'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'corr_test_for_arm':True,
                             'training_cohort':['TB-1021'],
@@ -110,7 +110,8 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'result_cat':'RESULT_AT_END_OF_TREATMENT'},
                             
                             'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb22':{
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg',
+                            'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                              #'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             'corr_test_for_arm':True,
                             'training_cohort':['TB-1022'],
@@ -118,7 +119,8 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'result_cat':'RESULT_AT_END_OF_TREATMENT'},
                             
                             'tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb21':{
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'fn':'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats',
+                            'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                             #'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
                             'corr_test_for_arm':True,
                             'training_cohort':['TB-1021'],
@@ -127,7 +129,8 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                             'result_cat':'RELAPSE'}, 
                             
                             'tb21_22_2984_pats_22_vars_relapse_ext_pats_without_dr_reg_train_tb22':{
-                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'fn':'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats',
+                             'X_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',   
                             #'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
                             'corr_test_for_arm':True,
                             'training_cohort':['TB-1022'],
@@ -289,7 +292,7 @@ param_search_dict={'RandomForest':{'n_estimators':[300,500,700],
                                         #'l1_ratio':[1]
                                        'n_jobs':[4],
                                         'l1_ratio':[1,0.5,0.1][:1],
-                                         'C': [0.001, 0.01, 0.1, 1, 10][:-1],
+                                         'C': [0.1, 1, 10, 100][:],
                                           },
                    
                   'SVC':{'C':[1e-3,1e-2,1e-1,1e0,1e1,1e2],
@@ -347,6 +350,7 @@ data_inclusion_types = ['baseline_last_day', 'baseline_vars', 'all_days']
 period_end_days = ['baseline', 31, 62, 93, 125, 160, 'all']
 autoenc_merged_bool_list = [False, True]
 
+'''
 # Prepare all combinations to wrap in tqdm
 combinations = []
 for data_param_key in dataset_name_:
@@ -408,6 +412,95 @@ for combo in tqdm(combinations, desc="Loading embeddings", unit="set"):
     #print('-Inf present:',any(df_pt==-np.inf))
     assert not np.isinf(df_pt.values).any(), "There are still Inf values!"
     assert not np.isnan(df_pt.values).any(), "There are still NaN values!"
+
+'''
+
+def load_embeddings(pool_method,
+                   autoencoder_merged,
+                   data_param_key,
+                   period_end_day,
+                   data_inclusion_type):
+
+    import warnings
+    import time
+    from tqdm import tqdm
+    
+    embed_dict = {}
+    
+    llm_model_names = ['BioMistral/BioMistral-7B', "epfl-llm/meditron-70b", "epfl-llm/meditron-7b",
+                       "google/long-t5-local-base", 'google/long-t5-tglobal-large',
+                       'text-embedding-3-small']
+    
+    fine_tuned_tags = ['base', 'fine_tuned']
+    pool_methods =[pool_method]#['mean_pooling','attention_pooling'][:1]
+    
+    data_inclusion_types = [data_inclusion_type] #['baseline_last_day', 'baseline_vars', 'all_days']
+    period_end_days = [period_end_day] #['baseline', 31, 62, 93, 125, 160, 'all']
+    autoenc_merged_bool_list = [autoencoder_merged] #[False, True]
+    
+    # Prepare all combinations to wrap in tqdm
+    combinations = []
+    for data_param_key in [data_param_key]:
+        #outcome_label = data_param_key.split('vars_')[-1].upper()
+        outcome_label = parameters_for_analysis[data_param_key]['result_cat']
+        
+        for llm_model_name in llm_model_names[:1]:
+            
+            for fine_tuned_tag in fine_tuned_tags[:1]:
+                
+                if 'text-embedding' in llm_model_name:
+                    llm_model_name_with_tag = llm_model_name
+                else:
+                    llm_model_name_with_tag = '_'.join([llm_model_name.split('/')[-1], fine_tuned_tag])
+                    
+                for period_end_day in period_end_days[:]:
+                    
+                    for data_inclusion_type in data_inclusion_types[:]:
+                        
+                        for autoencoder_merged in autoenc_merged_bool_list[:]:
+    
+                            for pool_method in pool_methods:
+                                combinations.append((
+                                    data_param_key, llm_model_name, fine_tuned_tag,
+                                    llm_model_name_with_tag, period_end_day,
+                                    data_inclusion_type, autoencoder_merged,
+                                    pool_method
+                                ))
+    
+    # Iterate with progress bar
+    for combo in tqdm(combinations, desc="Loading embeddings", unit="set"):
+        data_param_key, llm_model_name, fine_tuned_tag, \
+                        llm_model_name_with_tag, period_end_day, \
+                            data_inclusion_type, autoencoder_merged, pool_method = combo
+        
+        #embed_dict.setdefault(data_param_key, {})
+        #embed_dict[data_param_key].setdefault(llm_model_name_with_tag, {})
+        #embed_dict[data_param_key][llm_model_name_with_tag].setdefault(period_end_day, {})
+        #embed_dict[data_param_key][llm_model_name_with_tag][period_end_day].setdefault(data_inclusion_type, {})
+        #embed_dict[data_param_key][llm_model_name_with_tag][period_end_day][data_inclusion_type].setdefault(autoencoder_merged, {})
+    
+        print(f"\n→ Loading: {data_param_key} | {llm_model_name_with_tag} | {period_end_day} | {data_inclusion_type} | autoenc={autoencoder_merged} | {pool_method} ")
+    
+        try:
+            start = time.time()
+            df_pt = load_input_embeddings_of_model(
+                data_param_key, llm_model_name, fine_tuned_tag,
+                period_end_day, llm_model_name_with_tag,data_inclusion_type,pool_method,
+                autoencoder_merged)
+            
+            elapsed = time.time() - start
+            print(f"Loaded in {elapsed:.2f} seconds. Dataframe shape: {df_pt.shape}")
+        except FileNotFoundError:
+            warnings.warn(f"Embeddings missing for: {data_param_key} / {llm_model_name_with_tag}. Skipping.")
+            continue
+    
+        #embed_dict[data_param_key][llm_model_name_with_tag][period_end_day][data_inclusion_type][autoencoder_merged][pool_method] = df_pt
+        #print('Inf present:',any(df_pt==np.inf))
+        #print('-Inf present:',any(df_pt==-np.inf))
+        assert not np.isinf(df_pt.values).any(), "There are still Inf values!"
+        assert not np.isnan(df_pt.values).any(), "There are still NaN values!"
+    
+    return df_pt
     
 
 ####=================================================
@@ -417,7 +510,7 @@ import warnings
 from tqdm import tqdm
 
 
-outcome_df=pd.read_csv('../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
+outcome_df=pd.read_csv('../../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
 outcome_df=outcome_df.set_index('USUBJID',drop=True)
 
 llm_model_names=['BioMistral/BioMistral-7B',"epfl-llm/meditron-70b","epfl-llm/meditron-7b",
@@ -493,12 +586,27 @@ for data_param_key in dataset_name_:
                                                                  data_param_key=data_param_key)
     
     print(data_param_key)
-    #fn='../data/'+data_param_key+'_all_data_concat.csv.gz'
+    #fn='../../data/'+data_param_key+'_all_data_concat.csv.gz'
     #X=pd.read_csv(fn,index_col=0,low_memory=False)
     
     #outcome_label=data_param_key.split('vars_')[-1].upper()
     outcome_label = parameters_for_analysis[data_param_key]['result_cat']
-        
+
+    ## Load dataframe containing all patients considered & all variables concatenated into one dataframe (for later use)
+    if 'X_fn' in parameters_for_analysis[data_param_key].keys():
+        fn='../../data/'+parameters_for_analysis[data_param_key]['X_fn']+'_all_data_concat.csv.gz'
+    else:
+        fn='../../data/'+parameters_for_analysis[data_param_key]['fn']+'_all_data_concat.csv.gz'
+    X__=pd.read_csv(fn,index_col=0,low_memory=False)
+
+    ## Return dataframe with the outcome label
+    pat_ids,y,target_df,outcome_label = return_predict_label_dataframe(parameters_for_analysis,data_param_key,X__,
+                                                                  outcome_df,outcome_label,model_names)
+
+    ## Subset initial therapy last day dataframe to all patient considered in analysis
+    #init_ther_df=last_initial_therapy_day_df.loc[pat_ids,:]
+    last_init_ther_days = extract_last_init_therapy_day_from_drug_regimen(pat_ids)
+    
     for llm_model_name in llm_model_names[:1]:
         
         for fine_tuned_tag in fine_tuned_tags[:1]:
@@ -531,30 +639,24 @@ for data_param_key in dataset_name_:
         
                             ## Load embeddings created by LLM model
                             #print(f'Loading embeddings of {llm_model_name_with_tag} model')
+                            df = load_embeddings(pool_method,
+                                               autoencoder_merged,
+                                               data_param_key,
+                                               period_end_day,
+                                               data_inclusion_type)
+                            '''
                             try:
                                 df=embed_dict[data_param_key][llm_model_name_with_tag][period_end_day][data_inclusion_type][autoencoder_merged][pool_method]
                             except KeyError:
                                 warnings.warn(f"Embeddings of {parameters_for_analysis[data_param_key]['fn']} data / {llm_model_name_with_tag} model/ {period_end_day} days/ {data_inclusion_type}/ autoenc {autoencoder_merged} /{pool_method} not found! Check if they have been created. Skipping to next item.")
                                 continue
-        
-                            #print(data_param_key)
-                            if 'X_fn' in parameters_for_analysis[data_param_key].keys():
-                                fn='../data/'+parameters_for_analysis[data_param_key]['X_fn']+'_all_data_concat.csv.gz'
-                            else:
-                                fn='../data/'+parameters_for_analysis[data_param_key]['fn']+'_all_data_concat.csv.gz'
-                            X=pd.read_csv(fn,index_col=0,low_memory=False)
-    
-                            ## Return dataframe with the outcome label
-                            pat_ids,y,target_df,outcome_label = return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
-                                                                                          outcome_df,outcome_label,model_names)
+                            '''
+                             
                            
                             ## Drop patients who have their last therapy day before therapy_day_thr ==> these patient probably dropped out
                             #last_day_per_pat_df=X.sort_values(by=['DAY']).groupby('USUBJID').apply(lambda x: x.loc[x.index[-1],:])
                             #pat_ids=last_day_per_pat_df[last_day_per_pat_df['DAY']>therapy_day_thr]['USUBJID'].tolist()
     
-                            ## Subset initial therapy last day dataframe to all patient considered in analysis
-                            #init_ther_df=last_initial_therapy_day_df.loc[pat_ids,:]
-                            last_init_ther_days = extract_last_init_therapy_day_from_drug_regimen(pat_ids)
     
                             ## SUBSET TO PATIENTS WHO WERE TAKING DRUGS DURING THE PERIOD
                             #pat_ids_ = subset_pats_with_therapy_in_period(period_num,period_end_days,data_param_key,last_init_ther_days)
@@ -603,7 +705,7 @@ for data_param_key in dataset_name_:
                                     #if model_name=='XGBoost':
     
                                     ## LOAD RESULTS OF PARAMETER SEARCH AND EXTRACT THE PARAMETERS OF THE BEST MODEL
-                                    fn=f'../data/{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_vars_param_search_results.pickle'
+                                    fn=f'../../data/{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_vars_param_search_results.pickle'
                                     with open(fn, 'rb') as handle:
                                         param_search_results=pickle.load(handle)
                                     
@@ -733,7 +835,7 @@ for data_param_key in dataset_name_:
                                   
             
                                     ## Save training results
-                                    fn=f'../data/{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_vars_training_results.pickle'                                
+                                    fn=f'../../data/{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_vars_training_results.pickle'                                
                                     with open(fn, 'wb') as handle:
                                         pickle.dump(training_results, handle)
         

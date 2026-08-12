@@ -62,7 +62,19 @@ parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':
                         'tb21_22_2984_pats_22_vars_relapse':{
                             'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
                               'training_days':120,
-                            'result_cat':'RELAPSE'}
+                            'result_cat':'RELAPSE'},
+
+                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             'training_days':120,
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+
+                        'tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse_ext_pats',
+                            'training_days':120,
+                            'result_cat':'RELAPSE'},
 
                          }
 
@@ -81,7 +93,7 @@ label2id={"FAVOURABLE": 0, "UNFAVOURABLE": 1}
 
 import time
 
-outcome_df=pd.read_csv('../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
+outcome_df=pd.read_csv('../../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
 outcome_df=outcome_df.set_index('USUBJID',drop=True)
 outcome_df=outcome_df.rename(columns={'UNFAVOURABLE_OUTCOME_CATEGORY_AT_18_MONTHS':'UNFAVOUR_CAT_AT_18_MONTHS'})
 
@@ -95,7 +107,7 @@ temp_cols_to_drop=['ae','ce','mh','cm']
 therapy_day_thr=80
 
 ## Load pat IDS with information which study phase they belong to
-#pat_id_df=pd.read_csv('../data/patients_in_analysis.csv',index_col=0)
+#pat_id_df=pd.read_csv('../../data/patients_in_analysis.csv',index_col=0)
 
 data_split_random_state=42
 training_method='training_on_first_x_days'
@@ -117,7 +129,7 @@ scoring_methods=['roc_auc_score']#,'precision','recall']
 
 
 ## LOAD DATAFRAME CONTATINING TARGET OUTCOMES
-outcome_df=pd.read_csv('../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
+outcome_df=pd.read_csv('../../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
 outcome_df=outcome_df.set_index('USUBJID',drop=True)
 outcome_df=outcome_df.rename(columns={'UNFAVOURABLE_OUTCOME_CATEGORY_AT_18_MONTHS':'UNFAVOUR_CAT_AT_18_MONTHS'})
 
@@ -249,7 +261,8 @@ grid_search_df['early_stopping_best_epoch']=np.nan
 import warnings
 warnings.filterwarnings("ignore")
 
-pats_with_relapse_df=extract_21_22_relapse_pats()
+pats_with_relapse_df=extract_21_22_relapse_pats(include_rifaquin=True,
+                                               extended_pats=True)
 
 
 ## Choose CV features: number of folds and repeats for CV in the training + scoring method
@@ -280,13 +293,9 @@ for model_complex in model_complexity_:
     
     for data_param_key in dataset_name_:
 
-         ## LOAD FINAL PATIENT IDS FOR ANALYSIS, SAVED DURING PREPROCESSING OF THE BASELINE MODELS IN NOTEBOOK S9_3
-        if 'pat_ids_fn' in parameters_for_analysis[data_param_key].keys():
-            fn=f"../data/{parameters_for_analysis[data_param_key]['pat_ids_fn']}_final_pat_ids_for_analysis.pickle"
-        else:  
-            fn=f'../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
-        with open(fn, 'rb') as handle:
-            final_pat_ids_for_analysis=pickle.load(handle)
+        ## LOAD FINAL PATIENT IDS FOR ANALYSIS, SAVED DURING PREPROCESSING OF THE BASELINE MODELS IN NOTEBOOK S9_3
+        final_pat_ids_for_analysis = load_final_patient_for_analysis(parameters_for_analysis=parameters_for_analysis,
+                                                                     data_param_key=data_param_key)
 
         #outcome_label=data_param_key.split('vars_')[-1].upper()
         outcome_label = parameters_for_analysis[data_param_key]['result_cat']
@@ -301,9 +310,9 @@ for model_complex in model_complexity_:
         print('dataset name: ',data_param_key)
 
         ## Load the preprocessed + imputed dataset
-        data_dir='../data'
+        data_dir='../../data'
          ## Define X and y dataframes for training
-        fn='../data/'+parameters_for_analysis[data_param_key]['fn']+'_preproc_data_with_imp.csv.gz'
+        fn='../../data/'+parameters_for_analysis[data_param_key]['fn']+'_preproc_data_with_imp.csv.gz'
         data=pd.read_csv(fn,index_col=0,low_memory=False)
 
         ## Return dataframe with the outcome label
@@ -323,8 +332,8 @@ for model_complex in model_complexity_:
 
 
         ## Check if result_dict already exists. If yes, load it, if not create a new one
-        #fname='../data/'+data_param_key+'_LSTM_class_results.pickle'
-        fname=f'../data/{data_param_key}_LSTM_class_results_{model_complex}_model.pickle'
+        #fname='../../data/'+data_param_key+'_LSTM_class_results.pickle'
+        fname=f'../../data/{data_param_key}_LSTM_class_results_{model_complex}_model.pickle'
         if os.path.exists(fname) and update_existing_dicts==False:
             with open(fname,'rb') as f:
                 result_dict=pickle.load(f)
@@ -427,7 +436,7 @@ for model_complex in model_complexity_:
             #result_dict[data_param_key][categorical_map_name]['cv_results']=cv_results  
 
             ## Save results of ML on the given data
-            fname=f'../data/{data_param_key}_LSTM_class_results_{model_complex}_model_{period_end_day}_days_param_serach_results.pickle'
+            fname=f'../../data/{data_param_key}_LSTM_class_results_{model_complex}_model_{period_end_day}_days_param_serach_results.pickle'
             with open(fname, 'wb') as f:
                 pickle.dump(result_dict, f)      
 

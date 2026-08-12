@@ -334,8 +334,8 @@ for llm_model_name in llm_model_names[:1]:
         print(f'{llm_model_name} base model loaded')
 
         ## IF INFERENCE WISHED BY FINE-TUNED MODEL, ADD & MERGE FINE-TUNED PEFT MODEL ADAPTER
-        peft_model_path=f"../data/{llm_model_name}_{fine_tuned_tag}_num_of_epochs_{num_of_epochs}_{period_end_day}_days"
-        peft_model_path=f"../data/{llm_model_name}_{fine_tuned_tag}_num_of_epochs_{num_of_epochs}"#_{period_end_day}_days"
+        peft_model_path=f"../../data/{llm_model_name}_{fine_tuned_tag}_num_of_epochs_{num_of_epochs}_{period_end_day}_days"
+        peft_model_path=f"../../data/{llm_model_name}_{fine_tuned_tag}_num_of_epochs_{num_of_epochs}"#_{period_end_day}_days"
         
         if fine_tuned_tag=='fine_tuned':
             model=PeftModel.from_pretrained(model,peft_model_path)
@@ -346,14 +346,14 @@ for llm_model_name in llm_model_names[:1]:
 
 
 ######================== LOAD PREDICTION LABELS ================
-outcome_df=pd.read_csv('../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
+outcome_df=pd.read_csv('../../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
 outcome_df=outcome_df.set_index('USUBJID',drop=True)
 
 
 ## LOOP THROUGH THE DIFFERENT DATASETS AND ALL THE DIFFERENT DATA LAYERS, AND CONVERT TABULAR DATA INTO DICTIONARY OF STRINGS
 for key in [*parameters_for_analysis][:1]:
     ## Load data
-    fn='../data/'+key+'_all_data_concat.csv.gz'
+    fn='../../data/'+key+'_all_data_concat.csv.gz'
     data_conc=pd.read_csv(fn,low_memory=False,index_col=0,usecols=range(5))
     pat_ids=data_conc['USUBJID'].unique().tolist()
     #del data_conc
@@ -433,9 +433,9 @@ for data_param_key in dataset_name_:
 
     #print(data_param_key)
     if 'X_fn' in parameters_for_analysis[data_param_key].keys():
-        fn='../data/'+parameters_for_analysis[data_param_key]['X_fn']+'_all_data_concat.csv.gz'
+        fn='../../data/'+parameters_for_analysis[data_param_key]['X_fn']+'_all_data_concat.csv.gz'
     else:
-        fn='../data/'+parameters_for_analysis[data_param_key]['fn']+'_all_data_concat.csv.gz'
+        fn='../../data/'+parameters_for_analysis[data_param_key]['fn']+'_all_data_concat.csv.gz'
     X_=pd.read_csv(fn,index_col=0,low_memory=False)
     
     print(data_param_key)
@@ -512,9 +512,9 @@ for data_param_key in dataset_name_:
                                 for model_name in model_names_:
                                     #print('model_name',model_name)
             
-                                    #fn=f'../data/{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_vars_training_results.pickle'
-                                    #fn=f'../data/{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}vars_training_results.pickle'
-                                    fn=f'../data/{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_4096_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_vars_training_results.pickle'                                
+                                    #fn=f'../../data/{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_vars_training_results.pickle'
+                                    #fn=f'../../data/{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}vars_training_results.pickle'
+                                    fn=f'../../data/{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_4096_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_vars_training_results.pickle'                                
                                     with open(fn, 'rb') as handle:
                                         training_results=pickle.load(handle)
                                         print('loaded training results of', fn)
@@ -616,7 +616,7 @@ for data_param_key in dataset_name_:
                                                     
                                                     ## SAVE ATTRIBUTES AND TOKENS                        
                                                     model_id=f"{llm_model_name}_{fine_tuned_tag}"
-                                                    ig_output_dir=f"../data/integrated_gradients/{data_param_key}_{model_id}_{period_end_day}_days_{data_inclusion_type}_{pool_method}"
+                                                    ig_output_dir=f"../../data/integrated_gradients/{data_param_key}_{model_id}_{period_end_day}_days_{data_inclusion_type}_{pool_method}"
                                                     os.makedirs(ig_output_dir,exist_ok=True)
                                                     
                                                     pat_id_=pat_id.replace('/','_')

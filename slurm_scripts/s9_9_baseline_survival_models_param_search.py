@@ -151,7 +151,7 @@ import warnings
 from tqdm import tqdm
 
 
-outcome_df=pd.read_csv('../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
+outcome_df=pd.read_csv('../../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
 outcome_df=outcome_df.set_index('USUBJID',drop=True)
 outcome_df=outcome_df.rename(columns={'UNFAVOURABLE_OUTCOME_CATEGORY_AT_18_MONTHS':'UNFAVOUR_CAT_AT_18_MONTHS'})
 
@@ -194,7 +194,7 @@ train_params={'num_cv_repeats':25,
 
 
 ## Load dataframe containing the last day of drug regimen for each patient
-last_initial_therapy_day_df=pd.read_csv('../data/out_last_initial_therapy_day_list_1018_20_21_22_30.csv.gz',index_col=0)
+last_initial_therapy_day_df=pd.read_csv('../../data/out_last_initial_therapy_day_list_1018_20_21_22_30.csv.gz',index_col=0)
 last_initial_therapy_day_df=last_initial_therapy_day_df.set_index('USUBJID')
 
 ## Laod pats with relapse df
@@ -284,13 +284,13 @@ for data_param_key in dataset_name_:
     outcome_label = parameters_for_analysis[data_param_key]['result_cat']
 
     ## LOAD FINAL PATIENT IDS FOR ANALYSIS, SAVED DURING PREPROCESSING OF THE BASELINE MODELS IN NOTEBOOK S9_3
-    survival_anal_dir_ = f'../data/survival_analysis'
+    survival_anal_dir_ = f'../../data/survival_analysis'
     if 'pat_ids_fn' in parameters_for_analysis[data_param_key].keys():
-        #fn=f"../data/{parameters_for_analysis[data_param_key]['pat_ids_fn']}_final_pat_ids_for_analysis.pickle"
+        #fn=f"../../data/{parameters_for_analysis[data_param_key]['pat_ids_fn']}_final_pat_ids_for_analysis.pickle"
         fn=os.path.join(survival_anal_dir_,
                     f"{parameters_for_analysis[data_param_key]['pat_ids_fn']}_final_pat_ids_for_analysis.pickle")
     else:  
-        #fn=f'../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
+        #fn=f'../../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
         fn=os.path.join(survival_anal_dir_,
                     f'{data_param_key}_final_pat_ids_for_analysis.pickle')
     with open(fn, 'rb') as handle:
@@ -518,8 +518,8 @@ for data_param_key in dataset_name_:
                         
                     
                         ## Save training results
-                        #fn=f'../data/{data_param_key}_{model_name}_{training_data_type}_training_results.pickle'
-                        #fn=f'../data/{data_param_key}_{model_name}_{period_end_day}_days_{training_data_type}_param_search_results.pickle'
+                        #fn=f'../../data/{data_param_key}_{model_name}_{training_data_type}_training_results.pickle'
+                        #fn=f'../../data/{data_param_key}_{model_name}_{period_end_day}_days_{training_data_type}_param_search_results.pickle'
                         fn=os.path.join(survival_anal_dir_,
                                         f"{data_param_key}_{model_name}_{period_end_day}_days_{training_data_type}_{ther_arm_dur}_{time_origin}_param_search_results.pickle")
                             
@@ -529,7 +529,7 @@ for data_param_key in dataset_name_:
             
             #if training_data_type=='last_therapy_day':              
                 ## SAVE DICTIONARY OF FINAL PATIENT IDS                    
-            #    fn=f'../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
+            #    fn=f'../../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
             #    with open(fn, 'wb') as handle:
             #        pickle.dump(final_pat_ids_for_analysis, handle)
         

@@ -162,7 +162,7 @@ ds_type_descriptions={'dm':'Demographic descriptors',
                     'lb':'Laboratory test results',
                     'dr_reg':'Cumulative drug doses taken'}
 
-outcome_df=pd.read_csv('../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
+outcome_df=pd.read_csv('../../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
 outcome_df=outcome_df.set_index('USUBJID',drop=True)
 
 therapy_day_thr=80
@@ -210,7 +210,7 @@ def print_elapsed_time(start,stop):
 def load_input_emebddings_of_model(data_param_key,llm_model_name,fine_tuned_tag,period_end_day,data_inclusion_type,autoencoder_merged):
 
     if autoencoder_merged==True:
-        model_dir=f"../data/{'_'.join([parameters_for_analysis[data_param_key]['fn'],llm_model_name,fine_tuned_tag,str(period_end_day),'days',data_inclusion_type,'autoencoder_merged'])}"
+        model_dir=f"../../data/{'_'.join([parameters_for_analysis[data_param_key]['fn'],llm_model_name,fine_tuned_tag,str(period_end_day),'days',data_inclusion_type,'autoencoder_merged'])}"
         fn=f"{model_dir}/latent_embeddings.csv.gz"
         df_pt=pd.read_csv(fn,low_memory=False,index_col=0)
 
@@ -220,7 +220,7 @@ def load_input_emebddings_of_model(data_param_key,llm_model_name,fine_tuned_tag,
     if autoencoder_merged==False:
         
         ## LOAD EMBEDDINGS OF GIVEN MODEL AND DATASET&PREDICTION LABEL (CONTAINED IN 'key' string)
-        model_dir=f"../data/{'_'.join([parameters_for_analysis[data_param_key]['fn'],llm_model_name,fine_tuned_tag,str(period_end_day),'days',data_inclusion_type])}"
+        model_dir=f"../../data/{'_'.join([parameters_for_analysis[data_param_key]['fn'],llm_model_name,fine_tuned_tag,str(period_end_day),'days',data_inclusion_type])}"
         print(model_dir)  
 
         if 'text-embedding' in llm_model_name:
@@ -258,7 +258,7 @@ def load_input_emebddings_of_model(data_param_key,llm_model_name,fine_tuned_tag,
             if 'TB-1018' not in pat:
                 l_pt.append(embed)
             
-            #fn=f"../data/{model_dir}/{pat_ids[0].replace('/','_')}_pca_mean.npy"
+            #fn=f"../../data/{model_dir}/{pat_ids[0].replace('/','_')}_pca_mean.npy"
             #l_npy.append(np.load(fn))
     
         df_pt=pd.DataFrame(data=np.array(l_pt),index=pat_ids)
@@ -292,7 +292,7 @@ def load_input_embeddings_of_model(data_param_key, llm_model_name, fine_tuned_ta
     import torch
     from concurrent.futures import ThreadPoolExecutor, as_completed
     
-    base = "../data"
+    base = "../../data"
     dataset_name = parameters_for_analysis[data_param_key]['fn']
 
     parts = [dataset_name, llm_model_name, fine_tuned_tag, str(period_end_day), 'days', data_inclusion_type,pool_method]
@@ -2419,7 +2419,7 @@ def draw_pca_biplot(score, coeff, y, loading_rel_length_thr, legend_title, label
 #  - Temporal variables: 
 #  (ae: adverse events,ce: clinical events, mh: medical history, cm: concomitant medication, cmind: indication for concomitant medication)
 def select_temporal_cols_with_suff_pat_data(temp_data_name,X_subset,temp_col_threshold): 
-    variables_per_patient_all=pd.read_csv('../data/all_pat_variables_with_reliable_therapy_data.csv.gz',index_col=0)
+    variables_per_patient_all=pd.read_csv('../../data/all_pat_variables_with_reliable_therapy_data.csv.gz',index_col=0)
     
     if temp_data_name!='cmdos':
         vars_per_pat=variables_per_patient_all.loc[X_subset['USUBJID'].unique(),:]
@@ -2455,7 +2455,7 @@ def extract_rifaquin_relapse():
 
 
     
-    outcome_tb1020 = pd.read_csv('../data/tb_1020_outcome.csv.gz')
+    outcome_tb1020 = pd.read_csv('../../data/tb_1020_outcome.csv.gz')
     tb_1020_pat_df = outcome_tb1020[outcome_tb1020['UNFAVOURABLE_OUTCOME_CATEGORY_AT_18_MONTHS'].isin(['FAVOURABLE','RELAPSE'])]
     tb_1020_pat_df = tb_1020_pat_df.rename(columns={'Unnamed: 0':'USUBJID',})
 
@@ -2489,7 +2489,7 @@ def extract_21_22_relapse_pats(include_rifaquin=False):
     print('Extracting relapse information...')
     
     ### ====== LOAD ALL PATIENTS DATA =======
-    fn='../data/tb21_22_2984_pats_22_vars_result_at_end_of_treatment_preproc_data_with_imp.csv.gz'
+    fn='../../data/tb21_22_2984_pats_22_vars_result_at_end_of_treatment_preproc_data_with_imp.csv.gz'
     X_subset=pd.read_csv(fn,index_col=0)
     X_subset=X_subset.rename(columns=lambda x: x.replace('<', 'lower than'))
     X_subset=X_subset.rename(columns=lambda x: x.replace('>', 'higher than'))
@@ -2500,7 +2500,7 @@ def extract_21_22_relapse_pats(include_rifaquin=False):
     ### COLLECT PATIENTS, WHO ONLY HAVE FAVOURABLE OUTCOMES AT END OF TREATMENT & AT ALL FOLLOW-UP TIMEPOINTS 
     #. ==>TB-1021: 12 & 18 MONTHS, TB-1022: 18 & 24 MONTHS
 
-    outcome_df=pd.read_csv('../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
+    outcome_df=pd.read_csv('../../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
     outcome_df=outcome_df.set_index('USUBJID',drop=True)
     outcome_df=outcome_df.rename(columns={'UNFAVOURABLE_OUTCOME_CATEGORY_AT_18_MONTHS':'UNFAVOUR_CAT_AT_18_MONTHS'})
     
@@ -2678,7 +2678,7 @@ def extract_21_22_relapse_pats(include_rifaquin=False):
     #  => INSTEAD, EXXTRACT LAST DAY WHERE NON-PLACEBO THERAPY DRUGS WERE APPLIED, TO GET A BETTER SENSE OF RELAPSE AFTER EOT
     month_4_idx = pats_relapse_df[~pats_relapse_df['ARM'].str.contains('Control|2EHRZ')].index.tolist()
 
-    t=pd.read_csv('../data/out_temporal_pat_regimens_1018_20_21_22_30.csv.gz',low_memory=False,index_col=0)
+    t=pd.read_csv('../../data/out_temporal_pat_regimens_1018_20_21_22_30.csv.gz',low_memory=False,index_col=0)
     t = t[t['USUBJID'].isin(month_4_idx)]
     
     max_days = {}
@@ -2762,7 +2762,7 @@ def extract_21_22_relapse_pats(include_rifaquin=False):
 def extract_last_init_therapy_day_from_drug_regimen(pat_ids):
 
     ## Load drug regimen data, containing the daily taken doses
-    dr_reg=pd.read_csv('../data/out_temporal_pat_regimens_1018_20_21_22_30.csv.gz',index_col=0)
+    dr_reg=pd.read_csv('../../data/out_temporal_pat_regimens_1018_20_21_22_30.csv.gz',index_col=0)
     dr_reg=dr_reg[dr_reg['USUBJID'].isin(pat_ids)]
 
     ## Extract colnames containing the drug names
@@ -2993,7 +2993,7 @@ def return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
 
                 ## Load pred loss cluster
                 if 'raw' in pred_prob_coln or 'diff' in pred_prob_coln:
-                    data_dir_=f'../data/model_interpretation/baseline/pred_prob_clusters'
+                    data_dir_=f'../../data/model_interpretation/baseline/pred_prob_clusters'
                     
                     training_data_type='last_therapy_day'
 
@@ -3001,7 +3001,7 @@ def return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
                                 f'tb21_22_2984_pats_22_vars_relapse_days_{training_data_type}_{model_name}_{pred_prob_coln}_pred_prob_clusters.csv')
         
                 if 'llm' in pred_prob_coln:
-                    fn=f"../data/model_interpretation/LLM/pred_prob_clusters/tb21_22_2984_pats_22_vars_relapse_BioMistral-7B_base_LogisticRegression_full_all_days_autoenc_False_{pred_prob_coln}_pred_prob_clusters.csv"               
+                    fn=f"../../data/model_interpretation/LLM/pred_prob_clusters/tb21_22_2984_pats_22_vars_relapse_BioMistral-7B_base_LogisticRegression_full_all_days_autoenc_False_{pred_prob_coln}_pred_prob_clusters.csv"               
         
                 try:
                     clust_df=pd.read_csv(fn,index_col=0)

@@ -167,7 +167,7 @@ import warnings
 from tqdm import tqdm
 
 autoenc_merged_bool_list = [False, True]
-outcome_df=pd.read_csv('../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
+outcome_df=pd.read_csv('../../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
 outcome_df=outcome_df.set_index('USUBJID',drop=True)
 
 llm_model_names=['BioMistral/BioMistral-7B',"epfl-llm/meditron-70b","epfl-llm/meditron-7b",
@@ -220,7 +220,7 @@ def print_elapsed_time(start,stop):
 def load_input_emebddings_of_model(data_param_key,llm_model_name,fine_tuned_tag,period_end_day,llm_model_name_with_tag,data_inclusion_type,autoencoder_merged):
 
     if autoencoder_merged==True:
-        model_dir=f"../data/{'_'.join([parameters_for_analysis[data_param_key]['fn'],llm_model_name,fine_tuned_tag,str(period_end_day),'days',data_inclusion_type,'autoencoder_merged'])}"
+        model_dir=f"../../data/{'_'.join([parameters_for_analysis[data_param_key]['fn'],llm_model_name,fine_tuned_tag,str(period_end_day),'days',data_inclusion_type,'autoencoder_merged'])}"
         fn=f"{model_dir}/latent_embeddings.csv.gz"
         df_pt=pd.read_csv(fn,low_memory=False,index_col=0)
 
@@ -230,7 +230,7 @@ def load_input_emebddings_of_model(data_param_key,llm_model_name,fine_tuned_tag,
     if autoencoder_merged==False:
         
         ## LOAD EMBEDDINGS OF GIVEN MODEL AND DATASET&PREDICTION LABEL (CONTAINED IN 'key' string)
-        model_dir=f"../data/{'_'.join([parameters_for_analysis[data_param_key]['fn'],llm_model_name,fine_tuned_tag,str(period_end_day),'days',data_inclusion_type])}"
+        model_dir=f"../../data/{'_'.join([parameters_for_analysis[data_param_key]['fn'],llm_model_name,fine_tuned_tag,str(period_end_day),'days',data_inclusion_type])}"
         print(model_dir)
     
         #if 'text-embedding' in llm_model_name:
@@ -268,7 +268,7 @@ def load_input_emebddings_of_model(data_param_key,llm_model_name,fine_tuned_tag,
             if 'TB-1018' not in pat:
                 l_pt.append(embed)
             
-            #fn=f"../data/{model_dir}/{pat_ids[0].replace('/','_')}_pca_mean.npy"
+            #fn=f"../../data/{model_dir}/{pat_ids[0].replace('/','_')}_pca_mean.npy"
             #l_npy.append(np.load(fn))
     
         df_pt=pd.DataFrame(data=np.array(l_pt),index=pat_ids)
@@ -304,7 +304,7 @@ def load_input_embeddings_of_model(data_param_key, llm_model_name, fine_tuned_ta
     import torch
     from concurrent.futures import ThreadPoolExecutor, as_completed
     
-    base = "../data"
+    base = "../../data"
     dataset_name = parameters_for_analysis[data_param_key]['fn']
 
     parts = [dataset_name, llm_model_name, fine_tuned_tag, str(period_end_day), 'days', data_inclusion_type,pool_method]
@@ -1788,7 +1788,7 @@ def draw_pca_biplot(score, coeff, y, loading_rel_length_thr, legend_title, label
 #  - Temporal variables: 
 #  (ae: adverse events,ce: clinical events, mh: medical history, cm: concomitant medication, cmind: indication for concomitant medication)
 def select_temporal_cols_with_suff_pat_data(temp_data_name,X_subset,temp_col_threshold): 
-    variables_per_patient_all=pd.read_csv('../data/all_pat_variables_with_reliable_therapy_data.csv.gz',index_col=0)
+    variables_per_patient_all=pd.read_csv('../../data/all_pat_variables_with_reliable_therapy_data.csv.gz',index_col=0)
     
     if temp_data_name!='cmdos':
         vars_per_pat=variables_per_patient_all.loc[X_subset['USUBJID'].unique(),:]
@@ -1815,7 +1815,7 @@ def select_temporal_cols_with_suff_pat_data(temp_data_name,X_subset,temp_col_thr
 def extract_21_22_relapse_pats():
 
     ### ====== LOAD ALL PATIENTS DATA =======
-    fn='../data/tb21_22_2984_pats_22_vars_result_at_end_of_treatment_preproc_data_with_imp.csv.gz'
+    fn='../../data/tb21_22_2984_pats_22_vars_result_at_end_of_treatment_preproc_data_with_imp.csv.gz'
     X_subset=pd.read_csv(fn,index_col=0)
     X_subset=X_subset.rename(columns=lambda x: x.replace('<', 'lower than'))
     X_subset=X_subset.rename(columns=lambda x: x.replace('>', 'higher than'))
@@ -1981,7 +1981,7 @@ def extract_21_22_relapse_pats():
 def extract_last_init_therapy_day_from_drug_regimen(pat_ids):
 
     ## Load drug regimen data, containing the daily taken doses
-    dr_reg=pd.read_csv('../data/out_temporal_pat_regimens_1018_20_21_22_30.csv.gz',index_col=0)
+    dr_reg=pd.read_csv('../../data/out_temporal_pat_regimens_1018_20_21_22_30.csv.gz',index_col=0)
     dr_reg=dr_reg[dr_reg['USUBJID'].isin(pat_ids)]
 
     ## Extract colnames containing the drug names
@@ -2133,7 +2133,7 @@ def return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
 
                 ## Load pred loss cluster
                 if 'raw' in pred_prob_coln or 'diff' in pred_prob_coln:
-                    data_dir_=f'../data/model_interpretation/baseline/pred_prob_clusters'
+                    data_dir_=f'../../data/model_interpretation/baseline/pred_prob_clusters'
                     
                     training_data_type='last_therapy_day'
 
@@ -2141,7 +2141,7 @@ def return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
                                 f'tb21_22_2984_pats_22_vars_relapse_days_{training_data_type}_{model_name}_{pred_prob_coln}_pred_prob_clusters.csv')
         
                 if 'llm' in pred_prob_coln:
-                    fn=f"../data/model_interpretation/LLM/pred_prob_clusters/tb21_22_2984_pats_22_vars_relapse_BioMistral-7B_base_LogisticRegression_full_all_days_autoenc_False_{pred_prob_coln}_pred_prob_clusters.csv"               
+                    fn=f"../../data/model_interpretation/LLM/pred_prob_clusters/tb21_22_2984_pats_22_vars_relapse_BioMistral-7B_base_LogisticRegression_full_all_days_autoenc_False_{pred_prob_coln}_pred_prob_clusters.csv"               
         
                 try:
                     clust_df=pd.read_csv(fn,index_col=0)
@@ -3799,10 +3799,10 @@ def load_input_texts_and_labels(ds_types_merged,dataset_param_key,target_df,prom
     key='tb21_22_2984_pats_22_vars_result_at_end_of_treatment'
     if ds_types_merged==True:
         
-        #fn=f'../data/{dataset_param_key}_input_dict_all_ds_types_merged.json'
+        #fn=f'../../data/{dataset_param_key}_input_dict_all_ds_types_merged.json'
         
-        fn=f'../data/{key}_{period_end_day}_days_input_dict_all_ds_types_merged.json'
-        fn=f'../data/{key}_{period_end_day}_days_{data_inclusion_type}_input_dict_all_ds_types_merged.json'
+        fn=f'../../data/{key}_{period_end_day}_days_input_dict_all_ds_types_merged.json'
+        fn=f'../../data/{key}_{period_end_day}_days_{data_inclusion_type}_input_dict_all_ds_types_merged.json'
         input_dict=json.load(open(fn))
 
         input_dict_filt = {key: input_dict[key] for key in target_df.index}
@@ -3816,9 +3816,9 @@ def load_input_texts_and_labels(ds_types_merged,dataset_param_key,target_df,prom
         return pat_ids,None,all_texts,all_labels
         
     if ds_types_merged==False: 
-        #fn=f'../data/{dataset_param_key}_input_dict_ds_types_seperate.json'
-        fn=f'../data/{key}_{period_end_day}_days_input_dict_ds_types_seperate.json'
-        fn=f'../data/{key}_{period_end_day}_days_{data_inclusion_type}_input_dict_ds_types_seperate.json'
+        #fn=f'../../data/{dataset_param_key}_input_dict_ds_types_seperate.json'
+        fn=f'../../data/{key}_{period_end_day}_days_input_dict_ds_types_seperate.json'
+        fn=f'../../data/{key}_{period_end_day}_days_{data_inclusion_type}_input_dict_ds_types_seperate.json'
         input_dict=json.load(open(fn))
 
         '''
@@ -4044,8 +4044,8 @@ def load_llm():
             print(f'{llm_model_name} base model loaded')
         
             ## IF INFERENCE WISHED BY FINE-TUNED MODEL, ADD & MERGE FINE-TUNED PEFT MODEL ADAPTER
-            #peft_model_path=f"../data/{llm_model_name}_{fine_tuned_tag}_num_of_epochs_{num_of_epochs}_{period_end_day}_days"
-            peft_model_path=f"../data/{llm_model_name}_{fine_tuned_tag}_num_of_epochs_{num_of_epochs}"#_{period_end_day}_days"
+            #peft_model_path=f"../../data/{llm_model_name}_{fine_tuned_tag}_num_of_epochs_{num_of_epochs}_{period_end_day}_days"
+            peft_model_path=f"../../data/{llm_model_name}_{fine_tuned_tag}_num_of_epochs_{num_of_epochs}"#_{period_end_day}_days"
             
             if fine_tuned_tag=='fine_tuned':
                 model=PeftModel.from_pretrained(model,peft_model_path)

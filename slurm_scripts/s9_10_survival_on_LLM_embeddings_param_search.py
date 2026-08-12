@@ -312,7 +312,7 @@ import warnings
 from tqdm import tqdm
 
 
-outcome_df=pd.read_csv('../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
+outcome_df=pd.read_csv('../../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
 outcome_df=outcome_df.set_index('USUBJID',drop=True)
 
 llm_model_names=['BioMistral/BioMistral-7B',"epfl-llm/meditron-70b","epfl-llm/meditron-7b",
@@ -488,13 +488,13 @@ start=time.time()
 for data_param_key in dataset_name_:
 
     ## LOAD FINAL PATIENT IDS FOR ANALYSIS, SAVED DURING PREPROCESSING OF THE BASELINE MODELS IN NOTEBOOK S9_9
-    survival_anal_dir_ = f'../data/survival_analysis'
+    survival_anal_dir_ = f'../../data/survival_analysis'
     if 'pat_ids_fn' in parameters_for_analysis[data_param_key].keys():
-        #fn=f"../data/{parameters_for_analysis[data_param_key]['pat_ids_fn']}_final_pat_ids_for_analysis.pickle"
+        #fn=f"../../data/{parameters_for_analysis[data_param_key]['pat_ids_fn']}_final_pat_ids_for_analysis.pickle"
         fn=os.path.join(survival_anal_dir_,
                     f"{parameters_for_analysis[data_param_key]['pat_ids_fn']}_final_pat_ids_for_analysis.pickle")
     else:  
-        #fn=f'../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
+        #fn=f'../../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
         fn=os.path.join(survival_anal_dir_,
                     f'{data_param_key}_final_pat_ids_for_analysis.pickle')
     with open(fn, 'rb') as handle:
@@ -502,7 +502,7 @@ for data_param_key in dataset_name_:
 
 
     print(data_param_key)
-    #fn='../data/'+data_param_key+'_all_data_concat.csv.gz'
+    #fn='../../data/'+data_param_key+'_all_data_concat.csv.gz'
     #X=pd.read_csv(fn,index_col=0,low_memory=False)
     
     outcome_label = parameters_for_analysis[data_param_key]['result_cat']
@@ -541,9 +541,9 @@ for data_param_key in dataset_name_:
                                 continue
             
                             if 'X_fn' in parameters_for_analysis[data_param_key].keys():
-                                fn='../data/'+parameters_for_analysis[data_param_key]['X_fn']+'_all_data_concat.csv.gz'
+                                fn='../../data/'+parameters_for_analysis[data_param_key]['X_fn']+'_all_data_concat.csv.gz'
                             else:
-                                fn='../data/'+parameters_for_analysis[data_param_key]['fn']+'_all_data_concat.csv.gz'
+                                fn='../../data/'+parameters_for_analysis[data_param_key]['fn']+'_all_data_concat.csv.gz'
                             X=pd.read_csv(fn,index_col=0,low_memory=False)
     
                   
@@ -603,7 +603,7 @@ for data_param_key in dataset_name_:
                                             
             
             
-                                            #fn=f'../data/{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_vars_param_search_results.pickle'
+                                            #fn=f'../../data/{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_vars_param_search_results.pickle'
                                             fn=os.path.join(survival_anal_dir_,
                                                             f"{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_{ther_arm_dur}_vars_param_search_results.pickle")
                                                             
@@ -696,7 +696,7 @@ for data_param_key in dataset_name_:
                                           
                     
                                                 ## Save training results
-                                                #fn=f'../data/{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_vars_param_search_results.pickle'
+                                                #fn=f'../../data/{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_vars_param_search_results.pickle'
                                                 fn=os.path.join(survival_anal_dir_,
                                                                 f"{data_param_key}_{llm_model_name_with_tag}_{model_name}_{period_end_day}_days_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_{ther_arm_dur}_{time_origin}_vars_param_search_results.pickle")
                                                                 
