@@ -149,7 +149,7 @@ def print_elapsed_time(start,stop):
 
 
 
-##### ============== LOAD TARGER DATAFRAME AND RAW TABULAR DATASET ===================
+##### ============== Load prediction label dataframe and patient IDS ===================
 all_vars_dict,all_vars=get_all_var_names()
 
 outcome_df=pd.read_csv('../../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
@@ -162,7 +162,7 @@ for key in [*parameters_for_analysis][:1]:
     fn='../../data/'+key+'_all_data_concat.csv.gz'
     data_conc=pd.read_csv(fn,low_memory=False,index_col=0,usecols=range(5))
     pat_ids=data_conc['USUBJID'].unique().tolist()
-    #del data_conc
+    del data_conc
     
 
     ## Extract outcome label and convert FAVOURABLE/UNFAVOURABLE to 0/1
@@ -247,7 +247,7 @@ def load_huggingface_model(model_name,device,id2label,label2id,model_type):
 
     from huggingface_hub import login
     login("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")
-    cache_dir='../huggingface_cache'
+    cache_dir='../../huggingface_cache'
 
 
     if model_type=='AutoModelForSequenceClassification':
@@ -276,7 +276,7 @@ def load_huggingface_model(model_name,device,id2label,label2id,model_type):
 def load_huggingface_tokenizer(model_name):
     from huggingface_hub import login
     login("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")
-    cache_dir='../huggingface_cache'
+    cache_dir='../../huggingface_cache'
     from transformers import AutoTokenizer
     tokenizer = AutoTokenizer.from_pretrained(model_name,cache_dir=cache_dir)
     
@@ -330,7 +330,7 @@ from transformers import AutoModelForSequenceClassification,LongT5EncoderModel, 
 from peft import LoraConfig, TaskType,get_peft_model,PeftModel
 
 # Define the path where your model is saved
-cache_dir='../huggingface_cache'
+cache_dir='../../huggingface_cache'
 
 
 ## Set up prediction labels
