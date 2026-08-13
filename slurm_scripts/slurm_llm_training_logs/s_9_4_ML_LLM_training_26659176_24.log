@@ -1,405 +1,0 @@
-Loading anaconda
-Activate conda env
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats
-baseline_last_day
-62
-LogisticRegression
-data_inclusion_type_ ['baseline_last_day'] model_names_ ['LogisticRegression'] period_end_day_ [62]
-Loading embeddings:   0%|          | 0/1 [00:00<?, ?set/s]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.48s/set]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.48s/set]
-
-→ Loading: tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats | BioMistral-7B_base | 62 | baseline_last_day | autoenc=False | mean_pooling 
-Loaded in 2.30 seconds.
-tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats
-Training on 62 days of data
-Loading embeddings of tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats data / BioMistral-7B_base /62 /baseline_last_day /autoenc False / mean_pooling model
-include_rifaquin False extended_pats True
-Extracting relapse information...
-pats_with_fav 2237
-pats_with_unfav 352
-2589
-+++++++
-Running training with full model: 4096 vars
-+++++++
-Processing:   0%|          | 0/1 [00:00<?, ?model/s]
-=====================
-LogisticRegression
-
-Processing:   0%|          | 0/25 [00:00<?, ?cv_repeat/s][ARELAPSE     0    1
-STUDYID           
-TB-1021  1151  140
-TB-1022  1080  121
-Num of CV-repeat:1
-Num of CV-repeat:1 - Model:LogisticRegression - Data inclusion type:baseline_last_day - Period:62 - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [04:30<00:00, 270.98s/model][A[A100%|██████████| 1/1 [04:30<00:00, 270.98s/model]
-
-Processing:   4%|▍         | 1/25 [04:31<1:48:42, 271.79s/cv_repeat][ACV test_score: [0.5884353741496599, 0.6431906095771642, 0.6121115112711752, 0.6077764439108977, 0.64241306278609]
-CV train_score: [0.8230304097686979, 0.8068862275449102, 0.8190132340361295, 0.8179397507505997, 0.8123207616379886]
-Calcu;ating conf metrics
-RELAPSE     0    1
-STUDYID           
-TB-1021  1151  140
-TB-1022  1080  121
-Num of CV-repeat:2
-Num of CV-repeat:2 - Model:LogisticRegression - Data inclusion type:baseline_last_day - Period:62 - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [04:31<00:00, 271.16s/model][A[A100%|██████████| 1/1 [04:31<00:00, 271.16s/model]
-
-Processing:   8%|▊         | 2/25 [09:03<1:44:11, 271.80s/cv_repeat][ACV test_score: [0.5869014272375617, 0.6237161531279178, 0.599639855942377, 0.63718820861678, 0.6124205779872924]
-CV train_score: [0.8262466663312031, 0.8248796524597862, 0.8200405910867341, 0.8200112380281454, 0.8235961051087102]
-Calcu;ating conf metrics
-RELAPSE     0    1
-STUDYID           
-TB-1021  1151  140
-TB-1022  1080  121
-Num of CV-repeat:3
-Num of CV-repeat:3 - Model:LogisticRegression - Data inclusion type:baseline_last_day - Period:62 - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [04:32<00:00, 272.65s/model][A[A100%|██████████| 1/1 [04:32<00:00, 272.65s/model]
-
-Processing:  12%|█▏        | 3/25 [13:37<1:39:55, 272.54s/cv_repeat][ACV test_score: [0.6250500200080031, 0.6195811657996532, 0.5989615358338458, 0.5842027822364901, 0.5993846976993045]
-CV train_score: [0.805905720116569, 0.8166682063642701, 0.8109972951312362, 0.8152692512662133, 0.8193983441666073]
-Calcu;ating conf metrics
-RELAPSE     0    1
-STUDYID           
-TB-1021  1151  140
-TB-1022  1080  121
-Num of CV-repeat:4
-Num of CV-repeat:4 - Model:LogisticRegression - Data inclusion type:baseline_last_day - Period:62 - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [04:32<00:00, 272.10s/model][A[A100%|██████████| 1/1 [04:32<00:00, 272.10s/model]
-
-Processing:  16%|█▌        | 4/25 [18:09<1:35:25, 272.62s/cv_repeat][ACV test_score: [0.6535947712418301, 0.5739629185007338, 0.5689609177004136, 0.6328482612557218, 0.6107544141252006]
-CV train_score: [0.8086601848860093, 0.8277488470850869, 0.8088909776802387, 0.8122392965595489, 0.8098970126972945]
-Calcu;ating conf metrics
-RELAPSE     0    1
-STUDYID           
-TB-1021  1151  140
-TB-1022  1080  121
-Num of CV-repeat:5
-Num of CV-repeat:5 - Model:LogisticRegression - Data inclusion type:baseline_last_day - Period:62 - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [04:31<00:00, 271.91s/model][A[A100%|██████████| 1/1 [04:31<00:00, 271.91s/model]
-
-Processing:  20%|██        | 5/25 [22:42<1:30:52, 272.60s/cv_repeat][ACV test_score: [0.6135120714952649, 0.5894357743097239, 0.6490596238495399, 0.5373368859739018, 0.6503477795612627]
-CV train_score: [0.8066459932272805, 0.8065704610400782, 0.7973345530382823, 0.8061200654052791, 0.7954385346953152]
-Calcu;ating conf metrics
-RELAPSE     0    1
-STUDYID           
-TB-1021  1151  140
-TB-1022  1080  121
-Num of CV-repeat:6
-Num of CV-repeat:6 - Model:LogisticRegression - Data inclusion type:baseline_last_day - Period:62 - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [04:34<00:00, 274.40s/model][A[A100%|██████████| 1/1 [04:34<00:00, 274.40s/model]
-
-Processing:  24%|██▍       | 6/25 [27:17<1:26:35, 273.44s/cv_repeat][ACV test_score: [0.6689603488213655, 0.6776710684273709, 0.6031746031746031, 0.6352541016406562, 0.5869014272375617]
-CV train_score: [0.7990529545151394, 0.8072350749864861, 0.8163365361648991, 0.8058522562991581, 0.8226220756527534]
-Calcu;ating conf metrics
-RELAPSE     0    1
-STUDYID           
-TB-1021  1151  140
-TB-1022  1080  121
-Num of CV-repeat:7
-Num of CV-repeat:7 - Model:LogisticRegression - Data inclusion type:baseline_last_day - Period:62 - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [04:32<00:00, 272.03s/model][A[A100%|██████████| 1/1 [04:32<00:00, 272.03s/model]
-
-Processing:  28%|██▊       | 7/25 [31:50<1:21:57, 273.19s/cv_repeat][ACV test_score: [0.5911698012538349, 0.577297585700947, 0.6351711416273826, 0.6140984483681113, 0.6068084537185661]
-CV train_score: [0.8057167572288803, 0.8187132047265917, 0.821662325519268, 0.8053829272079526, 0.8002761121065507]
-Calcu;ating conf metrics
-RELAPSE     0    1
-STUDYID           
-TB-1021  1151  140
-TB-1022  1080  121
-Num of CV-repeat:8
-Num of CV-repeat:8 - Model:LogisticRegression - Data inclusion type:baseline_last_day - Period:62 - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [04:32<00:00, 272.92s/model][A[A100%|██████████| 1/1 [04:32<00:00, 272.92s/model]
-
-Processing:  32%|███▏      | 8/25 [36:23<1:17:26, 273.35s/cv_repeat][ACV test_score: [0.5922368947579032, 0.5603574763238629, 0.5967053488061891, 0.5660996105759377, 0.6379079721776351]
-CV train_score: [0.8174177223688572, 0.8270187026087977, 0.8240771435405293, 0.8273392398304802, 0.8148157466579447]
-Calcu;ating conf metrics
-RELAPSE     0    1
-STUDYID           
-TB-1021  1151  140
-TB-1022  1080  121
-Num of CV-repeat:9
-Num of CV-repeat:9 - Model:LogisticRegression - Data inclusion type:baseline_last_day - Period:62 - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [04:35<00:00, 275.57s/model][A[A100%|██████████| 1/1 [04:35<00:00, 275.57s/model]
-
-Processing:  36%|███▌      | 9/25 [40:59<1:13:07, 274.25s/cv_repeat][ACV test_score: [0.6270508203281313, 0.6475256769374417, 0.5719068115050898, 0.6342964151952916, 0.617776886035313]
-CV train_score: [0.8236472356829119, 0.8139093482040127, 0.8340763374073331, 0.8134229089123786, 0.8026637684686689]
-Calcu;ating conf metrics
-RELAPSE     0    1
-STUDYID           
-TB-1021  1151  140
-TB-1022  1080  121
-Num of CV-repeat:10
-Num of CV-repeat:10 - Model:LogisticRegression - Data inclusion type:baseline_last_day - Period:62 - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [04:32<00:00, 272.75s/model][A[A100%|██████████| 1/1 [04:32<00:00, 272.75s/model]
-
-Processing:  40%|████      | 10/25 [45:33<1:08:30, 274.03s/cv_repeat][ACV test_score: [0.61531279178338, 0.5799653194611177, 0.5846338535414165, 0.6398169023707043, 0.6313536650615301]
-CV train_score: [0.8135991506825172, 0.8201033112471624, 0.822784703892845, 0.8088647512263489, 0.8070833123668629]
-Calcu;ating conf metrics
-RELAPSE     0    1
-STUDYID           
-TB-1021  1151  140
-TB-1022  1080  121
-Num of CV-repeat:11
-Num of CV-repeat:11 - Model:LogisticRegression - Data inclusion type:baseline_last_day - Period:62 - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [04:32<00:00, 272.15s/model][A[A100%|██████████| 1/1 [04:32<00:00, 272.15s/model]
-
-Processing:  44%|████▍     | 11/25 [50:06<1:03:51, 273.65s/cv_repeat][ACV test_score: [0.6144457783113245, 0.6224489795918368, 0.5575563558756835, 0.6461023433763751, 0.5462814339218833]
-CV train_score: [0.8182317914975934, 0.8106366104511369, 0.8082405616237742, 0.8143916641639136, 0.8227871987118202]
-Calcu;ating conf metrics
-RELAPSE     0    1
-STUDYID           
-TB-1021  1151  140
-TB-1022  1080  121
-Num of CV-repeat:12
-Num of CV-repeat:12 - Model:LogisticRegression - Data inclusion type:baseline_last_day - Period:62 - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [04:31<00:00, 271.48s/model][A[A100%|██████████| 1/1 [04:31<00:00, 271.48s/model]
-
-Processing:  48%|████▊     | 12/25 [54:38<59:11, 273.18s/cv_repeat]  [ACV test_score: [0.6492597038815526, 0.6239162331599306, 0.6407733825237412, 0.6435928303905832, 0.6315543071161048]
-CV train_score: [0.8259903754902538, 0.8268218121960846, 0.8215078808522006, 0.824396057219828, 0.8189787209043721]
-Calcu;ating conf metrics
-RELAPSE     0    1
-STUDYID           
-TB-1021  1151  140
-TB-1022  1080  121
-Num of CV-repeat:13
-Num of CV-repeat:13 - Model:LogisticRegression - Data inclusion type:baseline_last_day - Period:62 - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [04:34<00:00, 274.34s/model][A[A100%|██████████| 1/1 [04:34<00:00, 274.34s/model]
-
-Processing:  52%|█████▏    | 13/25 [59:13<54:45, 273.77s/cv_repeat][ACV test_score: [0.5906362545018007, 0.510404161664666, 0.5594904628518074, 0.585160893625743, 0.6451979668271802]
-CV train_score: [0.7974772249474422, 0.812092703171093, 0.8078251345941613, 0.8099617913037674, 0.8011623811201127]
-Calcu;ating conf metrics
-RELAPSE     0    1
-STUDYID           
-TB-1021  1151  140
-TB-1022  1080  121
-Num of CV-repeat:14
-Num of CV-repeat:14 - Model:LogisticRegression - Data inclusion type:baseline_last_day - Period:62 - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [04:33<00:00, 273.50s/model][A[A100%|██████████| 1/1 [04:33<00:00, 273.50s/model]
-
-Processing:  56%|█████▌    | 14/25 [1:03:47<50:12, 273.89s/cv_repeat][ACV test_score: [0.614312391623316, 0.6876750700280111, 0.5525543550753635, 0.5495661679305869, 0.6524210807918673]
-CV train_score: [0.812701156901334, 0.8049842851088292, 0.8237834072569646, 0.8220375746654652, 0.8108405038662171]
-Calcu;ating conf metrics
-RELAPSE     0    1
-STUDYID           
-TB-1021  1151  140
-TB-1022  1080  121
-Num of CV-repeat:15
-Num of CV-repeat:15 - Model:LogisticRegression - Data inclusion type:baseline_last_day - Period:62 - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [04:30<00:00, 270.07s/model][A[A100%|██████████| 1/1 [04:30<00:00, 270.07s/model]
-
-Processing:  60%|██████    | 15/25 [1:08:18<45:29, 272.97s/cv_repeat][ACV test_score: [0.5855675603574763, 0.5567560357476324, 0.6197308191569311, 0.6587078651685394, 0.5771803103263777]
-CV train_score: [0.8129729321161323, 0.8103946384929999, 0.8038135310225073, 0.790566029818429, 0.804837416967047]
-Calcu;ating conf metrics
-RELAPSE     0    1
-STUDYID           
-TB-1021  1151  140
-TB-1022  1080  121
-Num of CV-repeat:16
-Num of CV-repeat:16 - Model:LogisticRegression - Data inclusion type:baseline_last_day - Period:62 - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [04:30<00:00, 270.03s/model][A[A100%|██████████| 1/1 [04:30<00:00, 270.03s/model]
-
-Processing:  64%|██████▍   | 16/25 [1:12:49<40:50, 272.28s/cv_repeat][ACV test_score: [0.6836734693877551, 0.6513938908896892, 0.5638922235560891, 0.612557218009155, 0.6546281433921883]
-CV train_score: [0.8166414193337221, 0.8167673063123926, 0.8388352936733401, 0.8196140754830314, 0.8087857897650077]
-Calcu;ating conf metrics
-RELAPSE     0    1
-STUDYID           
-TB-1021  1151  140
-TB-1022  1080  121
-Num of CV-repeat:17
-Num of CV-repeat:17 - Model:LogisticRegression - Data inclusion type:baseline_last_day - Period:62 - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [04:30<00:00, 270.34s/model][A[A100%|██████████| 1/1 [04:30<00:00, 270.34s/model]
-
-Processing:  68%|██████▊   | 17/25 [1:17:20<36:15, 271.89s/cv_repeat][ACV test_score: [0.6447245564892623, 0.6683340002667734, 0.5753911320625812, 0.5804574638844302, 0.6393124665596576]
-CV train_score: [0.8086141881734428, 0.807564394352949, 0.8121660655847192, 0.8163267018870458, 0.8191423739766438]
-Calcu;ating conf metrics
-RELAPSE     0    1
-STUDYID           
-TB-1021  1151  140
-TB-1022  1080  121
-Num of CV-repeat:18
-Num of CV-repeat:18 - Model:LogisticRegression - Data inclusion type:baseline_last_day - Period:62 - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [04:30<00:00, 270.97s/model][A[A100%|██████████| 1/1 [04:30<00:00, 270.97s/model]
-
-Processing:  72%|███████▏  | 18/25 [1:21:51<31:42, 271.81s/cv_repeat][ACV test_score: [0.6052420968387355, 0.6299186341203148, 0.5781922525107605, 0.6324237560192617, 0.6819823434991974]
-CV train_score: [0.8190281428727397, 0.81768860595779, 0.821232384959594, 0.8128396325778716, 0.8074768472865063]
-Calcu;ating conf metrics
-RELAPSE     0    1
-STUDYID           
-TB-1021  1151  140
-TB-1022  1080  121
-Num of CV-repeat:19
-Num of CV-repeat:19 - Model:LogisticRegression - Data inclusion type:baseline_last_day - Period:62 - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [04:31<00:00, 271.21s/model][A[A100%|██████████| 1/1 [04:31<00:00, 271.21s/model]
-
-Processing:  76%|███████▌  | 19/25 [1:26:23<27:10, 271.83s/cv_repeat][ACV test_score: [0.6080432172869148, 0.5959717220221422, 0.6266311402609824, 0.6162386302835741, 0.5821294810058856]
-CV train_score: [0.8126537947947023, 0.8019081052481293, 0.8093359714152141, 0.807355156540458, 0.8195536047736343]
-Calcu;ating conf metrics
-RELAPSE     0    1
-STUDYID           
-TB-1021  1151  140
-TB-1022  1080  121
-Num of CV-repeat:20
-Num of CV-repeat:20 - Model:LogisticRegression - Data inclusion type:baseline_last_day - Period:62 - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [04:30<00:00, 270.59s/model][A[A100%|██████████| 1/1 [04:30<00:00, 270.59s/model]
-
-Processing:  80%|████████  | 20/25 [1:30:54<22:38, 271.65s/cv_repeat][ACV test_score: [0.5814992663732159, 0.5292116846738697, 0.5766306522609044, 0.5984832957573273, 0.5644729802033173]
-CV train_score: [0.8001250477321462, 0.8170022953392445, 0.7999613946598744, 0.8058155637868322, 0.8099934584612288]
-Calcu;ating conf metrics
-RELAPSE     0    1
-STUDYID           
-TB-1021  1151  140
-TB-1022  1080  121
-Num of CV-repeat:21
-Num of CV-repeat:21 - Model:LogisticRegression - Data inclusion type:baseline_last_day - Period:62 - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [04:30<00:00, 270.61s/model][A[A100%|██████████| 1/1 [04:30<00:00, 270.61s/model]
-
-Processing:  84%|████████▍ | 21/25 [1:35:26<18:06, 271.57s/cv_repeat][ACV test_score: [0.600373482726424, 0.7048152594371082, 0.5921295347407255, 0.6339620117710005, 0.6186463349384698]
-CV train_score: [0.8198511812280067, 0.8154588438830614, 0.8314424297068055, 0.8273250275902295, 0.824991922252202]
-Calcu;ating conf metrics
-RELAPSE     0    1
-STUDYID           
-TB-1021  1151  140
-TB-1022  1080  121
-Num of CV-repeat:22
-Num of CV-repeat:22 - Model:LogisticRegression - Data inclusion type:baseline_last_day - Period:62 - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [04:32<00:00, 272.48s/model][A[A100%|██████████| 1/1 [04:32<00:00, 272.48s/model]
-
-Processing:  88%|████████▊ | 22/25 [1:39:59<13:36, 272.04s/cv_repeat][ACV test_score: [0.6496598639455782, 0.6001734026944111, 0.5616913432039482, 0.6710684273709483, 0.6070232971237275]
-CV train_score: [0.803217095221322, 0.812085912209195, 0.8187532498029152, 0.8069155806034989, 0.8130793984260372]
-Calcu;ating conf metrics
-RELAPSE     0    1
-STUDYID           
-TB-1021  1151  140
-TB-1022  1080  121
-Num of CV-repeat:23
-Num of CV-repeat:23 - Model:LogisticRegression - Data inclusion type:baseline_last_day - Period:62 - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [04:33<00:00, 273.82s/model][A[A100%|██████████| 1/1 [04:33<00:00, 273.82s/model]
-
-Processing:  92%|█████████▏| 23/25 [1:44:33<09:05, 272.77s/cv_repeat][ACV test_score: [0.6231159130318794, 0.6439909297052153, 0.5929705215419501, 0.6204140192662431, 0.5784510433386838]
-CV train_score: [0.8129697157891644, 0.8149041790280684, 0.8206110553944669, 0.8065830747155204, 0.8112640265687113]
-Calcu;ating conf metrics
-RELAPSE     0    1
-STUDYID           
-TB-1021  1151  140
-TB-1022  1080  121
-Num of CV-repeat:24
-Num of CV-repeat:24 - Model:LogisticRegression - Data inclusion type:baseline_last_day - Period:62 - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [04:28<00:00, 268.98s/model][A[A100%|██████████| 1/1 [04:28<00:00, 268.98s/model]
-
-Processing:  96%|█████████▌| 24/25 [1:49:03<04:31, 271.87s/cv_repeat][ACV test_score: [0.6172468987595038, 0.5980392156862745, 0.7170185147229624, 0.6198501872659177, 0.5793873729266987]
-CV train_score: [0.8096387869422444, 0.8129351395385946, 0.7923011420557003, 0.8155839687128895, 0.8122143939171412]
-Calcu;ating conf metrics
-RELAPSE     0    1
-STUDYID           
-TB-1021  1151  140
-TB-1022  1080  121
-Num of CV-repeat:25
-Num of CV-repeat:25 - Model:LogisticRegression - Data inclusion type:baseline_last_day - Period:62 - mean_pooling 
-
-
-  0%|          | 0/1 [00:00<?, ?model/s][A[A
-
-100%|██████████| 1/1 [04:33<00:00, 273.85s/model][A[A100%|██████████| 1/1 [04:33<00:00, 273.85s/model]
-
-Processing: 100%|██████████| 25/25 [1:53:38<00:00, 272.66s/cv_repeat][AProcessing: 100%|██████████| 25/25 [1:53:38<00:00, 272.73s/cv_repeat]
-Processing: 100%|██████████| 1/1 [1:53:38<00:00, 6818.30s/model]Processing: 100%|██████████| 1/1 [1:53:38<00:00, 6818.30s/model]
-CV test_score: [0.6388555422168868, 0.6417900493530746, 0.5160730959050287, 0.5965020154403226, 0.6946227929373996]
-CV train_score: [0.8167043628230575, 0.8188570301583239, 0.817044257665468, 0.8180498548403243, 0.8046553950921687]
-Calcu;ating conf metrics
-Training duration:
-Elapsed time:1 hours:54 minutes seconds:21

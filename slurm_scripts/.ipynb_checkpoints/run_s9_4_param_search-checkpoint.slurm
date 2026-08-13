@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH --array=1-168%168
-##SBATCH --array=1-42%42
+##SBATCH --array=1-168%168
+#SBATCH --array=1-42%42
 #SBATCH --job-name=s_9_4_ML_LLM_param_search
 #SBATCH -o slurm_llm_param_search_logs/s_9_4_ML_LLM_param_search_%A_%a.log
 #SBATCH -e slurm_llm_param_search_logs/s_9_4_ML_LLM_param_search_%A_%a.log

@@ -1,0 +1,40 @@
+Loading anaconda
+Activate conda env
+tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21
+baseline_last_day
+125
+LogisticRegression
+data_inclusion_type_ ['baseline_last_day'] model_names_ ['LogisticRegression'] period_end_day_ [125]
+tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21
+Training on 125 days of data
+Loading embeddings of tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21 data / BioMistral-7B_base /125 /baseline_last_day /autoenc False / mean_pooling model
+Loading embeddings:   0%|          | 0/1 [00:00<?, ?set/s]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.20s/set]Loading embeddings: 100%|██████████| 1/1 [00:02<00:00,  2.20s/set]
+
+→ Loading: tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21 | BioMistral-7B_base | 125 | baseline_last_day | autoenc=False | mean_pooling 
+Loaded in 2.13 seconds. Dataframe shape: (2984, 4096)
++++++++
+Running training with full model: 4096 vars
++++++++
+Processing:   0%|          | 0/1 [00:00<?, ?model/s]
+=====================
+LogisticRegression
+
+Processing:   0%|          | 0/1 [00:00<?, ?cv_repeat/s][ARESULT_AT_END_OF_TREATMENT  0.0  1.0
+STUDYID                             
+TB-1021                     449   12
+TB-1022                     714   33
+Num of CV-repeat:1
+Num of CV-repeat:1 - Model:LogisticRegression - Data inclusion type:baseline_last_day - Period:125 - mean_pooling 
+
+
+  0%|          | 0/1 [00:00<?, ?model/s][A[A
+
+100%|██████████| 1/1 [00:46<00:00, 46.12s/model][A[A100%|██████████| 1/1 [00:46<00:00, 46.12s/model]
+
+Processing: 100%|██████████| 1/1 [00:46<00:00, 46.69s/cv_repeat][AProcessing: 100%|██████████| 1/1 [00:46<00:00, 46.69s/cv_repeat]
+Processing: 100%|██████████| 1/1 [00:46<00:00, 46.72s/model]Processing: 100%|██████████| 1/1 [00:46<00:00, 46.72s/model]
+CV test_score: [0.3592592592592593, 0.7444444444444445, 0.7833333333333333, 0.55, 0.7940074906367041]
+CV train_score: [0.9972144846796657, 0.9958217270194986, 0.9941504178272981, 0.9955431754874652, 0.9944444444444445]
+Calcu;ating conf metrics
+Training duration:
+Elapsed time:0 hours:1 minutes seconds:12
