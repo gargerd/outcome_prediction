@@ -53,7 +53,7 @@ echo ${period_end_day}
 echo ${model}
 echo ${pool_method}
 
-
+## A specific python within the desired environment (here: scarches)is executing the python file ==> this needs to be adjusted if environment or HPC changes
 /data/gpfs/projects/punim2121/anaconda3/envs/scarches/bin/python  s9_6_LLM_integrated_gradients_LR.py \
                                                                 --dataset_name $dataset_name\
                                                                 --data_inclusion_type $data_inclusion_type \

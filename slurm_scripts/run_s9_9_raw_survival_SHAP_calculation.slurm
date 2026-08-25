@@ -49,7 +49,7 @@ echo ${model}
 echo ${ther_arm_duration}
 echo ${time_origin}
 
-
+## A specific python within the desired environment (here: scarches) is executing the python file ==> this needs to be adjusted if environment or HPC changes
 /data/gpfs/projects/punim2121/anaconda3/envs/scarches/bin/python  s9_9_baseline_survival_models_SHAP_calculation.py \
                                                                     --dataset_name $dataset_name\
                                                                     --training_data_type $training_data_type \

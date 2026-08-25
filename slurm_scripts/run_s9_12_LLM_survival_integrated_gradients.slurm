@@ -52,7 +52,7 @@ echo ${model}
 echo ${pool_method}
 echo ${ther_arm_duration}
 
-
+## A specific python within the desired environment (here: scarches)is executing the python file ==> this needs to be adjusted if environment or HPC changes
 /data/gpfs/projects/punim2121/anaconda3/envs/scarches/bin/python  s9_12_LLM_survival_integrated_gradients.py \
                                                                 --dataset_name $dataset_name\
                                                                 --data_inclusion_type $data_inclusion_type \

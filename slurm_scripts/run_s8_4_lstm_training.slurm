@@ -43,7 +43,7 @@ echo ${model_complexity}
 echo ${period_end_day}
 
 
-
+## A specific python within the desired environment (here: scarches)is executing the python file ==> this needs to be adjusted if environment or HPC changes
 /data/gpfs/projects/punim2121/anaconda3/envs/scarches/bin/python s8_4_LSTM_classification_training.py \
                     --dataset_name $dataset_name\
                     --model_complexity $model_complexity \

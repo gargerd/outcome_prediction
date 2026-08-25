@@ -50,7 +50,7 @@ period_end_day='baseline 31 62 93 125 160 all'
 echo ${data_inclusion_type}
 echo ${period_end_day}
 
-
+## A specific python within the desired environment (here: scarches)is executing the python file ==> this needs to be adjusted if environment or HPC changes
 /data/gpfs/projects/punim2121/anaconda3/envs/scarches/bin/python  s9_2_LLM_extract_embedding.py \
                                                                 --dataset_name $dataset_name \
                                                                 --data_inclusion_type $data_inclusion_type \
