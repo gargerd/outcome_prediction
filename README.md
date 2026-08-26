@@ -107,14 +107,19 @@
         - `s9_3_baseline_ML_models_functions.py`: containing general functions for parameter search, training, testing and SHAP-value calculation
         - `run_s9_3_raw_data_param_search.slurm`: runs parameter search by running `s9_3_baseline_ML_models_param_search.py`
         - `run_s9_3_raw_data_train.slurm`: runs final model training using optimal hyperparameters selected after parameter search via `s9_3_baseline_ML_models_training.py`
-        - `run_s9_3_raw_data_testing.slurm`:by running `s9_3_baseline_ML_models_testing.py`, it extracts prediction probabilities of final trained models on the test set patients, as well as calculates ROC-AUC values using these probabilites and ground truth labels. **Uses a different .tsv file as input for _SLURM_TASK_ID_ pairing as all other s9_3 slurm scripts, for details check s9_3 notebook!**
+        - `run_s9_3_raw_data_testing.slurm`:by running `s9_3_baseline_ML_models_testing.py`, it extracts prediction probabilities of final trained models on the test set patients, as well as calculates ROC-AUC values using these probabilites and ground truth labels. ROC-AUCs are calculated across studies, within studies and within arms. **Uses a different .tsv file as input for _SLURM_TASK_ID_ pairing as all other s9_3 slurm scripts, for details check s9_3 notebook!**
         - `run_s9_3_raw_data_SHAP_calculation.slurm`: Runs SHAP-value calculation via `s9_3_baseline_ML_models_SHAP_calculation.py`, which also contains specific functions for SHAP-calculation
-    - Runs parameter search (**slow, use SLURM-script**)
-    - Runs final model training using optimal hyperparameters selected after parameter search (**slow, use SLURM-script**)
-    - Create a .tsv file containing a dataframe with the parameter-combinations for model testing, pairing it up with _SLURM_TASK_ID_, that will be used in the slurm script `run_s9_3_raw_data_testing.slurm`
-    - Run SHAP-value calculation (**slow, use SLURM-script**)
-    - Concatenate SHAP-values & raw input data & prediction probabilities into dataframes ==> **REQUIREMENT FOR SHAP VALUE PLOTTING**!
-    - Plot results of SHAP-value analysis (per timepoint beeswarm / clustermap / curves over timepoints)
+    - Model training:
+        - Runs parameter search (**slow, use SLURM-script**)
+        - Runs final model training using optimal hyperparameters selected after parameter search (**slow, use SLURM-script**)
+    - Model testing:
+        - Create a .tsv file containing a dataframe with the parameter-combinations for model testing, pairing it up with _SLURM_TASK_ID_, that will be used in the slurm script `run_s9_3_raw_data_testing.slurm`
+        - Run model testing: it extracts prediction probabilities of final trained models on the test set patients, as well as calculates ROC-AUC values using these probabilites and ground truth labels (**slow, use SLURM-script**). ROC-AUCs are calculated across studies, within studies and within arms.
+        - Plot ROC-AUCs over therapy timepoints, however not not all details of the figures are final (i.e. figure titles are rudimentary) --> **s9_5 notebook creates the same plots but with better visualisation!**
+    - SHAP- value analysis: 
+        - Run SHAP-value calculation (**slow, use SLURM-script**)
+        - Concatenate SHAP-values & raw input data & prediction probabilities into dataframes ==> **REQUIREMENT FOR SHAP VALUE PLOTTING**!
+        - Plot results of SHAP-value analysis (per timepoint beeswarm / clustermap / curves over timepoints)
  
 
 - **s9_4: Embeddings - LR & XGBoost model training & Raw vs. Embedding-models: comparison over time; cluster based on prediction loss; Kaplan-Meier analysis**
@@ -123,19 +128,26 @@
         - `s9_4_ML_on_LLM_embeddings_functions.py`: containing general functions for parameter search and training
         - `run_s9_4_param_search.slurm`: runs parameter search by running `s9_4_ML_on_LLM_embeddings_param_search.py`
         - `run_s9_4_training.slurm`: runs final model training using optimal hyperparameters selected after parameter search via `s9_4_ML_on_LLM_embeddings_training.py`
-    - Runs parameter search (**slow, use SLURM-script**)
-    - Runs final model training using optimal hyperparameters selected after parameter search (**slow, use SLURM-script**)
-    - Run SHAP-value calculation: only tractable for XGboost models, & SHAP for embeddings dimensions is pointless (see s9_6 for integrated gradients instead for model interpretation of embedding-based models), **but this step is necessary for the subsequent concatenation step!**
-    - Concatenate SHAP-values & raw input data & prediction probabilities into dataframes ==> **REQUIREMENT FOR FURTHER STEPS**!
+    - Model training:
+        - Runs parameter search (**slow, use SLURM-script**)
+        - Runs final model training using optimal hyperparameters selected after parameter search (**slow, use SLURM-script**)
+    - Model testing:
+        - Run model testing: it extracts prediction probabilities of final trained models on the test set patients, as well as calculates ROC-AUC values using these probabilites and ground truth labels. ROC-AUCs are calculated across studies, within studies and within arms.
+        - Plot ROC-AUCs over therapy timepoints, however not not all details of the figures are final (i.e. figure titles are rudimentary) --> **s9_5 notebook creates the same plots but with better visualisation!**
+    - Concatenate test set prediction probabilites:
+        - Run SHAP-value calculation: only tractable for XGboost models, & SHAP for embeddings dimensions is pointless (see s9_6 for integrated gradients instead for model interpretation of embedding-based models), **but this step is necessary for the subsequent concatenation step!**
+        - Concatenate SHAP-values & raw input data & prediction probabilities into dataframes ==> **REQUIREMENT FOR FURTHER STEPS**!
     - Match raw and embedding-based models' prediction logits as scatterplots
     - Cluster patients by their prediction loss across multiple timepoints
     - Compare prediction probabilities of test set patients for relapse prediction with those of patients with favourable end-of-therapy outcome but lost to follow-up (therefore dropped from relapse model training) --> Checking if there is a systematic difference between patients with completed and lost-to follow-up
     - Compare easy- and hard-to-treat groups across publications --> Imperial et al using baseline cavity & sputum smear vs. Chang using baseline lung disease grading & GeneXpert ==> **approximate GeneXpert with sputum smear, as GeneXpert is missing**
-    - Run Kaplan-Meier analysis with Imperial et al.'s easy-/hard-to-treat (ETT/HTT) groups, and low/high relapse risk groupings derived from raw or embedding-based models (low/high: lowest/highest 30th percentile of prediction loss patients)
-    - Perform a non-inferiority analysis across 4 and 6-month treatment arms for all groups derived in previous step (ETT/HTT, low/high risk)
+    - Subgroup analysis:
+        - Run Kaplan-Meier analysis with Imperial et al.'s easy-/hard-to-treat (ETT/HTT) groups, and low/high relapse risk groupings derived from raw or embedding-based models (low/high: lowest/highest 30th percentile of prediction loss patients)
+        - Perform a non-inferiority analysis across 4 and 6-month treatment arms for all groups derived in previous step (ETT/HTT, low/high risk)
     - Run a cost-effectiveness analysis (decision-curve & break even analysis)
  
-
+- **s9_5: Plot ROC-AUCs across timepoints**
+    - 
 
 
 
