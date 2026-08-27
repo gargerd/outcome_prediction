@@ -119,7 +119,8 @@
     - SHAP- value analysis: 
         - Run SHAP-value calculation (**slow, use SLURM-script**)
         - Concatenate SHAP-values & raw input data & prediction probabilities into dataframes ==> **REQUIREMENT FOR SHAP VALUE PLOTTING**!
-        - Plot results of SHAP-value analysis (per timepoint beeswarm / clustermap / curves over timepoints)
+        - **Important: observational SHAP-values were used, which consider correlation between inputs variables ==> put weight on all correlated variables, on those as well that are not being used by the model: https://arxiv.org/pdf/2006.16234**
+        - Plot results of SHAP-value analysis (per timepoint beeswarm / clustermap / population median curves over timepoints, split by input value levels)
  
 
 - **s9_4: Embeddings - LR & XGBoost model training & Raw vs. Embedding-models: comparison over time; cluster based on prediction loss; Kaplan-Meier analysis**
@@ -147,7 +148,63 @@
     - Run a cost-effectiveness analysis (decision-curve & break even analysis)
  
 - **s9_5: Plot ROC-AUCs across timepoints**
-    - 
+    - Concatenate ROC-AUC values of raw and embedding models
+        - For each prediction label, concatenate ROC-AUC values of raw data and embedding-based model that were calculated in **s9_3** and **s9_4**, in order to make the next plotting steps easier
+        - For experimental setups with leave-one-study-out approach (train on one or multiple studies, test on one left-out study), trainin-testing is done once, in contrast to experimental setups using all studies via a 25 train-test split approach. Perform bootstrapping to get confidence intervals
+    - Plot ROC-AUCs of individual experimental setups as line and stripplots over time
+        - Plot ROC-AUCs of LR & XGBoost models across studies / per study /  per arm
+        - Plot ROC-AUCs of LSTM models across studies / per study /  per arm
+    - Compare ROC-AUCs of the different data input approaches and models per one experimental setup in one barplot, and compare them statistically
+        - Compare **raw data model performances only**: LR and XGBoost models of last-visit, last-visits concatenated data inputs; as well as LSTM models
+        - Compare **embedding-based model performances only**: LR and XGBoost models of common variables - last visit, all variables - all visits, all variables - all visits data input approaches
+        - Compare **across raw and embedding based data input approaches**: `final_setup_dict` controls which data setups will be plotted
+
+- **s9_6: Calculate Integrated Gradients attributions for embedding models**
+    - **Notes on why IG is employed**:
+        - Interpretability for embedding-based models doesn't work wih SHAP values, because SHAP values of embedding dimensions are not interpretable, as they cannot be traced back to individual clinical variables. In addition, SHAP calculation for LR models with 4096 dimensions is computationally intractable
+        -  Integrated gradients can offer an alternative solution for this, however it needs a pipeline that is differentiable through all of its steps
+        -  The embedding extraction steps are differentiable, but from the 2 models used (LR and XGBoost), only the former is differentiable, therefore only logistic regression models can be used for IG
+        -  **A more detailed description of the whole approach can be found in s9_6's the markdown cell `RUN IG - SLURM SCRIPT AVAILABLE`!**
+    -  Run integrated gradients, which results in saving the token level attributions to the final predictions
+    -  Match up tokens with their attributions, then group the tokens by variables, and sum the attributions of tokens belonging to one variable to yield one attribution score per variable
+    -  Visualisation of attributions:
+        - Clustering participants via clustermaps (x-axis: patients, y-axis: variables) based on their scaled IG attributions --> reliable implemented only for the common variable - last-visit data input approaches
+        - Beeswarm-like scatterplots:
+            - Calculate correlation between the attribution value and the raw input values of the variables --> this will be used later to select for the top 40 variables to plot in the case of `all visits` data input approach, as the number of variables is very large (timepoint of measurement is appended as a predix, i.e. Week_1_Haemoglobin)
+            - Plot SHAP-style beeswarm plots of IG attributions per data input approach and per timepoint --> for `all visits` data input approach, select top 40 variables to plot for 3 different cases:
+                - Top 40 variables with the largest absolute attributions
+                - Top 40 variables with the largest absolute correlation between raw input values used for embedding and their attribution scores
+                - Top 40 sparse variables with largest absolute attributions 
+            - Save data for plotting Spearman correlations of selected common variable - last-visit approaches later (see details in cell `Save data for HH cluster - input data for Fig. 4's Spearman correlation plot`)
+        - Plot top variables for both top-performing data input approaches (common vars. - last visit; all vars. - all visits):
+            - common vars. - last visit:  population median curves of IG attributions, plotted over timepoints and split by input value levels
+            - all vars. - all visits: plot beeswarm plots of variables with large absolute attributions & large correlation with input variables --> these are radiological finding (re) variables
+    - Plot Spearman-correlation between IG attributions of variables and their input values for common vars. - last visit approaches of EOT outcome and relapse labels --> inputs for these plot come from **S9_3** notebook's `Save data for HH cluster - input data for Fig. 4's Spearman correlation plot` cell, and the cell of this notebook mentioned here above
+    - **SLURM-scripts in the _slurm_scripts_ folder pertaining to s9_6**:
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
