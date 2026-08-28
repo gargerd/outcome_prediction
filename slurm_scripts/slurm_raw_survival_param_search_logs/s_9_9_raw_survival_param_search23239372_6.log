@@ -1,0 +1,802 @@
+Loading anaconda
+Activate conda env
+tb21_22_2984_pats_22_vars_relapse
+last_therapy_day
+baseline
+LogisticHazard
+4-month
+EOT
+/data/gpfs/projects/punim2121/C-Path/outcome_prediction/outcome_prediction/s9_9_baseline_survival_models_functions.py:2247: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  de_['RELAPSE']=de_['RELAPSE'].astype(float)
+Extracting relapse information...
+===========
+ tb21_22_2984_pats_22_vars_relapse 
+
+Extracting relapse information...
+pat_ids_ before arm check 2402
+2402
+  0%|          | 0/1 [00:00<?, ?model/s]
+=====================
+LogisticHazard
+++++++++++++++++++ 
+tb21_22_2984_pats_22_vars_relapse - Model: LogisticHazard - Period: baseline days  4-month cohort  - EOT - data for training: last_therapy_day - CV:1
++++++++++++++++++
+Running training with last_therapy_day model: 33 vars
+Num of CV-repeat:1
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:09<03:32,  9.26s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:20<03:46, 10.32s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:28<03:14,  9.28s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [00:43<03:55, 11.78s/parameter_set][A
+Processing:  21%|██        | 5/24 [00:54<03:37, 11.45s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:13<04:11, 13.97s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [01:20<03:16, 11.57s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [01:30<02:59, 11.19s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [01:38<02:31, 10.13s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [01:51<02:32, 10.88s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [02:01<02:19, 10.70s/parameter_set][A
+Processing:  50%|█████     | 12/24 [02:16<02:23, 11.98s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [02:24<01:58, 10.76s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [02:36<01:53, 11.36s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [02:46<01:36, 10.68s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [03:03<01:41, 12.63s/parameter_set][A
+Processing:  71%|███████   | 17/24 [03:14<01:26, 12.31s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [03:34<01:27, 14.63s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [03:40<00:59, 12.00s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [03:50<00:45, 11.42s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [03:58<00:30, 10.25s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [04:11<00:22, 11.18s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [04:20<00:10, 10.62s/parameter_set][A
+Processing: 100%|██████████| 24/24 [04:38<00:00, 12.60s/parameter_set][AProcessing: 100%|██████████| 24/24 [04:38<00:00, 11.59s/parameter_set]
+++++++++++++++++++ 
+tb21_22_2984_pats_22_vars_relapse - Model: LogisticHazard - Period: baseline days  4-month cohort  - EOT - data for training: last_therapy_day - CV:2
++++++++++++++++++
+Running training with last_therapy_day model: 33 vars
+Num of CV-repeat:2
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:06<02:33,  6.66s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:19<03:48, 10.37s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:28<03:21,  9.58s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [00:44<04:07, 12.37s/parameter_set][A
+Processing:  21%|██        | 5/24 [00:55<03:43, 11.77s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:15<04:21, 14.54s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [01:22<03:25, 12.06s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [01:33<03:07, 11.70s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [01:41<02:38, 10.59s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [01:55<02:43, 11.68s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [02:05<02:25, 11.19s/parameter_set][A
+Processing:  50%|█████     | 12/24 [02:24<02:40, 13.39s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [02:32<02:09, 11.79s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [02:47<02:06, 12.69s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [02:57<01:48, 12.11s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [03:16<01:51, 14.00s/parameter_set][A
+Processing:  71%|███████   | 17/24 [03:29<01:35, 13.66s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [03:51<01:38, 16.35s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [03:58<01:07, 13.54s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [04:10<00:52, 13.14s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [04:19<00:35, 11.75s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [04:35<00:25, 12.98s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [04:46<00:12, 12.32s/parameter_set][A
+Processing: 100%|██████████| 24/24 [05:04<00:00, 14.19s/parameter_set][AProcessing: 100%|██████████| 24/24 [05:04<00:00, 12.69s/parameter_set]
+++++++++++++++++++ 
+tb21_22_2984_pats_22_vars_relapse - Model: LogisticHazard - Period: baseline days  4-month cohort  - EOT - data for training: last_therapy_day - CV:3
++++++++++++++++++
+Running training with last_therapy_day model: 33 vars
+Num of CV-repeat:3
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:07<02:51,  7.47s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:18<03:33,  9.71s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:26<03:02,  8.68s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [00:40<03:35, 10.77s/parameter_set][A
+Processing:  21%|██        | 5/24 [00:49<03:16, 10.34s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:07<03:52, 12.91s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [01:13<03:02, 10.72s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [01:23<02:47, 10.48s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [01:30<02:20,  9.36s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [01:43<02:23, 10.26s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [01:51<02:05,  9.69s/parameter_set][A
+Processing:  50%|█████     | 12/24 [02:07<02:19, 11.64s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [02:15<01:54, 10.44s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [02:28<01:53, 11.39s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [02:38<01:39, 11.00s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [02:56<01:44, 13.07s/parameter_set][A
+Processing:  71%|███████   | 17/24 [03:08<01:28, 12.64s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [03:29<01:31, 15.26s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [03:36<01:02, 12.59s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [03:47<00:48, 12.23s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [03:54<00:32, 10.79s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [04:08<00:23, 11.60s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [04:17<00:10, 10.71s/parameter_set][A
+Processing: 100%|██████████| 24/24 [04:32<00:00, 11.98s/parameter_set][AProcessing: 100%|██████████| 24/24 [04:32<00:00, 11.33s/parameter_set]
+++++++++++++++++++ 
+tb21_22_2984_pats_22_vars_relapse - Model: LogisticHazard - Period: baseline days  4-month cohort  - EOT - data for training: last_therapy_day - CV:4
++++++++++++++++++
+Running training with last_therapy_day model: 33 vars
+Num of CV-repeat:4
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:06<02:22,  6.21s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:17<03:22,  9.21s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:24<02:55,  8.36s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [00:38<03:30, 10.53s/parameter_set][A
+Processing:  21%|██        | 5/24 [00:48<03:17, 10.39s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:05<03:46, 12.56s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [01:11<02:54, 10.26s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [01:21<02:42, 10.18s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [01:28<02:19,  9.32s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [01:41<02:25, 10.36s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [01:50<02:10, 10.03s/parameter_set][A
+Processing:  50%|█████     | 12/24 [02:05<02:18, 11.53s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [02:11<01:49,  9.99s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [02:24<01:46, 10.66s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [02:32<01:30, 10.10s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [02:50<01:38, 12.27s/parameter_set][A
+Processing:  71%|███████   | 17/24 [03:01<01:23, 11.93s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [03:23<01:30, 15.00s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [03:31<01:03, 12.78s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [03:44<00:51, 12.95s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [03:54<00:36, 12.03s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [04:11<00:27, 13.66s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [04:22<00:12, 12.86s/parameter_set][A
+Processing: 100%|██████████| 24/24 [04:42<00:00, 14.92s/parameter_set][AProcessing: 100%|██████████| 24/24 [04:42<00:00, 11.77s/parameter_set]
+++++++++++++++++++ 
+tb21_22_2984_pats_22_vars_relapse - Model: LogisticHazard - Period: baseline days  4-month cohort  - EOT - data for training: last_therapy_day - CV:5
++++++++++++++++++
+Running training with last_therapy_day model: 33 vars
+Num of CV-repeat:5
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:06<02:37,  6.84s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:18<03:38,  9.94s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:28<03:21,  9.59s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [00:43<03:58, 11.92s/parameter_set][A
+Processing:  21%|██        | 5/24 [00:54<03:37, 11.43s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:11<04:02, 13.46s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [01:17<03:07, 11.04s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [01:27<02:51, 10.73s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [01:35<02:27,  9.80s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [01:48<02:31, 10.79s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [01:57<02:13, 10.26s/parameter_set][A
+Processing:  50%|█████     | 12/24 [02:13<02:22, 11.90s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [02:20<01:55, 10.47s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [02:33<01:52, 11.26s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [02:41<01:32, 10.33s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [02:56<01:33, 11.72s/parameter_set][A
+Processing:  71%|███████   | 17/24 [03:07<01:20, 11.47s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [03:26<01:23, 13.87s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [03:32<00:57, 11.51s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [03:43<00:45, 11.29s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [03:50<00:29,  9.98s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [04:04<00:22, 11.02s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [04:12<00:10, 10.20s/parameter_set][A
+Processing: 100%|██████████| 24/24 [04:24<00:00, 10.80s/parameter_set][AProcessing: 100%|██████████| 24/24 [04:24<00:00, 11.02s/parameter_set]
+++++++++++++++++++ 
+tb21_22_2984_pats_22_vars_relapse - Model: LogisticHazard - Period: baseline days  4-month cohort  - EOT - data for training: last_therapy_day - CV:6
++++++++++++++++++
+Running training with last_therapy_day model: 33 vars
+Num of CV-repeat:6
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:05<01:58,  5.13s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:14<02:41,  7.36s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:20<02:30,  7.15s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [00:32<02:55,  8.80s/parameter_set][A
+Processing:  21%|██        | 5/24 [00:40<02:41,  8.52s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [00:54<03:06, 10.38s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [00:59<02:25,  8.55s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [01:07<02:16,  8.56s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [01:13<01:55,  7.67s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [01:23<01:58,  8.49s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [01:31<01:46,  8.18s/parameter_set][A
+Processing:  50%|█████     | 12/24 [01:44<01:55,  9.63s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [01:49<01:32,  8.43s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [02:00<01:31,  9.11s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [02:08<01:18,  8.68s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [02:22<01:23, 10.44s/parameter_set][A
+Processing:  71%|███████   | 17/24 [02:32<01:12, 10.31s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [02:50<01:15, 12.58s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [02:55<00:51, 10.36s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [03:05<00:40, 10.07s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [03:11<00:27,  9.07s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [03:24<00:20, 10.07s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [03:32<00:09,  9.53s/parameter_set][A
+Processing: 100%|██████████| 24/24 [03:46<00:00, 10.93s/parameter_set][AProcessing: 100%|██████████| 24/24 [03:46<00:00,  9.45s/parameter_set]
+++++++++++++++++++ 
+tb21_22_2984_pats_22_vars_relapse - Model: LogisticHazard - Period: baseline days  4-month cohort  - EOT - data for training: last_therapy_day - CV:7
++++++++++++++++++
+Running training with last_therapy_day model: 33 vars
+Num of CV-repeat:7
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:04<01:51,  4.84s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:13<02:37,  7.15s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:19<02:20,  6.67s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [00:30<02:43,  8.18s/parameter_set][A
+Processing:  21%|██        | 5/24 [00:38<02:34,  8.12s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [00:52<03:03, 10.20s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [00:57<02:23,  8.44s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [01:04<02:10,  8.13s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [01:10<01:51,  7.44s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [01:20<01:55,  8.22s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [01:27<01:41,  7.82s/parameter_set][A
+Processing:  50%|█████     | 12/24 [01:38<01:44,  8.71s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [01:43<01:25,  7.80s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [01:54<01:26,  8.60s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [02:02<01:16,  8.47s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [02:16<01:20, 10.02s/parameter_set][A
+Processing:  71%|███████   | 17/24 [02:25<01:09,  9.89s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [02:42<01:12, 12.02s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [02:47<00:49,  9.96s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [02:57<00:39,  9.87s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [03:04<00:26,  8.85s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [03:15<00:18,  9.50s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [03:22<00:08,  8.97s/parameter_set][A
+Processing: 100%|██████████| 24/24 [03:36<00:00, 10.41s/parameter_set][AProcessing: 100%|██████████| 24/24 [03:36<00:00,  9.03s/parameter_set]
+++++++++++++++++++ 
+tb21_22_2984_pats_22_vars_relapse - Model: LogisticHazard - Period: baseline days  4-month cohort  - EOT - data for training: last_therapy_day - CV:8
++++++++++++++++++
+Running training with last_therapy_day model: 33 vars
+Num of CV-repeat:8
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:05<01:59,  5.19s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:14<02:46,  7.55s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:20<02:24,  6.88s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [00:31<02:48,  8.45s/parameter_set][A
+Processing:  21%|██        | 5/24 [00:39<02:35,  8.20s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [00:52<02:59,  9.95s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [00:56<02:18,  8.17s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [01:05<02:11,  8.24s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [01:10<01:50,  7.36s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [01:20<01:52,  8.03s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [01:27<01:39,  7.66s/parameter_set][A
+Processing:  50%|█████     | 12/24 [01:38<01:45,  8.80s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [01:44<01:26,  7.88s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [01:54<01:25,  8.53s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [02:01<01:13,  8.19s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [02:14<01:17,  9.70s/parameter_set][A
+Processing:  71%|███████   | 17/24 [02:24<01:06,  9.55s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [02:40<01:10, 11.68s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [02:46<00:48,  9.75s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [02:55<00:38,  9.59s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [03:01<00:25,  8.57s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [03:12<00:18,  9.25s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [03:22<00:09,  9.40s/parameter_set][A
+Processing: 100%|██████████| 24/24 [03:39<00:00, 11.91s/parameter_set][AProcessing: 100%|██████████| 24/24 [03:39<00:00,  9.16s/parameter_set]
+++++++++++++++++++ 
+tb21_22_2984_pats_22_vars_relapse - Model: LogisticHazard - Period: baseline days  4-month cohort  - EOT - data for training: last_therapy_day - CV:9
++++++++++++++++++
+Running training with last_therapy_day model: 33 vars
+Num of CV-repeat:9
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:07<02:48,  7.33s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:19<03:40, 10.02s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:28<03:21,  9.62s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [00:43<03:54, 11.71s/parameter_set][A
+Processing:  21%|██        | 5/24 [00:53<03:35, 11.35s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:12<04:07, 13.74s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [01:18<03:12, 11.32s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [01:29<03:00, 11.29s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [01:37<02:31, 10.13s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [01:48<02:24, 10.34s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [01:56<02:07,  9.83s/parameter_set][A
+Processing:  50%|█████     | 12/24 [02:14<02:24, 12.04s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [02:21<01:56, 10.59s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [02:34<01:53, 11.37s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [02:44<01:38, 10.98s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [03:00<01:40, 12.59s/parameter_set][A
+Processing:  71%|███████   | 17/24 [03:11<01:24, 12.01s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [03:32<01:28, 14.81s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [03:39<01:01, 12.33s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [03:51<00:49, 12.31s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [03:59<00:33, 11.07s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [04:14<00:24, 12.15s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [04:24<00:11, 11.50s/parameter_set][A
+Processing: 100%|██████████| 24/24 [04:40<00:00, 12.84s/parameter_set][AProcessing: 100%|██████████| 24/24 [04:40<00:00, 11.69s/parameter_set]
+++++++++++++++++++ 
+tb21_22_2984_pats_22_vars_relapse - Model: LogisticHazard - Period: baseline days  4-month cohort  - EOT - data for training: last_therapy_day - CV:10
++++++++++++++++++
+Running training with last_therapy_day model: 33 vars
+Num of CV-repeat:10
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:06<02:26,  6.39s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:18<03:33,  9.72s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:26<03:08,  8.99s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [00:40<03:41, 11.08s/parameter_set][A
+Processing:  21%|██        | 5/24 [00:51<03:26, 10.87s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:10<04:03, 13.54s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [01:16<03:12, 11.33s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [01:27<02:58, 11.14s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [01:35<02:32, 10.15s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [01:47<02:29, 10.68s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [01:55<02:10, 10.01s/parameter_set][A
+Processing:  50%|█████     | 12/24 [02:09<02:13, 11.10s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [02:15<01:45,  9.60s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [02:27<01:41, 10.15s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [02:35<01:26,  9.61s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [02:50<01:29, 11.20s/parameter_set][A
+Processing:  71%|███████   | 17/24 [03:00<01:16, 10.96s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [03:19<01:20, 13.38s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [03:25<00:55, 11.02s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [03:36<00:44, 11.10s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [03:44<00:30, 10.14s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [03:56<00:21, 10.85s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [04:05<00:10, 10.17s/parameter_set][A
+Processing: 100%|██████████| 24/24 [04:19<00:00, 11.38s/parameter_set][AProcessing: 100%|██████████| 24/24 [04:19<00:00, 10.82s/parameter_set]
+++++++++++++++++++ 
+tb21_22_2984_pats_22_vars_relapse - Model: LogisticHazard - Period: baseline days  4-month cohort  - EOT - data for training: last_therapy_day - CV:11
++++++++++++++++++
+Running training with last_therapy_day model: 33 vars
+Num of CV-repeat:11
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:05<02:01,  5.29s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:14<02:47,  7.60s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:21<02:32,  7.26s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [00:33<03:02,  9.14s/parameter_set][A
+Processing:  21%|██        | 5/24 [00:42<02:53,  9.11s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [00:57<03:20, 11.12s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [01:03<02:38,  9.33s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [01:13<02:35,  9.75s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [01:20<02:14,  8.94s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [01:31<02:14,  9.59s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [01:40<02:00,  9.24s/parameter_set][A
+Processing:  50%|█████     | 12/24 [01:54<02:09, 10.76s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [02:01<01:44,  9.45s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [02:12<01:40, 10.04s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [02:20<01:25,  9.45s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [02:35<01:28, 11.04s/parameter_set][A
+Processing:  71%|███████   | 17/24 [02:45<01:16, 10.91s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [03:05<01:20, 13.43s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [03:10<00:55, 11.06s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [03:19<00:42, 10.51s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [03:26<00:27,  9.19s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [03:38<00:20, 10.24s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [03:46<00:09,  9.52s/parameter_set][A
+Processing: 100%|██████████| 24/24 [04:02<00:00, 11.29s/parameter_set][AProcessing: 100%|██████████| 24/24 [04:02<00:00, 10.08s/parameter_set]
+++++++++++++++++++ 
+tb21_22_2984_pats_22_vars_relapse - Model: LogisticHazard - Period: baseline days  4-month cohort  - EOT - data for training: last_therapy_day - CV:12
++++++++++++++++++
+Running training with last_therapy_day model: 33 vars
+Num of CV-repeat:12
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:05<02:04,  5.39s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:15<02:58,  8.12s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:22<02:38,  7.53s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [00:34<03:08,  9.42s/parameter_set][A
+Processing:  21%|██        | 5/24 [00:43<02:55,  9.23s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [00:57<03:17, 10.98s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [01:03<02:35,  9.17s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [01:12<02:25,  9.09s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [01:18<02:03,  8.22s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [01:29<02:06,  9.07s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [01:36<01:51,  8.59s/parameter_set][A
+Processing:  50%|█████     | 12/24 [01:50<01:59,  9.98s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [01:56<01:38,  8.99s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [02:08<01:38,  9.85s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [02:16<01:23,  9.31s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [02:31<01:28, 11.00s/parameter_set][A
+Processing:  71%|███████   | 17/24 [02:41<01:15, 10.74s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [03:00<01:18, 13.06s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [03:06<00:55, 11.01s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [03:18<00:44, 11.17s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [03:25<00:30, 10.04s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [03:38<00:22, 11.01s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [03:47<00:10, 10.36s/parameter_set][A
+Processing: 100%|██████████| 24/24 [04:02<00:00, 11.61s/parameter_set][AProcessing: 100%|██████████| 24/24 [04:02<00:00, 10.09s/parameter_set]
+++++++++++++++++++ 
+tb21_22_2984_pats_22_vars_relapse - Model: LogisticHazard - Period: baseline days  4-month cohort  - EOT - data for training: last_therapy_day - CV:13
++++++++++++++++++
+Running training with last_therapy_day model: 33 vars
+Num of CV-repeat:13
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:05<02:10,  5.65s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:15<02:59,  8.18s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:23<02:45,  7.90s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [00:36<03:19, 10.00s/parameter_set][A
+Processing:  21%|██        | 5/24 [00:45<03:06,  9.82s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:02<03:35, 11.97s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [01:06<02:44,  9.67s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [01:16<02:34,  9.68s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [01:23<02:11,  8.75s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [01:34<02:12,  9.49s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [01:42<01:57,  9.06s/parameter_set][A
+Processing:  50%|█████     | 12/24 [01:56<02:06, 10.54s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [02:03<01:43,  9.37s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [02:15<01:41, 10.17s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [02:24<01:27,  9.76s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [02:40<01:33, 11.72s/parameter_set][A
+Processing:  71%|███████   | 17/24 [02:50<01:19, 11.31s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [03:09<01:21, 13.64s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [03:15<00:56, 11.21s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [03:26<00:45, 11.31s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [03:34<00:30, 10.14s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [03:47<00:21, 10.99s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [03:55<00:10, 10.20s/parameter_set][A
+Processing: 100%|██████████| 24/24 [04:10<00:00, 11.66s/parameter_set][AProcessing: 100%|██████████| 24/24 [04:10<00:00, 10.44s/parameter_set]
+++++++++++++++++++ 
+tb21_22_2984_pats_22_vars_relapse - Model: LogisticHazard - Period: baseline days  4-month cohort  - EOT - data for training: last_therapy_day - CV:14
++++++++++++++++++
+Running training with last_therapy_day model: 33 vars
+Num of CV-repeat:14
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:06<02:28,  6.46s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:17<03:21,  9.17s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:24<02:56,  8.38s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [00:38<03:27, 10.39s/parameter_set][A
+Processing:  21%|██        | 5/24 [00:48<03:12, 10.12s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:05<03:44, 12.49s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [01:10<02:53, 10.22s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [01:20<02:42, 10.13s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [01:27<02:16,  9.08s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [01:38<02:17,  9.79s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [01:47<02:02,  9.43s/parameter_set][A
+Processing:  50%|█████     | 12/24 [02:02<02:12, 11.06s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [02:09<01:48,  9.83s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [02:21<01:45, 10.56s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [02:30<01:31, 10.15s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [02:46<01:35, 11.95s/parameter_set][A
+Processing:  71%|███████   | 17/24 [02:59<01:24, 12.05s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [03:15<01:20, 13.46s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [03:22<00:57, 11.41s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [03:33<00:45, 11.37s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [03:40<00:30, 10.08s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [03:53<00:21, 10.80s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [04:01<00:10, 10.14s/parameter_set][A
+Processing: 100%|██████████| 24/24 [04:17<00:00, 11.80s/parameter_set][AProcessing: 100%|██████████| 24/24 [04:17<00:00, 10.73s/parameter_set]
+++++++++++++++++++ 
+tb21_22_2984_pats_22_vars_relapse - Model: LogisticHazard - Period: baseline days  4-month cohort  - EOT - data for training: last_therapy_day - CV:15
++++++++++++++++++
+Running training with last_therapy_day model: 33 vars
+Num of CV-repeat:15
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:06<02:19,  6.05s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:16<03:09,  8.63s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:24<02:51,  8.17s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [00:36<03:20, 10.01s/parameter_set][A
+Processing:  21%|██        | 5/24 [00:46<03:06,  9.81s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:03<03:41, 12.33s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [01:10<02:56, 10.39s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [01:20<02:45, 10.35s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [01:27<02:20,  9.36s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [01:39<02:20, 10.03s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [01:47<02:03,  9.50s/parameter_set][A
+Processing:  50%|█████     | 12/24 [02:00<02:07, 10.60s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [02:06<01:43,  9.37s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [02:19<01:43, 10.36s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [02:28<01:28,  9.83s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [02:43<01:32, 11.55s/parameter_set][A
+Processing:  71%|███████   | 17/24 [02:54<01:18, 11.21s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [03:14<01:23, 13.99s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [03:20<00:58, 11.66s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [03:32<00:46, 11.53s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [03:40<00:31, 10.52s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [03:54<00:23, 11.76s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [04:04<00:10, 10.98s/parameter_set][A
+Processing: 100%|██████████| 24/24 [04:20<00:00, 12.64s/parameter_set][AProcessing: 100%|██████████| 24/24 [04:20<00:00, 10.86s/parameter_set]
+++++++++++++++++++ 
+tb21_22_2984_pats_22_vars_relapse - Model: LogisticHazard - Period: baseline days  4-month cohort  - EOT - data for training: last_therapy_day - CV:16
++++++++++++++++++
+Running training with last_therapy_day model: 33 vars
+Num of CV-repeat:16
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:06<02:18,  6.03s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:16<03:10,  8.64s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:23<02:50,  8.11s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [00:37<03:21, 10.08s/parameter_set][A
+Processing:  21%|██        | 5/24 [00:47<03:11, 10.09s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:02<03:30, 11.70s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [01:07<02:43,  9.62s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [01:16<02:30,  9.39s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [01:22<02:05,  8.35s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [01:33<02:08,  9.19s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [01:41<01:53,  8.74s/parameter_set][A
+Processing:  50%|█████     | 12/24 [01:54<02:02, 10.19s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [02:00<01:37,  8.89s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [02:11<01:35,  9.52s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [02:19<01:21,  9.03s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [02:33<01:24, 10.55s/parameter_set][A
+Processing:  71%|███████   | 17/24 [02:43<01:13, 10.51s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [03:02<01:17, 12.94s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [03:08<00:53, 10.78s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [03:18<00:42, 10.56s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [03:24<00:27,  9.31s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [03:37<00:20, 10.29s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [03:45<00:09,  9.57s/parameter_set][A
+Processing: 100%|██████████| 24/24 [04:00<00:00, 11.46s/parameter_set][AProcessing: 100%|██████████| 24/24 [04:00<00:00, 10.04s/parameter_set]
+++++++++++++++++++ 
+tb21_22_2984_pats_22_vars_relapse - Model: LogisticHazard - Period: baseline days  4-month cohort  - EOT - data for training: last_therapy_day - CV:17
++++++++++++++++++
+Running training with last_therapy_day model: 33 vars
+Num of CV-repeat:17
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:06<02:19,  6.07s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:16<03:14,  8.85s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:25<03:00,  8.59s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [00:38<03:30, 10.53s/parameter_set][A
+Processing:  21%|██        | 5/24 [00:48<03:12, 10.15s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:05<03:47, 12.61s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [01:11<02:58, 10.53s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [01:21<02:45, 10.33s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [01:28<02:17,  9.17s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [01:41<02:25, 10.37s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [01:50<02:11, 10.09s/parameter_set][A
+Processing:  50%|█████     | 12/24 [02:07<02:24, 12.08s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [02:15<01:57, 10.72s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [02:28<01:55, 11.58s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [02:38<01:40, 11.16s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [02:56<01:45, 13.13s/parameter_set][A
+Processing:  71%|███████   | 17/24 [03:09<01:31, 13.04s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [03:31<01:35, 15.92s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [03:38<01:06, 13.26s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [03:52<00:52, 13.19s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [04:00<00:35, 11.79s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [04:18<00:27, 13.76s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [04:31<00:13, 13.28s/parameter_set][A
+Processing: 100%|██████████| 24/24 [04:53<00:00, 15.91s/parameter_set][AProcessing: 100%|██████████| 24/24 [04:53<00:00, 12.21s/parameter_set]
+++++++++++++++++++ 
+tb21_22_2984_pats_22_vars_relapse - Model: LogisticHazard - Period: baseline days  4-month cohort  - EOT - data for training: last_therapy_day - CV:18
++++++++++++++++++
+Running training with last_therapy_day model: 33 vars
+Num of CV-repeat:18
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:07<02:56,  7.69s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:21<04:04, 11.11s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:30<03:35, 10.26s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [00:46<04:07, 12.39s/parameter_set][A
+Processing:  21%|██        | 5/24 [00:57<03:47, 11.99s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:17<04:25, 14.73s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [01:24<03:28, 12.25s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [01:37<03:17, 12.36s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [01:44<02:41, 10.73s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [01:58<02:43, 11.66s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [02:07<02:22, 10.96s/parameter_set][A
+Processing:  50%|█████     | 12/24 [02:22<02:25, 12.11s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [02:28<01:53, 10.35s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [02:41<01:50, 11.09s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [02:50<01:34, 10.54s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [03:07<01:38, 12.35s/parameter_set][A
+Processing:  71%|███████   | 17/24 [03:18<01:24, 12.05s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [03:38<01:27, 14.60s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [03:46<01:01, 12.34s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [03:58<00:49, 12.44s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [04:06<00:33, 11.16s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [04:21<00:24, 12.29s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [04:31<00:11, 11.53s/parameter_set][A
+Processing: 100%|██████████| 24/24 [04:49<00:00, 13.38s/parameter_set][AProcessing: 100%|██████████| 24/24 [04:49<00:00, 12.05s/parameter_set]
+++++++++++++++++++ 
+tb21_22_2984_pats_22_vars_relapse - Model: LogisticHazard - Period: baseline days  4-month cohort  - EOT - data for training: last_therapy_day - CV:19
++++++++++++++++++
+Running training with last_therapy_day model: 33 vars
+Num of CV-repeat:19
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:07<02:47,  7.30s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:18<03:29,  9.53s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:26<03:07,  8.93s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [00:42<03:50, 11.55s/parameter_set][A
+Processing:  21%|██        | 5/24 [00:53<03:38, 11.49s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:12<04:11, 13.96s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [01:18<03:14, 11.43s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [01:28<02:55, 10.98s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [01:35<02:24,  9.66s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [01:47<02:27, 10.51s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [01:56<02:08,  9.92s/parameter_set][A
+Processing:  50%|█████     | 12/24 [02:10<02:15, 11.33s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [02:17<01:50, 10.04s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [02:31<01:50, 11.06s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [02:40<01:35, 10.59s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [02:56<01:38, 12.26s/parameter_set][A
+Processing:  71%|███████   | 17/24 [03:07<01:22, 11.79s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [03:27<01:26, 14.34s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [03:33<00:58, 11.78s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [03:43<00:45, 11.30s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [03:51<00:30, 10.11s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [04:04<00:21, 10.95s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [04:13<00:10, 10.36s/parameter_set][A
+Processing: 100%|██████████| 24/24 [04:28<00:00, 11.79s/parameter_set][AProcessing: 100%|██████████| 24/24 [04:28<00:00, 11.18s/parameter_set]
+++++++++++++++++++ 
+tb21_22_2984_pats_22_vars_relapse - Model: LogisticHazard - Period: baseline days  4-month cohort  - EOT - data for training: last_therapy_day - CV:20
++++++++++++++++++
+Running training with last_therapy_day model: 33 vars
+Num of CV-repeat:20
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:05<01:58,  5.15s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:14<02:52,  7.85s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:22<02:46,  7.93s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [00:36<03:19,  9.99s/parameter_set][A
+Processing:  21%|██        | 5/24 [00:46<03:12, 10.13s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:03<03:42, 12.38s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [01:09<02:55, 10.30s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [01:19<02:44, 10.27s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [01:26<02:18,  9.21s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [01:37<02:18,  9.91s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [01:45<02:01,  9.34s/parameter_set][A
+Processing:  50%|█████     | 12/24 [01:59<02:06, 10.57s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [02:05<01:41,  9.27s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [02:16<01:39,  9.94s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [02:24<01:23,  9.28s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [02:39<01:28, 11.08s/parameter_set][A
+Processing:  71%|███████   | 17/24 [02:50<01:16, 10.88s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [03:09<01:20, 13.49s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [03:15<00:56, 11.24s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [03:27<00:45, 11.27s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [03:35<00:30, 10.25s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [03:50<00:23, 11.72s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [03:58<00:10, 10.68s/parameter_set][A
+Processing: 100%|██████████| 24/24 [04:14<00:00, 12.31s/parameter_set][AProcessing: 100%|██████████| 24/24 [04:14<00:00, 10.61s/parameter_set]
+++++++++++++++++++ 
+tb21_22_2984_pats_22_vars_relapse - Model: LogisticHazard - Period: baseline days  4-month cohort  - EOT - data for training: last_therapy_day - CV:21
++++++++++++++++++
+Running training with last_therapy_day model: 33 vars
+Num of CV-repeat:21
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:05<02:12,  5.77s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:16<03:12,  8.76s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:23<02:49,  8.05s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [00:37<03:22, 10.13s/parameter_set][A
+Processing:  21%|██        | 5/24 [00:45<03:01,  9.55s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:02<03:35, 11.97s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [01:07<02:47,  9.83s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [01:16<02:31,  9.48s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [01:22<02:08,  8.54s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [01:34<02:11,  9.39s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [01:42<01:56,  8.96s/parameter_set][A
+Processing:  50%|█████     | 12/24 [01:54<02:00, 10.07s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [02:01<01:39,  9.02s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [02:13<01:38,  9.88s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [02:21<01:25,  9.47s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [02:35<01:26, 10.85s/parameter_set][A
+Processing:  71%|███████   | 17/24 [02:46<01:14, 10.70s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [03:04<01:17, 12.95s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [03:09<00:53, 10.70s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [03:19<00:41, 10.45s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [03:26<00:28,  9.35s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [03:38<00:20, 10.06s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [03:46<00:09,  9.38s/parameter_set][A
+Processing: 100%|██████████| 24/24 [04:01<00:00, 11.07s/parameter_set][AProcessing: 100%|██████████| 24/24 [04:01<00:00, 10.04s/parameter_set]
+++++++++++++++++++ 
+tb21_22_2984_pats_22_vars_relapse - Model: LogisticHazard - Period: baseline days  4-month cohort  - EOT - data for training: last_therapy_day - CV:22
++++++++++++++++++
+Running training with last_therapy_day model: 33 vars
+Num of CV-repeat:22
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:06<02:19,  6.04s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:17<03:24,  9.30s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:25<03:05,  8.84s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [00:40<03:41, 11.07s/parameter_set][A
+Processing:  21%|██        | 5/24 [00:50<03:20, 10.56s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:07<03:49, 12.75s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [01:13<02:59, 10.54s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [01:22<02:45, 10.35s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [01:30<02:19,  9.32s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [01:42<02:26, 10.43s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [01:51<02:08,  9.89s/parameter_set][A
+Processing:  50%|█████     | 12/24 [02:06<02:17, 11.46s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [02:13<01:51, 10.18s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [02:27<01:52, 11.24s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [02:36<01:36, 10.67s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [02:54<01:41, 12.72s/parameter_set][A
+Processing:  71%|███████   | 17/24 [03:06<01:27, 12.50s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [03:25<01:27, 14.50s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [03:32<01:00, 12.15s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [03:43<00:47, 11.95s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [03:51<00:31, 10.66s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [04:04<00:22, 11.46s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [04:12<00:10, 10.36s/parameter_set][A
+Processing: 100%|██████████| 24/24 [04:25<00:00, 11.06s/parameter_set][AProcessing: 100%|██████████| 24/24 [04:25<00:00, 11.05s/parameter_set]
+++++++++++++++++++ 
+tb21_22_2984_pats_22_vars_relapse - Model: LogisticHazard - Period: baseline days  4-month cohort  - EOT - data for training: last_therapy_day - CV:23
++++++++++++++++++
+Running training with last_therapy_day model: 33 vars
+Num of CV-repeat:23
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:05<02:14,  5.86s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:16<03:11,  8.71s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:24<02:56,  8.38s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [00:38<03:28, 10.44s/parameter_set][A
+Processing:  21%|██        | 5/24 [00:48<03:16, 10.32s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:06<03:52, 12.94s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [01:13<03:05, 10.91s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [01:22<02:48, 10.52s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [01:29<02:19,  9.30s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [01:41<02:24, 10.31s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [01:50<02:07,  9.80s/parameter_set][A
+Processing:  50%|█████     | 12/24 [02:06<02:19, 11.62s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [02:13<01:51, 10.13s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [02:25<01:47, 10.74s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [02:34<01:32, 10.22s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [02:50<01:36, 12.01s/parameter_set][A
+Processing:  71%|███████   | 17/24 [03:00<01:21, 11.58s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [03:21<01:25, 14.27s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [03:27<00:59, 11.82s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [03:39<00:46, 11.70s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [03:47<00:31, 10.62s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [04:02<00:24, 12.13s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [04:13<00:11, 11.80s/parameter_set][A
+Processing: 100%|██████████| 24/24 [04:32<00:00, 13.86s/parameter_set][AProcessing: 100%|██████████| 24/24 [04:32<00:00, 11.35s/parameter_set]
+++++++++++++++++++ 
+tb21_22_2984_pats_22_vars_relapse - Model: LogisticHazard - Period: baseline days  4-month cohort  - EOT - data for training: last_therapy_day - CV:24
++++++++++++++++++
+Running training with last_therapy_day model: 33 vars
+Num of CV-repeat:24
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:07<02:49,  7.39s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:20<03:58, 10.82s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:29<03:30, 10.01s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [00:45<04:05, 12.28s/parameter_set][A
+Processing:  21%|██        | 5/24 [00:54<03:31, 11.14s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:10<03:52, 12.92s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [01:16<03:00, 10.62s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [01:26<02:46, 10.38s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [01:34<02:22,  9.48s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [01:46<02:25, 10.38s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [01:55<02:09,  9.95s/parameter_set][A
+Processing:  50%|█████     | 12/24 [02:12<02:24, 12.03s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [02:19<01:55, 10.54s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [02:32<01:51, 11.19s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [02:41<01:35, 10.57s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [02:58<01:39, 12.50s/parameter_set][A
+Processing:  71%|███████   | 17/24 [03:09<01:25, 12.20s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [03:30<01:28, 14.77s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [03:37<01:02, 12.44s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [03:50<00:50, 12.58s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [03:58<00:33, 11.22s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [04:12<00:23, 11.94s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [04:19<00:10, 10.63s/parameter_set][A
+Processing: 100%|██████████| 24/24 [04:35<00:00, 12.28s/parameter_set][AProcessing: 100%|██████████| 24/24 [04:35<00:00, 11.49s/parameter_set]
+++++++++++++++++++ 
+tb21_22_2984_pats_22_vars_relapse - Model: LogisticHazard - Period: baseline days  4-month cohort  - EOT - data for training: last_therapy_day - CV:25
++++++++++++++++++
+Running training with last_therapy_day model: 33 vars
+Num of CV-repeat:25
+
+Processing:   0%|          | 0/24 [00:00<?, ?parameter_set/s][A
+Processing:   4%|▍         | 1/24 [00:05<02:11,  5.70s/parameter_set][A
+Processing:   8%|▊         | 2/24 [00:16<03:12,  8.73s/parameter_set][A
+Processing:  12%|█▎        | 3/24 [00:25<03:00,  8.62s/parameter_set][A
+Processing:  17%|█▋        | 4/24 [00:38<03:30, 10.54s/parameter_set][A
+Processing:  21%|██        | 5/24 [00:47<03:11, 10.06s/parameter_set][A
+Processing:  25%|██▌       | 6/24 [01:05<03:48, 12.68s/parameter_set][A
+Processing:  29%|██▉       | 7/24 [01:11<03:00, 10.62s/parameter_set][A
+Processing:  33%|███▎      | 8/24 [01:21<02:44, 10.30s/parameter_set][A
+Processing:  38%|███▊      | 9/24 [01:27<02:15,  9.05s/parameter_set][A
+Processing:  42%|████▏     | 10/24 [01:40<02:20, 10.06s/parameter_set][A
+Processing:  46%|████▌     | 11/24 [01:48<02:03,  9.50s/parameter_set][A
+Processing:  50%|█████     | 12/24 [02:02<02:11, 10.92s/parameter_set][A
+Processing:  54%|█████▍    | 13/24 [02:09<01:46,  9.64s/parameter_set][A
+Processing:  58%|█████▊    | 14/24 [02:22<01:47, 10.78s/parameter_set][A
+Processing:  62%|██████▎   | 15/24 [02:30<01:30, 10.02s/parameter_set][A
+Processing:  67%|██████▋   | 16/24 [02:47<01:36, 12.09s/parameter_set][A
+Processing:  71%|███████   | 17/24 [02:58<01:21, 11.60s/parameter_set][A
+Processing:  75%|███████▌  | 18/24 [03:16<01:22, 13.67s/parameter_set][A
+Processing:  79%|███████▉  | 19/24 [03:22<00:56, 11.34s/parameter_set][A
+Processing:  83%|████████▎ | 20/24 [03:35<00:46, 11.67s/parameter_set][A
+Processing:  88%|████████▊ | 21/24 [03:42<00:31, 10.53s/parameter_set][A
+Processing:  92%|█████████▏| 22/24 [03:57<00:23, 11.60s/parameter_set][A
+Processing:  96%|█████████▌| 23/24 [04:06<00:10, 10.85s/parameter_set][A
+Processing: 100%|██████████| 24/24 [04:21<00:00, 12.35s/parameter_set][AProcessing: 100%|██████████| 24/24 [04:21<00:00, 10.92s/parameter_set]
+100%|██████████| 1/1 [1:52:05<00:00, 6725.07s/model]100%|██████████| 1/1 [1:52:05<00:00, 6725.08s/model]
+Training duration:
+Elapsed time:1 hours:53 minutes

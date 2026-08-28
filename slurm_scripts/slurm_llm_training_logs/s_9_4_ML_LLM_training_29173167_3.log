@@ -1,0 +1,40 @@
+Loading anaconda
+Activate conda env
+tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21
+all_days
+baseline
+XGBoost
+data_inclusion_type_ ['all_days'] model_names_ ['XGBoost'] period_end_day_ ['baseline']
+tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21
+Training on baseline days of data
+Loading embeddings of tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21 data / BioMistral-7B_base /baseline /all_days /autoenc False / mean_pooling model
+Loading embeddings:   0%|          | 0/1 [00:00<?, ?set/s]Loading embeddings: 100%|██████████| 1/1 [00:04<00:00,  4.72s/set]Loading embeddings: 100%|██████████| 1/1 [00:04<00:00,  4.72s/set]
+
+→ Loading: tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21 | BioMistral-7B_base | baseline | all_days | autoenc=False | mean_pooling 
+Loaded in 4.64 seconds. Dataframe shape: (2984, 4096)
++++++++
+Running training with full model: 4096 vars
++++++++
+Processing:   0%|          | 0/1 [00:00<?, ?model/s]
+=====================
+XGBoost
+
+Processing:   0%|          | 0/1 [00:00<?, ?cv_repeat/s][ARESULT_AT_END_OF_TREATMENT   0.0  1.0
+STUDYID                              
+TB-1021                     1382   46
+TB-1022                     1392   54
+Num of CV-repeat:1
+Num of CV-repeat:1 - Model:XGBoost - Data inclusion type:all_days - Period:baseline - mean_pooling 
+
+
+  0%|          | 0/1 [00:00<?, ?model/s][A[A
+
+100%|██████████| 1/1 [04:47<00:00, 287.79s/model][A[A100%|██████████| 1/1 [04:47<00:00, 287.79s/model]
+
+Processing: 100%|██████████| 1/1 [04:48<00:00, 288.47s/cv_repeat][AProcessing: 100%|██████████| 1/1 [04:48<00:00, 288.47s/cv_repeat]
+Processing: 100%|██████████| 1/1 [04:48<00:00, 288.51s/model]Processing: 100%|██████████| 1/1 [04:48<00:00, 288.51s/model]
+CV test_score: [0.8038507821901324, 0.7669474528680305, 0.6648550724637682, 0.67512077294686, 0.6638486312399356]
+CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
+Calcu;ating conf metrics
+Training duration:
+Elapsed time:0 hours:5 minutes seconds:19

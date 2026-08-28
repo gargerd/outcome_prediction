@@ -1,0 +1,40 @@
+Loading anaconda
+Activate conda env
+tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21
+baseline_vars
+93
+XGBoost
+data_inclusion_type_ ['baseline_vars'] model_names_ ['XGBoost'] period_end_day_ [93]
+tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21
+Training on 93 days of data
+Loading embeddings of tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21 data / BioMistral-7B_base /93 /baseline_vars /autoenc False / mean_pooling model
+Loading embeddings:   0%|          | 0/1 [00:00<?, ?set/s]Loading embeddings: 100%|██████████| 1/1 [00:04<00:00,  4.23s/set]Loading embeddings: 100%|██████████| 1/1 [00:04<00:00,  4.23s/set]
+
+→ Loading: tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21 | BioMistral-7B_base | 93 | baseline_vars | autoenc=False | mean_pooling 
+Loaded in 4.16 seconds. Dataframe shape: (2984, 4096)
++++++++
+Running training with full model: 4096 vars
++++++++
+Processing:   0%|          | 0/1 [00:00<?, ?model/s]
+=====================
+XGBoost
+
+Processing:   0%|          | 0/1 [00:00<?, ?cv_repeat/s][ARESULT_AT_END_OF_TREATMENT   0.0  1.0
+STUDYID                              
+TB-1021                     1383   46
+TB-1022                     1436   53
+Num of CV-repeat:1
+Num of CV-repeat:1 - Model:XGBoost - Data inclusion type:baseline_vars - Period:93 - mean_pooling 
+
+
+  0%|          | 0/1 [00:00<?, ?model/s][A[A
+
+100%|██████████| 1/1 [04:58<00:00, 298.57s/model][A[A100%|██████████| 1/1 [04:58<00:00, 298.57s/model]
+
+Processing: 100%|██████████| 1/1 [04:59<00:00, 299.34s/cv_repeat][AProcessing: 100%|██████████| 1/1 [04:59<00:00, 299.34s/cv_repeat]
+Processing: 100%|██████████| 1/1 [04:59<00:00, 299.38s/model]Processing: 100%|██████████| 1/1 [04:59<00:00, 299.38s/model]
+CV test_score: [0.6586442037705575, 0.6875250701965503, 0.7585238668271159, 0.5815217391304348, 0.8003220611916264]
+CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
+Calcu;ating conf metrics
+Training duration:
+Elapsed time:0 hours:5 minutes seconds:34

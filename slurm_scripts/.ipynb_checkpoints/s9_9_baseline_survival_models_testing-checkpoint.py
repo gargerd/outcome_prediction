@@ -1,0 +1,741 @@
+import pandas as pd
+import pickle
+import json
+from matplotlib import pyplot as plt
+import torch
+import numpy as np
+import os
+import itertools
+import seaborn as sns
+import warnings
+from sklearn.metrics import RocCurveDisplay
+warnings.simplefilter(action='ignore', category=FutureWarning)
+warnings.simplefilter(action='ignore', category=DeprecationWarning)
+
+import matplotlib as mpl
+mpl.rcParams['figure.dpi'] = 300
+
+from s9_9_baseline_survival_models_functions import *
+
+def parse_period(val):
+    try:
+        return int(val)
+    except ValueError:
+        return val  # keep string like 'baseline' or 'all'
+
+
+
+### EXTRACT PARAMETERS FOR PARAMETER SEARCH FROM ARGPARSE
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("--dataset_name", help="One of the dataset names from the keys of parameters_for_analysis dictionar (see below)")
+parser.add_argument("--training_data_type", help="One of the 2 data inclusion types: ['all_days_in_period','last_therapy_day']]")
+#parser.add_argument("--model", help="One of the 2 models: ['XGBoost','LogisticRegression']")
+#parser.add_argument("--period_end_day", help="One of the 7 periods: ['baseline',31,62,93,125,160,'all']")
+parser.add_argument("--model", type=lambda s: s.split(','), help="Comma-separated list of models")
+parser.add_argument("--period_end_day",
+                    type=lambda s: [parse_period(x) for x in s.split(',')],
+                    help="Comma-separated list of period_end_day values (['baseline',31,62,93,125,160,'all']")
+
+parser.add_argument("--ther_arm_duration", help="One of the ther_arm_durationsa: ['4-month','6-month']")
+#parser.add_argument("--overwrite_existing_params", help="If set to True, overwrites the existing dictionaries with the parameter search results")
+#parser.add_argument("--cpu_cores", help="List of integers, setting which CPU cores to be used. i.e. for the first 4 CPU cores: 0-3")
+
+
+
+args = parser.parse_args()
+dataset_name_=[args.dataset_name]
+training_data_type_ = [args.training_data_type]
+model_names_ = args.model
+#period_end_day_=[args.period_end_day if args.period_end_day in ['baseline','all'] else int(args.period_end_day)]
+period_end_day_=args.period_end_day
+ther_arm_durations_ = [args.ther_arm_duration]
+#overwrite_existing_params=args.overwrite_existing_params
+#print(overwrite_existing_params)
+
+
+
+
+parameters_for_analysis={'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+            
+                        'tb21_22_2984_pats_22_vars_relapse':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'survival':True,
+                            'result_cat':'RELAPSE'}, 
+
+                         'tb21_22_2263_pats_24_vars_relapse':{
+                            'fn':'tb21_22_2263_pats_24_vars_relapse',
+                              'survival':True,
+                            'result_cat':'RELAPSE'},
+
+                        'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_dr_reg_per_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+            
+                        'tb21_22_2984_pats_22_vars_relapse_dr_reg_per_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
+                            'result_cat':'RELAPSE'}, 
+
+                         
+                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_with_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                             'pat_ids_fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+            
+                        'tb21_22_2984_pats_22_vars_relapse_with_arm':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
+                            'result_cat':'RELAPSE'}, 
+
+                        'tb21_22_2984_pats_22_vars_relapse_without_dr_reg':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
+                            'result_cat':'RELAPSE'},
+                         
+                        'tb21_22_2984_pats_22_vars_relapse_basic_vars':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'pat_ids_fn':'tb21_22_2984_pats_22_vars_relapse',
+                            'result_cat':'RELAPSE'},
+                         
+        
+                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_with_adherence':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+            
+                        'tb21_22_2984_pats_22_vars_relapse_with_adherence':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'}, 
+  
+
+                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_mb_only':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+
+                         'tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_mb':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+
+                         'tb21_22_2984_pats_22_vars_relapse_mb_only':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'},
+
+                         'tb21_22_2984_pats_22_vars_relapse_without_mb':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'},
+
+                         'tb21_1405_pats_40_vars_result_at_end_of_treatment':{
+                            'fn':'tb21_1405_pats_40_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+                         
+                         'tb21_1405_pats_40_vars_relapse':{
+                            'fn':'tb21_1405_pats_40_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'},
+
+                         'tb22_1499_pats_31_vars_result_at_end_of_treatment':{
+                             'fn':'tb22_1499_pats_31_vars_result_at_end_of_treatment',
+                            'result_cat':'RESULT_AT_END_OF_TREATMENT'},
+                         
+                         'tb22_1499_pats_31_vars_relapse':{
+                             'fn':'tb22_1499_pats_31_vars_result_at_end_of_treatment',
+                            'result_cat':'RELAPSE'},
+
+
+                         'tb21_22_2984_pats_22_vars_raw_pred_prob_norm_loss':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'raw_pred_prob_norm'},
+                         
+                        'tb21_22_2984_pats_22_vars_llm_pred_prob_norm_loss':{
+                            'fn':'tb21_22_2984_pats_22_vars_result_at_end_of_treatment',
+                            'result_cat':'llm_pred_prob_norm'},
+                         
+                        }
+
+
+
+###=========================================================================================
+# 1 . Define training parameters
+
+from sklearn.model_selection import train_test_split
+import warnings
+from tqdm import tqdm
+
+
+outcome_df=pd.read_csv('../../data/tb_1018_20_21_22_30_outcome.csv.gz',index_col=0)
+outcome_df=outcome_df.set_index('USUBJID',drop=True)
+outcome_df=outcome_df.rename(columns={'UNFAVOURABLE_OUTCOME_CATEGORY_AT_18_MONTHS':'UNFAVOUR_CAT_AT_18_MONTHS'})
+
+
+mmodel_names=['XGBoost','CoxnetSurvival'][:]
+
+training_data_types=['all_days_in_period','last_therapy_day']
+columns_to_drop=['ARM','STUDYID','DAY','index']
+
+temp_cols_to_drop=['ae','mh','cm','ce'][:-1]
+
+## Return a dictionary containing the race of the patients
+race_dict=return_race_dict()
+
+## Set up prediction labels
+id2label={0: "FAVOURABLE", 1: "UNFAVOURABLE"}
+label2id={"FAVOURABLE": 0, "UNFAVOURABLE": 1}
+
+#={'UNFAVOUR_CAT_AT_18_MONTHS':'UNFAVOURABLE_OUTCOME_CATEGORY_AT_18_MONTHS'}
+
+## Drop patients who have their last data at an earlier timepoint than threshold
+therapy_day_thr=80
+
+period_end_days=['baseline',31,62,93,125,160,'all']
+
+## Define training parameters
+train_params={'num_cv_repeats':25,
+                'k_folds':5,             
+              'weight_by_label_freq':True,
+               'label_weights':[1,1],## [index_0: weight for label 0 (negative),index_1: weight for label 1 (positive)], only
+                                     ## only considered if weight_by_label_freq=False !
+              'random_state':42,
+              'test_size_ratio':0.2,
+              'label2id':label2id}
+
+
+## Load dataframe containing the last day of drug regimen for each patient
+last_initial_therapy_day_df=pd.read_csv('../../data/out_last_initial_therapy_day_list_1018_20_21_22_30.csv.gz',index_col=0)
+last_initial_therapy_day_df=last_initial_therapy_day_df.set_index('USUBJID')
+
+## Laod pats with relapse df
+pats_with_relapse_df=extract_21_22_relapse_pats()
+
+
+param_search_dict={'RandomForest':{'n_estimators':[300,500,700],
+                                   'max_features':['sqrt'],
+                                   'max_depth':[3,5,7,9]},
+                   
+                  'GradientBoost':{'n_estimators':[300,500,700],
+                                   'max_features':['sqrt'],
+                                   'learning_rate':[0.1,0.3,0.5,0.8]},
+                  
+                  'XGBoost':{#'n_estimators':[300,500,700],
+                             #'max_depth':[3,5,7,9],
+                             #'eta':[0.1,0.3,0.5,0.8],
+                             #'subsample':[1.0,0.9,0.8,0.7],
+                             #'tree_method':['exact'],
+                             #"device": ["cpu"],
+                              #'n_jobs':[1]
+                            'n_estimators':     [100, 200, 300],   # 3
+                            'learning_rate':    [0.05, 0.1],        # 2
+                            'max_depth':        [2, 3],             # 2
+                            'min_child_weight': [15, 20, 30],   
+                    
+                                                },
+                   
+                  #'LogisticRegression':{#'l1_ratio':[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1],
+                  #                     'l1_ratio':[0.5,1],
+                  #                       'C': [0.001, 0.01, 0.1, 1, 10],
+                  #                        },
+
+                   'CoxnetSurvival': {'l1_ratio':  [0.1, 0.5, 0.9, 1.0],
+                                      'alpha_min_ratio': [0.01, 0.001],
+                                      #'alphas':    [np.logspace(-3, 0, 20)],  # single path, 20 points                                  
+                                     },
+
+                   
+                   
+                  'SVC':{'C':[1e-3,1e-2,1e-1,1e0,1e1,1e2],
+                        'kernel':['rbf','poly']},
+                   
+                  'KNN':{'n_neighbors':[2,5,10,25,50,100]},
+                  }    
+
+
+
+###=========================================================================================
+# 2. Run model testing
+import time    
+start=time.time()
+import warnings
+warnings.filterwarnings("ignore")
+
+from sklearn.metrics import roc_auc_score
+
+figtitle_size=20
+subtitle_size=18
+x_tick_size=18
+y_tick_size=13
+y_label_size=17
+legend_fontsize=11.5
+axis_lw=1.6
+
+suptitle_dict={'tb21_22_18_3079_pats_22_vars_result_at_end_of_treatment':'REMox + OFLOTUB',
+               'tb21_22_2984_pats_22_vars_result_at_end_of_treatment':'REMox + OFLOTUB',
+              'tb21_1405_pats_41_vars_result_at_end_of_treatment':'REMox',
+              'TB-1021':'REMox',
+              'TB-1022':'OFLOTUB'}
+
+suptitle_training_type_dict={'all_days_in_period':'all visits in period',
+                             'last_therapy_day':'visit at end of period'}
+plot_split_by_studies=True
+
+
+model_names=['XGBoost','LogisticRegression','GradientBoost','RandomForest'][:2]
+period_end_days_for_plot=period_end_days[:]
+
+### loop over ML models, train them & training results in a dictionary
+idx_list=[0,2]
+#for idx in idx_list:
+#    data_param_key=[*parameters_for_analysis][idx]
+
+
+from sksurv.metrics import concordance_index_censored
+import time
+    
+for data_param_key in dataset_name_:
+    
+    print('===========\n',data_param_key,'\n')
+    
+    #outcome_label=data_param_key.split('vars_')[-1].upper()
+    outcome_label = parameters_for_analysis[data_param_key]['result_cat']
+
+    ## LOAD FINAL PATIENT IDS FOR ANALYSIS, SAVED DURING PREPROCESSING OF THE BASELINE MODELS IN NOTEBOOK S9_9
+    survival_anal_dir_ = f'../../data/survival_analysis'
+    if 'pat_ids_fn' in parameters_for_analysis[data_param_key].keys():
+        #fn=f"../../data/{parameters_for_analysis[data_param_key]['pat_ids_fn']}_final_pat_ids_for_analysis.pickle"
+        fn=os.path.join(survival_anal_dir_,
+                    f"{parameters_for_analysis[data_param_key]['pat_ids_fn']}_final_pat_ids_for_analysis.pickle")
+    else:  
+        #fn=f'../../data/{data_param_key}_final_pat_ids_for_analysis.pickle'
+        fn=os.path.join(survival_anal_dir_,
+                    f'{data_param_key}_final_pat_ids_for_analysis.pickle')
+    with open(fn, 'rb') as handle:
+        final_pat_ids_for_analysis=pickle.load(handle)
+    
+        
+
+    ## Load preprocessed-imputed data, and modify the variables (add or drop) depending on the prediction setup, which is contained at the 
+    #. end of the "data_param_key" variable
+    X,race_colnames = load_and_modify_preprocessed_data(data_param_key)
+
+
+    ## Return dataframe with the outcome label
+    pat_ids,y,target_df,outcome_label = return_predict_label_dataframe(parameters_for_analysis,data_param_key,X,
+                                                          outcome_df,outcome_label,model_names)
+
+
+    ## Subset initial therapy last day dataframe to all patient considered in analysis
+    #init_ther_df=last_initial_therapy_day_df.loc[pat_ids,:]
+    last_init_ther_days = extract_last_init_therapy_day_from_drug_regimen(pat_ids)
+
+
+    #fig,ax=plt.subplots(1,1,figsize=(12,5.5))
+    
+    
+    for training_data_type in training_data_type_:
+
+
+
+        for ther_arm_dur in ther_arm_durations_:
+    
+            cv_res_df_list,cv_res_df_per_study_list=[],[]
+    
+            pred_results_dict,pred_results_dict_per_study={},{}
+            
+            start_period=time.time()
+            
+            for period_end_day in period_end_day_:  
+    
+                if '4-month' in ther_arm_dur and period_end_day in [160,'all']:
+                    print(f'Skipping {ther_arm_dur} - cohort at timepoint {period_end_day}')
+                    continue
+                    
+                scores,cv_num_list,model_name_list,scores_per_study_list,\
+                     cv_num_per_study_list,model_name_per_study_list,study_list,\
+                      split_coln_list,pred_risk_list, pred_prob_per_study_list, \
+                        pred_prob_list_calibr,pred_prob_per_study_list_calibr, \
+                         scores_calibr,scores_per_study_list_calibr,x_test_list,\
+                          x_test_per_study_list, label_weights_list,label_weights_per_study_list,\
+                           y_label_list,y_label_per_study_list =[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]
+    
+                period_num = period_end_days.index(period_end_day)
+    
+                pred_results_dict[period_end_day]={}
+                pred_results_dict_per_study[period_end_day]={}
+        
+                ## SUBSET TO PATIENTS WHO WERE TAKING DRUGS DURING THE PERIOD
+                #  ==> keep only patients who took TB drugs in period (not only placebo)
+                #  ==> for EOT outcome prediction: 
+                #      patients in 4-month arms considered in Baseline-Month 3
+                #.     patients in 6-month arms considered in Baseline-Month 5
+                #pat_ids_ = subset_pats_with_therapy_in_period(period_num,period_end_days)
+                pat_ids_ = subset_pats_with_therapy_in_period(period_num,period_end_days,last_init_ther_days,
+                                       pats_with_relapse_df,period_end_day,X,outcome_label,data_param_key)
+                #print(len(pat_ids_))
+        
+                if len(pat_ids_)==0:
+                    print(f'No patients considered for {data_param_key} - period:{period_end_day}')
+                    continue
+                
+            
+        
+                df_=target_df.reset_index()#
+                df_['STUDYID']=df_['USUBJID'].str.split('/',expand=True)[0].values
+                #print(pd.crosstab(df_.loc[df_['USUBJID'].isin(pat_ids_),'STUDYID'],df_.loc[df_['USUBJID'].isin(pat_ids_),outcome_label]))
+                
+                ## Drop patients, whose therapy ended before the period_end_day & keep clinical data up until last day of period
+                if isinstance(period_end_day,int):
+                    
+                    ## Select last visit in period cutoff based on threshold before cutoff & after cutoff
+                    X_subset = select_visits_with_dual_thresholds(
+                                                        df=X[X['USUBJID'].isin(pat_ids_)],
+                                                        time_col='DAY',
+                                                        patient_col='USUBJID',
+                                                        cutoff_day=period_end_day,
+                                                        before_threshold=20,
+                                                        after_threshold=10)
+        
+                if period_end_day=='baseline': 
+        
+                    ## Use first month of data ==> used for imputation of some baseline variables where neeeded
+                    X_subset=X[(X['USUBJID'].isin(pat_ids_)) & \
+                               ~(X['STUDYID'].isin(['TB-1018']))&\
+                               (X['DAY']<=31)].copy()
+        
+                if period_end_day=='all': 
+                    
+                    X_subset=X[(X['USUBJID'].isin(pat_ids_))&\
+                              ~(X['STUDYID'].isin(['TB-1018']))].copy()
+        
+                ## Drop all columns that contain only zeroes
+                X_subset=X_subset.loc[:, (X_subset!= 0).any(axis=0)]
+        
+                
+                #X_subset,ae_cumul_colnames = calucate_cumul_adverse_clinical_events(X_subset,period_end_day)
+               
+        
+                ## Define baseline columns to keep 
+                temp_col_threshold=0.3 # 0.3 
+                temporal_data_names=['re','ae','cm','su','mh'][:] 
+                temp_cols_to_keep=['dr_reg_study_drugs_cumul','vs_Height_STD_NUM_RESULT',
+                                   'vs_BMI_STD_NUM_RESULT','mb_LJ-culture_CULTURE_STATUS'][:] \
+                                    + race_colnames #\
+                                    #+ ae_cumul_colnames         
+                                    #+ arm_cumul_colnames \
+                            
+                
+                for temp_data_name in temporal_data_names:
+                    cols_to_keep=select_temporal_cols_with_suff_pat_data(temp_data_name,X_subset,temp_col_threshold)
+                    temp_cols_to_keep.extend(cols_to_keep)
+            
+    
+    
+                #ncols=train_params['num_cv_repeats']
+                #fig,axes=plt.subplots(1,ncols,figsize=(ncols*8,12))
+    
+                
+                data_wr_time=time.time()
+                #print('data_wr_time:',(data_wr_time-start_period))
+                #print_elapsed_time_(start_period,data_wr_time) 
+                
+                for model_name in model_names_:
+                    #print(model_name)
+    
+                    #fn=f'../../data/{data_param_key}_{model_name}_{period_end_day}_days_{training_data_type}_training_results.pickle'
+                    fn=os.path.join(survival_anal_dir_,
+                                    f'{data_param_key}_{model_name}_{period_end_day}_days_{training_data_type}_{ther_arm_dur}_training_results.pickle')
+                    with open(fn, 'rb') as handle:
+                        training_results=pickle.load(handle)
+    
+                    cv_results=training_results['cv_results']
+    
+                    pickle_loading_time=time.time()
+                    #print('picle_loadingt_time:')
+                    #print_elapsed_time_(data_wr_time,pickle_loading_time) 
+                    
+                    if len(columns_to_drop)>0:
+                        columns_to_drop_=columns_to_drop + X_subset.columns[X_subset.columns.str.startswith(tuple(temp_cols_to_drop))].tolist()
+    
+                        ## If colunm name is in the temp_cols_to_keep list, don't drop it
+                        columns_to_drop_=[coln for coln in columns_to_drop_ if coln not in temp_cols_to_keep]
+    
+    
+                    ## 1. Drop patients with no drug regimen data
+                    ## 2. Drop rows, where the variables columns selcted for analysis contains NaNs
+                    if period_end_day!='baseline':
+    
+                        ## 1. 
+                        dr_reg_cols=X_subset.columns[X_subset.columns.str.contains('dr_reg')].tolist()
+                        pats_wo_drug_reg = X_subset.loc[X_subset[dr_reg_cols].isna().any(axis=1),'USUBJID'].unique()
+                        X_subset_=X_subset.loc[~X_subset['USUBJID'].isin(pats_wo_drug_reg),:].copy()
+    
+                        ## 2. 
+                        cols_for_anal=X_subset_.drop(columns=columns_to_drop_).columns.tolist()
+                        #X_subset_ = X_subset[['DAY']+cols_for_anal].sort_values(by=['DAY']).groupby('USUBJID',as_index=False).apply(lambda x: x.loc[x.index[-1],:]).dropna(how='any',axis=1)
+                        #X_subset_ = X_subset.dropna(subset=cols_for_anal,how='any',axis=0)
+                        X_subset_=X_subset_[['DAY']+cols_for_anal].copy()
+                        
+                        ## Drop all columns that contain only zeroes and refreash the columns_to_drop_ list with columns that are still there in X_susbet_
+                        X_subset_=X_subset_.loc[:, (X_subset_!= 0).any(axis=0)]
+                        columns_to_drop_= list(set(columns_to_drop_)&set(X_subset_.columns))
+    
+                    ## If baseline, don't drop these rows, as they are being used to impute some variables at baseline
+                    if period_end_day=='baseline':
+                        X_subset_=X_subset.copy()
+                        X_subset_ = X_subset_.loc[:,~X_subset_.columns.str.startswith('ARM_')]
+    
+    
+                    X_subset__ = X_subset_[X_subset_['therapy_arm_duration']==ther_arm_dur].drop(columns=['therapy_arm_duration'])
+                    
+                    print(f'++ \n {data_param_key} - {training_data_type} - Model {model_name} - {ther_arm_dur} cohort -  Period: {period_end_day} days \n+++++++++++++++++')
+                    
+                    
+                    violations_l = []
+                    #for cv_repeat_num in range(len([*cv_results])):
+                    #for cv_repeat_num in tqdm(range(1)):
+                    for cv_repeat_num in tqdm(range(len([*cv_results]))):
+    
+                    
+                        #print('cv_repeat_num',cv_repeat_num)
+                        cv_repeat_start=time.time()
+    
+                        ## Based on the saved random state used at training, re-create the train-test data split
+                        rand_state=cv_results[f'cv_rep_{cv_repeat_num}']['rand_state']
+    
+                        #print(pd.crosstab(df_.loc[df_['USUBJID'].isin(X_subset_['USUBJID'].unique()),'STUDYID'],df_.loc[df_['USUBJID'].isin(X_subset_['USUBJID'].unique()),outcome_label]))
+    
+                        #final_wr_time=time.time()
+                        #print('final_wr_time:')
+                        #print_elapsed_time_(cv_repeat_start,final_wr_time) 
+                    
+                        X_train,X_test,y_train,y_test,\
+                                        X_train_pat_ids,X_test_pat_ids= create_std_training_testing_data(X_subset__,
+                                                                                                         y,
+                                                                                                         pat_ids_,
+                                                                                                         train_params['test_size_ratio'],
+                                                                                                         rand_state,training_data_type,
+                                                                                                         columns_to_drop_,
+                                                                                                         period_end_day,
+                                                                                                         outcome_label,
+                                                                                                         cv_repeat_num=cv_repeat_num,
+                                                                                                         final_pat_ids_for_analysis=final_pat_ids_for_analysis)
+    
+                        #strain_test_creat=time.time()
+                        #print('strain_test_creat:')
+                        #print_elapsed_time_(final_wr_time,strain_test_creat) 
+                        
+                        
+                        
+                        X_train,X_test = scale_by_training_data(X_train, X_test)
+    
+                        #model=cv_results[f'cv_rep_{cv_repeat_num}']['model']
+    
+    
+                        ## EXtract the output probabilities for each top n models and average them to get a final prediction probability
+                        test_risks=[]
+                        #for n in range(len(cv_results[f'cv_rep_{cv_repeat_num}']['model'].keys())):
+                        for n in range(0,1):
+                        
+                            model=cv_results[f'cv_rep_{cv_repeat_num}']['model'][n]
+
+                            if 'CoxnetSurvival' in model_name:
+                                violations_summary = check_ph_assumption_lifelines(sksurv_model=model,
+                                                                          X_train=X_train,
+                                                                          y_df_train=y_train)
+
+                                violations_summary['cv_repeat_num']=cv_repeat_num
+                            
+                            test_risk = model.predict(X_test)
+                            test_risks.append(test_risk)
+                            violations_l.append(violations_summary)
+
+
+                        final_test_risks =np.mean(np.array(test_risks),axis=0)
+                        test_c = concordance_index_censored(y_test['RELAPSE'].astype(bool), 
+                                                            y_test['RELAPSE_DAY'], 
+                                                            final_test_risks)[0]
+
+                        
+                        scores.append(test_c)
+                        #scores_calibr.append(test_roc_auc_calibr)
+                        cv_num_list.append(cv_repeat_num+1)
+                        model_name_list.append(model_name)
+
+                        pred_risk_list.append(final_test_risks)
+                        #pred_prob_list_calibr.append(test_probabilities_calibr)
+                        x_test_list.append(X_test.index.tolist())
+                        #label_weights_list.append(label_weights)
+                        y_label_list.append(y_test)
+                        
+
+                        
+                        #pred_time=time.time()
+                        #print('pred_time:')
+                        #print_elapsed_time(strain_test_creat,pred_time) 
+                            
+                        
+    
+                        # Predict probabilities on the training and test data
+ 
+                        ## IF THERE ARE MULTIPLE STUDIES IN THE DATA, CALCULATE THE ROC-AUC SCORES WITHIN THE STUDIES AS WELL
+                        split_coln='STUDYID'
+                        #study_coln='ARM'
+    
+                        for split_coln in ['STUDYID','ARM'][:]:
+                        
+                            study_ids=X_subset[split_coln].unique()
+                            #print(study_ids)
+                            #study_ids=['2EMRZ/2MR']
+                            if len(study_ids)>0:
+                                
+                                for study_id in study_ids:
+                                    #print(study_id)
+                                    X_test_study_idx=X_subset.loc[(X_subset[split_coln]==study_id)&(X_subset['USUBJID'].isin(X_test_pat_ids)),'USUBJID'].tolist()
+                                    X_test_study=X_test.loc[X_test_study_idx,:]
+                                    #y_test_study=y_test.loc[y_test.index.get_level_values('STUDYID')==study_id]
+                                    y_test_study=y_test.loc[X_test_study_idx]
+    
+                                    #print(X.loc[X['USUBJID'].isin(X_test_study_idx),'ARM'].value_counts())
+                                    if len(X_test_study_idx)<1:
+                                        continue
+        
+                                    # Predict probabilities on the training and test data
+                                    try:
+                                        #test_probabilities_calibr=test_conf_metrics.loc[X_test_study.index,['prob_calibrated']].values
+                                        #test_probabilities = model.predict_proba(X_test_study.values)[:, 1]
+                                        test_risk = model.predict(X_test_study)
+                                        
+                                        #label_weights=y_test_study[outcome_label].map(label_weights_dict).values
+                                        
+                                        #test_roc_auc=roc_auc_score(y_test_study, test_probabilities,sample_weight=label_weights)
+                                        #test_roc_auc_calibr=roc_auc_score(y_test_study, test_probabilities_calibr,sample_weight=label_weights)
+                                        test_c = concordance_index_censored(y_test_study['RELAPSE'].astype(bool), 
+                                                                            y_test_study['RELAPSE_DAY'], 
+                                                                            test_risk)[0]
+                                                    
+                                    except ValueError:
+                                        print(f'No pats in cv-repeat_num {cv_repeat_num} - {split_coln} - {study_id}')
+                                        continue
+        
+                                    scores_per_study_list.append(test_c)
+                                    #scores_per_study_list_calibr.append(test_roc_auc_calibr)
+                                    cv_num_per_study_list.append(cv_repeat_num+1)
+                                    model_name_per_study_list.append(model_name)
+                                    study_list.append(study_id) 
+                                    split_coln_list.append(split_coln)
+                                    
+                                    pred_prob_per_study_list.append(test_risk)
+                                    #pred_prob_per_study_list_calibr.append(test_probabilities_calibr)
+                                    x_test_per_study_list.append(X_test_study.index.tolist())
+                                    #label_weights_per_study_list.append(label_weights)
+                                    y_label_per_study_list.append(y_test_study)
+
+                    ## Fir the CoxnetSurvival model: save results of the proportional hazard assumptions (tested with SChinefeld residuals)
+                    
+                    if len(violations_l)>0:
+                        violations_df=pd.concat(violations_l,axis=0)
+                        fn=os.path.join(survival_anal_dir_,
+                                    f'{data_param_key}_{model_name}_{period_end_day}_days_{training_data_type}_{ther_arm_dur}_PH_violations.csv')
+                        violations_df.to_csv(fn)
+                        
+                   
+                cv_res_df=pd.DataFrame.from_dict({'model_name':model_name_list,
+                                                  'Num_of_CV_repeat':cv_num_list,
+                                                  'C_index_score':scores,
+                                                  #'ROC_AUC_score_calibr':scores_calibr,
+                                                  #'pred_prob':pred_prob_list,
+                                                  #'pred_prob_calibr':pred_prob_list_calibr,
+                                                 #'X_test_ids':x_test_list,
+                                                 })
+            
+                cv_res_df['inclusion_period']=period_end_day
+                cv_res_df_list.append(cv_res_df)
+    
+                pred_dict_ = {'model_name':model_name_list,
+                              'Num_of_CV_repeat':cv_num_list,
+                              'pred_risk':pred_risk_list,
+                              #'pred_prob_calibr':pred_prob_list_calibr,
+                              #'label_weights':label_weights_list,
+                              'y_label':y_label_list,
+                              'X_test_ids':x_test_list}
+    
+                pred_results_dict[period_end_day]=pred_dict_
+                                                  
+    
+                if len(study_ids)>0:
+                    cv_res_per_study_df=pd.DataFrame.from_dict({'model_name':model_name_per_study_list,
+                                                                  'Num_of_CV_repeat':cv_num_per_study_list,
+                                                                  'C_index_score':scores_per_study_list,
+                                                                  #'ROC_AUC_score_calibr':scores_per_study_list_calibr,
+                                                                   'split_coln_level':study_list,
+                                                                   'split_coln':split_coln_list})
+                    
+                    cv_res_per_study_df['inclusion_period']=period_end_day
+                    #cv_res_per_study_df['training_data_type']=training_data_type
+                    cv_res_df_per_study_list.append(cv_res_per_study_df)
+    
+                    pred_dict_per_study = {'model_name':model_name_per_study_list,
+                                           'Num_of_CV_repeat':cv_num_per_study_list,
+                                           'pred_risk':pred_prob_per_study_list,
+                                          #'pred_prob_calibr':pred_prob_per_study_list_calibr,
+                                          #'label_weights':label_weights_list,
+                                          'y_label':y_label_per_study_list,
+                                          'X_test_ids':x_test_per_study_list}
+                                        
+                    pred_results_dict_per_study[period_end_day]=pred_dict_per_study
+                    
+            cv_res_acros_time_df=pd.concat(cv_res_df_list,axis=0)
+            cv_res_acros_time_df = cv_res_acros_time_df.reset_index().drop(columns='index')
+    
+            print('cv_res_acros_time_df\n',
+                 cv_res_acros_time_df)
+        
+            ## SAVE TEST DATFRAME FOR LATER COMPARISON
+            #fn=f'../../data/test_roc_auc_values/baseline/{data_param_key}_days_{training_data_type}_test_ROC_AUC_across_time_all_studies.csv'
+            c_ind_dir = os.path.join(survival_anal_dir_,'test_c_index_values','baseline')
+            os.makedirs(c_ind_dir,exist_ok=True)
+            fn=os.path.join(c_ind_dir,
+                            f'{data_param_key}__{training_data_type}__{ther_arm_dur}_test_C_index_across_time_all_studies.csv')
+            cv_res_acros_time_df.to_csv(fn)
+
+            
+    
+            ## SAVE PREDICTION RESULTS 
+            #fn=f'../../data/test_roc_auc_values/LLM/{data_param_key}_{llm_model_name_with_tag}_{training_data_type}_{X.shape[1]}_{data_inclusion_type}_autoenc_{autoencoder_merged}_{pool_method}_test_pred_results_all_studies.pickle'                                                    
+            #fn=f'../../data/test_roc_auc_values/baseline/{data_param_key}_days_{training_data_type}_test_pred_results_all_studies.pickle'
+            fn=os.path.join(c_ind_dir,
+                            f'{data_param_key}__{training_data_type}__{ther_arm_dur}_test_pred_results_all_studies.csv')
+            with open(fn, 'wb') as handle:
+                pickle.dump(pred_results_dict, handle)
+            
+                  
+            ## IF THERE ARE AUC-ROC VALUES PER STUDY AVAILABLE, PLOT HEM IN A SEPERATE BOXPLOT
+            #if len(scores_per_study_list)>0 and plot_split_by_studies==True:
+        
+            cv_res_per_study_df=pd.concat(cv_res_df_per_study_list,axis=0)
+                
+            ## SAVE TEST DATFRAME FOR LATER COMPARISON
+            #fn=f'../../data/{data_param_key}_{model_name}_{period_end_day}_days_{training_data_type}_test_ROC_AUC_across_time_per_study.csv' 
+            #fn=f'../../data/test_roc_auc_values/baseline/{data_param_key}_days_{training_data_type}_test_ROC_AUC_across_time_per_study.csv'
+            fn=os.path.join(c_ind_dir,
+                            f'{data_param_key}__{training_data_type}__{ther_arm_dur}_test_C_index_across_time_per_study.csv')
+            cv_res_per_study_df.to_csv(fn)
+    
+            ## SAVE PREDICTION RESULTS 
+            #fn=f'../../data/test_roc_auc_values/baseline/{data_param_key}_days_{training_data_type}_test_pred_results_per_study.pickle  ' 
+            fn=os.path.join(c_ind_dir,
+                            f'{data_param_key}__{training_data_type}__{ther_arm_dur}_test_pred_results_per_study.csv')
+            with open(fn, 'wb') as handle:
+                pickle.dump(pred_results_dict_per_study, handle)
+
+loop_time=time.time()
+print('Training duration:')
+print_elapsed_time(start,loop_time) 
+
+        
+loop_time=time.time()
+print('Training duration:')
+print_elapsed_time(start,loop_time) 
+                
+                    
+                    
+

@@ -1,0 +1,205 @@
+Loading anaconda
+Activate conda env
+tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg
+last_therapy_day
+160
+LogisticRegression
+/data/gpfs/projects/punim2121/C-Path/outcome_prediction/outcome_prediction/s9_3_baseline_ML_models_functions.py:2136: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  de_['RELAPSE']=de_['RELAPSE'].astype(float)
+Extracting relapse information...
+===========
+ tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg 
+
+RESULT_AT_END_OF_TREATMENT  FAVOURABLE  UNFAVOURABLE
+STUDYID                                             
+TB-1021                           1384            46
+TB-1022                           1442            55
+pat_ids_ before arm check 1218
+1198
+Excluded 0 out of 1198 patients (0.0%)
+
+
+=====================
+LogisticRegression
+tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg - 160 - last_therapy_day - LogisticRegression
+X_test_ids 240
+X_train 957 X_test 240
+all pats: 1197
+train (957, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 171/1000 [00:00<00:00, 1705.12it/s]Estimating transforms:  34%|███▍      | 342/1000 [00:00<00:00, 1698.28it/s]Estimating transforms:  51%|█████▏    | 514/1000 [00:00<00:00, 1704.32it/s]Estimating transforms:  68%|██████▊   | 685/1000 [00:00<00:00, 1704.33it/s]Estimating transforms:  86%|████████▌ | 856/1000 [00:00<00:00, 1699.46it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1698.92it/s]
+test (240, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 172/1000 [00:00<00:00, 1711.33it/s]Estimating transforms:  34%|███▍      | 344/1000 [00:00<00:00, 1710.40it/s]Estimating transforms:  52%|█████▏    | 516/1000 [00:00<00:00, 1694.98it/s]Estimating transforms:  69%|██████▊   | 686/1000 [00:00<00:00, 1691.64it/s]Estimating transforms:  86%|████████▌ | 856/1000 [00:00<00:00, 1667.90it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1680.56it/s]
+X_test_ids 239
+X_train 958 X_test 239
+all pats: 1197
+train (958, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 171/1000 [00:00<00:00, 1707.66it/s]Estimating transforms:  34%|███▍      | 343/1000 [00:00<00:00, 1710.34it/s]Estimating transforms:  52%|█████▏    | 515/1000 [00:00<00:00, 1710.02it/s]Estimating transforms:  69%|██████▉   | 689/1000 [00:00<00:00, 1719.92it/s]Estimating transforms:  86%|████████▌ | 862/1000 [00:00<00:00, 1720.54it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1715.04it/s]
+test (239, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 171/1000 [00:00<00:00, 1707.79it/s]Estimating transforms:  34%|███▍      | 342/1000 [00:00<00:00, 1707.14it/s]Estimating transforms:  51%|█████▏    | 514/1000 [00:00<00:00, 1709.17it/s]Estimating transforms:  69%|██████▉   | 688/1000 [00:00<00:00, 1718.75it/s]Estimating transforms:  86%|████████▌ | 860/1000 [00:00<00:00, 1714.17it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1711.25it/s]
+X_test_ids 240
+X_train 957 X_test 240
+all pats: 1197
+train (957, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 173/1000 [00:00<00:00, 1722.16it/s]Estimating transforms:  35%|███▍      | 346/1000 [00:00<00:00, 1716.32it/s]Estimating transforms:  52%|█████▏    | 518/1000 [00:00<00:00, 1692.88it/s]Estimating transforms:  69%|██████▉   | 691/1000 [00:00<00:00, 1705.62it/s]Estimating transforms:  86%|████████▋ | 864/1000 [00:00<00:00, 1713.89it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1711.25it/s]
+test (240, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  18%|█▊        | 175/1000 [00:00<00:00, 1741.84it/s]Estimating transforms:  35%|███▌      | 350/1000 [00:00<00:00, 1739.42it/s]Estimating transforms:  53%|█████▎    | 527/1000 [00:00<00:00, 1751.31it/s]Estimating transforms:  70%|███████   | 703/1000 [00:00<00:00, 1746.60it/s]Estimating transforms:  88%|████████▊ | 878/1000 [00:00<00:00, 1743.04it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1744.53it/s]
+X_test_ids 240
+X_train 957 X_test 240
+all pats: 1197
+train (957, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 173/1000 [00:00<00:00, 1720.99it/s]Estimating transforms:  35%|███▍      | 346/1000 [00:00<00:00, 1718.91it/s]Estimating transforms:  52%|█████▏    | 521/1000 [00:00<00:00, 1729.22it/s]Estimating transforms:  69%|██████▉   | 694/1000 [00:00<00:00, 1727.44it/s]Estimating transforms:  87%|████████▋ | 867/1000 [00:00<00:00, 1704.13it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1713.12it/s]
+test (240, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 170/1000 [00:00<00:00, 1689.95it/s]Estimating transforms:  34%|███▍      | 341/1000 [00:00<00:00, 1699.33it/s]Estimating transforms:  52%|█████▏    | 515/1000 [00:00<00:00, 1714.21it/s]Estimating transforms:  69%|██████▊   | 687/1000 [00:00<00:00, 1715.72it/s]Estimating transforms:  86%|████████▌ | 860/1000 [00:00<00:00, 1717.60it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1713.45it/s]
+X_test_ids 239
+X_train 958 X_test 239
+all pats: 1197
+train (958, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  18%|█▊        | 182/1000 [00:00<00:00, 1817.64it/s]Estimating transforms:  37%|███▋      | 366/1000 [00:00<00:00, 1827.97it/s]Estimating transforms:  55%|█████▍    | 549/1000 [00:00<00:00, 1817.49it/s]Estimating transforms:  73%|███████▎  | 731/1000 [00:00<00:00, 1816.68it/s]Estimating transforms:  91%|█████████▏| 914/1000 [00:00<00:00, 1819.05it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1820.12it/s]
+test (239, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  18%|█▊        | 182/1000 [00:00<00:00, 1813.22it/s]Estimating transforms:  36%|███▋      | 364/1000 [00:00<00:00, 1813.90it/s]Estimating transforms:  55%|█████▍    | 546/1000 [00:00<00:00, 1813.62it/s]Estimating transforms:  73%|███████▎  | 728/1000 [00:00<00:00, 1805.03it/s]Estimating transforms:  91%|█████████ | 910/1000 [00:00<00:00, 1807.64it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1809.31it/s]
+X_test_ids 240
+X_train 957 X_test 240
+all pats: 1197
+train (957, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 167/1000 [00:00<00:00, 1660.76it/s]Estimating transforms:  34%|███▍      | 341/1000 [00:00<00:00, 1707.11it/s]Estimating transforms:  52%|█████▏    | 517/1000 [00:00<00:00, 1727.97it/s]Estimating transforms:  69%|██████▉   | 690/1000 [00:00<00:00, 1727.97it/s]Estimating transforms:  86%|████████▋ | 863/1000 [00:00<00:00, 1728.52it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1723.44it/s]
+test (240, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 170/1000 [00:00<00:00, 1698.39it/s]Estimating transforms:  34%|███▍      | 340/1000 [00:00<00:00, 1691.72it/s]Estimating transforms:  51%|█████     | 512/1000 [00:00<00:00, 1702.75it/s]Estimating transforms:  68%|██████▊   | 684/1000 [00:00<00:00, 1706.00it/s]Estimating transforms:  86%|████████▌ | 858/1000 [00:00<00:00, 1717.16it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1706.88it/s]
+X_test_ids 240
+X_train 957 X_test 240
+all pats: 1197
+train (957, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  18%|█▊        | 178/1000 [00:00<00:00, 1779.02it/s]Estimating transforms:  36%|███▌      | 359/1000 [00:00<00:00, 1792.70it/s]Estimating transforms:  54%|█████▍    | 540/1000 [00:00<00:00, 1796.67it/s]Estimating transforms:  72%|███████▏  | 720/1000 [00:00<00:00, 1797.61it/s]Estimating transforms:  90%|█████████ | 901/1000 [00:00<00:00, 1799.67it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1797.91it/s]
+test (240, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  18%|█▊        | 180/1000 [00:00<00:00, 1797.52it/s]Estimating transforms:  36%|███▌      | 360/1000 [00:00<00:00, 1793.56it/s]Estimating transforms:  54%|█████▍    | 540/1000 [00:00<00:00, 1793.83it/s]Estimating transforms:  72%|███████▏  | 720/1000 [00:00<00:00, 1793.09it/s]Estimating transforms:  90%|█████████ | 901/1000 [00:00<00:00, 1798.69it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1797.03it/s]
+X_test_ids 240
+X_train 957 X_test 240
+all pats: 1197
+train (957, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 171/1000 [00:00<00:00, 1708.92it/s]Estimating transforms:  34%|███▍      | 343/1000 [00:00<00:00, 1712.56it/s]Estimating transforms:  52%|█████▏    | 515/1000 [00:00<00:00, 1714.24it/s]Estimating transforms:  69%|██████▊   | 687/1000 [00:00<00:00, 1716.31it/s]Estimating transforms:  86%|████████▌ | 859/1000 [00:00<00:00, 1715.03it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1714.73it/s]
+test (240, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 170/1000 [00:00<00:00, 1698.55it/s]Estimating transforms:  34%|███▍      | 341/1000 [00:00<00:00, 1701.76it/s]Estimating transforms:  51%|█████▏    | 514/1000 [00:00<00:00, 1714.28it/s]Estimating transforms:  69%|██████▊   | 686/1000 [00:00<00:00, 1711.78it/s]Estimating transforms:  86%|████████▌ | 858/1000 [00:00<00:00, 1710.33it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1707.91it/s]
+X_test_ids 240
+X_train 957 X_test 240
+all pats: 1197
+train (957, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 169/1000 [00:00<00:00, 1687.98it/s]Estimating transforms:  34%|███▍      | 339/1000 [00:00<00:00, 1690.10it/s]Estimating transforms:  51%|█████     | 511/1000 [00:00<00:00, 1701.36it/s]Estimating transforms:  68%|██████▊   | 682/1000 [00:00<00:00, 1692.29it/s]Estimating transforms:  85%|████████▌ | 853/1000 [00:00<00:00, 1696.11it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1690.45it/s]
+test (240, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 172/1000 [00:00<00:00, 1717.64it/s]Estimating transforms:  34%|███▍      | 344/1000 [00:00<00:00, 1708.06it/s]Estimating transforms:  52%|█████▏    | 515/1000 [00:00<00:00, 1704.03it/s]Estimating transforms:  69%|██████▊   | 686/1000 [00:00<00:00, 1703.74it/s]Estimating transforms:  86%|████████▌ | 858/1000 [00:00<00:00, 1706.08it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1709.37it/s]
+X_test_ids 240
+X_train 957 X_test 240
+all pats: 1197
+train (957, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 171/1000 [00:00<00:00, 1706.92it/s]Estimating transforms:  34%|███▍      | 342/1000 [00:00<00:00, 1697.24it/s]Estimating transforms:  51%|█████     | 512/1000 [00:00<00:00, 1693.62it/s]Estimating transforms:  68%|██████▊   | 682/1000 [00:00<00:00, 1694.97it/s]Estimating transforms:  85%|████████▌ | 853/1000 [00:00<00:00, 1699.77it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1699.58it/s]
+test (240, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 172/1000 [00:00<00:00, 1713.15it/s]Estimating transforms:  34%|███▍      | 344/1000 [00:00<00:00, 1712.62it/s]Estimating transforms:  52%|█████▏    | 516/1000 [00:00<00:00, 1712.71it/s]Estimating transforms:  69%|██████▉   | 688/1000 [00:00<00:00, 1713.44it/s]Estimating transforms:  86%|████████▌ | 860/1000 [00:00<00:00, 1712.89it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1712.42it/s]
+X_test_ids 240
+X_train 957 X_test 240
+all pats: 1197
+train (957, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 173/1000 [00:00<00:00, 1726.54it/s]Estimating transforms:  35%|███▍      | 346/1000 [00:00<00:00, 1708.67it/s]Estimating transforms:  52%|█████▏    | 519/1000 [00:00<00:00, 1714.13it/s]Estimating transforms:  69%|██████▉   | 691/1000 [00:00<00:00, 1700.48it/s]Estimating transforms:  86%|████████▌ | 862/1000 [00:00<00:00, 1703.35it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1708.33it/s]
+test (240, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 172/1000 [00:00<00:00, 1718.68it/s]Estimating transforms:  34%|███▍      | 345/1000 [00:00<00:00, 1723.05it/s]Estimating transforms:  52%|█████▏    | 519/1000 [00:00<00:00, 1729.59it/s]Estimating transforms:  69%|██████▉   | 693/1000 [00:00<00:00, 1732.64it/s]Estimating transforms:  87%|████████▋ | 868/1000 [00:00<00:00, 1736.24it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1729.99it/s]
+X_test_ids 240
+X_train 957 X_test 240
+all pats: 1197
+train (957, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 171/1000 [00:00<00:00, 1705.75it/s]Estimating transforms:  34%|███▍      | 342/1000 [00:00<00:00, 1695.49it/s]Estimating transforms:  52%|█████▏    | 515/1000 [00:00<00:00, 1708.30it/s]Estimating transforms:  69%|██████▊   | 686/1000 [00:00<00:00, 1701.31it/s]Estimating transforms:  86%|████████▌ | 857/1000 [00:00<00:00, 1702.01it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1701.78it/s]
+test (240, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 174/1000 [00:00<00:00, 1738.88it/s]Estimating transforms:  35%|███▍      | 348/1000 [00:00<00:00, 1733.95it/s]Estimating transforms:  52%|█████▏    | 522/1000 [00:00<00:00, 1715.28it/s]Estimating transforms:  69%|██████▉   | 694/1000 [00:00<00:00, 1707.76it/s]Estimating transforms:  86%|████████▋ | 865/1000 [00:00<00:00, 1697.43it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1706.56it/s]
+X_test_ids 240
+X_train 957 X_test 240
+all pats: 1197
+train (957, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 170/1000 [00:00<00:00, 1696.79it/s]Estimating transforms:  34%|███▍      | 342/1000 [00:00<00:00, 1707.35it/s]Estimating transforms:  51%|█████▏    | 513/1000 [00:00<00:00, 1699.03it/s]Estimating transforms:  68%|██████▊   | 683/1000 [00:00<00:00, 1697.97it/s]Estimating transforms:  85%|████████▌ | 854/1000 [00:00<00:00, 1699.34it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1698.58it/s]
+test (240, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 171/1000 [00:00<00:00, 1704.69it/s]Estimating transforms:  34%|███▍      | 342/1000 [00:00<00:00, 1698.61it/s]Estimating transforms:  51%|█████▏    | 514/1000 [00:00<00:00, 1704.22it/s]Estimating transforms:  68%|██████▊   | 685/1000 [00:00<00:00, 1699.66it/s]Estimating transforms:  86%|████████▌ | 855/1000 [00:00<00:00, 1699.23it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1700.61it/s]
+X_test_ids 240
+X_train 957 X_test 240
+all pats: 1197
+train (957, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 172/1000 [00:00<00:00, 1712.11it/s]Estimating transforms:  34%|███▍      | 344/1000 [00:00<00:00, 1665.01it/s]Estimating transforms:  51%|█████▏    | 514/1000 [00:00<00:00, 1676.65it/s]Estimating transforms:  68%|██████▊   | 685/1000 [00:00<00:00, 1686.07it/s]Estimating transforms:  85%|████████▌ | 854/1000 [00:00<00:00, 1676.48it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1678.12it/s]
+test (240, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 169/1000 [00:00<00:00, 1689.17it/s]Estimating transforms:  34%|███▍      | 340/1000 [00:00<00:00, 1699.50it/s]Estimating transforms:  51%|█████     | 510/1000 [00:00<00:00, 1679.46it/s]Estimating transforms:  68%|██████▊   | 682/1000 [00:00<00:00, 1695.33it/s]Estimating transforms:  85%|████████▌ | 854/1000 [00:00<00:00, 1703.82it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1699.64it/s]
+X_test_ids 240
+X_train 957 X_test 240
+all pats: 1197
+train (957, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 171/1000 [00:00<00:00, 1704.46it/s]Estimating transforms:  34%|███▍      | 342/1000 [00:00<00:00, 1702.87it/s]Estimating transforms:  51%|█████▏    | 513/1000 [00:00<00:00, 1698.54it/s]Estimating transforms:  68%|██████▊   | 685/1000 [00:00<00:00, 1705.69it/s]Estimating transforms:  86%|████████▌ | 856/1000 [00:00<00:00, 1705.81it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1703.78it/s]
+test (240, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 172/1000 [00:00<00:00, 1717.92it/s]Estimating transforms:  35%|███▍      | 346/1000 [00:00<00:00, 1728.09it/s]Estimating transforms:  52%|█████▏    | 519/1000 [00:00<00:00, 1722.26it/s]Estimating transforms:  69%|██████▉   | 692/1000 [00:00<00:00, 1715.93it/s]Estimating transforms:  86%|████████▋ | 864/1000 [00:00<00:00, 1716.25it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1715.00it/s]
+X_test_ids 240
+X_train 957 X_test 240
+all pats: 1197
+train (957, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  18%|█▊        | 181/1000 [00:00<00:00, 1805.37it/s]Estimating transforms:  36%|███▋      | 364/1000 [00:00<00:00, 1816.29it/s]Estimating transforms:  55%|█████▍    | 546/1000 [00:00<00:00, 1808.64it/s]Estimating transforms:  73%|███████▎  | 727/1000 [00:00<00:00, 1803.55it/s]Estimating transforms:  91%|█████████ | 910/1000 [00:00<00:00, 1810.91it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1809.08it/s]
+test (240, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  18%|█▊        | 180/1000 [00:00<00:00, 1795.99it/s]Estimating transforms:  36%|███▋      | 364/1000 [00:00<00:00, 1817.33it/s]Estimating transforms:  55%|█████▍    | 546/1000 [00:00<00:00, 1817.88it/s]Estimating transforms:  73%|███████▎  | 728/1000 [00:00<00:00, 1806.97it/s]Estimating transforms:  91%|█████████ | 909/1000 [00:00<00:00, 1798.00it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1802.75it/s]
+X_test_ids 240
+X_train 957 X_test 240
+all pats: 1197
+train (957, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 170/1000 [00:00<00:00, 1699.49it/s]Estimating transforms:  34%|███▍      | 342/1000 [00:00<00:00, 1711.44it/s]Estimating transforms:  51%|█████▏    | 514/1000 [00:00<00:00, 1710.65it/s]Estimating transforms:  69%|██████▊   | 686/1000 [00:00<00:00, 1709.44it/s]Estimating transforms:  86%|████████▌ | 857/1000 [00:00<00:00, 1705.81it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1701.74it/s]
+test (240, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 167/1000 [00:00<00:00, 1664.86it/s]Estimating transforms:  34%|███▍      | 338/1000 [00:00<00:00, 1687.13it/s]Estimating transforms:  51%|█████     | 508/1000 [00:00<00:00, 1690.63it/s]Estimating transforms:  68%|██████▊   | 678/1000 [00:00<00:00, 1694.14it/s]Estimating transforms:  85%|████████▍ | 848/1000 [00:00<00:00, 1694.82it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1691.42it/s]
+X_test_ids 240
+X_train 957 X_test 240
+all pats: 1197
+train (957, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 171/1000 [00:00<00:00, 1700.87it/s]Estimating transforms:  34%|███▍      | 342/1000 [00:00<00:00, 1705.88it/s]Estimating transforms:  51%|█████▏    | 513/1000 [00:00<00:00, 1695.92it/s]Estimating transforms:  68%|██████▊   | 683/1000 [00:00<00:00, 1679.87it/s]Estimating transforms:  85%|████████▌ | 852/1000 [00:00<00:00, 1683.25it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1687.11it/s]
+test (240, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 171/1000 [00:00<00:00, 1706.36it/s]Estimating transforms:  34%|███▍      | 342/1000 [00:00<00:00, 1707.40it/s]Estimating transforms:  52%|█████▏    | 517/1000 [00:00<00:00, 1722.59it/s]Estimating transforms:  69%|██████▉   | 691/1000 [00:00<00:00, 1725.84it/s]Estimating transforms:  86%|████████▋ | 864/1000 [00:00<00:00, 1717.66it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1717.87it/s]
+X_test_ids 240
+X_train 957 X_test 240
+all pats: 1197
+train (957, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 171/1000 [00:00<00:00, 1705.49it/s]Estimating transforms:  34%|███▍      | 344/1000 [00:00<00:00, 1715.16it/s]Estimating transforms:  52%|█████▏    | 517/1000 [00:00<00:00, 1718.98it/s]Estimating transforms:  69%|██████▉   | 689/1000 [00:00<00:00, 1716.40it/s]Estimating transforms:  86%|████████▌ | 861/1000 [00:00<00:00, 1699.78it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1706.87it/s]
+test (240, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 174/1000 [00:00<00:00, 1731.79it/s]Estimating transforms:  35%|███▍      | 348/1000 [00:00<00:00, 1729.55it/s]Estimating transforms:  52%|█████▏    | 521/1000 [00:00<00:00, 1725.09it/s]Estimating transforms:  69%|██████▉   | 694/1000 [00:00<00:00, 1726.12it/s]Estimating transforms:  87%|████████▋ | 868/1000 [00:00<00:00, 1730.80it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1730.12it/s]
+X_test_ids 240
+X_train 957 X_test 240
+all pats: 1197
+train (957, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 169/1000 [00:00<00:00, 1688.92it/s]Estimating transforms:  34%|███▍      | 343/1000 [00:00<00:00, 1716.82it/s]Estimating transforms:  52%|█████▏    | 516/1000 [00:00<00:00, 1722.37it/s]Estimating transforms:  69%|██████▉   | 689/1000 [00:00<00:00, 1724.45it/s]Estimating transforms:  86%|████████▌ | 862/1000 [00:00<00:00, 1717.76it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1717.63it/s]
+test (240, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 174/1000 [00:00<00:00, 1736.65it/s]Estimating transforms:  35%|███▍      | 349/1000 [00:00<00:00, 1743.67it/s]Estimating transforms:  52%|█████▏    | 524/1000 [00:00<00:00, 1733.84it/s]Estimating transforms:  70%|██████▉   | 698/1000 [00:00<00:00, 1730.70it/s]Estimating transforms:  87%|████████▋ | 872/1000 [00:00<00:00, 1730.52it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1732.70it/s]
+X_test_ids 240
+X_train 957 X_test 240
+all pats: 1197
+train (957, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 172/1000 [00:00<00:00, 1710.83it/s]Estimating transforms:  34%|███▍      | 344/1000 [00:00<00:00, 1702.86it/s]Estimating transforms:  52%|█████▏    | 515/1000 [00:00<00:00, 1691.49it/s]Estimating transforms:  69%|██████▉   | 688/1000 [00:00<00:00, 1703.18it/s]Estimating transforms:  86%|████████▌ | 861/1000 [00:00<00:00, 1712.52it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1710.63it/s]
+test (240, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 172/1000 [00:00<00:00, 1719.80it/s]Estimating transforms:  35%|███▍      | 346/1000 [00:00<00:00, 1729.47it/s]Estimating transforms:  52%|█████▏    | 519/1000 [00:00<00:00, 1723.45it/s]Estimating transforms:  69%|██████▉   | 693/1000 [00:00<00:00, 1729.16it/s]Estimating transforms:  87%|████████▋ | 866/1000 [00:00<00:00, 1723.32it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1724.54it/s]
+X_test_ids 240
+X_train 957 X_test 240
+all pats: 1197
+train (957, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 167/1000 [00:00<00:00, 1667.97it/s]Estimating transforms:  34%|███▍      | 341/1000 [00:00<00:00, 1705.01it/s]Estimating transforms:  51%|█████▏    | 514/1000 [00:00<00:00, 1714.92it/s]Estimating transforms:  69%|██████▊   | 687/1000 [00:00<00:00, 1720.68it/s]Estimating transforms:  86%|████████▌ | 861/1000 [00:00<00:00, 1724.79it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1715.91it/s]
+test (240, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 174/1000 [00:00<00:00, 1734.37it/s]Estimating transforms:  35%|███▍      | 348/1000 [00:00<00:00, 1737.16it/s]Estimating transforms:  52%|█████▏    | 522/1000 [00:00<00:00, 1731.16it/s]Estimating transforms:  70%|██████▉   | 696/1000 [00:00<00:00, 1730.50it/s]Estimating transforms:  87%|████████▋ | 870/1000 [00:00<00:00, 1733.06it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1734.29it/s]
+X_test_ids 240
+X_train 957 X_test 240
+all pats: 1197
+train (957, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 171/1000 [00:00<00:00, 1708.89it/s]Estimating transforms:  34%|███▍      | 345/1000 [00:00<00:00, 1724.47it/s]Estimating transforms:  52%|█████▏    | 518/1000 [00:00<00:00, 1719.67it/s]Estimating transforms:  69%|██████▉   | 691/1000 [00:00<00:00, 1722.73it/s]Estimating transforms:  86%|████████▋ | 864/1000 [00:00<00:00, 1713.25it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1718.63it/s]
+test (240, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 173/1000 [00:00<00:00, 1721.99it/s]Estimating transforms:  35%|███▍      | 348/1000 [00:00<00:00, 1735.74it/s]Estimating transforms:  52%|█████▏    | 524/1000 [00:00<00:00, 1743.11it/s]Estimating transforms:  70%|███████   | 700/1000 [00:00<00:00, 1746.06it/s]Estimating transforms:  88%|████████▊ | 875/1000 [00:00<00:00, 1739.60it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1738.14it/s]
+X_test_ids 240
+X_train 957 X_test 240
+all pats: 1197
+train (957, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 171/1000 [00:00<00:00, 1704.76it/s]Estimating transforms:  34%|███▍      | 345/1000 [00:00<00:00, 1721.87it/s]Estimating transforms:  52%|█████▏    | 518/1000 [00:00<00:00, 1724.21it/s]Estimating transforms:  69%|██████▉   | 693/1000 [00:00<00:00, 1731.00it/s]Estimating transforms:  87%|████████▋ | 867/1000 [00:00<00:00, 1732.39it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1728.13it/s]
+test (240, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 173/1000 [00:00<00:00, 1726.80it/s]Estimating transforms:  35%|███▍      | 346/1000 [00:00<00:00, 1708.37it/s]Estimating transforms:  52%|█████▏    | 521/1000 [00:00<00:00, 1723.42it/s]Estimating transforms:  70%|██████▉   | 696/1000 [00:00<00:00, 1733.82it/s]Estimating transforms:  87%|████████▋ | 870/1000 [00:00<00:00, 1734.44it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1730.19it/s]
+X_test_ids 240
+X_train 957 X_test 240
+all pats: 1197
+train (957, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 173/1000 [00:00<00:00, 1726.26it/s]Estimating transforms:  35%|███▍      | 346/1000 [00:00<00:00, 1721.47it/s]Estimating transforms:  52%|█████▏    | 522/1000 [00:00<00:00, 1736.52it/s]Estimating transforms:  70%|██████▉   | 697/1000 [00:00<00:00, 1741.00it/s]Estimating transforms:  87%|████████▋ | 872/1000 [00:00<00:00, 1738.65it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1738.37it/s]
+test (240, 27)
+Estimating transforms:   0%|          | 0/1000 [00:00<?, ?it/s]Estimating transforms:  17%|█▋        | 172/1000 [00:00<00:00, 1719.45it/s]Estimating transforms:  35%|███▍      | 347/1000 [00:00<00:00, 1735.90it/s]Estimating transforms:  52%|█████▏    | 522/1000 [00:00<00:00, 1739.33it/s]Estimating transforms:  70%|██████▉   | 697/1000 [00:00<00:00, 1739.91it/s]Estimating transforms:  87%|████████▋ | 871/1000 [00:00<00:00, 1739.05it/s]Estimating transforms: 100%|██████████| 1000/1000 [00:00<00:00, 1739.31it/s]
+Training duration:
+Elapsed time:0 hours:0 minutes

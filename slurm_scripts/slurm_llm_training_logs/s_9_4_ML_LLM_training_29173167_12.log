@@ -1,0 +1,40 @@
+Loading anaconda
+Activate conda env
+tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21
+all_days
+93
+XGBoost
+data_inclusion_type_ ['all_days'] model_names_ ['XGBoost'] period_end_day_ [93]
+tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21
+Training on 93 days of data
+Loading embeddings of tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21 data / BioMistral-7B_base /93 /all_days /autoenc False / mean_pooling model
+Loading embeddings:   0%|          | 0/1 [00:00<?, ?set/s]Loading embeddings: 100%|██████████| 1/1 [00:03<00:00,  3.05s/set]Loading embeddings: 100%|██████████| 1/1 [00:03<00:00,  3.05s/set]
+
+→ Loading: tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg_train_tb21 | BioMistral-7B_base | 93 | all_days | autoenc=False | mean_pooling 
+Loaded in 3.00 seconds. Dataframe shape: (2984, 4096)
++++++++
+Running training with full model: 4096 vars
++++++++
+Processing:   0%|          | 0/1 [00:00<?, ?model/s]
+=====================
+XGBoost
+
+Processing:   0%|          | 0/1 [00:00<?, ?cv_repeat/s][ARESULT_AT_END_OF_TREATMENT   0.0  1.0
+STUDYID                              
+TB-1021                     1383   46
+TB-1022                     1436   53
+Num of CV-repeat:1
+Num of CV-repeat:1 - Model:XGBoost - Data inclusion type:all_days - Period:93 - mean_pooling 
+
+
+  0%|          | 0/1 [00:00<?, ?model/s][A[A
+
+100%|██████████| 1/1 [03:44<00:00, 224.61s/model][A[A100%|██████████| 1/1 [03:44<00:00, 224.61s/model]
+
+Processing: 100%|██████████| 1/1 [03:45<00:00, 225.26s/cv_repeat][AProcessing: 100%|██████████| 1/1 [03:45<00:00, 225.26s/cv_repeat]
+Processing: 100%|██████████| 1/1 [03:45<00:00, 225.30s/model]Processing: 100%|██████████| 1/1 [03:45<00:00, 225.30s/model]
+CV test_score: [0.6682711592458884, 0.7705575611712796, 0.7336542318491777, 0.711231884057971, 0.8727858293075683]
+CV train_score: [1.0, 1.0, 1.0, 1.0, 1.0]
+Calcu;ating conf metrics
+Training duration:
+Elapsed time:0 hours:4 minutes seconds:12
