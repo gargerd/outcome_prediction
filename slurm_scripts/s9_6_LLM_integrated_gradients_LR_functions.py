@@ -405,7 +405,7 @@ def load_huggingface_model(model_name,device,id2label,label2id,model_type):
 
     from huggingface_hub import login
     login("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")
-    cache_dir='../huggingface_cache'
+    cache_dir='../../huggingface_cache'
 
 
     if model_type=='AutoModelForSequenceClassification':
@@ -434,7 +434,7 @@ def load_huggingface_model(model_name,device,id2label,label2id,model_type):
 def load_huggingface_tokenizer(model_name):
     from huggingface_hub import login
     login("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")
-    cache_dir='../huggingface_cache'
+    cache_dir='../../huggingface_cache'
     from transformers import AutoTokenizer
     tokenizer = AutoTokenizer.from_pretrained(model_name,cache_dir=cache_dir)
 
