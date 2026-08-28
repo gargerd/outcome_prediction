@@ -24,6 +24,54 @@ conda activate scarches
 #echo $(conda info)
 
 
+
+######## ======================================== GENERAL INFORMATION ========================================
+
+#### ======= Specify which model should be run with IG ======= 
+## - Experimental setup (here called as dataset_name) for EOT outcome prediction used in paper: 
+#    dataset_name='tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg'
+## - Experimental setup (here called as dataset_name) for relapse prediction used in paper: 
+#    dataset_name='tb21_22_2984_pats_22_vars_result_at_end_of_treatment_without_dr_reg'
+
+#dataset_name='tb21_22_2984_pats_22_vars_relapse'
+#dataset_name='tb21_22_2984_pats_22_vars_relapse_without_dr_reg'
+#dataset_name='tb21_22_2984_pats_22_vars_relapse_ext_pats'
+dataset_name='tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats'
+
+### =======  Specify the data input approach ======= 
+## Called as data_inclusion_type variable here
+## Possible values: 'all days': all variables - all visits in period
+##                  'baseline_vars': common variables - all visits in period
+##                  'baseline_last_day': common variables - visit at end of period
+
+
+### =======  Specify the time period ======= 
+## Possible values: period_end_day='baseline 31 62 93 125 160 all'
+#. ==> this value is read as a list in python 
+#.     i.e. python list: period_end_day=['baseline',31,62,93,125,160,'all'], is equal to period_end_day='baseline 31 62 93 125 160 all';
+#.     the integers in the bash list are strings here, (31-160), but they are getting converted into integers in the python script
+
+### =======  Specify model & pooling ======= 
+# - model is always 'LogisticRegression', as XGBoost is not differentiable
+# - pool_method as also always 'mean_pooling', as attention_pooling was not implemented
+
+
+### =======  Specify internal_batch_size ======= 
+# - Set it to '1' if inputs are longer (data_inclusion_type = 'all days' or 'baseline_vars'), as internal_batch_size increases GPU memory requirements
+# - Set it to '4' on a GPU with 80GBs of RAM for data_inclusion_type='baseline_last_day'
+
+### =======  Specify ther_arm_duration ======= 
+# - Defines which cohort of patients will be used 
+# - ther_arm_duration: '4-month' or '6-month'
+
+######## ======================================== RECOMMENDATIONS ON TWO PREDICTION LABELS WITH A100/H100 80GB GPUS ========================================
+## FOR EXACT RECOMMENDATIONS PLEASE CHECK run_s9_6_integrated_gradients.slurm
+# - As the distibutions of participants across therapy durations (4-month vs 6-month) is around 3:2, adjust the recommended time requested for the slurm script #   by this amount --> 4-month: 3/5 , 6-month: 2/5 of recommended time listed in  run_s9_6_integrated_gradients.slurm. 
+#.  ==> Reminder: requested time is controlled by the line "#SBATCH --time=...." ! 
+
+
+
+
 ## Specify which model should be run with IG
 dataset_name='tb21_22_2984_pats_22_vars_relapse'
 #dataset_name='tb21_22_2984_pats_22_vars_relapse_without_dr_reg'

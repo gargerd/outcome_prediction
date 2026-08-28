@@ -1,9 +1,9 @@
 **This Readme describes the overall structure of the outcome_prediction repository**
 
 
-# General overview
-- This description provides a general overview and structure of the notebooks and python files in this repo. Each notebook contains more detailed descriptions of its steps
+This description provides a general overview and structure of the notebooks and python files in this repo. Each notebook contains more detailed descriptions of its steps
 
+# Notebooks and SLURM-scripts used for producing main analysis
 - The repo can be split into multiple sections:
 
 ## Notebooks s0 to s4: preprocessing
@@ -70,7 +70,7 @@
         - Per patient, convert the tabular data within a dataset type to a string sentence, and save them in dictionaries per dataset type
         - Per dataset type, add a prefix describing the given dataset type (i.e., mb: Microbiological test results of patient), and concatenate all sentences of a patient with their respective prefixes into one input string, that will be used for embedding
 
-## Notebooks s8_4 to s9_4: Train & test ML models; run SHAP-analysis for raw-data models; run Kaplan-Meier analysis 
+## Notebooks s8_4 to s9_4: Train & test raw & embedding-based models; run SHAP-analysis for raw-data models; run Kaplan-Meier analysis 
 - **IMPORTANT**:
     - Most of the notebooks (**s8_4, 9_2, 9_3, 9_4**) have cells with extremely long run times. The content of these cells were therefore copied to respective .py files in order to perform their tasks using parallel SLURM computing (SLURM array jobs), speeding things up. The content of these cells and the respective .py files should be nearly identical (small differences can arise in the parameters of some functions, as function in the notebooks can use global variables defined in previous cells, and these variables need to be specifically defined in the .py files; but the calculations are identical!)
     - These .py files are executed using .slurm scripts --> **IMPORTANT: in the current version, a specific python within a given environment (_scarches_) is executing the .py files. The specific path therefore needs to be adjusted if a different environment or a different HPC is intended to be used**
@@ -107,7 +107,7 @@
         - `s9_3_baseline_ML_models_functions.py`: containing general functions for parameter search, training, testing and SHAP-value calculation
         - `run_s9_3_raw_data_param_search.slurm`: runs parameter search by running `s9_3_baseline_ML_models_param_search.py`
         - `run_s9_3_raw_data_train.slurm`: runs final model training using optimal hyperparameters selected after parameter search via `s9_3_baseline_ML_models_training.py`
-        - `run_s9_3_raw_data_testing.slurm`:by running `s9_3_baseline_ML_models_testing.py`, it extracts prediction probabilities of final trained models on the test set patients, as well as calculates ROC-AUC values using these probabilites and ground truth labels. ROC-AUCs are calculated across studies, within studies and within arms. **Uses a different .tsv file as input for _SLURM_TASK_ID_ pairing as all other s9_3 slurm scripts, for details check s9_3 notebook!**
+        - `run_s9_3_raw_data_testing.slurm`:by running `s9_3_baseline_ML_models_testing.py`, it extracts prediction probabilities of final trained models on the test set patients, as well as calculates ROC-AUC values using these probabilites and ground truth labels. ROC-AUCs are calculated across studies, within studies and within arms. **Uses a different .tsv file as input for _SLURM_TASK_ID_ pairing as all other s9_3 slurm scripts, for details check s9_3 notebook's cell `Create dataframe with TEST combinations for parallel computing` or see below!**
         - `run_s9_3_raw_data_SHAP_calculation.slurm`: Runs SHAP-value calculation via `s9_3_baseline_ML_models_SHAP_calculation.py`, which also contains specific functions for SHAP-calculation
     - Model training:
         - Runs parameter search (**slow, use SLURM-script**)
@@ -146,7 +146,8 @@
         - Run Kaplan-Meier analysis with Imperial et al.'s easy-/hard-to-treat (ETT/HTT) groups, and low/high relapse risk groupings derived from raw or embedding-based models (low/high: lowest/highest 30th percentile of prediction loss patients)
         - Perform a non-inferiority analysis across 4 and 6-month treatment arms for all groups derived in previous step (ETT/HTT, low/high risk)
     - Run a cost-effectiveness analysis (decision-curve & break even analysis)
- 
+
+## Notebook s9_5: Plot ROC-AUCs across timepoints 
 - **s9_5: Plot ROC-AUCs across timepoints**
     - Concatenate ROC-AUC values of raw and embedding models
         - For each prediction label, concatenate ROC-AUC values of raw data and embedding-based model that were calculated in **s9_3** and **s9_4**, in order to make the next plotting steps easier
@@ -159,13 +160,20 @@
         - Compare **embedding-based model performances only**: LR and XGBoost models of common variables - last visit, all variables - all visits, all variables - all visits data input approaches
         - Compare **across raw and embedding based data input approaches**: `final_setup_dict` controls which data setups will be plotted
 
+## Notebook s9_6: Calculate Integrated Gradients attributions for embedding models 
 - **s9_6: Calculate Integrated Gradients attributions for embedding models**
-    - **Notes on why IG is employed**:
+    - **Notes on why IG is used**:
         - Interpretability for embedding-based models doesn't work wih SHAP values, because SHAP values of embedding dimensions are not interpretable, as they cannot be traced back to individual clinical variables. In addition, SHAP calculation for LR models with 4096 dimensions is computationally intractable
         -  Integrated gradients can offer an alternative solution for this, however it needs a pipeline that is differentiable through all of its steps
         -  The embedding extraction steps are differentiable, but from the 2 models used (LR and XGBoost), only the former is differentiable, therefore only logistic regression models can be used for IG
         -  **A more detailed description of the whole approach can be found in s9_6's the markdown cell `RUN IG - SLURM SCRIPT AVAILABLE`!**
-    -  Run integrated gradients, which results in saving the token level attributions to the final predictions
+    -  Run integrated gradients, which results in saving the token level attributions to the final predictions (**slow, use SLURM-script**)
+    - **SLURM-scripts in the _slurm_scripts_ folder pertaining to s9_6**:
+        - `s9_6_LLM_integrated_gradients_LR_functions.py`: containing general functions for data loading and IG
+        - `run_s9_6_integrated_gradients.slurm`:
+            - runs Integrated Gradients by running `s9_6_LLM_integrated_gradients_LR.py`, which results in saving the token level attributions to the final predictions
+            - parameters for the SLURM-script are defined in the SLURM-script itself, no .tsv file generation in this case!
+            - **Running IG is very memory heavy ==> check `run_s9_6_integrated_gradients.slurm` for details and recommendations to avoid out-of-memory error (recommendations based on experience with A100 or H100 GPUs with 80GB RAM)**
     -  Match up tokens with their attributions, then group the tokens by variables, and sum the attributions of tokens belonging to one variable to yield one attribution score per variable
     -  Visualisation of attributions:
         - Clustering participants via clustermaps (x-axis: patients, y-axis: variables) based on their scaled IG attributions --> reliable implemented only for the common variable - last-visit data input approaches
@@ -179,32 +187,101 @@
         - Plot top variables for both top-performing data input approaches (common vars. - last visit; all vars. - all visits):
             - common vars. - last visit:  population median curves of IG attributions, plotted over timepoints and split by input value levels
             - all vars. - all visits: plot beeswarm plots of variables with large absolute attributions & large correlation with input variables --> these are radiological finding (re) variables
-    - Plot Spearman-correlation between IG attributions of variables and their input values for common vars. - last visit approaches of EOT outcome and relapse labels --> inputs for these plot come from **S9_3** notebook's `Save data for HH cluster - input data for Fig. 4's Spearman correlation plot` cell, and the cell of this notebook mentioned here above
-    - **SLURM-scripts in the _slurm_scripts_ folder pertaining to s9_6**:
- 
+    - Spearman-correlation between IG attributions of variables and their input values
+        - Plot Spearman-correlation between IG attributions of variables and their input values for common vars. - last visit approaches of EOT outcome and relapse labels --> inputs for these plot come from **S9_3** notebook's `Save data for HH cluster - input data for Fig. 4's Spearman correlation plot` cell, and the cell of this notebook with the same title
+        - Save correlations as a supplementary data. Correlation between variables attributions and their clinical values are calculated within arms, similarly to the beeswarm plots from before
+    
+
+# Notebooks and SLURM-scripts used for producing experimental analysis
+ These notebooks & their respective SLURM-scripts contains experimental analysis in addition to the main analysis steps
+
+## Notebook s9_7: Building ensemble models using prediction probabilities of raw and embedding-based model + metrics 
+- **s9_7: Building ensemble models using prediction probabilities of raw and embedding-based model + metrics**
+    - General approach:
+        - During training (**s9_3** and **s9_4**), if `calibrate_model` is set to True, each trained model gets calibrated (isotonic method), and prediction probabilities of the uncalibrated and calibrated models are saved. In addition, some metrics using the uncalibrated and calibrated probabilities are also derived
+        - In addition, using two distance metrics (Mahalanobis and KNN), the distance of the input data of the given patient is checked against the other patients, yielding information about how out-of-distribution the given patient is compared to the rest
+        - Using these metrics (_see below_) of raw and embedding-based models of the same experimental setup as inputs (i.e. LR and XGboost models of _raw common-vars. - last-visit data_, and LR models of _all variables - all visit_ for the exp. setup `tb21_22_2984_pats_22_vars_relapse_without_dr_reg_ext_pats`), train an ensemble model predicting the same label --> for some patients the raw models are doing better, for some the embedding based one. This way we could leverage this phenomenon
+    - The following confidence metrics are calculated:
+        - Uncalibrated prediction probability
+        - Calibrated prediction probability
+        - Margin: pred. prob calibrated - 0.5
+        - Entropy confidence: 1- entropy/log(2) --> entropy is calculated with calibrated probabilities
+        - Delta calibration: pred. prob calibrated - pred. prob uncalibrated
+        - Mahalanobis confidence value: Sigmoid(Mahal. distance to mean of training distribution)
+        - KNN confidence value: Sigmoid((1/average distance) to its k nearest neighbours in the training data)
+    
+    - No SLURM-script as the parameter search and training are tractable (~2 hours)
+    - **SUMMARY: No singificant improvement was seen with the ensemble model, therefore not included in main analysis**
+
+## Notebook s9_8: LSTM on the last hidden layer of the LLM, without pooling
+- **s9_8: LSTM on the last hidden layer of the LLM, without pooling**
+    - General approach:
+        - In all previous steps, after a forward pass of the input text, the last hidden layer's output (shaped as num_of_input_tokens x embedding_dimension) was mean pooled  performed across the input token dimension, yielding an embedding shaped as (1,embedding_dimension). Here, the idea is that we don't perform mean pooling, but train an LSTM on the full last hidden layer of the LLM (shaped as num_of_input_tokens x embedding_dimension), to extract the most important information from the input token dimension of the last hidden layer
+        
+    - Create a .tsv file containing a dataframe with the parameter-combinations for the given tasks (paramater search, training) pairing them up with _SLURM_TASK_ID_, that will be used in the slurm scripts
+    - **SLURM-scripts in the _slurm_scripts_ folder pertaining to s9_8**:
+        - `s9_8_LSTM_on_LLM_embeddings_functions.py`: containing general functions for LLM and LSTM
+        - `run_s9_8_LSTM_on_LLM_embeddings.slurm`:
+            - runs training by running `s9_8_LSTM_on_LLM_embeddings.py`
+            - Check parameter settings for GPU settings!
+    - Train LSTM on full LLM hidden layer --> Computationally also very heavy, training of one timepoint takes ~ 26 hours (**slow, use SLURM-script**)
+    - Check training results
+    - **SUMMARY: No singificant improvement was seen with the ensemble model, therefore not included in main analysis**
+
+## Notebooks s9_9 to s9_12: Train & test raw & embedding-based SURVIVAL ANALYSIS models, within therapy durations (4 or 6-month arms); run SHAP-analysis for raw-data models;
+- **s9_9: Raw data - SURVIVAL model training with SHAP analysis**
+    - General approach:
+        - Compared to the binary prediction of relapse in **s9_3** and **s9_4**, survival analysis is performed here
+        - **Survival analysis is performed within therapy durations (within 4-month or 6-month arms)**
+        - Using two timescales: relapse is counted either from start-of-therapy, or end-of-therapy, with no specific timepoint of right-censoring!
+        - Models used: XGboost, CoxnetSurvival (~Cox PH model with ElasticNet penalty) and pycox's LogisticHazard (neural network, which discretises the follow-up period into a fixed set of time intervals, 6 in our case)
+    - Structure of this notebook is really similar to that of an earlier version of **s9_3** --> **SLURM-script are analogously strucuted as those of s9_3**
+        - Create a .tsv file containing a dataframe with the parameter-combinations for model testing, pairing it up with _SLURM_TASK_ID_, that will be used in the following slurm scripts
+            -  **SLURM-scripts in the _slurm_scripts_ folder pertaining to s9_9**:
+                - `s9_9_baseline_survival_models_functions.py`: containing general functions for parameter search, training, testing and SHAP-value calculation
+                - `run_s9_9_raw_survival_param_search.slurm`: runs parameter search by running `s9_9_baseline_survival_models_param_search.py`
+                - `run_s9_9_raw_survival_train.slurm`: runs final model training using optimal hyperparameters selected after parameter search via `s9_9_baseline_survival_models_training.py`
+                - `run_s9_9_raw_survival_testing.slurm`:by running `s9_9_baseline_survival_models_testing.py`, it extracts prediction probabilities of final trained models on the test set. **Uses a different .tsv file as input for _SLURM_TASK_ID_ pairing as all other s9_9 slurm scripts, for details check s9_9 notebook's cell `Create dataframe with TEST combinations for parallel computing`!**
+        - Parameter search, model training, testing, SHAP-values, (**all of them slow, use SLURM-scripts**) etc..        
+    - **SUMMARY: Performance was better in the 4-month arms (0.6-0.65 C-index), as expected due to the higher number of relapses, and SHAP-analysis yielded similar SHAP values as those of s9_3. In the 6-month arms, the performance was worse (0.5-0.6) C-index all throughout the timepoints, which made the SHAP analysis not that reliable as well.** 
+
+
+- **s9_10: Embedding-based - SURVIVAL model training**
+    - Same general approach as  **s9_9** (survival models trained within 4 or 6 month arms, two time origins for relapse, 3 models)
+    - Create a .tsv file containing a dataframe with the parameter-combinations for the given tasks (paramater search, training) pairing them up with _SLURM_TASK_ID_, that will be used in the slurm scripts
+    - **SLURM-scripts in the _slurm_scripts_ folder pertaining to s9_10**:
+        - `s9_10_survival_on_LLM_embeddings_functions.py`: containing general functions for parameter search and training
+        - `run_s9_10_llm_survival_param_search.slurm`: runs parameter search by running `s9_10_survival_on_LLM_embeddings_param_search.py`
+        - `run_s9_10_llm_survival_train.slurm`: runs final model training using optimal hyperparameters selected after parameter search via `s9_10_survival_on_LLM_embeddings_training.py`
+    - Parameter search (**slow, use SLURM-scripts**)
+    - Model training (**slow, use SLURM-scripts**)
+    - Model testing
 
 
 
+- **s9_11: Plot C-index across timepoints**
+  - Concatenate C-index values of raw and embedding models
+        - For each prediction label, concatenate C-index values of raw data and embedding-based model that were calculated in **s9_9** and **s9_10**, in order to make the next plotting steps easier
+    - Plot C-index values of individual experimental setups as line and stripplots over time
+        - Plot C-index values of CoxnetSurvival & XGBoost models across studies / per study /  per arm
+    - Compare C-index values of the different data input approaches and models per one experimental setup in one barplot, and compare them statistically
+        - Compare **raw data model performances only**: CoxnetSurvival & XGBoost models of last-visit, last-visits concatenated data inputs; as well as LSTM models
+        - Compare **embedding-based model performances only**: CoxnetSurvival & XGBoost models of common variables - last visit, all variables - all visits, all variables - all visits data input approaches
+        - Compare **across raw and embedding based data input approaches**: `final_setup_dict` controls which data setups will be plotted
+    - **SUMMARY: Performance was similar in the 4-month arms to those of the raw model with all data input approaches (0.6-0.65 C-index), as expected due to the higher number of relapses. For the 6-month arms, the _common variables / all variables - all visits_ approaches seemed to perform better compared to the raw models, both in the across-study and within arm C-index values.** 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- **s9_12: Calculate Integrated Gradients attributions for embedding survival models**
+    - Analog of **s9_6**, see details there
+    - Differences: CoxnetSurvival is used here instead of LR & that the models were trained within therapy duration (4 or 6-moth arms pooled)
+      
+    - **SLURM-scripts in the _slurm_scripts_ folder pertaining to s9_12**:
+        - `s9_12_LLM_survival_integrated_gradients_functions.py`: containing general functions for data loading and IG
+        - `run_s9_12_LLM_survival_integrated_gradients.slurm`:
+            - runs Integrated Gradients by running `s9_12_LLM_survival_integrated_gradients.py`, which results in saving the token level attributions to the final predictions
+            - parameters for the SLURM-script are defined in the SLURM-script itself, no .tsv file generation in this case!
+            - **Running IG is very memory heavy ==> check `run_s9_12_LLM_survival_integrated_gradients.slurm` for details and recommendations to avoid out-of-memory error (recommendations based on experience with A100 or H100 GPUs with 80GB RAM)**
+    - **SUMMARY: really similar results to those of s9_6**
 
 
 
