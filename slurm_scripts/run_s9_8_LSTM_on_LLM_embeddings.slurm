@@ -19,8 +19,17 @@ echo "Loading anaconda"
 module load Anaconda3/2024.02-1
 eval "$(conda shell.bash hook)"
 
-echo "Activate conda env"
-conda activate scarches
+#echo "Activate conda env"
+#conda activate scarches
+
+## A specific python within the desired environment (here: scarches)is executing the python file ==> this needs to be adjusted if environment or HPC changes
+echo "Activating conda env"
+conda activate "${CONDA_ENV_PATH:?Set CONDA_ENV_PATH to your scarches environment path, e.g. export CONDA_ENV_PATH=/path/to/anaconda3/envs/scarches}"
+# Add the environments's python bin path to the first place in $PATH --> this way the environment's own python will be run when using "python" command
+export PATH="${CONDA_PREFIX}/bin:${PATH}"
+
+echo "Python being used:"
+which python
 
 config="LSTM_LLM_train_param_combinations.tsv"
 
@@ -97,8 +106,8 @@ slot=0
             echo "  period_end_day=${period_end_day}" >> "$logfile"
             echo >> "$logfile"
 
-            ## A specific python within the desired environment (here: scarches)is executing the python file ==> this needs to be adjusted if environment or HPC changes
-            /data/gpfs/projects/punim2121/anaconda3/envs/scarches/bin/python s9_8_LSTM_on_LLM_embeddings.py \
+            
+            python s9_8_LSTM_on_LLM_embeddings.py \
                 --dataset_name "$dataset_name" \
                 --data_inclusion_type "$data_inclusion_type" \
                 --period_end_day "$period_end_day" \

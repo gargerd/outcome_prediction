@@ -13,15 +13,21 @@
 
 set -euo pipefail
 
-## Delete all previous log files
-#rm -rf ./slurm_param_search_logs/*
-
 echo "Loading anaconda"
 module load Anaconda3/2024.02-1
 eval "$(conda shell.bash hook)"
 
-echo "Activate conda env"
-conda activate scarches
+#echo "Activate conda env"
+#conda activate scarches
+
+## A specific python within the desired environment (here: scarches)is executing the python file ==> this needs to be adjusted if environment or HPC changes
+echo "Activating conda env"
+conda activate "${CONDA_ENV_PATH:?Set CONDA_ENV_PATH to your scarches environment path, e.g. export CONDA_ENV_PATH=/path/to/anaconda3/envs/scarches}"
+# Add the environments's python bin path to the first place in $PATH --> this way the environment's own python will be run when using "python" command
+export PATH="${CONDA_PREFIX}/bin:${PATH}"
+
+echo "Python being used:"
+which python
 
 # Specify the path to the config file
 config="raw_data_test_param_combinations.tsv"
@@ -66,8 +72,8 @@ echo ${periods_list}
 echo ${models_list}
 
 
-## A specific python within the desired environment (here: scarches)is executing the python file ==> this needs to be adjusted if environment or HPC changes
-/data/gpfs/projects/punim2121/anaconda3/envs/scarches/bin/python s9_3_baseline_ML_models_testing.py \
+
+python s9_3_baseline_ML_models_testing.py \
                                                                 --dataset_name $dataset_name\
                                                                 --training_data_type $training_data_type \
                                                                 --model "$models_list" \
