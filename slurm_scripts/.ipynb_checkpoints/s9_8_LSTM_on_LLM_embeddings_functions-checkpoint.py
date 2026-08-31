@@ -3870,9 +3870,21 @@ def load_huggingface_model(model_name,device,id2label,label2id,model_type):
             )
 
 
+ 
+    ## READ HUGGING FACE TOKEN (needed for gated models e.g. meditron)
     from huggingface_hub import login
-    login("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")
-    cache_dir='../huggingface_cache'
+    hf_token_path = '../../api_tokens/hf_token.txt'
+    hf_token = None
+    if os.path.exists(hf_token_path):
+        with open(hf_token_path, 'r') as f:
+            hf_token = f.read().strip()
+        if hf_token:
+            from huggingface_hub import login
+            login(token=hf_token)
+            print('Hugging Face token loaded and logged in')
+    else:
+        print(f'No HF token found at {hf_token_path} — gated models (e.g. meditron) will fail without one')
+    cache_dir='../../huggingface_cache'
 
 
     if model_type=='AutoModelForSequenceClassification':
@@ -3899,9 +3911,23 @@ def load_huggingface_model(model_name,device,id2label,label2id,model_type):
 
 ### -==============================================
 def load_huggingface_tokenizer(model_name):
+
+    
+    ## READ HUGGING FACE TOKEN (needed for gated models e.g. meditron)
     from huggingface_hub import login
-    login("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")
-    cache_dir='../huggingface_cache'
+    hf_token_path = '../../api_tokens/hf_token.txt'
+    hf_token = None
+    if os.path.exists(hf_token_path):
+        with open(hf_token_path, 'r') as f:
+            hf_token = f.read().strip()
+        if hf_token:
+            from huggingface_hub import login
+            login(token=hf_token)
+            print('Hugging Face token loaded and logged in')
+    else:
+        print(f'No HF token found at {hf_token_path} — gated models (e.g. meditron) will fail without one')
+        
+    cache_dir='../../huggingface_cache'
     from transformers import AutoTokenizer
     tokenizer = AutoTokenizer.from_pretrained(model_name,cache_dir=cache_dir)
     

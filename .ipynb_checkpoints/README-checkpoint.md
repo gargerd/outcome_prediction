@@ -1,10 +1,60 @@
 **This Readme describes the overall structure of the outcome_prediction repository**
 
 
-This description provides a general overview and structure of the notebooks and python files in this repo. Each notebook contains more detailed descriptions of its steps
+
+
+# Prerequisites
+
+## Create the conda environment
+
+Create the conda environment used by this project:
+
+```bash
+conda env create -f environment.yml -n scarches
+```
+
+## API tokens (Hugging Face and OpenAI)
+
+Some scripts and notebooks in this repository use models hosted on Hugging Face (e.g. gated models such as `epfl-llm/meditron-7b`) or the OpenAI API. These require your own API tokens to authenticate. Tokens are never stored inside this repository, they are read from a folder located *outside* it, so they are never accidentally committed or made public.
+
+### 1. Create a folder for your tokens
+
+This folder must sit one level above the repository, not inside it.
+
+For example, if you cloned this repository into a folder named
+`outcome_prediction`, your directory structure should look like this:
+
+```
+some_parent_directory/
+├── api_tokens/
+└── outcome_prediction/      <- this repository
+```
+
+To create the `api_tokens` folder, navigate to the parent directory of
+the repository and run:
+
+```bash
+mkdir ../api_tokens
+```
+
+
+### 2. Save your tokens as plain text files
+
+Inside `api_tokens/`, create the following files:
+
+- **`hf_token.txt`** — your Hugging Face access token, required for downloading gated models. You can create a token at [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens). Note that some models also require you to accept their license terms on the model's Hugging Face page before the token will work.
+
+- **`gpt_token.txt`** — your OpenAI API key, required for any script using OpenAI models. You can create a key at [platform.openai.com/api-keys](https://platform.openai.com/api-keys).
+
+Each file should contain only the token itself, with no extra text, quotes, or formatting. For example, `hf_token.txt` should look like:
+
+```
+hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
 
 # Notebooks and SLURM-scripts used for producing main analysis
-- The repo can be split into multiple sections:
+This description provides a general overview and structure of the notebooks and python files in this repo. Each notebook contains more detailed descriptions of its steps. The repo can be split into multiple sections:
 
 ## Notebooks s0 to s4: preprocessing
 - **s0**:
@@ -274,16 +324,158 @@ This description provides a general overview and structure of the notebooks and 
 - **s9_12: Calculate Integrated Gradients attributions for embedding survival models**
     - Analog of **s9_6**, see details there
     - Differences: CoxnetSurvival is used here instead of LR & that the models were trained within therapy duration (4 or 6-moth arms pooled)
-    - 
-    - - **SLURM-scripts in the _slurm_scripts_ folder pertaining to s9_12**:
+      
+    - **SLURM-scripts in the _slurm_scripts_ folder pertaining to s9_12**:
         - `s9_12_LLM_survival_integrated_gradients_functions.py`: containing general functions for data loading and IG
         - `run_s9_12_LLM_survival_integrated_gradients.slurm`:
             - runs Integrated Gradients by running `s9_12_LLM_survival_integrated_gradients.py`, which results in saving the token level attributions to the final predictions
             - parameters for the SLURM-script are defined in the SLURM-script itself, no .tsv file generation in this case!
             - **Running IG is very memory heavy ==> check `run_s9_12_LLM_survival_integrated_gradients.slurm` for details and recommendations to avoid out-of-memory error (recommendations based on experience with A100 or H100 GPUs with 80GB RAM)**
+    - **SUMMARY: really similar results to those of s9_6**
 
 
 
 
+
+# Running on a SLURM HPC cluster
+
+The `.slurm` scripts in this repository do not contain any hardcoded,
+machine-specific file paths. Instead, they rely on a small number of
+environment variables that you set once on your own system. This makes
+the scripts portable across different SLURM-based clusters without
+needing to edit the scripts themselves.
+
+### 1. Create the conda environment
+
+If you haven't already, create the conda environment used by this
+project:
+
+```bash
+conda env create -f environment.yml -n scarches
+```
+
+### 2. Find the full path to your conda environment
+
+```bash
+conda env list
+```
+
+This lists all your conda environments and their locations. Find the
+line for `scarches` and copy the path shown next to it, for example:
+
+```
+scarches   /home/yourusername/anaconda3/envs/scarches
+```
+
+### 3. Tell your shell where the environment lives
+
+Run the following command, replacing the path with the one you copied
+in step 2:
+
+```bash
+echo 'export CONDA_ENV_PATH=/home/yourusername/anaconda3/envs/scarches' >> ~/.bashrc
+source ~/.bashrc
+```
+
+What this does:
+- `echo '...' >> ~/.bashrc` adds one line to `~/.bashrc`, a file your
+  shell automatically runs every time you log in.
+- `source ~/.bashrc` re-runs that file immediately, so the change
+  takes effect in your current session without needing to log out
+  and back in.
+
+You only need to do this once. Every time you log in afterwards,
+`CONDA_ENV_PATH` will already be set.
+
+Check that it worked:
+
+```bash
+echo $CONDA_ENV_PATH
+```
+
+This should print the path you just set.
+
+### 4. Check the Anaconda module name on your cluster
+
+Each `.slurm` script begins with a line like:
+
+```bash
+module load Anaconda3/2024.02-1
+```
+
+This loads Anaconda through your cluster's module system. Module names
+and version numbers differ between clusters, so this may need to be
+changed. To see what's available on your system:
+
+```bash
+module avail anaconda
+```
+
+If the name shown differs from `Anaconda3/2024.02-1`, edit that line
+in each `.slurm` script you plan to run, replacing it with the correct
+module name for your cluster.
+
+### 5. Adjust SLURM resource settings
+
+Each `.slurm` script contains `#SBATCH` lines near the top specifying
+resources, for example:
+
+```bash
+#SBATCH --cpus-per-task=4
+#SBATCH --mem-per-cpu=24G
+#SBATCH --partition=sapphire
+#SBATCH --time=1-00:00:00
+```
+
+These values (partition name, memory, time limits, etc.) are specific
+to the cluster they were written for. Check your own cluster's
+available partitions and adjust accordingly:
+
+```bash
+sinfo
+```
+
+Consult your cluster's documentation or support team if you're unsure
+which partition or resource limits to use.
+
+### 6. Submit a job
+
+Once the steps above are complete, submit a job as usual:
+
+```bash
+sbatch slurm_scripts/name_of_script.slurm
+```
+
+You can check the job's status with:
+
+```bash
+squeue -u $USER
+```
+
+Output and error logs will be written to the location specified by
+the `#SBATCH -o` and `#SBATCH -e` lines in the script (typically a
+`slurm_*_logs/` folder — make sure this folder exists before
+submitting, or the job may fail silently).
+
+### Troubleshooting
+
+If a job fails immediately with a message like:
+
+```
+CONDA_ENV_PATH: parameter null or not set
+```
+
+it means step 3 above was not completed, or `~/.bashrc` was not
+reloaded. Re-run:
+
+```bash
+echo $CONDA_ENV_PATH
+```
+
+If this prints nothing, repeat step 3.
+
+To confirm the correct Python environment is being used inside a job,
+check the job's log file — each script prints the active Python path
+near the top of its output via a `which python` line.
 
 

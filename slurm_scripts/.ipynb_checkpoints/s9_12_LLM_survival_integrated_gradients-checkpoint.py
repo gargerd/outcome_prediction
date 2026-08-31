@@ -239,12 +239,26 @@ task_type_dict={'AutoModelForCausalLM':'CAUSAL_LM','AutoModelForSequenceClassifi
 
 #peft_config = LoraConfig(task_type=task_type_dict[model_type], inference_mode=False, r=8, lora_alpha=8, lora_dropout=0.1)
 
+## READ HUGGING FACE TOKEN (needed for gated models e.g. meditron)
+from huggingface_hub import login
+hf_token_path = '../../api_tokens/hf_token.txt'
+hf_token = None
+if os.path.exists(hf_token_path):
+    with open(hf_token_path, 'r') as f:
+        hf_token = f.read().strip()
+    if hf_token:
+        from huggingface_hub import login
+        login(token=hf_token)
+        print('Hugging Face token loaded and logged in')
+else:
+    print(f'No HF token found at {hf_token_path} — gated models (e.g. meditron) will fail without one')
+
 
 from transformers import AutoModelForSequenceClassification,LongT5EncoderModel, AutoConfig
 from peft import LoraConfig, TaskType,get_peft_model,PeftModel
 
 # Define the path where your model is saved
-cache_dir='../huggingface_cache'
+cache_dir='../../huggingface_cache'
 
 
 ## Set up prediction labels
