@@ -1871,7 +1871,7 @@ def extract_rifaquin_relapse():
     del data
     
     
-    de=pd.read_csv('../../C-Path_data/preprocessing/disposition_events.csv',low_memory=True)
+    de=pd.read_csv('../../../C-Path_data/preprocessing/disposition_events.csv',low_memory=True)
     de = de.set_index('USUBJID')
 
 
@@ -1911,7 +1911,7 @@ def return_fav_unfav_pats_tb_1021(X_subset=None):
         X_subset=X_subset.rename(columns=lambda x: x.replace('<', 'lower than'))
         X_subset=X_subset.rename(columns=lambda x: x.replace('>', 'higher than'))
     
-    de=pd.read_csv('../../C-Path_data/preprocessing/disposition_events.csv',low_memory=True) 
+    de=pd.read_csv('../../../C-Path_data/preprocessing/disposition_events.csv',low_memory=True) 
     de=de.set_index('USUBJID')
     
     outcome_tb1021 =pd.read_csv('../../data/tb_1021_outcome.csv.gz',index_col=0)
@@ -1978,10 +1978,10 @@ def return_fav_unfav_pats_tb_1022(X_subset):
     
     oc_1022 = oc_1022.replace('NOT ASSESSABLE',np.nan)
 
-    ds=pd.read_csv('../../C-Path_data/fullExportDb-1025-Member-CSV/ds.csv',low_memory=False)
+    ds=pd.read_csv('../../../C-Path_data/fullExportDb-1025-Member-CSV/ds.csv',low_memory=False)
     ds=ds.loc[ds['USUBJID'].isin(X_subset['USUBJID'].unique())]
     
-    de=pd.read_csv('../../C-Path_data/preprocessing/disposition_events.csv',low_memory=True) 
+    de=pd.read_csv('../../../C-Path_data/preprocessing/disposition_events.csv',low_memory=True) 
     de=de.set_index('USUBJID')
     
     
@@ -2174,10 +2174,10 @@ def extract_21_22_relapse_pats(include_rifaquin=False,
     
     
     #####=========  1. Read the dataframes
-    ds=pd.read_csv('../../C-Path_data/fullExportDb-1025-Member-CSV/ds.csv',low_memory=False)
+    ds=pd.read_csv('../../../C-Path_data/fullExportDb-1025-Member-CSV/ds.csv',low_memory=False)
     ds=ds.loc[ds['USUBJID'].isin(X_subset['USUBJID'].unique())]
     
-    de=pd.read_csv('../../C-Path_data/preprocessing/disposition_events.csv',low_memory=True) 
+    de=pd.read_csv('../../../C-Path_data/preprocessing/disposition_events.csv',low_memory=True) 
     de=de.set_index('USUBJID')
     
     
@@ -2273,7 +2273,7 @@ def extract_21_22_relapse_pats(include_rifaquin=False,
     
     ## FOR SOME PATIENTS, RETREATMENT DURING FOLLOW-UP STARTED EARLIER AS THE RELAPSE_DAY IN THE DISPOSITION EVENTS
     ## ==> TAKE THE FIRST DAY OF RETREATMENT AS RELAPSE DAYS FOR THESE PATIENTS
-    ex = pd.read_csv('../../C-Path_data/fullExportDb-1025-Member-CSV/ex.csv', low_memory=False)
+    ex = pd.read_csv('../../../C-Path_data/fullExportDb-1025-Member-CSV/ex.csv', low_memory=False)
     ex = ex[ex['USUBJID'].isin(pats_relapse_df.index.tolist())]
     
     ## Extract patients with retreatmetn during follow-up
