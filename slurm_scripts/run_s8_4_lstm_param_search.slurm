@@ -6,7 +6,7 @@
 #SBATCH -o slurm_lstm_param_search_logs/s_8_4_lstm_param_search_%A_%a.log
 #SBATCH -e slurm_lstm_param_search_logs/s_8_4_lstm_param_search_%A_%a.log
 #SBATCH --cpus-per-task=4
-#SBATCH --mem-per-cpu=24G
+#SBATCH --mem-per-cpu=12G
 #SBATCH --partition=sapphire #bigmem
 ##SBATCH --qos=cpu_normal
 ##SBATCH --gres=gpu:1
@@ -39,7 +39,7 @@ which python
 # Specify the path to the config file
 config="lstm_train_param_combinations.tsv"
 
-#SLURM_ARRAY_TASK_ID=8
+#SLURM_ARRAY_TASK_ID=1
 # Extract the parameters from the parameter configuration dataframe
 period_end_day=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$4==ArrayTaskID {print $2}' $config)
 #data_inclusion_type=$(awk -F'\t' -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$4==ArrayTaskID {print $4}' $config)

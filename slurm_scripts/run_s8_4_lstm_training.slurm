@@ -4,11 +4,11 @@
 #SBATCH -o slurm_lstm_train_logs/s_8_4_lstm_training_%A_%a.log
 #SBATCH -e slurm_lstm_train_logs/s_8_4_lstm_training_%A_%a.log
 #SBATCH --cpus-per-task=4
-#SBATCH --mem-per-cpu=24G
+#SBATCH --mem-per-cpu=8G
 #SBATCH --partition=sapphire #bigmem
 ##SBATCH --qos=cpu_normal
 ##SBATCH --gres=gpu:2
-#SBATCH --time=48:00:00
+#SBATCH --time=04:00:00
 #SBATCH --nice=10000
 
 set -euo pipefail

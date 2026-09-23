@@ -151,7 +151,7 @@ This description provides a general overview and structure of the notebooks and 
             - parameters for the SLURM-script are defined in the SLURM-script itself, no .tsv file generation in this case!
       
 - **s9_3: Split patients into train-test splits &  Raw data - LR & XGBoost model training with SHAP analysis**
-    - Create 25 stratified train-test split of patients, which will be used for raw and LLM-based models later
+    - Create 25 stratified train-test split of patients, which will be used for raw and LLM-based models later & create final datasets for prediction, which will be loaded at later analysis timepoints (SHap value calculation, test set prediction probability calculation, etc.), to decrease running time (creating final datasets on the fly would increase runtime a lot)
     - Create a .tsv file containing a dataframe with the parameter-combinations for the given tasks (paramater search, training, SHAP-value calculation) pairing them up with _SLURM_TASK_ID_, that will be used in the slurm scripts
     - **SLURM-scripts in the _slurm_scripts_ folder pertaining to s9_3**:
         - `s9_3_baseline_ML_models_functions.py`: containing general functions for parameter search, training, testing and SHAP-value calculation

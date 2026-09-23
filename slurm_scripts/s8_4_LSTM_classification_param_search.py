@@ -436,7 +436,8 @@ for model_complex in model_complexity_:
             #result_dict[data_param_key][categorical_map_name]['cv_results']=cv_results  
 
             ## Save results of ML on the given data
-            fname=f'../../data/{data_param_key}_LSTM_class_results_{model_complex}_model_{period_end_day}_days_param_serach_results.pickle'
+            #fname=f'../../data/{data_param_key}_LSTM_class_results_{model_complex}_model_{period_end_day}_days_param_serach_results.pickle'
+            fname=f'../../data/{data_param_key}_LSTM_class_results_{model_complex}_model_{period_end_day}_days_param_serach_results__.pickle'
             with open(fname, 'wb') as f:
                 pickle.dump(result_dict, f)      
 
